@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Seller's Page</title>
+  </head>
+  <body>
+    {%include header.html}
+    <h1>Add a new Listing</h1>
+    <form action="sellerspage" method="get">
+      Book Title:
+      <input type="text" name="title">
+      ISBN:
+      <input type="text" name="isbn">
+      Course Name:
+      <input type="text" name="course">
+      Author:
+      <input type="text" name="author">
+      <br>
+      Description:<br>
+      <input type="text" name="description">
+      <br>
+      Minimum Price:
+      <input type="text" name="minprice">
+      Buy Now:
+      <input type="text" name="buynow">
+    </form>
+    <h2>Add Images</h2>
+    <br>
+    {%include footer.html}
+  </body>
+</html>
