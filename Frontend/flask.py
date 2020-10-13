@@ -4,8 +4,6 @@
 # Author: Toussaint
 #-----------------------------------------------------------------------
 
-from database import Database
-from time import strftime, localtime, asctime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
 
