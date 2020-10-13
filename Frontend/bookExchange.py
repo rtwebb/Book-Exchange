@@ -38,7 +38,7 @@ def searchResultsTemplate():
 
 #-----------------------------------------------------------------------
 
-@app.route('/sellersPage', methods=['GET'])
+@app.route('/sellerPage', methods=['GET'])
 def sellerPageTemplate():
 
     # include the information that needs to be filled in dependent on the template
@@ -51,7 +51,7 @@ def sellerPageTemplate():
 
 #-----------------------------------------------------------------------
 
-@app.route('/buyersPage', methods=['GET'])
+@app.route('/buyerPage', methods=['GET'])
 def buyerPageTemplate():
 
 
