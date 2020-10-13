@@ -12,8 +12,8 @@ from flask import render_template
 app = Flask(__name__, template_folder='.')
 
 #-----------------------------------------------------------------------
-@app.route('/', methods=['Get'])
-@app.route('/homePage', methods=['Get'])
+@app.route('/', methods=['GET'])
+@app.route('/homePage', methods=['GET'])
 def homePageTemplate():
 
     # include the information that needs to be filled in dependent on the template
@@ -25,7 +25,7 @@ def homePageTemplate():
 
 
 #-----------------------------------------------------------------------
-@app.route('/searchResults', methods=['Get'])
+@app.route('/searchResults', methods=['GET'])
 def searchResultsTemplate():
 
     # include the information that needs to be filled in dependent on the template
@@ -38,7 +38,7 @@ def searchResultsTemplate():
 
 #-----------------------------------------------------------------------
 
-@app.route('/sellersPage', methods=['Get'])
+@app.route('/sellersPage', methods=['GET'])
 def sellerPageTemplate():
 
     # include the information that needs to be filled in dependent on the template
@@ -51,7 +51,7 @@ def sellerPageTemplate():
 
 #-----------------------------------------------------------------------
 
-@app.route('/buyersPage', methods=['Get'])
+@app.route('/buyersPage', methods=['GET'])
 def buyerPageTemplate():
 
 
@@ -65,7 +65,7 @@ def buyerPageTemplate():
 
 #----------------------------------------------------------------------
     
-@app.route('/aboutUs', methods=['Get'])
+@app.route('/aboutUs', methods=['GET'])
 def aboutPageTemplate():
 
     # include the information that needs to be filled in dependent on the template
