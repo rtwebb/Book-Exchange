@@ -6,7 +6,7 @@
 #-----------------------------------------------------------------------
 
 from sys import argv, exit, stderr
-from flask import app
+from bookExchange import app
 
 def main(argv):
 
