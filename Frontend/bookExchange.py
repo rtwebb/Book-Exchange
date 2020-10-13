@@ -9,7 +9,7 @@ from flask import render_template
 
 #-----------------------------------------------------------------------
 
-app = Flask(__name__, template_folder='.')
+app = Flask(__name__, template_folder='template')
 
 #-----------------------------------------------------------------------
 @app.route('/', methods=['GET'])
