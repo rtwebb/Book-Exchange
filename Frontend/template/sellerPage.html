@@ -4,9 +4,9 @@
     <title>Seller's Page</title>
   </head>
   <body>
-    {%include header.html}
+    {% include 'header.html' %}
     <h1>Add a new Listing</h1>
-    <form action="sellerspage" method="get">
+    <form action="sellerPage" method="get">
       Book Title:
       <input type="text" name="title">
       ISBN:
@@ -26,6 +26,6 @@
     </form>
     <h2>Add Images</h2>
     <br>
-    {%include footer.html}
+    {% include 'footer.html' %} 
   </body>
 </html>

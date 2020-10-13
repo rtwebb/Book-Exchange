@@ -20,10 +20,10 @@ def homePageTemplate():
 
     # include the information that needs to be filled in dependent on the template
 
-    # html = render_template('homePage.html', ) 
+    html = render_template('homePage.html')
                           
-    # respone = make_response(html)
-    # return response
+    response = make_response(html)
+    return response
 
 
 #-----------------------------------------------------------------------
@@ -32,14 +32,10 @@ def searchResultsTemplate():
 
     # include the information that needs to be filled in dependent on the template
 
-    # html = render_template('searchResults.html', ) 
+    html = render_template('searchResults.html')
                           
-    # respone = make_response(html)
-    # return response
-
-
-
-
+    response = make_response(html)
+    return response
 
 
 #-----------------------------------------------------------------------
@@ -49,14 +45,10 @@ def sellerPageTemplate():
 
     # include the information that needs to be filled in dependent on the template
 
-    # html = render_template('sellerPage.html', ) 
+    html = render_template('sellerPage.html')
                           
-    # respone = make_response(html)
-    # return response
-
-
-
-
+    response = make_response(html)
+    return response
 
 
 #-----------------------------------------------------------------------
@@ -67,12 +59,10 @@ def buyerPageTemplate():
 
     # include the information that needs to be filled in dependent on the template
 
-    # html = render_template('buyerPage.html', ) 
+    html = render_template('buyerPage.html')
                           
-    # respone = make_response(html)
-    # return response
-
-
+    response = make_response(html)
+    return response
 
 
 #----------------------------------------------------------------------
@@ -82,7 +72,7 @@ def aboutPageTemplate():
 
     # include the information that needs to be filled in dependent on the template
 
-    # html = render_template('aboutUs.html', ) 
+    html = render_template('aboutUs.html')
                           
-    # respone = make_response(html)
-    # return response
+    response = make_response(html)
+    return response
