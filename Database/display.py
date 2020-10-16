@@ -9,7 +9,7 @@ from os import path
 from sys import argv, stderr, exit
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database import Books, Authors, Bids, Listings, Courses
+from database import Books, Authors, Bids, Listings, Courses, Images
 
 
 def main():
@@ -55,6 +55,12 @@ def main():
     for list in session.query(Listings).all():
         print(list.sellerID, list.isbn, list.condition, list.minPrice,
               list.buyNow, list.listTime)
+
+    print('------------------------------------')
+    print('images')
+    print('------------------------------------')
+    for image in session.query(Images).all():
+        print(image.sellerID, image.isbn, image.url)
 
 
 if __name__ == '__main__':

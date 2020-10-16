@@ -9,7 +9,7 @@ from os import path, remove
 from sys import argv, stderr, exit
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database import Base, Books, Authors, Bids, Courses, Listings
+from database import Base, Books, Authors, Bids, Courses, Listings, Images
 
 
 def main():
@@ -26,6 +26,7 @@ def main():
     Session = sessionmaker(bind=engine)
     session = Session()
 
+    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
     # ------------------------------------------------------------------------------------
@@ -76,6 +77,13 @@ def main():
                        buyNow=30.00, listTime='16:45')
     session.add(listing)
     session.commit()
+
+    # ------------------------------------------------------------------------------------
+
+    image = Images(sellerID='vedant', isbn=123,
+                   url='http://res.cloudinary.com/dijpr9qcs/image/upload/z3vnl0jbvb41kkhw8vpl.jpg')
+    session.add(image)
+    session.commit
 
 
 if __name__ == '__main__':
