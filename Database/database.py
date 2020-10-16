@@ -48,8 +48,8 @@ class Listings(Base):
     listTime = Column(String)
 
 
-# class Images(Base):
-#     __tablename__ = 'images'
-#     sellerID = Column(String, primary_key=True)
-#     isbn = Column(String, primary_key=True)
-#     image =
+class Images(Base):
+    __tablename__ = 'images'
+    sellerID = Column(String, primary_key=True)
+    isbn = Column(String, primary_key=True)
+    image = Column(String)

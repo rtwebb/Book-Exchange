@@ -13,15 +13,16 @@ from database import Base, Books, Authors, Bids, Courses, Listings
 
 
 def main():
-    DATABASE_NAME = 'bookexchange.sqlite'
+    # Scheme: "postgres+psycopg2://<USERNAME>:<PASSWORD>@<IP_ADDRESS>:<PORT>/<DATABASE_NAME>"
+    DATABASE_URI = 'postgres+psycopg2://xjcnysxibbvxqk:02a1f9be7858af4c' \
+                   '7ca4e22e32ca713c6c1fc8bd2f1d18085946d5e353c32a4a' \
+                   '@ec2-18-210-90-1.compute-1.amazonaws.com:5432/dcnlsds3mjdbl4'
 
     if len(argv) != 1:
         print('Usage: python create.py', file=stderr)
         exit(1)
-    if path.isfile(DATABASE_NAME):
-        remove(DATABASE_NAME)
 
-    engine = create_engine('sqlite:///' + DATABASE_NAME)
+    engine = create_engine(DATABASE_URI)
     Session = sessionmaker(bind=engine)
     session = Session()
 
