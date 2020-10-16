@@ -83,7 +83,7 @@ def main():
     image = Images(sellerID='vedant', isbn=123,
                    url='http://res.cloudinary.com/dijpr9qcs/image/upload/z3vnl0jbvb41kkhw8vpl.jpg')
     session.add(image)
-    session.commit
+    session.commit()
 
 
 if __name__ == '__main__':
