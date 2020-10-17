@@ -5,7 +5,6 @@
 # Author: Tiana Fitzgerald
 # ------------------------------------------------------------------------------------
 
-from os import path, remove
 from sys import argv, stderr, exit
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -13,10 +12,8 @@ from database import Base, Books, Authors, Bids, Courses, Listings, Images
 
 
 def main():
-    # Scheme: "postgres+psycopg2://<USERNAME>:<PASSWORD>@<IP_ADDRESS>:<PORT>/<DATABASE_NAME>"
-    DATABASE_URI = 'postgres+psycopg2://xjcnysxibbvxqk:02a1f9be7858af4c' \
-                   '7ca4e22e32ca713c6c1fc8bd2f1d18085946d5e353c32a4a' \
-                   '@ec2-18-210-90-1.compute-1.amazonaws.com:5432/dcnlsds3mjdbl4'
+    DATABASE_URI = 'postgres://vjlbayumjwpewg:19bf7b1ddf47645b85ddd2a53327548f856e138ec4104be' \
+                   '1b99df2f432df9f85@ec2-23-23-36-227.compute-1.amazonaws.com:5432/d1ud4l1r0mt58n'
 
     if len(argv) != 1:
         print('Usage: python create.py', file=stderr)
@@ -31,11 +28,9 @@ def main():
 
     # ------------------------------------------------------------------------------------
 
-    book = Books(isbn=123, title='The Practice of Programming', quantity=500)
+    book = Books(isbn=123, title='The Practice of Programming', quantity=1)
     session.add(book)
-    book = Books(isbn=234, title='the C Programming Language', quantity=800)
-    session.add(book)
-    book = Books(isbn=345, title='Algorithm in C', quantity=650)
+    book = Books(isbn=234, title='the C Programming Language', quantity=1)
     session.add(book)
     session.commit()
 
@@ -49,8 +44,6 @@ def main():
     session.add(author)
     author = Authors(isbn=234, author='Ritchie')
     session.add(author)
-    author = Authors(isbn=345, author='Sedgewick')
-    session.add(author)
     session.commit()
 
     # ------------------------------------------------------------------------------------
@@ -58,8 +51,6 @@ def main():
     course = Courses(isbn=123, course='COS333')
     session.add(course)
     course = Courses(isbn=234, course='COS217')
-    session.add(course)
-    course = Courses(isbn=345, course='COS217')
     session.add(course)
     session.commit()
 
@@ -69,12 +60,17 @@ def main():
     session.add(bid)
     bid = Bids(buyerID='emmandra', sellerID='vedant', isbn=123, bid=25.00)
     session.add(bid)
+    bid = Bids(buyerID='raph', sellerID='toussaint', isbn=234, bid=25.00)
+    session.add(bid)
     session.commit()
 
     # ------------------------------------------------------------------------------------
 
     listing = Listings(sellerID='vedant', isbn=123, condition='good', minPrice=15.00,
                        buyNow=30.00, listTime='16:45')
+    session.add(listing)
+    listing = Listings(sellerID='toussaint', isbn=234, condition='okay', minPrice=20.00,
+                       buyNow=50.00, listTime='18:45')
     session.add(listing)
     session.commit()
 
