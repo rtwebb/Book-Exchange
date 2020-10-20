@@ -9,6 +9,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Float
 
 Base = declarative_base()
+# figure out where to put edition of book
 
 
 class Books(Base):
