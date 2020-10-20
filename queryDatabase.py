@@ -4,6 +4,7 @@
 # By: Emmandra, Tiana, Toussaint
 #----------------------------------------
 
+from sys import stderr
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import Base, Books, Authors, Bids, Courses, Listings, Images
@@ -35,7 +36,7 @@ class Querydatabase:
         for item in self._connection.query(Listings).\
                 filter(Listings.isbn==isbn).all():
             result.append(item.sellerID)
-        return result
+        print(result, file=stderr)
 
 
 
