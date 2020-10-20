@@ -3,7 +3,7 @@
 # book-exchange flask file, that works as web-frameowkr
 # Author: Toussaint
 #-----------------------------------------------------------------------
-
+from sys import stderr, argv
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
 from queryDatabase import querydatabse
@@ -15,6 +15,7 @@ app = Flask(__name__, template_folder='template')
 @app.route('/', methods=['GET'])
 @app.route('/homePage', methods=['GET'])
 def homePageTemplate():
+
     
     html = render_template('homePage.html')
                           
@@ -26,8 +27,7 @@ def homePageTemplate():
 @app.route('/searchResults', methods=['GET'])
 def searchResultsTemplate():
 
-    
-    isbn = request.get.args('query')
+    isbn = request.args.get('query')
     result = []
     try: 
         database = querydatabse()
@@ -35,12 +35,9 @@ def searchResultsTemplate():
         result = database.search(isbn)
         
     except Exception as e:
-        print(argv[0] + ": " + str(e), file=stderr)
-
-
+        print(argv[0] + ": " + str(e), file=stderr)   
     
-    
-    html = render_template('searchResults.html')
+    html = render_template('searchResults.html', results=result)
                           
     response = make_response(html)
     return response
