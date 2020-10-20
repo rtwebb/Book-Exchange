@@ -36,7 +36,7 @@ class Querydatabase:
         for item in self._connection.query(Listings).\
                 filter(Listings.isbn==isbn).all():
             result.append(item.sellerID)
-        print(result, file=stderr)
+        return result
 
 
 
