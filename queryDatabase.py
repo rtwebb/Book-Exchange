@@ -1,19 +1,20 @@
-#---------------------------------------
+# ---------------------------------------
 # Querydatabse
 
 # By: Emmandra, Tiana, Toussaint
-#----------------------------------------
+# ----------------------------------------
 
 from sys import stderr
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import Base, Books, Authors, Bids, Courses, Listings, Images
 
-class querydatabse:
+
+class querydatabase:
 
     def __init__(self):
         self._connection = None
-    
+
     def connect(self):
         DATABASE_URI = 'postgres://vjlbayumjwpewg:19bf7b1ddf47645b85ddd2a53327548' \
                        'f856e138ec4104be1b99df2f432df9f85@ec2-23-23-36-227.compute-' \
@@ -25,19 +26,14 @@ class querydatabse:
     def disconnect(self):
         self._connection = None
 
-    def add(self):
-
-
-    def remove(self):
-
+    # def add(self):
+    #
+    #
+    # def remove(self):
 
     def search(self, isbn):
         result = []
-        for item in self._connection.query(Listings).\
-                filter(Listings.isbn==isbn).all():
+        for item in self._connection.query(Listings). \
+                filter(Listings.isbn == isbn).all():
             result.append(item.sellerID)
         return result
-
-
-
-    
