@@ -1,7 +1,7 @@
 # ---------------------------------------
 # Querydatabse
 
-# By: Emmandra, Tiana, Toussaint
+# By: Emmandra, Tiana, Toussaint, Vedant
 # ----------------------------------------
 
 from sys import stderr
@@ -25,9 +25,15 @@ class querydatabase:
     def disconnect(self):
         self._connection = None
 
-    # def add(self):
-    #
-    #
+    def add(self, isbn, sellerID, condition, minPrice, buyNow, listTime):
+        try:
+            book = session.query(Books).filter(Books.isbn == isbn).one()
+            book.quantity += 1
+
+        except:
+            session.rollback()
+            print("Listing rolled back")
+    
     # def remove(self):
 
     def search(self, isbn):
