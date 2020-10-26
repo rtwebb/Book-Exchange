@@ -34,13 +34,13 @@ def main():
     print('authors')
     print('------------------------------------')
     for author in session.query(Authors).all():
-        print(author.isbn, author.author)
+        print(author.isbn, author.name)
 
     print('------------------------------------')
     print('courses')
     print('------------------------------------')
     for course in session.query(Courses).all():
-        print(course.isbn, course.course)
+        print(course.isbn, course.number, course.title)
 
     print('------------------------------------')
     print('bids')

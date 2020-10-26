@@ -39,20 +39,29 @@ class QueryDatabase:
 
     def search(self, signal, query):
         # signal tells me what kind of query it is: book title, isbn, course, etc
-
+        result = []
         if signal == 1:  # if query is by isbn
-            return self._connection.query(Listings).\
-                filter(Listings.isbn == query).all()
+            found = self._connection.query(Books, Courses, Listings).\
+                filter(Listings.isbn == query).\
+                filter(Courses.isbn == Listings.isbn).\
+                filter(Books.isbn == Listings.isbn).all()
         elif signal == 2:  # query is a book title
-            return self._connection.query(Listings).\
+            found = self._connection.query(Books, Courses, Listings).\
                 filter(Listings.isbn == Books.isbn).\
-                filter(Books.title.like(query)).all()
-        elif signal ==3:  # query is a course
-            return self._connection.query(Listings).\
+                filter(Books.title.like(query)).\
+                filter(Courses.isbn == Books.isbn).all()
+        elif signal == 3:  # query is a coursenum
+            found = self._connection.query(Books, Courses, Listings).\
                 filter(Listings.isbn == Courses.isbn).\
-                filter(Courses.course.like(query)).all()
-        else:
-            return self._connection.query(Books).join(Authors).\
-                filter(Books.isbn == query)
+                filter(Courses.number.like(query)).\
+                filter(Books.isbn == Courses.isbn).all()
+        else:  # search by course title
+            found = self._connection.query(Books, Courses, Listings).\
+                filter(Listings.isbn == Books.isbn).\
+                filter(Books.isbn == Courses.isbn).\
+                filter(Courses.title.like(query)).all()
+        for book, course, listing in found:
+            result.append((book.title, course.number, course.title, listing.minPrice))
+        return result
 
         # have to figure out all of the search options we will have

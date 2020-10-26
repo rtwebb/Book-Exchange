@@ -18,19 +18,21 @@ class Books(Base):
     isbn = Column(String, primary_key=True)
     title = Column(String)
     quantity = Column(Integer)
-    authors = relationship('Authors')
+    authors = relationship('Authors', back_populates='books')
 
 
 class Authors(Base):
     __tablename__ = 'authors'
     isbn = Column(String, ForeignKey('books.isbn'), primary_key=True)
     name = Column(String, primary_key=True)
+    books = relationship('Books', back_populates='authors')
 
 
 class Courses(Base):
     __tablename__ = 'courses'
     isbn = Column(String, primary_key=True)
-    course = Column(String, primary_key=True)
+    number = Column(String, primary_key=True)
+    title = Column(String)
 
 
 class Bids(Base):
