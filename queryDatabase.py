@@ -27,8 +27,8 @@ class QueryDatabase:
         self._connection = None
 
     def add(self, isbn, sellerID, condition, minPrice, buyNow, listTime):
-        try:
-            book = session.query(Books).filter(Books.isbn == isbn).one()
+        book = self._connection.query(Books).filter(Books.isbn == isbn).one()
+        if book is not None:
             book.quantity += 1
 
         except:
