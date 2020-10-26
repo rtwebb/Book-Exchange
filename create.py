@@ -29,21 +29,15 @@ def main():
     # ------------------------------------------------------------------------------------
 
     book = Books(isbn=123, title='The Practice of Programming', quantity=1)
+    author1 = Authors(isbn=123, name='Kernighan')
+    author2 = Authors(isbn=123, name='Pike')
+    book.authors = [author1, author2]
     session.add(book)
     book = Books(isbn=234, title='the C Programming Language', quantity=1)
+    author1 = Authors(isbn=234, name='Kernighan')
+    author2 = Authors(isbn=234, name='Ritchie')
+    book.authors = [author1, author2]
     session.add(book)
-    session.commit()
-
-    # ------------------------------------------------------------------------------------
-
-    author = Authors(isbn=123, author='Kernighan')
-    session.add(author)
-    author = Authors(isbn=123, author='Pike')
-    session.add(author)
-    author = Authors(isbn=234, author='Kernighan')
-    session.add(author)
-    author = Authors(isbn=234, author='Ritchie')
-    session.add(author)
     session.commit()
 
     # ------------------------------------------------------------------------------------
