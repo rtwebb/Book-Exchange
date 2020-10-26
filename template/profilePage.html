@@ -7,7 +7,75 @@
     {% include 'header.html' %}
     <h1>My Profile</h1>
     <h2>My Listings:</h2>
+    <table>
+         <tr>
+            <th>Book Title</th>
+            <th>Course</th>
+            <th>Course Title</th>
+            <th>Min Price</th>
+         </tr>
+         {% if books|length == 0: %}
+               </table>
+               You have not listed any books
+         {% else %}
+         {%    for book in books: %}
+               <tr>
+                  <td>{{info[0]}}</td>
+                  <td>{{info[1]}}</td>
+                  <td>{{info[2]}}</td>
+                  <td>{{info[3]}}</td>
+               </tr>
+         {%    endfor %}
+               </table>
+         {% endif %}
+    <h2>Claimed Books:</h2>
+    <table>
+         <tr>
+            <th>Book Title</th>
+            <th>Course</th>
+            <th>Course Title</th>
+            <th>Listed Price</th>
+            <th>Accepted Price</th>
+         </tr>
+         {% if books|length == 0: %}
+               </table>
+               You have not claimed any books
+         {% else %}
+         {%    for book in books: %}
+               <tr>
+                  <td>{{info[0]}}</td>
+                  <td>{{info[1]}}</td>
+                  <td>{{info[2]}}</td>
+                  <td>{{info[3]}}</td>
+                  <td>{{info[4]}}</td>
+               </tr>
+         {%    endfor %}
+               </table>
+         {% endif %}
     <h2>My Bids:</h2>
+    <table>
+         <tr>
+            <th>Book Title</th>
+            <th>Course</th>
+            <th>Course Title</th>
+            <th>Listed Price</th>
+            <th>My Offer</th>
+         </tr>
+         {% if books|length == 0: %}
+               </table>
+               You have not bid on any books
+         {% else %}
+         {%    for book in books: %}
+               <tr>
+                  <td>{{info[0]}}</td>
+                  <td>{{info[1]}}</td>
+                  <td>{{info[2]}}</td>
+                  <td>{{info[3]}}</td>
+                  <td>{{info[4]}}</td>
+               </tr>
+         {%    endfor %}
+               </table>
+         {% endif %}
     <br>
     <br>
     {% include 'footer.html' %}
