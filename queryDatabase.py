@@ -41,9 +41,12 @@ class QueryDatabase:
             return self._connection.query(Listings).\
                 filter(Listings.isbn == Books.isbn).\
                 filter(Books.title.like(query)).all()
-        else:  # query is a course
+        elif signal ==3:  # query is a course
             return self._connection.query(Listings).\
                 filter(Listings.isbn == Courses.isbn).\
                 filter(Courses.course.like(query)).all()
+        else:
+            return self._connection.query(Books).join(Authors).\
+                filter(Books.isbn == query)
 
         # have to figure out all of the search options we will have

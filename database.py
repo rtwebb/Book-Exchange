@@ -6,7 +6,8 @@
 # ------------------------------------------------------------------------------------
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 # figure out where to put edition of book
@@ -17,12 +18,13 @@ class Books(Base):
     isbn = Column(String, primary_key=True)
     title = Column(String)
     quantity = Column(Integer)
+    authors = relationship('Authors')
 
 
 class Authors(Base):
     __tablename__ = 'authors'
-    isbn = Column(String, primary_key=True)
-    author = Column(String, primary_key=True)
+    isbn = Column(String, ForeignKey('books.isbn'), primary_key=True)
+    name = Column(String, primary_key=True)
 
 
 class Courses(Base):
