@@ -31,9 +31,19 @@ class QueryDatabase:
     #
     # def remove(self):
 
-    def search(self, isbn):
-        result = []
-        for item in self._connection.query(Listings). \
-                filter(Listings.isbn == isbn).all():
-            result.append(item.sellerID)
-        return result
+    def search(self, signal, query):
+        # signal tells me what kind of query it is: book title, isbn, course, etc
+
+        if signal == 1:  # if query is by isbn
+            return self._connection.query(Listings).\
+                filter(Listings.isbn == query).all()
+        elif signal == 2:  # query is a book title
+            return self._connection.query(Listings).\
+                filter(Listings.isbn == Books.isbn).\
+                filter(Books.title.like(query)).all()
+        else:  # query is a course
+            return self._connection.query(Listings).\
+                filter(Listings.isbn == Courses.isbn).\
+                filter(Courses.course.like(query)).all()
+
+        # have to figure out all of the search options we will have
