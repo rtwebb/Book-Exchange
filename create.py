@@ -42,9 +42,9 @@ def main():
 
     # ------------------------------------------------------------------------------------
 
-    course = Courses(isbn=123, course='COS333')
+    course = Courses(isbn=123, number='COS333', title='Advanced Programming Techniques')
     session.add(course)
-    course = Courses(isbn=234, course='COS217')
+    course = Courses(isbn=234, number='COS217', title='Introduction to Programming Systems')
     session.add(course)
     session.commit()
 
