@@ -9,8 +9,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import Base, Books, Authors, Bids, Courses, Listings, Images
 
-
-class querydatabse:
+class querydatabase:
 
     def __init__(self):
         self._connection = None
