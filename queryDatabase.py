@@ -66,22 +66,26 @@ class QueryDatabase:
             found = self._connection.query(Books, Courses, Listings).\
                 filter(Listings.isbn == query).\
                 filter(Courses.isbn == Listings.isbn).\
-                filter(Books.isbn == Listings.isbn).all()
+                filter(Books.isbn == Listings.isbn).\
+                order_by(Listings.listTime).all()
         elif signal == 2:  # query is a book title
             found = self._connection.query(Books, Courses, Listings).\
                 filter(Listings.isbn == Books.isbn).\
                 filter(Books.title.like(query)).\
-                filter(Courses.isbn == Books.isbn).all()
+                filter(Courses.isbn == Books.isbn).\
+                order_by(Listings.listTime).all()
         elif signal == 3:  # query is a coursenum
             found = self._connection.query(Books, Courses, Listings).\
                 filter(Listings.isbn == Courses.isbn).\
                 filter(Courses.number.like(query)).\
-                filter(Books.isbn == Courses.isbn).all()
+                filter(Books.isbn == Courses.isbn).\
+                order_by(Listings.listTime).all()
         else:  # search by course title
             found = self._connection.query(Books, Courses, Listings).\
                 filter(Listings.isbn == Books.isbn).\
                 filter(Books.isbn == Courses.isbn).\
-                filter(Courses.title.like(query)).all()
+                filter(Courses.title.like(query)).\
+                order_by(Listings.listTime).all()
         for book, course, listing in found:
             result.append((book.title, course.number, course.title, listing.minPrice))
         return result
