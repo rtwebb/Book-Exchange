@@ -6,7 +6,7 @@
 from sys import stderr, argv
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
-# from queryDatabase import QueryDatabase
+from queryDatabase import QueryDatabase
 #-----------------------------------------------------------------------
 
 app = Flask(__name__, template_folder='template')
@@ -36,10 +36,12 @@ def searchResultsTemplate():
     # each book needs to link to buyerPage with more information
     # set cookies on search query to follow through searchResults and buyerPage
 
+    # need to differentiate between the search types isbn, title, crsnum, course title
+    
     isbn = request.args.get('query')
     results = []
     try: 
-        database = querydatabse()
+        database = QueryDatabase()
         database.connect()
         results = database.search(isbn)
         
@@ -62,6 +64,32 @@ def sellerPageTemplate():
          # if yes generates sucess page
          # if no stay go back to sellerPage (with saved information) and they can fix 
 
+    isbn = request.args.get('isbn')
+    title = request.args.get('title')
+    minprice = request.args.get('minprice')
+    buynow = request.args.get('buynow')
+    # description not in database
+    # description = request.args.get('description')
+    author = request.args.get('author')
+    crsname = request.args.get('name')
+    # img = request.args.get('image')
+
+    # in html we need to add condition drop down; authors as a list; coursename vs coursenumber
+
+    # figure out how to get list time from clock class or something
+    
+    # confirmation JS stuff
+    
+    # passing to database
+    try:
+        database = QueryDatabase()
+        database.connect()
+        database.add(isbn, title, author, None, crsname, None, None, minprice, buynow, None, None)
+        database.disconnect()
+    except Exception as e:
+        print("Error: " + str(e), file=stderr)
+
+    # when sending to profile page have a "succesfull" message display
     html = render_template('sellerPage.html')
                           
     response = make_response(html)
