@@ -1,5 +1,5 @@
 # ---------------------------------------
-# Querydatabse
+# QueryDatabase
 
 # By: Emmandra, Tiana, Toussaint, Vedant
 # ----------------------------------------

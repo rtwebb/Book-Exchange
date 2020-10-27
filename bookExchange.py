@@ -6,7 +6,7 @@
 from sys import stderr, argv
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
-from queryDatabase import QueryDatabase
+# from queryDatabase import QueryDatabase
 #-----------------------------------------------------------------------
 
 app = Flask(__name__, template_folder='template')
