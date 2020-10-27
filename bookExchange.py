@@ -71,6 +71,7 @@ def sellerPageTemplate():
     # description not in database
     # description = request.args.get('description')
     author = request.args.get('author')
+    crsnum = request.args.gett('crsnum')
     crsname = request.args.get('name')
     # img = request.args.get('image')
 
@@ -84,7 +85,7 @@ def sellerPageTemplate():
     try:
         database = QueryDatabase()
         database.connect()
-        database.add(isbn, title, [author], None, crsname, None, None, minprice, buynow, None, None)
+        database.add(isbn, title, [author], crsnum, crsname, None, None, minprice, buynow, None, None)
         database.disconnect()
     except Exception as e:
         print("Error: " + str(e), file=stderr)
