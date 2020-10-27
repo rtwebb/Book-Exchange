@@ -1,15 +1,22 @@
 <head>
+
   <style type="text/css">
-    .navBar table{
-	float:left;   
-	border-spacing: 110px 0; 
+    .searchBar form{
+	  background-color: black;
+	  color: white;
+     }
+    
+    .navBar {
+	padding: 5px;
+	background-color: #383838;
     }
     .navBar th {
-	width: 110px;
-	text-align: left;
+	width: 400px;
+	padding: 0px;
+	text-align: center;
     }
     .navBar a{
-	color: #F28500; /* fancy red color for your links*/
+	color: #ffa700; /* fancy red color for your links*/
     }
   </style>
 
@@ -18,7 +25,8 @@
 <header>
   <h1> Book Exchange </h1>
   <span>
-    <form action='searchResults' method='get'>
+    
+    <form class="searchBar" action='searchResults' method='get'>
       <select id="searchType" name="searches">
 	<option value='isbn'> ISBN </option>
 	<option value='title'> Book Title </option>
@@ -28,15 +36,20 @@
       <input type='text' name='query'>
       <input type='submit' value='Go'>
     </form>
-  </span>
+    </span>
+    
 </header>
 
 <br>
 <table class="navBar">
+  <th> </th>
+  <th> </th>
   <th> <a href="profilePage">My Profile</a></th> 
   <th> <a href="sellerPage">Sell a Book</a></th>
-  <th> <a href="https://registrar.princeton.edu/course-offerings">Princeton Regristrar</a> </th>
   <th> <a href="aboutUs">AboutUs</a> </th>
+  <th> <a href="https://registrar.princeton.edu/course-offerings">Tiger Courses</a> </th>
+  <th> </th>
+  <th> </th>
 </table>
 <hr>
 
