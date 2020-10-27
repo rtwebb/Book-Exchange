@@ -6,7 +6,7 @@
   <body>
     {% include 'header.html' %}
     <h1>Add a new Listing</h1>
-    <form action="sellerPage" method="get">
+    <form action="sellerPage" method="get" id="submitBookForm">
       Book Title:
       <input type="text" name="title">
       ISBN:
@@ -25,8 +25,8 @@
       <input type="text" name="minprice">
       Buy Now:
       <input type="text" name="buynow">
-      <input type="submit" value="Submit">
     </form>
+    <button type="submit" form="submitBookForm" onclick="alert('Are you sure?')" value="Submit">Submit</button>
     <h2>Add Images</h2>
     <br>
     {% include 'footer.html' %} 
