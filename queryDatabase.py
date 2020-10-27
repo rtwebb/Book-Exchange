@@ -28,7 +28,7 @@ class QueryDatabase:
 
     def add(self, isbn, title, authors, coursenumber, coursetitle,
             sellerID, condition, minPrice, buyNow, listTime, url):
-        book = self._connection.query(Books).filter(Books.isbn == isbn).one()
+        book = self._connection.query(Books).filter(Books.isbn == isbn).one_or_none()
         if book is not None:
             book.quantity += 1
             self._connection.commit()
@@ -87,3 +87,13 @@ class QueryDatabase:
         return result
 
         # have to figure out all of the search options we will have
+
+    def homeRecents(self):
+        result = []
+        found = self._connection.query(Books, Courses, Listings).\
+            filter(Listings.isbn == Books.isbn).\
+            filter(Listings.isbn == Courses.isbn).\
+            order_by(Listings.listTime).all()
+        for book, course, listing in found:
+            result.append((book.title, course.number, course.title, listing.minPrice))
+        return result
