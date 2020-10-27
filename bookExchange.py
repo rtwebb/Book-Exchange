@@ -7,6 +7,8 @@ from sys import stderr, argv
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
 from queryDatabase import QueryDatabase
+from time import clock
+
 #-----------------------------------------------------------------------
 
 app = Flask(__name__, template_folder='template')
@@ -71,7 +73,7 @@ def sellerPageTemplate():
     # description not in database
     # description = request.args.get('description')
     author = request.args.get('author')
-    crsnum = request.args.gett('crsnum')
+    crsnum = request.args.get('crsnum')
     crsname = request.args.get('name')
     # img = request.args.get('image')
 
@@ -85,7 +87,7 @@ def sellerPageTemplate():
     try:
         database = QueryDatabase()
         database.connect()
-        database.add(isbn, title, [author], crsnum, crsname, None, None, minprice, buynow, None, None)
+        database.add(isbn, title, [author], crsnum, crsname, "vdhopte", None, minprice, buynow, clock(), None)
         database.disconnect()
     except Exception as e:
         print("Error: " + str(e), file=stderr)
