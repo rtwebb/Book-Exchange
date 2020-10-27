@@ -26,15 +26,37 @@ class QueryDatabase:
     def disconnect(self):
         self._connection = None
 
-    def add(self, isbn, sellerID, condition, minPrice, buyNow, listTime):
+    def add(self, isbn, title, authors, coursenumber, coursetitle,
+            sellerID, condition, minPrice, buyNow, listTime, url):
         book = self._connection.query(Books).filter(Books.isbn == isbn).one()
         if book is not None:
             book.quantity += 1
+            self._connection.commit()
+        
+        else:
+            book = Books(isbn=isbn, title=title, quantity=1)
+            authorlist = []
+            for author in authors:
+                authorlist.append(Authors(isbn=isbn, name=author))
 
-        #except:
-         #   session.rollback()
-          #  print("Listing rolled back")
-    
+            book.authors = authorlist
+            self._connection.add(book)
+            self._connection.commit()
+
+            course = Courses(isbn=isbn, number=coursenumber, title=coursetitle)
+            self._connection.add(course)
+            self._connection.commit()
+            
+        listing = Listings(sellerID=sellerID, isbn=isbn, 
+                           condition=condition, minPrice=minPrice, 
+                           buyNow=buyNow, listTime=listTime)
+        self._connection.add(listing)
+        self._connection.commit()
+
+        image = Images(sellerID=sellerID, isbn=isbn, url=url)
+        self._connection.add(image)
+        self._connection.commit()
+                
     # def remove(self):
 
     def search(self, signal, query):
