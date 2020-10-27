@@ -2,10 +2,10 @@
   <style type="text/css">
     .navBar table{
 	float:left;   
-	border-spacing: 100px 0; 
+	border-spacing: 110px 0; 
     }
     .navBar th {
-	width: 100px;
+	width: 110px;
 	text-align: left;
     }
     .navBar a{
@@ -19,6 +19,12 @@
   <h1> Book Exchange </h1>
   <span>
     <form action='searchResults' method='get'>
+      <select id="searchType" name="searches">
+	<option value='isbn'> ISBN </option>
+	<option value='title'> Book Title </option>
+	<option value='crsnum'> Course Number </option>
+	<option value='crsname'> Course Title </option>
+      </select>
       <input type='text' name='query'>
       <input type='submit' value='Go'>
     </form>

@@ -14,7 +14,7 @@ class QueryDatabase:
 
     def __init__(self):
         self._connection = None
-
+#----------------------------------------------------------------------------------
     def connect(self):
         DATABASE_URI = 'postgres://vjlbayumjwpewg:19bf7b1ddf47645b85ddd2a53327548' \
                        'f856e138ec4104be1b99df2f432df9f85@ec2-23-23-36-227.compute-' \
@@ -22,7 +22,7 @@ class QueryDatabase:
         engine = create_engine(DATABASE_URI)
         Session = sessionmaker(bind=engine)
         self._connection = Session()
-
+#----------------------------------------------------------------------------------
     def disconnect(self):
         self._connection = None
 
@@ -56,7 +56,7 @@ class QueryDatabase:
         image = Images(sellerID=sellerID, isbn=isbn, url=url)
         self._connection.add(image)
         self._connection.commit()
-                
+#-----------------------------------------------------------------------------                
     def remove(self, isbn, sellerID):
 
         #Deleting from Listings Table
@@ -99,7 +99,7 @@ class QueryDatabase:
         self._connection.delete(bookObj)
             
         self._connection.commit()
-
+#----------------------------------------------------------------------------------
     def search(self, signal, query):
         # signal tells me what kind of query it is: book title, isbn, course, etc
         result = []
@@ -132,7 +132,7 @@ class QueryDatabase:
         return result
 
         # have to figure out all of the search options we will have
-
+#----------------------------------------------------------------------------------
     def homeRecents(self):
         result = []
         found = self._connection.query(Books, Courses, Listings).\
