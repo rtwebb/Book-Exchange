@@ -84,7 +84,7 @@ def sellerPageTemplate():
     try:
         database = QueryDatabase()
         database.connect()
-        database.add(isbn, title, author, None, crsname, None, None, minprice, buynow, None, None)
+        database.add(isbn, title, [author], None, crsname, None, None, minprice, buynow, None, None)
         database.disconnect()
     except Exception as e:
         print("Error: " + str(e), file=stderr)

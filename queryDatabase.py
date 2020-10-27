@@ -57,7 +57,7 @@ class QueryDatabase:
         self._connection.add(image)
         self._connection.commit()
                 
-    def remove(self, isbnm sellerID:
+    def remove(self, isbn, sellerID):
 
         #Deleting from Listings Table
         listObj = Listings.query.filter(Listings.isbn==isbn) .\
