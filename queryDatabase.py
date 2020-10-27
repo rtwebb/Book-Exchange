@@ -31,9 +31,9 @@ class QueryDatabase:
         if book is not None:
             book.quantity += 1
 
-        except:
-            session.rollback()
-            print("Listing rolled back")
+        #except:
+         #   session.rollback()
+          #  print("Listing rolled back")
     
     # def remove(self):
 
