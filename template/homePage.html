@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <style>
+      div {
+        width: 50px;
+        padding: 10px;
+        border: 5px solid gray;
+        margin: 0;
+    }  
+    </style>
     <title> Book Exchange </title>
   </head>
   <body>
     {% include 'header.html' %}
     <h1> Recently Listed </h1>
     <br>
-    <br>
+
+    {% if result is not none:  %}
+    {% set length = results|length %}
+    {%  for i in range(length) %}
+      <div>
+        <a href="buyerPage"> 
+        Book title: {result[i][0]}
+        Course name: {result[i][1]}
+        Min price: {result[i][3]} ...
+       </a>
+      </div>
+
+
+
+
+    {%    endfor: %}
+    {% endif: %}
+
+
     {% include 'footer.html' %}
   </body>
 </html>

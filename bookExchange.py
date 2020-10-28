@@ -7,7 +7,7 @@ from sys import stderr, argv
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
 from queryDatabase import QueryDatabase
-from time import clock
+from datetime import datetime
 
 #-----------------------------------------------------------------------
 
@@ -19,12 +19,18 @@ app = Flask(__name__, template_folder='template')
 def homePageTemplate():
 
     # need to get recently listed books to show
-    # once get object send to homePage
-    # each book needs to link to buyerPage with more information
+    try:
+        database = QueryDatabase()
+        database.connect()
+        result = database.homeRecents()
+        errorMsg = ''
+    except Exception as e:
+        print()
+        errorMsg = 'An error occured please contact email at bottom of the screen'
+
     # set cookies on search query to follow through searchResults and buyerPage
-    
-    html = render_template('homePage.html')
-                          
+        
+    html = render_template('homePage.html', result=result, errorMsg=errorMsg)                      
     response = make_response(html)
     return response
 
@@ -38,7 +44,7 @@ def searchResultsTemplate():
     # each book needs to link to buyerPage with more information
     # set cookies on search query to follow through searchResults and buyerPage
 
-    # need to differentiate between the search types isbn, title, crsnum, course title
+    # how to check what drop-down was selected
     
     isbn = request.args.get('query')
     results = []
@@ -72,22 +78,23 @@ def sellerPageTemplate():
     buynow = request.args.get('buynow')
     # description not in database
     # description = request.args.get('description')
+    # img = request.args.get('image')
+    # in html we need to add condition drop down; authors as a list; coursename vs coursenumber
+    # condition = request.args.get('condition')
     author = request.args.get('author')
     crsnum = request.args.get('crsnum')
     crsname = request.args.get('name')
-    # img = request.args.get('image')
+    time = datetime.now()
+    listTime = time.strftime("%H:%M:%S")
+    # sellerID = pull from CAS somehow
 
-    # in html we need to add condition drop down; authors as a list; coursename vs coursenumber
-
-    # figure out how to get list time from clock class or something
-    
-    # confirmation JS stuff
+    # confirmation JS stuff    
     
     # passing to database
     try:
         database = QueryDatabase()
         database.connect()
-        database.add(isbn, title, [author], crsnum, crsname, "vdhopte", None, minprice, buynow, clock(), None)
+        database.add(isbn, title, [author], crsnum, crsname, "vdhopte", None, minprice, buynow, listTime, None)
         database.disconnect()
     except Exception as e:
         print("Error: " + str(e), file=stderr)
