@@ -19,16 +19,6 @@
     {% include 'header.html' %}
     <h1> Recently Listed </h1>
     <br>
-    {% if errorMsg is not none: %}
-      <script>
-        function myFunction() {
-         window.alert(e);
-       }
-       myFunction()
-      </script>
-     
-
-    {% else: %}
       {% if result is not none:  %}
         {% set length = results|length %} 
           {%  for i in range(length) %}
@@ -37,7 +27,7 @@
             </div>
           {% endfor %}
       {% endif %}
-    {% endif %}
+  
 
 
     {% include 'footer.html' %}
