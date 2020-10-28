@@ -8,7 +8,7 @@
         border: 1px solid gray;
         margin: 0;
     }  
-      .navBar A{
+      A{
 	      text-decoration: none;
        }
     </style>
@@ -24,9 +24,9 @@
         {%  for i in range(length) %}
           <div>
            <a href="buyerPage"> 
-               Book title: {result[i][0]}
-               Course name: {result[i][1]}
-               Min price: {result[i][3]} ...
+               Book title: {{result[i][0]}}
+               Course name: {{result[i][1]}}
+               Min price: {{result[i][3]}} ...
            </a>
           </div>
 
