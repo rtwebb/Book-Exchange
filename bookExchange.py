@@ -25,6 +25,7 @@ def homePageTemplate():
         database.connect()
         result = database.homeRecents()
         errorMsg = ''
+        print(result)
     except Exception as e:
         print("Error: " + str(e), file=stderr)
         errorMsg = 'An error occured please contact email at bottom of the screen'
