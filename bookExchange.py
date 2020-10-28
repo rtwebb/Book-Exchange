@@ -19,16 +19,15 @@ app = Flask(__name__, template_folder='template')
 @app.route('/homePage', methods=['GET'])
 def homePageTemplate():
     # need to get recently listed books to show
+    result = []
     try:
         database = QueryDatabase()
         database.connect()
         result = database.homeRecents()
         errorMsg = ''
     except Exception as e:
-        print()
+        print("Error: " + str(e), file=stderr)
         errorMsg = 'An error occured please contact email at bottom of the screen'
-
-    print(result[0])
 
     # set cookies on search query to follow through searchResults and buyerPage
 
