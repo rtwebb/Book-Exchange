@@ -28,9 +28,11 @@ def homePageTemplate():
         print()
         errorMsg = 'An error occured please contact email at bottom of the screen'
 
+    print(result[0])
+
     # set cookies on search query to follow through searchResults and buyerPage
 
-    html = render_template('homePage.html', result=result, errorMsg=errorMsg)
+    html = render_template('homePage.html', results=result, errorMsg=errorMsg)
     response = make_response(html)
     return response
 
