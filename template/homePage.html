@@ -19,7 +19,7 @@
     {% include 'header.html' %}
     <h1> Recently Listed </h1>
     <br>
-      {% if result is not none:  %}
+      {% if results is not none:  %}
         {% set length = results|length %} 
           {%  for i in range(length) %}
             <div>
