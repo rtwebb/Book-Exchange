@@ -12,9 +12,11 @@ span {
   overflow: hidden;
 }
 
+.searchBar A{
+  color: #383838;
+}
 .searchBar input {
   color: black;
-  padding: 5px;
   background-color: #f2f3f4;
 }
 
