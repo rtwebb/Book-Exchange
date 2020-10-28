@@ -12,15 +12,10 @@ span {
   overflow: hidden;
 }
 
-.searchBar {
-  text-align: center;
-  border: 4px green solid;
-}
-
 .searchBar input {
   color: black;
   padding: 5px;
-  background-color: green;
+  background-color: #f2f3f4;
 }
 
 .searchBar select {
