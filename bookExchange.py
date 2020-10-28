@@ -45,14 +45,26 @@ def searchResultsTemplate():
     # each book needs to link to buyerPage with more information
     # set cookies on search query to follow through searchResults and buyerPage
 
-    # how to check what drop-down was selected
+    # drop down
+    # check if it is equal to value 
+    dropDown = request.form.get('searchType')
+    print(dropDown)
+    if dropDown = "isbn":
+        searchType = 1
+    elif dropDown = "title":
+        searchType = 2
+    elif dropDown = "crsnum"
+        searchType = 3
+    else:
+        searchType = 4
 
-    isbn = request.args.get('query')
+    query = request.args.get('query')
+
     results = []
     try:
         database = QueryDatabase()
         database.connect()
-        results = database.search(isbn)
+        results = database.search(searchType, query)
 
     except Exception as e:
         print(argv[0] + ": " + str(e), file=stderr)

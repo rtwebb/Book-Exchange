@@ -28,7 +28,7 @@
       {% set length = results|length %} 
         {%  for i in range(length) %}
           <div>
-            <a href="buyerPage"> Book title: {{results[i][0]}} 
+            <a href="buyerPage" method='get'> Book title: {{results[i][0]}} 
               Course name: {{results[i][1]}} 
               Min price: {{results[i][3]}} ...</a> 
           </div>
