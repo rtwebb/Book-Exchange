@@ -4,10 +4,13 @@
     <style>
       div {
         width: 50px;
-        padding: 10px;
-        border: 5px solid gray;
+        padding: 5px;
+        border: 1px solid gray;
         margin: 0;
     }  
+      .navBar A{
+	      text-decoration: none;
+       }
     </style>
     <title> Book Exchange </title>
   </head>
@@ -17,15 +20,15 @@
     <br>
 
     {% if result is not none:  %}
-    {% set length = results|length %}
-    {%  for i in range(length) %}
-      <div>
-        <a href="buyerPage"> 
-        Book title: {result[i][0]}
-        Course name: {result[i][1]}
-        Min price: {result[i][3]} ...
-       </a>
-      </div>
+      {% set length = results|length %} 
+        {%  for i in range(length) %}
+          <div>
+           <a href="buyerPage"> 
+               Book title: {result[i][0]}
+               Course name: {result[i][1]}
+               Min price: {result[i][3]} ...
+           </a>
+          </div>
 
 
 
