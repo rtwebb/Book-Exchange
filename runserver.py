@@ -11,7 +11,7 @@ from bookExchange import app
 def main(argv):
 
     if len(argv) != 2:
-        print('Usage: ' + argv[0] + ' port', file=stderr)
+        print('Usage: ' + argv[0] + ' port missing', file=stderr)
         exit(1)
      
     try:

@@ -7,6 +7,7 @@
         padding: 5px;
         border: 1px solid gray;
         margin: 0;
+        color: black;
     }  
       A{
 	      text-decoration: none;
@@ -23,11 +24,7 @@
       {% set length = results|length %} 
         {%  for i in range(length) %}
           <div>
-           <a href="buyerPage"> 
-               Book title: {{result[i][0]}}
-               Course name: {{result[i][1]}}
-               Min price: {{result[i][3]}} ...
-           </a>
+           <a href="buyerPage"> Book title: {{result[i][0]}} Course name: {{result[i][1]}} Min price: {{result[i][3]}} ...</a>
           </div>
 
 
