@@ -8,27 +8,34 @@
     <h1>Add a new Listing</h1>
     <form action="sellerPage" method="get" id="submitBookForm">
       Book Title:
-      <input type="text" name="title">
+      <input type="text" name="title" />
       ISBN:
-      <input type="text" name="isbn">
+      <input type="text" name="isbn" />
       Course Title:
-      <input type="text" name="crsnum">
+      <input type="text" name="crsnum" />
       Course Name:
-      <input type="text" name="crsname">
+      <input type="text" name="crsname" />
       Author:
-      <input type="text" name="author">
-      <br>
-      Description:<br>
-      <input type="text" name="description">
-      <br>
+      <input type="text" name="author" />
+      <br />
+      Description:<br />
+      <input type="text" name="description" />
+      <br />
       Minimum Price:
-      <input type="text" name="minprice">
+      <input type="text" name="minprice" />
       Buy Now:
-      <input type="text" name="buynow">
+      <input type="text" name="buynow" />
     </form>
-    <button type="submit" form="submitBookForm" onclick="alert('Are you sure?')" value="Submit">Submit</button>
+    <button
+      type="submit"
+      form="submitBookForm"
+      onclick="confirm('Are you sure you would like to list this book?')"
+      value="Submit"
+    >
+      Submit
+    </button>
     <h2>Add Images</h2>
-    <br>
-    {% include 'footer.html' %} 
+    <br />
+    {% include 'footer.html' %}
   </body>
 </html>
