@@ -10,7 +10,6 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
 Base = declarative_base()
-# figure out where to put edition of book
 
 
 class Books(Base):
@@ -31,30 +30,31 @@ class Authors(Base):
 class Courses(Base):
     __tablename__ = 'courses'
     isbn = Column(String, primary_key=True)
-    number = Column(String, primary_key=True)
-    title = Column(String)
+    coursenum = Column(String, primary_key=True)
+    coursename = Column(String)
 
 
 class Bids(Base):
     __tablename__ = 'bids'
     buyerID = Column(String, primary_key=True)
-    sellerID = Column(String, primary_key=True)
-    isbn = Column(String, primary_key=True)
+    listingID = Column(String, ForeignKey('listings.uniqueID'), primary_key=True)
     bid = Column(Float)
 
 
 class Listings(Base):
     __tablename__ = 'listings'
-    sellerID = Column(String, primary_key=True)
-    isbn = Column(String, primary_key=True)
+    uniqueID = Column(String, primary_key=True)
+    sellerID = Column(String)
+    isbn = Column(String)
     condition = Column(String)
     minPrice = Column(Float)
     buyNow = Column(Float)
     listTime = Column(String)
+    images = relationship('Images')
+    bids = relationship('Bids')
 
 
 class Images(Base):
     __tablename__ = 'images'
-    sellerID = Column(String, primary_key=True)
-    isbn = Column(String, primary_key=True)
-    url = Column(String)
+    listingID = Column(String, ForeignKey('listings.uniqueID'), primary_key=True)
+    url = Column(String, primary_key=True)
