@@ -7,13 +7,14 @@
 <header>
   <span> <table class="searchBar"> </span>
     <th> <a href="homePage"> <h1> Book Exchange </h1> </a></th>
-    <th><select id="searchType" name="searches">
-	    <option value='isbn'> ISBN </option> 
-	    <option value='title'> Book Title </option>
-  	  <option value='crsnum'> Course Number </option>
-      <option value='crsname'> Course Title </option>
-    </select> </th>
     <form name='searchType' class="searchBar" action="searchResults" method='get'>
+      <th><select id="searchType" name="dropDown">
+	      <option value='isbn'> ISBN </option> 
+	      <option value='title'> Book Title </option>
+  	    <option value='crsnum'> Course Number </option>
+        <option value='crsname'> Course Title </option>
+      </select> </th>
+  
       <th> <input type='text' name='query' size="100" placeholder="Enter your input"> </th> 
       <th> <input type='submit' value='Go'> </th>
     </form>

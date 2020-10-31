@@ -47,9 +47,8 @@ def searchResultsTemplate():
 
     # drop down
     # check if it is equal to value 
-    dropDown = request.form.get('searchType')
+    dropDown = request.args.get('dropDown')
     print("Drop-down: ", dropDown)
-    print(dropDown)
     if dropDown == "isbn":
         searchType = 1
     elif dropDown == "title":
