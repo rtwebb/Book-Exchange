@@ -1,81 +1,146 @@
 <!DOCTYPE html>
 <html>
   <head>
+        <style> 
+            h1 {
+                 text-align: center;
+            }
+
+            h3 {
+                  display: inline-block;
+                  line-height: 10px;
+            }
+
+            hr{
+                  padding: 0px;
+                  margin: 0px;
+            }
+
+            .divBox {
+                  border-radius: 25px;
+                  width: 99%;
+                  padding: 1px;
+                  border: 2px solid gray;
+                  margin: 10 px;
+                  background-color: #E8E8E8;
+                  align-self: center;
+
+            }
+
+            
+            .myTables th{
+                  width: 200px;
+                  font-size: 15px;
+            }
+
+            .myTables hr{
+                  color: #808080;
+            }
+
+        </style>
     <title>Profile Page</title>
   </head>
+  
   <body>
-    {% include 'header.html' %}
-    <h1>My Profile</h1>
-    <h2>My Listings:</h2>
-    <table>
-         <tr>
-            <th>Book Title</th>
-            <th>Course</th>
-            <th>Course Title</th>
-            <th>Min Price</th>
-         </tr>
-         {% if books|length == 0: %}
-               </table>
-               You have not listed any books
-         {% else %}
-         {%    for book in books: %}
-               <tr>
-                  <td>{{info[0]}}</td>
-                  <td>{{info[1]}}</td>
-                  <td>{{info[2]}}</td>
-                  <td>{{info[3]}}</td>
-               </tr>
-         {%    endfor %}
-               </table>
-         {% endif %}
-    <h2>Claimed Books:</h2>
-    <table>
-         <tr>
-            <th>Book Title</th>
-            <th>Course</th>
-            <th>Course Title</th>
-            <th>Listed Price</th>
-            <th>Accepted Price</th>
-         </tr>
-         {% if books|length == 0: %}
-               </table>
-               You have not claimed any books
-         {% else %}
-         {%    for book in books: %}
-               <tr>
-                  <td>{{info[0]}}</td>
-                  <td>{{info[1]}}</td>
-                  <td>{{info[2]}}</td>
-                  <td>{{info[3]}}</td>
-                  <td>{{info[4]}}</td>
-               </tr>
-         {%    endfor %}
-               </table>
-         {% endif %}
-    <h2>My Bids:</h2>
-    <table>
-         <tr>
-            <th>Book Title</th>
-            <th>Course</th>
-            <th>Course Title</th>
-            <th>Listed Price</th>
-            <th>My Offer</th>
-         </tr>
-         {% if books|length == 0: %}
-               </table>
-               You have not bid on any books
-         {% else %}
-         {%    for book in books: %}
-               <tr>
-                  <td>{{info[0]}}</td>
-                  <td>{{info[1]}}</td>
-                  <td>{{info[2]}}</td>
-                  <td>{{info[3]}}</td>
-                  <td>{{info[4]}}</td>
-               </tr>
-         {%    endfor %}
-               </table>
-         {% endif %}
+      {% include 'header.html' %}
+      <h1>Welcome (users netID)</h1>
+      <div class= "divBox">
+            {% if books|length == 0: %}
+                  <h3>My Listings: </h3> <span> You have no books listed, <a href="sellerPage"> list one here </a> </span>
+            {% else: %}
+                  <h3> My Listings: </h3>
+            {% endif %}
+      <table class="myTables">
+            <hr>
+            <th>Book title:</th>
+            <th> </th>
+            <th> Course name: </th>
+            <th> </th>
+            <th> Course title: </th>
+            <th> </th>
+            <th> Min price: </th>
+            <th> </th>
+            <th> Action: </th>
+            {% if books|length == 0: %}
+                  </table>
+            {% else: %}
+                  {%    for book in books: %}
+                        <tr>
+                              <td>{{info[0]}}</td>
+                              <td>{{info[1]}}</td>
+                              <td>{{info[2]}}</td>
+                              <td>{{info[3]}}</td>
+                        </tr>
+                  {%    endfor %}
+            {% endif %}
+      </table>
+      </div>
+    
+      <br>
+      <div class= "divBox">
+            {% if books|length == 0: %}
+                  <h3>Claimed books: </h3> <span> You have not claimed any books, <a href="homePage"> search books here </a> </span>
+            {% else: %}
+                  <h3> Claimed books: </h3>
+            {% endif %}
+      <table class="myTables">
+            <hr>
+            <th>Book title:</th>
+            <th> </th>
+            <th> Course name: </th>
+            <th> </th>
+            <th> Course title: </th>
+            <th> </th>
+            <th> List price: </th>
+            <th> </th>
+            <th> Accepted price: </th>
+            {% if books|length == 0: %}
+                  </table>
+            {% else: %}
+                  {%    for book in books: %}
+                        <tr>
+                              <td>{{info[0]}}</td>
+                              <td>{{info[1]}}</td>
+                              <td>{{info[2]}}</td>
+                              <td>{{info[3]}}</td>
+                        </tr>
+                  {%    endfor %}
+            {% endif %}
+      </table>
+      </div>
+
+      <br>
+      <div class= "divBox">
+            {% if books|length == 0: %}
+                  <h3>Current bids: </h3> <span> You have no current bids, <a href="homePage"> search books here </a> </span>
+            {% else: %}
+                  <h3> Current bids: </h3>
+            {% endif %}
+      <table class="myTables">
+            <hr>
+            <th>Book title:</th>
+            <th> </th>
+            <th> Course name: </th>
+            <th> </th>
+            <th> Course title: </th>
+            <th> </th>
+            <th> List price: </th>
+            <th> </th>
+            <th> My offer: </th>
+            {% if books|length == 0: %}
+                  </table>
+            {% else: %}
+                  {%    for book in books: %}
+                        <tr>
+                              <td>{{info[0]}}</td>
+                              <td>{{info[1]}}</td>
+                              <td>{{info[2]}}</td>
+                              <td>{{info[3]}}</td>
+                        </tr>
+                  {%    endfor %}
+            {% endif %}
+      </table>
+      </div>
     <br>
     <br>
     {% include 'footer.html' %}
