@@ -60,19 +60,31 @@ def searchResultsTemplate():
 
     query = request.args.get('query')
 
+    if dropDown == '':
+        searchType = 0
+    if query == '' or query == None:
+        query = ''
+   
     results = []
-    try:
-        database = QueryDatabase()
-        database.connect()
-        results = database.search(searchType, query)
 
-    except Exception as e:
-        print(argv[0] + ": " + str(e), file=stderr)
+    # checking for null inputs and not interacting with drop-down
+    if searchType == 0 or query == '':
+        html = render_template('searchResults.html', results=results, searchType=searchType) #searchKind=searchKind)
+        response = make_response(html)
+        return response
+    # proper input (drop-down filled in and query sent)
+    else:
+        try:
+            database = QueryDatabase()
+            database.connect()
+            results = database.search(searchType, query)
 
-    html = render_template('searchResults.html', results=results, searchType=searchType) #searchKind=searchKind)
+        except Exception as e:
+            print(argv[0] + ": " + str(e), file=stderr)
 
-    response = make_response(html)
-    return response
+        html = render_template('searchResults.html', results=results, searchType=searchType) #searchKind=searchKind)
+        response = make_response(html)
+        return response
 
 
 # -----------------------------------------------------------------------
