@@ -110,32 +110,46 @@ class QueryDatabase:
         # signal tells me what kind of query it is: book title, isbn, course, etc
         result = []
         if signal == 1:  # if query is by isbn
+            newQuery = query.replace("%", "!%")
+            newQuery = query.replace("_", "!_")
+            newQuery = '%' + query + '%'
+            print(newQuery)
             found = self._connection.query(Books, Courses, Listings).\
                 join(Images). \
-                filter(Listings.isbn == query). \
+                filter(Listings.isbn.ilike(newQuery)). \
                 filter(Courses.isbn == Listings.isbn). \
                 filter(Books.isbn == Listings.isbn). \
                 order_by(Listings.listTime).all()
         elif signal == 2:  # query is a book title
+            newQuery = query.replace("%", "!%")
+            newQuery = query.replace("_", "!_")
+            newQuery = "%" + query + "%"
+            print(newQuery)
             found = self._connection.query(Books, Courses, Listings). \
                 join(Images). \
                 filter(Listings.isbn == Books.isbn). \
-                filter(Books.title.like(query)). \
+                filter(Books.title.ilike(newQuery)). \
                 filter(Courses.isbn == Books.isbn). \
                 order_by(Listings.listTime).all()
         elif signal == 3:  # query is a coursenum
+            newQuery = query.replace("%", "!%")
+            newQuery = query.replace("_", "!_")
+            newQuery = "%" + query + "%"
             found = self._connection.query(Books, Courses, Listings). \
                 join(Images). \
                 filter(Listings.isbn == Courses.isbn). \
-                filter(Courses.coursenum.like(query)). \
+                filter(Courses.coursenum.ilike(newQuery)). \
                 filter(Books.isbn == Courses.isbn). \
                 order_by(Listings.listTime).all()
         else:  # search by course title
+            newQuery = query.replace("%", "!%")
+            newQuery = query.replace("_", "!_")
+            newQuery = "%" + query + "%"
             found = self._connection.query(Books, Courses, Listings). \
                 join(Images). \
                 filter(Listings.isbn == Books.isbn). \
                 filter(Books.isbn == Courses.isbn). \
-                filter(Courses.coursename.like(query)). \
+                filter(Courses.coursename.ilike(newQuery)). \
                 order_by(Listings.listTime).all()
         for book, course, listing in found:
             result.append((book.title, course.coursenum, course.coursename, listing.minPrice))

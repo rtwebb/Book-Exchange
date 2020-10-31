@@ -69,7 +69,7 @@ def searchResultsTemplate():
     except Exception as e:
         print(argv[0] + ": " + str(e), file=stderr)
 
-    html = render_template('searchResults.html', results=results)
+    html = render_template('searchResults.html', results=results) #searchKind=searchKind)
 
     response = make_response(html)
     return response
