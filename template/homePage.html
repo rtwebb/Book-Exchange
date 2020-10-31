@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta id="dropDown" searchType="{{searchType}}">
     <style>
       div {
         width: 220px;
@@ -35,7 +36,35 @@
           {% endfor %}
       {% endif %}
   
+    <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+    <script type="text/javascript">
+      function dropDown(selectVal){
+        let searchVal = document.getElementById("searchType");
+        searchVal.value = selectVal;
+      }
 
+      function setup(){
+
+        let searchQuery = document.getElementById("searchQuery");
+        searchQuery.focus();
+        var searchType = $('#dropDown').searchType();
+        if (searchType === 1) { 
+          let selectVal = "isbn";
+        }
+        else if (searchType === 2) { 
+          let selectVal = "title";
+        }
+        else if (searchType=== 3) { 
+          let selectVal = "crsnum";
+        }
+        else { 
+          let selectVal = "crsname";
+        }
+        dropDown(selectVal);
+
+      }
+      document.addEventListener('DOMContentLoaded', setup);
+    </script>
 
     {% include 'footer.html' %}
   </body>

@@ -24,7 +24,6 @@
     {% include 'header.html' %}
     <h1> Search Results </h1>
     <br>
-    <br>
     {% if results is not none: %}
       {% set length = results|length %} 
         {%  for i in range(length) %}
