@@ -5,12 +5,10 @@
             h1 {
                  text-align: center;
             }
-
             h3 {
                   display: inline-block;
                   line-height: 10px;
             }
-
             hr{
                   padding: 0px;
                   margin: 0px;
@@ -24,24 +22,41 @@
                   margin: 10 px;
                   background-color: #E8E8E8;
                   align-self: center;
-
             }
 
-            
-            .myTables th{
+            .emptyTables th{
                   width: 200px;
                   font-size: 15px;
             }
-
-            .myTables td{
+            .emptyTables td{
                   font-size: 13px;
                   text-align: center;
             }
-
-
-            .myTables hr{
+            .emptyTables hr{
                   color: #808080;
             }
+
+                              
+           
+            .fullTables{
+                  border-radius: 18px;
+                  border-top-left-radius: 0px;
+                  border-top-right-radius: 0px;
+                  background-color: #F8F8F8;
+            } 
+            .fullTables th{
+                  width: 200px;
+                  font-size: 15px;
+            } 
+            .fullTables td{
+                  font-size: 13px;
+                  text-align: center;
+            }
+            .fullTables hr{
+                  color: #808080;
+            }   
+           
+                 
 
         </style>
     <title>Profile Page</title>
@@ -53,10 +68,11 @@
       <div class= "divBox">
             {% if listings|length == 0: %}
                   <h3>My Listings: </h3> <span> You have no books listed, <a href="sellerPage"> list one here </a> </span>
+                  <table class="emptyTables">
             {% else: %}
                   <h3> My Listings: </h3>
+                  <table class="fullTables">
             {% endif %}
-      <table class="myTables">
             <hr>
             <th>Book title:</th>
             <th> </th>
@@ -78,7 +94,7 @@
                               <td></td>
                               <td>{{book[2]}}</td>
                               <td></td>
-                              <td>{{book[3]}}</td>
+                              <td>${{book[3]}}</td>
                               <td></td>
                               <td> <form method="POST">
                                     <input type="submit" name="accept" id="accept" value="Accept">
@@ -95,10 +111,11 @@
       <div class= "divBox">
             {% if purchases|length == 0: %}
                   <h3>Claimed books: </h3> <span> You have not claimed any books, <a href="homePage"> search books here </a> </span>
+                  <table class="emptyTables">
             {% else: %}
                   <h3> Claimed books: </h3>
+                  <table class="fullTables">
             {% endif %}
-      <table class="myTables">
             <hr>
             <th>Book title:</th>
             <th> </th>
@@ -120,9 +137,9 @@
                               <td></td>
                               <td>{{book[2]}}</td>
                               <td></td>
-                              <td>{{book[3]}}</td>
+                              <td>${{book[3]}}</td>
                               <td></td>
-                              <td>{{books[4]}}</td>
+                              <td>${{books[4]}}</td>
                         </tr>
                   {%    endfor %}
             {% endif %}
@@ -133,10 +150,11 @@
       <div class= "divBox">
             {% if bids|length == 0: %}
                   <h3>Current bids: </h3> <span> You have no current bids, <a href="homePage"> search books here </a> </span>
+                  <table class="emptyTables">
             {% else: %}
                   <h3> Current bids: </h3>
+                  <table class="fullTables">
             {% endif %}
-      <table class="myTables">
             <hr>
             <th>Book title:</th>
             <th> </th>
@@ -158,7 +176,7 @@
                               <td></td>
                               <td>{{book[2]}}</td>
                               <td></td>
-                              <td>{{book[3]}}</td>
+                              <td>${{book[3]}}</td>
                               <td></td>
                               <td> Pending/accepted/declined</td>
                         </tr>

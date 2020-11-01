@@ -163,7 +163,8 @@ def profilePageTemplate():
     listings = []
 
     listings.append(('The practice of coding', 'COS333', 'Programming in Advance', 15))
-
+    listings.append(('The practice of coding', 'COS333', 'Programming in Advance', 15))
+    listings.append(('The practice of coding', 'COS333', 'Programming in Advance', 15))
     # in html page I called the things: listings, purchases, bids
     html = render_template('profilePage.html', listings=listings)
 
