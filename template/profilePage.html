@@ -33,6 +33,12 @@
                   font-size: 15px;
             }
 
+            .myTables td{
+                  font-size: 13px;
+                  text-align: center;
+            }
+
+
             .myTables hr{
                   color: #808080;
             }
@@ -45,7 +51,7 @@
       {% include 'header.html' %}
       <h1>Welcome (users netID)</h1>
       <div class= "divBox">
-            {% if books|length == 0: %}
+            {% if listings|length == 0: %}
                   <h3>My Listings: </h3> <span> You have no books listed, <a href="sellerPage"> list one here </a> </span>
             {% else: %}
                   <h3> My Listings: </h3>
@@ -61,15 +67,24 @@
             <th> Min price: </th>
             <th> </th>
             <th> Action: </th>
-            {% if books|length == 0: %}
+            {% if listings|length == 0: %}
                   </table>
             {% else: %}
-                  {%    for book in books: %}
+                  {%    for book in listings: %}
                         <tr>
-                              <td>{{info[0]}}</td>
-                              <td>{{info[1]}}</td>
-                              <td>{{info[2]}}</td>
-                              <td>{{info[3]}}</td>
+                              <td>{{book[0]}}</td>
+                              <td></td>
+                              <td>{{book[1]}}</td>
+                              <td></td>
+                              <td>{{book[2]}}</td>
+                              <td></td>
+                              <td>{{book[3]}}</td>
+                              <td></td>
+                              <td> <form method="POST">
+                                    <input type="submit" name="accept" id="accept" value="Accept">
+                                    <input type="submit" name="decline" id="decline" value="Decline">
+                                    </form> 
+                              </td>
                         </tr>
                   {%    endfor %}
             {% endif %}
@@ -78,7 +93,7 @@
     
       <br>
       <div class= "divBox">
-            {% if books|length == 0: %}
+            {% if purchases|length == 0: %}
                   <h3>Claimed books: </h3> <span> You have not claimed any books, <a href="homePage"> search books here </a> </span>
             {% else: %}
                   <h3> Claimed books: </h3>
@@ -94,15 +109,20 @@
             <th> List price: </th>
             <th> </th>
             <th> Accepted price: </th>
-            {% if books|length == 0: %}
+            {% if purchases|length == 0: %}
                   </table>
             {% else: %}
-                  {%    for book in books: %}
+                  {%    for book in purchases: %}
                         <tr>
-                              <td>{{info[0]}}</td>
-                              <td>{{info[1]}}</td>
-                              <td>{{info[2]}}</td>
-                              <td>{{info[3]}}</td>
+                              <td>{{book[0]}}</td>
+                              <td></td>
+                              <td>{{book[1]}}</td>
+                              <td></td>
+                              <td>{{book[2]}}</td>
+                              <td></td>
+                              <td>{{book[3]}}</td>
+                              <td></td>
+                              <td>{{books[4]}}</td>
                         </tr>
                   {%    endfor %}
             {% endif %}
@@ -111,7 +131,7 @@
 
       <br>
       <div class= "divBox">
-            {% if books|length == 0: %}
+            {% if bids|length == 0: %}
                   <h3>Current bids: </h3> <span> You have no current bids, <a href="homePage"> search books here </a> </span>
             {% else: %}
                   <h3> Current bids: </h3>
@@ -124,18 +144,23 @@
             <th> </th>
             <th> Course title: </th>
             <th> </th>
-            <th> List price: </th>
-            <th> </th>
             <th> My offer: </th>
-            {% if books|length == 0: %}
+            <th> </th>
+            <th> Offer status: </th>
+            {% if bids|length == 0: %}
                   </table>
             {% else: %}
-                  {%    for book in books: %}
+                  {%    for book in bids: %}
                         <tr>
-                              <td>{{info[0]}}</td>
-                              <td>{{info[1]}}</td>
-                              <td>{{info[2]}}</td>
-                              <td>{{info[3]}}</td>
+                              <td>{{book[0]}}</td>
+                              <td></td>
+                              <td>{{book[1]}}</td>
+                              <td></td>
+                              <td>{{book[2]}}</td>
+                              <td></td>
+                              <td>{{book[3]}}</td>
+                              <td></td>
+                              <td> Pending/accepted/declined</td>
                         </tr>
                   {%    endfor %}
             {% endif %}

@@ -91,23 +91,26 @@ def searchResultsTemplate():
 
 @app.route('/sellerPage', methods=['GET'])
 def sellerPageTemplate():
-    # pulls down information and adds to database if user says yes everything is correct
-    # to check if correct use confirmationPage (is this information right?)
-    # if yes generates sucess page
-    # if no stay go back to sellerPage (with saved information) and they can fix
-
+   
     isbn = request.args.get('isbn')
     title = request.args.get('title')
     minprice = request.args.get('minprice')
     buynow = request.args.get('buynow')
-    # description not in database
-    # description = request.args.get('description')
     # img = request.args.get('image')
     # in html we need to add condition drop down; authors as a list; coursename vs coursenumber
-    # condition = request.args.get('condition')
     author = request.args.get('author')
     crsnum = request.args.get('crsnum')
     crsname = request.args.get('crsname')
+    # is condition an int?
+    dropDown = request.args.get('dropDown')
+    if dropDown == "poor":
+        condition = 1
+    elif dropDown == "fair":
+        condition = 2
+    elif dropDown == "good":
+        condition = 3
+    else:
+        condition = 4
     time = datetime.now()
     listTime = time.strftime("%H:%M:%S")
     # sellerID = pull from CAS somehow
@@ -156,7 +159,13 @@ def profilePageTemplate():
     # if none set object to none, else pass along
     # get books that they have bid on
     # if none set object to none, else pass along
-    html = render_template('profilePage.html')
+
+    listings = []
+
+    listings.append(('The practice of coding', 'COS333', 'Programming in Advance', 15))
+
+    # in html page I called the things: listings, purchases, bids
+    html = render_template('profilePage.html', listings=listings)
 
     response = make_response(html)
     return response

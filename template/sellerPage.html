@@ -7,31 +7,28 @@
     {% include 'header.html' %}
     <h1>Add a new Listing</h1>
     <form action="sellerPage" method="get" id="submitBookForm">
-      Book Title:
+      *Book Title:
       <input type="text" name="title" />
-      ISBN:
+      *ISBN:
       <input type="text" name="isbn" />
-      Course Title:
+      *Course Title:
       <input type="text" name="crsnum" />
-      Course Name:
+      *Course Name:
       <input type="text" name="crsname" />
-      Author:
+      *Author:
       <input type="text" name="author" />
       <br />
-      Description:<br />
-      <input type="text" name="description" />
-      <br />
-      Minimum Price:
+      *Minimum Price:
       <input type="text" name="minprice" />
-      Buy Now:
+      *Buy Now:
       <input type="text" name="buynow" />
 
       <select id="condition" name="bookCondition">
         <option value="" disabled="disabled"  style="display:none" selected="selected">Condition</option>
-        <option value='Poor'>Poor </option>
-        <option value='Fair'>Fair </option>
-        <option value='Good'>Good </option>
-        <option value='Very good'>Very good </option>
+        <option value='poor'>Poor </option>
+        <option value='fair'>Fair </option>
+        <option value='good'>Good </option>
+        <option value='veryGood'>Very good </option>
       </select>
     </form>
     <button
@@ -42,6 +39,8 @@
     >
       Submit
     </button>
+    <br>  
+    * Required fields
     <h2>Add Images</h2>
     <br />
     {% include 'footer.html' %}
