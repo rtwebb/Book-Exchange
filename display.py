@@ -40,26 +40,26 @@ def main():
     print('courses')
     print('------------------------------------')
     for course in session.query(Courses).all():
-        print(course.isbn, course.number, course.title)
+        print(course.isbn, course.coursenum, course.coursename)
 
     print('------------------------------------')
     print('bids')
     print('------------------------------------')
     for bid in session.query(Bids).all():
-        print(bid.buyerID, bid.sellerID, bid.isbn, bid.bid)
+        print(bid.buyerID, bid.listingID, bid.bid)
 
     print('------------------------------------')
     print('listings')
     print('------------------------------------')
     for list in session.query(Listings).all():
-        print(list.sellerID, list.isbn, list.condition, list.minPrice,
+        print(list.uniqueID, list.sellerID, list.isbn, list.condition, list.minPrice,
               list.buyNow, list.listTime)
 
     print('------------------------------------')
     print('images')
     print('------------------------------------')
     for image in session.query(Images).all():
-        print(image.sellerID, image.isbn, image.url)
+        print(image.listingID, image.url)
 
 
 if __name__ == '__main__':

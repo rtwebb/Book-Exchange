@@ -9,6 +9,7 @@ from sys import argv, stderr, exit
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import Base, Books, Authors, Bids, Courses, Listings, Images
+from uuid import uuid4
 
 
 def main():
@@ -42,37 +43,28 @@ def main():
 
     # ------------------------------------------------------------------------------------
 
-    course = Courses(isbn=123, number='COS333', title='Advanced Programming Techniques')
+    course = Courses(isbn=123, coursenum='COS333', coursename='Advanced Programming Techniques')
     session.add(course)
-    course = Courses(isbn=234, number='COS217', title='Introduction to Programming Systems')
+    course = Courses(isbn=234, coursenum='COS217', coursename='Introduction to Programming Systems')
     session.add(course)
     session.commit()
 
     # ------------------------------------------------------------------------------------
 
-    bid = Bids(buyerID='tianaf', sellerID='vedant', isbn=123, bid=19.99)
-    session.add(bid)
-    bid = Bids(buyerID='emmandra', sellerID='vedant', isbn=123, bid=25.00)
-    session.add(bid)
-    bid = Bids(buyerID='raph', sellerID='toussaint', isbn=234, bid=25.00)
-    session.add(bid)
-    session.commit()
-
-    # ------------------------------------------------------------------------------------
-
-    listing = Listings(sellerID='vedant', isbn=123, condition='good', minPrice=15.00,
-                       buyNow=30.00, listTime='16:45')
-    session.add(listing)
-    listing = Listings(sellerID='toussaint', isbn=234, condition='okay', minPrice=20.00,
-                       buyNow=50.00, listTime='18:45')
-    session.add(listing)
-    session.commit()
-
-    # ------------------------------------------------------------------------------------
-
-    image = Images(sellerID='vedant', isbn=123,
+    listing = Listings(uniqueID=uuid4(), sellerID='vedant', isbn=123, condition='good',
+                       minPrice=15.00, buyNow=30.00, listTime='16:45')
+    bid1 = Bids(buyerID='tianaf', listingID=listing.uniqueID, bid=19.99)
+    bid2 = Bids(buyerID='emmandra', listingID=listing.uniqueID, bid=25.00)
+    image = Images(listingID=listing.uniqueID,
                    url='http://res.cloudinary.com/dijpr9qcs/image/upload/z3vnl0jbvb41kkhw8vpl.jpg')
-    session.add(image)
+    listing.bids = [bid1, bid2]
+    listing.images = [image]
+    session.add(listing)
+    listing = Listings(uniqueID=uuid4(), sellerID='toussaint', isbn=234, condition='okay',
+                       minPrice=20.00,buyNow=50.00, listTime='18:45')
+    bid = Bids(buyerID='raph', listingID=listing.uniqueID, bid=25.00)
+    listing.bids = [bid]
+    session.add(listing)
     session.commit()
 
 

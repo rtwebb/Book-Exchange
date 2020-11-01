@@ -7,28 +7,42 @@
     {% include 'header.html' %}
     <h1>Add a new Listing</h1>
     <form action="sellerPage" method="get" id="submitBookForm">
-      Book Title:
-      <input type="text" name="title">
-      ISBN:
-      <input type="text" name="isbn">
-      Course Title:
-      <input type="text" name="crsnum">
-      Course Name:
-      <input type="text" name="crsname">
-      Author:
-      <input type="text" name="author">
-      <br>
-      Description:<br>
-      <input type="text" name="description">
-      <br>
-      Minimum Price:
-      <input type="text" name="minprice">
-      Buy Now:
-      <input type="text" name="buynow">
+      *Book Title:
+      <input type="text" name="title" />
+      *ISBN:
+      <input type="text" name="isbn" />
+      *Course Title:
+      <input type="text" name="crsnum" />
+      *Course Name:
+      <input type="text" name="crsname" />
+      *Author:
+      <input type="text" name="author" />
+      <br />
+      *Minimum Price:
+      <input type="text" name="minprice" />
+      *Buy Now:
+      <input type="text" name="buynow" />
+
+      <select id="condition" name="bookCondition">
+        <option value="" disabled="disabled"  style="display:none" selected="selected">Condition</option>
+        <option value='poor'>Poor </option>
+        <option value='fair'>Fair </option>
+        <option value='good'>Good </option>
+        <option value='veryGood'>Very good </option>
+      </select>
     </form>
-    <button type="submit" form="submitBookForm" onclick="alert('Are you sure?')" value="Submit">Submit</button>
+    <button
+      type="submit"
+      form="submitBookForm"
+      onclick="confirm('Are you sure you would like to list this book?')"
+      value="Submit"
+    >
+      Submit
+    </button>
+    <br>  
+    * Required fields
     <h2>Add Images</h2>
-    <br>
-    {% include 'footer.html' %} 
+    <br />
+    {% include 'footer.html' %}
   </body>
 </html>

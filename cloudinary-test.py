@@ -15,7 +15,7 @@ def main():
     DEFAULT_TAG = "python_sample_basic"
 
     print("--- Upload a local file")
-    response = upload("testing.jpg", tags=DEFAULT_TAG)
+    response = upload("tiger.jpg", tags=DEFAULT_TAG)
     url, options = cloudinary_url(
         response['public_id'],
         format=response['format'],

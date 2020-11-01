@@ -1,64 +1,28 @@
 <head>
-    <style type="text/css">
-        header h1 {
-	        display: inline-block;
-          color:  #383838; <!-- maybe change this to be blue so ppl know-->
-        }
-      
-        A { 
-          text-decoration: none;
-        }
-
-        span {
-	    display: inline-block;
-	    overflow: hidden;
-        }
-        
-        .searchBar input{
-	    color: black;
-	    padding: 5px;
-	    background-color: #f2f3f4;
-        }
-
-        .searchBar select{
-	    color: black;
-	    background-color: #f2f3f4;
-	    padding: 5px;
-        }
-    
-        .navBar {
-	    border-spacing: 0 5px;
-	    background-color: #383838;
-        }
-        
-        .navBar A{
-	    text-decoration: none;
-	    color: #ffa700; 
-        }
-        
-        .navBar th {
-	    width: 400px;
-	    text-align: center;
-        }
-     </style>
+  <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/header.css') }}"
+    />
   </head>
 <header>
- <span> <!--<img src="tigerHead.jpg" width="84" height="76"> </span> -->
-
-<span> <table class="searchBar"> </span>
- <th> <a href="homePage"> <h1> Book Exchange </h1> </a></th>
- <th><select id="searchType" name="searches">
-	<option value='isbn'> ISBN </option> 
-	<option value='title'> Book Title </option>
-	<option value='crsnum'> Course Number </option>
+  <span> <table class="searchBar"> </span>
+    <th> <a href="homePage"> <h1> Book Exchange </h1> </a></th>
+    <form name='searchType' class="searchBar" action="searchResults" method='get'>
+      <th><select id="searchType" name="dropDown">
+        <option value="" disabled="disabled"  style="display:none" selected="selected">Search by:</option>
+	      <option value='isbn'> Isbn </option> 
+	      <option value='title'> Book Title </option>
+  	    <option value='crsnum'> Course Num. </option>
         <option value='crsname'> Course Title </option>
-     </select> </th>
-  <form class="searchBar" action='searchResults' method='get'>
-      <th> <input type='text' name='query' size="100" placeholder="Enter your input"> </th> 
+      </select> </th>
+  
+      <th> <input type='text' id='searchQuery' name='query' size="123" placeholder="Enter your input"> </th> 
       <th> <input type='submit' value='Go'> </th>
-  </form>
-</table>
+    </form>
+    <th><a href="profilePage"><img src="http://res.cloudinary.com/dijpr9qcs/image/upload/ze6qjgvblfhtqjw5iaat.jpg" width="60" height="49"></a></th>
+  </table>
 </header>
+
 <table class="navBar">
   <th> </th>
   <th> </th>

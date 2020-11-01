@@ -45,45 +45,72 @@ def searchResultsTemplate():
     # each book needs to link to buyerPage with more information
     # set cookies on search query to follow through searchResults and buyerPage
 
-    # how to check what drop-down was selected
+    # drop down
+    # check if it is equal to value 
+    dropDown = request.args.get('dropDown')
+    print("Drop-down: ", dropDown)
+    if dropDown == "isbn":
+        searchType = 1
+    elif dropDown == "title":
+        searchType = 2
+    elif dropDown == "crsnum":
+        searchType = 3
+    else:
+        searchType = 4
 
-    isbn = request.args.get('query')
+    query = request.args.get('query')
+
+    if dropDown == '':
+        searchType = 0
+    if query == '' or query == None:
+        query = ''
+   
     results = []
-    try:
-        database = QueryDatabase()
-        database.connect()
-        results = database.search(isbn)
 
-    except Exception as e:
-        print(argv[0] + ": " + str(e), file=stderr)
+    # checking for null inputs and not interacting with drop-down
+    if searchType == 0 or query == '':
+        html = render_template('searchResults.html', results=results, searchType=searchType) #searchKind=searchKind)
+        response = make_response(html)
+        return response
+    # proper input (drop-down filled in and query sent)
+    else:
+        try:
+            database = QueryDatabase()
+            database.connect()
+            results = database.search(searchType, query)
 
-    html = render_template('searchResults.html', results=results)
+        except Exception as e:
+            print(argv[0] + ": " + str(e), file=stderr)
 
-    response = make_response(html)
-    return response
+        html = render_template('searchResults.html', results=results, searchType=searchType) #searchKind=searchKind)
+        response = make_response(html)
+        return response
 
 
 # -----------------------------------------------------------------------
 
 @app.route('/sellerPage', methods=['GET'])
 def sellerPageTemplate():
-    # pulls down information and adds to database if user says yes everything is correct
-    # to check if correct use confirmationPage (is this information right?)
-    # if yes generates sucess page
-    # if no stay go back to sellerPage (with saved information) and they can fix
-
+   
     isbn = request.args.get('isbn')
     title = request.args.get('title')
     minprice = request.args.get('minprice')
     buynow = request.args.get('buynow')
-    # description not in database
-    # description = request.args.get('description')
     # img = request.args.get('image')
     # in html we need to add condition drop down; authors as a list; coursename vs coursenumber
-    # condition = request.args.get('condition')
     author = request.args.get('author')
     crsnum = request.args.get('crsnum')
     crsname = request.args.get('crsname')
+    # is condition an int?
+    dropDown = request.args.get('dropDown')
+    if dropDown == "poor":
+        condition = 1
+    elif dropDown == "fair":
+        condition = 2
+    elif dropDown == "good":
+        condition = 3
+    else:
+        condition = 4
     time = datetime.now()
     listTime = time.strftime("%H:%M:%S")
     # sellerID = pull from CAS somehow
@@ -132,7 +159,14 @@ def profilePageTemplate():
     # if none set object to none, else pass along
     # get books that they have bid on
     # if none set object to none, else pass along
-    html = render_template('profilePage.html')
+
+    listings = []
+
+    listings.append(('The practice of coding', 'COS333', 'Programming in Advance', 15))
+    listings.append(('The practice of coding', 'COS333', 'Programming in Advance', 15))
+    listings.append(('The practice of coding', 'COS333', 'Programming in Advance', 15))
+    # in html page I called the things: listings, purchases, bids
+    html = render_template('profilePage.html', listings=listings)
 
     response = make_response(html)
     return response

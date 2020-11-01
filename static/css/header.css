@@ -1,0 +1,41 @@
+header h1 {
+  display: inline-block;
+  color: #383838;
+}
+
+A {
+  text-decoration: none;
+}
+
+span {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.searchBar A{
+  color: #383838;
+}
+.searchBar input {
+  color: black;
+  background-color: #f2f3f4;
+}
+
+.searchBar select {
+  color: black;
+  background-color: #f2f3f4;
+}
+
+.navBar {
+  border-spacing: 0 5px;
+  background-color: #383838;
+}
+
+.navBar A {
+  text-decoration: none;
+  color: #ffa700;
+}
+
+.navBar th {
+  width: 400px;
+  text-align: center;
+}
