@@ -34,7 +34,7 @@ def homePageTemplate():
         print(result)
     except Exception as e:
         print("Error: " + str(e), file=stderr)
-        errorMsg = 'An error occured please contact email at bottom of the screen'
+        errorMsg = 'An error occurred please contact email at bottom of the screen'
 
     # set cookies on search query to follow through searchResults and buyerPage
 
@@ -71,7 +71,7 @@ def searchResultsTemplate():
 
     if dropDown == '':
         searchType = 0
-    if query == '' or query == None:
+    if query == '' or query is None:
         query = ''
    
     results = []
