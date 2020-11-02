@@ -9,6 +9,9 @@ from sqlalchemy import create_engine, update
 from sqlalchemy.orm import sessionmaker
 from database import Base, Books, Authors, Bids, Courses, Listings, Images
 from uuid import uuid4
+import cloudinary
+from cloudinary.uploader import upload
+from cloudinary.utils import cloudinary_url
 
 
 class QueryDatabase:
@@ -215,3 +218,22 @@ class QueryDatabase:
             result.append((book.title, course.coursenum, course.coursename, bid.bid,
                            bid.status))
         return result
+
+    # ----------------------------------------------------------------------------------
+
+    def imageToURL(self, image):
+        cloudinary.config(
+            cloud_name="dijpr9qcs",
+            api_key="867126563973785",
+            api_secret="tvtXgGn_OL2RzA1YxScf3nwxpPE"
+        )
+
+        DEFAULT_TAG = "python_sample_basic"
+
+        print("--- Upload a local file")
+        response = upload(image, tags=DEFAULT_TAG)
+        url, options = cloudinary_url(
+            response['public_id'],
+            format=response['format'],
+        )
+        return url
