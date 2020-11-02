@@ -173,7 +173,9 @@ def profilePageTemplate():
             database.updateStatus(bid, bidder, 'declined')
 
         # query database for the given user
-        listings = database.auctionBids('vdhopte')
+        listings = database.bidsOnMyListings('vdhopte')
+        purchases = database.myPurchases('tianaf')
+        bids = database.myBids('tianaf')
         database.disconnect()
     except Exception as e:
         print("Error: " + str(e), file=stderr)
@@ -183,7 +185,8 @@ def profilePageTemplate():
     # if none set object to none, else pass along
 
     # in html page I called the things: listings, purchases, bids
-    html = render_template('profilePage.html', listings=listings, username=username)
+    html = render_template('profilePage.html', listings=listings,
+                           purchases=purchases, bids=bids, username=username)
 
     response = make_response(html)
     return response

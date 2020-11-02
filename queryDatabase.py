@@ -163,7 +163,7 @@ class QueryDatabase:
 
     # ----------------------------------------------------------------------------------
 
-    def auctionBids(self, query):
+    def bidsOnMyListings(self, query):
         result = []
         found = self._connection.query(Books, Courses, Bids). \
             filter(Listings.sellerID.ilike(query)). \
@@ -188,4 +188,29 @@ class QueryDatabase:
 
     # ----------------------------------------------------------------------------------
 
+    def myPurchases(self, query):
+        result = []
+        found = self._connection.query(Books, Courses, Listings, Bids). \
+            filter(Bids.buyerID.ilike(query)). \
+            filter(Bids.status == 'accepted'). \
+            filter(Listings.uniqueID == Bids.listingID). \
+            filter(Books.isbn == Listings.isbn). \
+            filter(Listings.isbn == Courses.isbn).all()
+        for book, course, listing, bid in found:
+            result.append((book.title, course.coursenum, course.coursename, listing.minPrice,
+                           bid.bid))
+        return result
 
+    # ----------------------------------------------------------------------------------
+
+    def myBids(self, query):
+        result = []
+        found = self._connection.query(Books, Courses, Bids). \
+            filter(Bids.buyerID.ilike(query)). \
+            filter(Listings.uniqueID == Bids.listingID). \
+            filter(Books.isbn == Listings.isbn). \
+            filter(Listings.isbn == Courses.isbn).all()
+        for book, course, bid in found:
+            result.append((book.title, course.coursenum, course.coursename, bid.bid,
+                           bid.status))
+        return result
