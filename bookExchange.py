@@ -69,7 +69,7 @@ def searchResultsTemplate():
 
     query = request.args.get('query')
 
-    if dropDown == '':
+    if dropDown == None:
         searchType = 0
     if query == '' or query is None:
         query = ''
@@ -78,8 +78,10 @@ def searchResultsTemplate():
 
     # checking for null inputs and not interacting with drop-down
     if searchType == 0 or query == '':
+        if not results:
+            results = None
         html = render_template('searchResults.html', results=results, searchType=searchType,
-                               username=username, query=query)  # searchKind=searchKind)
+                               username=username, query=query)
         response = make_response(html)
         return response
     # proper input (drop-down filled in and query sent)
@@ -94,7 +96,8 @@ def searchResultsTemplate():
             print(argv[0] + ": " + str(e), file=stderr)
 
         print('In else statement')
-        html = render_template('searchResults.html', results=results, searchType=searchType, query=query)  # searchKind=searchKind)
+        html = render_template('searchResults.html', results=results, 
+                                username=username, query=query, searchType=searchType)  # searchKind=searchKind)
         response = make_response(html)
         return response
 

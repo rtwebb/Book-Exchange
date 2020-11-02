@@ -37,34 +37,11 @@
       {% endif %}
   
     <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
-    <script type="text/javascript">
-      function dropDown(selectVal){
-        let searchVal = document.getElementById("searchType");
-        searchVal.value = selectVal;
-      }
-
+    <script>
       function setup(){
-
-        let searchQuery = document.getElementById("searchQuery");
-        searchQuery.focus();
-        var searchType = $('#dropDown').searchType();
-        console.log(searchType);
-        if (searchType === 1) { 
-          let selectVal = "isbn";
-        }
-        else if (searchType === 2) { 
-          let selectVal = "title";
-        }
-        else if (searchType=== 3) { 
-          let selectVal = "crsnum";
-        }
-        else { 
-          let selectVal = "crsname";
-        }
-        dropDown(selectVal);
-
+        $('#searchQuery').focus()
       }
-      document.addEventListener('DOMContentLoaded', setup);
+      $('document').ready(setQuery);
     </script>
 
     {% include 'footer.html' %}
