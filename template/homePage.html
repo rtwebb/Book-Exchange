@@ -14,6 +14,10 @@
         font-size: 10px;
       }  
 
+      img {
+        display: block;
+      }
+
       A{
 	      text-decoration: none;
         color: black;
@@ -28,7 +32,7 @@
       {% if results is not none:  %}
         {% set length = results|length %} 
           {%  for i in range(length) %}
-            <a href="buyerPage"><img src="{{image[i]}}" width="150" height="110"></a>
+            <a href="buyerPage"><img src="{{image[i]}}" width="225" height="160"></a>
             <div>
               <a href="buyerPage" method='get'> Book title: {{results[i][0]}} 
                 Course name: {{results[i][1]}} 

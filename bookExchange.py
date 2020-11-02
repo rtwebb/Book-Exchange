@@ -26,13 +26,12 @@ def homePageTemplate():
     username = CASClient().authenticate()
 
     # need to get recently listed books to show
-    result = []
+    results = []
     try:
         database = QueryDatabase()
         database.connect()
         results = database.homeRecents()
         errorMsg = ''
-        print(result)
     except Exception as e:
         print("Error: " + str(e), file=stderr)
         errorMsg = 'An error occurred please contact email at bottom of the screen'
