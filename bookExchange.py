@@ -79,7 +79,7 @@ def searchResultsTemplate():
     # checking for null inputs and not interacting with drop-down
     if searchType == 0 or query == '':
         html = render_template('searchResults.html', results=results, searchType=searchType,
-                               username=username)  # searchKind=searchKind)
+                               username=username, query=query)  # searchKind=searchKind)
         response = make_response(html)
         return response
     # proper input (drop-down filled in and query sent)
@@ -93,7 +93,8 @@ def searchResultsTemplate():
         except Exception as e:
             print(argv[0] + ": " + str(e), file=stderr)
 
-        html = render_template('searchResults.html', results=results, searchType=searchType)  # searchKind=searchKind)
+        print('In else statement')
+        html = render_template('searchResults.html', results=results, searchType=searchType, query=query)  # searchKind=searchKind)
         response = make_response(html)
         return response
 

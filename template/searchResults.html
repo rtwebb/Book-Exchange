@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  {% block content %}
   <head>
     <style>
       div {
@@ -39,5 +40,26 @@
     {% endif %}
     
     {% include 'footer.html' %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+    <script>
+      console.log("before setQuery");
+      function setQuery() {
+        console.log("made it to setQuery");
+        var query1 = {{query|safe}};
+        console.log("value of query1: " + query1);
+        let query = $('#searchQuery');
+        console.log("value in query before: " + query.val());
+        query.val(query1);
+        console.log("value in query after: " + query.val());
+     
+      }
+
+      console.log("document");
+      $('document').ready(setQuery);
+      console.log("document after");
+    </script>
   </body>
+  {% endblock content %}
 </html>
