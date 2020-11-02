@@ -64,7 +64,11 @@
   
   <body>
       {% include 'header.html' %}
-      <h1>Welcome (users netID)</h1>
+            <form method="get" action="logout" > 
+                  <input type="submit" name="logout"  value="Logout">
+            </form>
+      <h1>Welcome {{user}}!</h1> 
+
       <div class= "divBox">
             {% if listings|length == 0: %}
                   <h3>My Listings: </h3> <span> You have no books listed, <a href="sellerPage"> list one here </a> </span>
@@ -78,9 +82,9 @@
             <th> </th>
             <th> Course name: </th>
             <th> </th>
-            <th> Course title: </th>
+            <th> Bidder ID: </th>
             <th> </th>
-            <th> Min price: </th>
+            <th> Bid price: </th>
             <th> </th>
             <th> Action: </th>
             {% if listings|length == 0: %}
@@ -96,10 +100,15 @@
                               <td></td>
                               <td>${{book[3]}}</td>
                               <td></td>
-                              <td> <form method="POST">
-                                    <input type="submit" name="accept" id="accept" value="Accept">
-                                    <input type="submit" name="decline" id="decline" value="Decline">
-                                    </form> 
+                              <td>
+                                    {% if book[4] == 'pending' %}
+                                          <form method="post", action="profilePage?list={{book[5]}}&bidder={{book[2]}}">
+                                          <input type="submit" name="accept" id="accept" value="Accept">
+                                          <input type="submit" name="decline" id="decline" value="Decline">
+                                          </form>
+                                    {% else %}
+                                          {{book[4]}}
+                                    {% endif %}
                               </td>
                         </tr>
                   {%    endfor %}
@@ -139,7 +148,7 @@
                               <td></td>
                               <td>${{book[3]}}</td>
                               <td></td>
-                              <td>${{books[4]}}</td>
+                              <td>${{book[4]}}</td>
                         </tr>
                   {%    endfor %}
             {% endif %}
@@ -178,7 +187,7 @@
                               <td></td>
                               <td>${{book[3]}}</td>
                               <td></td>
-                              <td> Pending/accepted/declined</td>
+                              <td> {{book[4]}}</td>
                         </tr>
                   {%    endfor %}
             {% endif %}

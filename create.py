@@ -51,10 +51,10 @@ def main():
 
     # ------------------------------------------------------------------------------------
 
-    listing = Listings(uniqueID=uuid4(), sellerID='vedant', isbn=123, condition='good',
+    listing = Listings(uniqueID=uuid4(), sellerID='vdhopte', isbn=123, condition='good',
                        minPrice=15.00, buyNow=30.00, listTime='16:45')
-    bid1 = Bids(buyerID='tianaf', listingID=listing.uniqueID, bid=19.99)
-    bid2 = Bids(buyerID='emmandra', listingID=listing.uniqueID, bid=25.00)
+    bid1 = Bids(buyerID='tianaf', listingID=listing.uniqueID, bid=19.99, status='pending')
+    bid2 = Bids(buyerID='emmandra', listingID=listing.uniqueID, bid=25.00, status='pending')
     image = Images(listingID=listing.uniqueID,
                    url='http://res.cloudinary.com/dijpr9qcs/image/upload/z3vnl0jbvb41kkhw8vpl.jpg')
     listing.bids = [bid1, bid2]
@@ -62,7 +62,7 @@ def main():
     session.add(listing)
     listing = Listings(uniqueID=uuid4(), sellerID='toussaint', isbn=234, condition='okay',
                        minPrice=20.00,buyNow=50.00, listTime='18:45')
-    bid = Bids(buyerID='raph', listingID=listing.uniqueID, bid=25.00)
+    bid = Bids(buyerID='raph', listingID=listing.uniqueID, bid=25.00, status='pending')
     listing.bids = [bid]
     session.add(listing)
     session.commit()

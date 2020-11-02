@@ -39,6 +39,7 @@ class Bids(Base):
     buyerID = Column(String, primary_key=True)
     listingID = Column(String, ForeignKey('listings.uniqueID'), primary_key=True)
     bid = Column(Float)
+    status = Column(String)
 
 
 class Listings(Base):

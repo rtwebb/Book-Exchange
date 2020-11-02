@@ -17,6 +17,7 @@ class QueryDatabase:
         self._connection = None
 
     # ----------------------------------------------------------------------------------
+
     def connect(self):
         DATABASE_URI = 'postgres://vjlbayumjwpewg:19bf7b1ddf47645b85ddd2a53327548' \
                        'f856e138ec4104be1b99df2f432df9f85@ec2-23-23-36-227.compute-' \
@@ -26,8 +27,11 @@ class QueryDatabase:
         self._connection = Session()
 
     # ----------------------------------------------------------------------------------
+
     def disconnect(self):
         self._connection = None
+
+    # ----------------------------------------------------------------------------------
 
     def add(self, isbn, title, authors, coursenum, coursename,
             sellerID, condition, minPrice, buyNow, listTime, url):
@@ -62,6 +66,7 @@ class QueryDatabase:
         self._connection.commit()
 
     # -----------------------------------------------------------------------------
+
     def remove(self, isbn, sellerID):
 
         # Deleting from Listings Table
@@ -106,50 +111,37 @@ class QueryDatabase:
         self._connection.commit()
 
     # ----------------------------------------------------------------------------------
+
     def search(self, signal, query):
         # signal tells me what kind of query it is: book title, isbn, course, etc
         result = []
+        newQuery = query.replace("%", "\\%")
+        newQuery = newQuery.replace("_", "\\_")
+        newQuery = '%' + newQuery.lower() + '%'
+        print(newQuery)
         if signal == 1:  # if query is by isbn
-            newQuery = query.replace("%", "!%")
-            newQuery = query.replace("_", "!_")
-            newQuery = '%' + query + '%'
-            print(newQuery)
             found = self._connection.query(Books, Courses, Listings).\
-                join(Images). \
-                filter(Listings.isbn.ilike(newQuery)). \
                 filter(Courses.isbn == Listings.isbn). \
                 filter(Books.isbn == Listings.isbn). \
+                filter(Listings.isbn.ilike(newQuery, escape='\\')). \
                 order_by(Listings.listTime).all()
         elif signal == 2:  # query is a book title
-            newQuery = query.replace("%", "!%")
-            newQuery = query.replace("_", "!_")
-            newQuery = "%" + query + "%"
-            print(newQuery)
             found = self._connection.query(Books, Courses, Listings). \
-                join(Images). \
                 filter(Listings.isbn == Books.isbn). \
-                filter(Books.title.ilike(newQuery)). \
+                filter(Books.title.ilike(newQuery, escape='\\')). \
                 filter(Courses.isbn == Books.isbn). \
                 order_by(Listings.listTime).all()
         elif signal == 3:  # query is a coursenum
-            newQuery = query.replace("%", "!%")
-            newQuery = query.replace("_", "!_")
-            newQuery = "%" + query + "%"
             found = self._connection.query(Books, Courses, Listings). \
-                join(Images). \
                 filter(Listings.isbn == Courses.isbn). \
-                filter(Courses.coursenum.ilike(newQuery)). \
+                filter(Courses.coursenum.ilike(newQuery, escape='\\')). \
                 filter(Books.isbn == Courses.isbn). \
                 order_by(Listings.listTime).all()
         else:  # search by course title
-            newQuery = query.replace("%", "!%")
-            newQuery = query.replace("_", "!_")
-            newQuery = "%" + query + "%"
             found = self._connection.query(Books, Courses, Listings). \
-                join(Images). \
                 filter(Listings.isbn == Books.isbn). \
                 filter(Books.isbn == Courses.isbn). \
-                filter(Courses.coursename.ilike(newQuery)). \
+                filter(Courses.coursename.ilike(newQuery, escape='\\')). \
                 order_by(Listings.listTime).all()
         for book, course, listing in found:
             result.append((book.title, course.coursenum, course.coursename, listing.minPrice))
@@ -158,6 +150,7 @@ class QueryDatabase:
         # have to figure out all of the search options we will have
 
     # ----------------------------------------------------------------------------------
+
     def homeRecents(self):
         result = []
         found = self._connection.query(Books, Courses, Listings). \
@@ -166,4 +159,58 @@ class QueryDatabase:
             order_by(Listings.listTime).all()
         for book, course, listing in found:
             result.append((book.title, course.coursenum, course.coursename, listing.minPrice))
+        return result
+
+    # ----------------------------------------------------------------------------------
+
+    def bidsOnMyListings(self, query):
+        result = []
+        found = self._connection.query(Books, Courses, Bids). \
+            filter(Listings.sellerID.ilike(query)). \
+            filter(Listings.uniqueID == Bids.listingID). \
+            filter(Books.isbn == Listings.isbn). \
+            filter(Listings.isbn == Courses.isbn).all()
+        for book, course, bid in found:
+            result.append((book.title, course.coursenum, bid.buyerID,
+                           bid.bid, bid.status, bid.listingID))
+        return result
+
+    # ----------------------------------------------------------------------------------
+
+    def updateStatus(self, listingID, buyerID, newStatus):
+        print('DONE')
+        found = self._connection.query(Bids).\
+            filter(Bids.buyerID == buyerID). \
+            filter(Bids.listingID == listingID).\
+            one()
+        found.status = newStatus
+        self._connection.commit()
+
+    # ----------------------------------------------------------------------------------
+
+    def myPurchases(self, query):
+        result = []
+        found = self._connection.query(Books, Courses, Listings, Bids). \
+            filter(Bids.buyerID.ilike(query)). \
+            filter(Bids.status == 'accepted'). \
+            filter(Listings.uniqueID == Bids.listingID). \
+            filter(Books.isbn == Listings.isbn). \
+            filter(Listings.isbn == Courses.isbn).all()
+        for book, course, listing, bid in found:
+            result.append((book.title, course.coursenum, course.coursename, listing.minPrice,
+                           bid.bid))
+        return result
+
+    # ----------------------------------------------------------------------------------
+
+    def myBids(self, query):
+        result = []
+        found = self._connection.query(Books, Courses, Bids). \
+            filter(Bids.buyerID.ilike(query)). \
+            filter(Listings.uniqueID == Bids.listingID). \
+            filter(Books.isbn == Listings.isbn). \
+            filter(Listings.isbn == Courses.isbn).all()
+        for book, course, bid in found:
+            result.append((book.title, course.coursenum, course.coursename, bid.bid,
+                           bid.status))
         return result
