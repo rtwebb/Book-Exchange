@@ -3,14 +3,17 @@
   {% block content %}
   <head>
     <style>
-      div {
+      div{
+        display: inline-block;
+      }
+      .info div {
         width: 220px;
-        padding: 5px;
+        padding: 1px;
         border: 2px solid gray;
         margin: 10 px;
-        display: inline-block;
-        text-align: left;
         white-space: pre-wrap;
+        display: block;
+        text-align: left;
         font-size: 10px;
       }  
 
@@ -28,11 +31,14 @@
     {% if results is not none: %}
       {% set length = results|length %} 
         {%  for i in range(length) %}
+        <div class="info">
+          <a href="buyerPage"><img src="{{image[i]}}" width="225" height="160"></a>
           <div>
             <a href="buyerPage" method='get'> Book title: {{results[i][0]}} 
               Course name: {{results[i][1]}} 
               Min price: {{results[i][3]}} ...</a> 
           </div>
+        </div>
         {% endfor %}
     {% else: %}
        <h4> No Books Found </h4>

@@ -44,7 +44,8 @@ def homePageTemplate():
         else:
             images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/z3vnl0jbvb41kkhw8vpl.jpg")
 
-    html = render_template('homePage.html', results=results, image=images, errorMsg=errorMsg, username=username)
+    html = render_template('homePage.html', results=results, image=images, 
+                            errorMsg=errorMsg, username=username)
     response = make_response(html)
     return response
 
@@ -85,8 +86,9 @@ def searchResultsTemplate():
     if searchType == 0 or query == '':
         if not results:
             results = None
+            images = None
         html = render_template('searchResults.html', results=results, searchType=searchType,
-                               username=username, query=query)
+                               username=username, query=query, image=images)
         response = make_response(html)
         return response
     # proper input (drop-down filled in and query sent)
@@ -97,12 +99,20 @@ def searchResultsTemplate():
             results = database.search(searchType, query)
             database.disconnect()
 
+            images = []
+            for result in results:
+                if result[4]:
+                    images.append(result[4][0].url)
+                else:
+                    images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/z3vnl0jbvb41kkhw8vpl.jpg")
+
         except Exception as e:
             print(argv[0] + ": " + str(e), file=stderr)
 
         print('In else statement')
         html = render_template('searchResults.html', results=results, 
-                                username=username, query=query, searchType=searchType)  # searchKind=searchKind)
+                                username=username, query=query, searchType=searchType, 
+                                image=images)  # searchKind=searchKind)
         response = make_response(html)
         return response
 
