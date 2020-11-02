@@ -46,7 +46,7 @@ def main():
     print('bids')
     print('------------------------------------')
     for bid in session.query(Bids).all():
-        print(bid.buyerID, bid.listingID, bid.bid)
+        print(bid.buyerID, bid.listingID, bid.bid, bid.status)
 
     print('------------------------------------')
     print('listings')

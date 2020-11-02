@@ -112,16 +112,16 @@ def sellerPageTemplate():
     author = request.args.get('author')
     crsnum = request.args.get('crsnum')
     crsname = request.args.get('crsname')
-    # is condition an int?
+    # is condition an int? no, it's a string
     dropDown = request.args.get('dropDown')
-    if dropDown == "poor":
-        condition = 1
-    elif dropDown == "fair":
-        condition = 2
-    elif dropDown == "good":
-        condition = 3
-    else:
-        condition = 4
+    # if dropDown == "poor":
+    #     condition = 1
+    # elif dropDown == "fair":
+    #     condition = 2
+    # elif dropDown == "good":
+    #     condition = 3
+    # else:
+    #     condition = 4
     time = datetime.now()
     listTime = time.strftime("%H:%M:%S")
     # sellerID = pull from CAS somehow
@@ -132,12 +132,13 @@ def sellerPageTemplate():
     try:
         database = QueryDatabase()
         database.connect()
-        database.add(isbn, title, [author], crsnum, crsname, "vdhopte", None, minprice, buynow, listTime, None)
+        database.add(isbn, title, [author], crsnum, crsname, username, dropDown,
+                     minprice, buynow, listTime, None)
         database.disconnect()
     except Exception as e:
         print("Error: " + str(e), file=stderr)
 
-    # when sending to profile page have a "succesfull" message display
+    # when sending to profile page have a "succesful" message display
     html = render_template('sellerPage.html', username=username)
 
     response = make_response(html)
@@ -166,22 +167,32 @@ def buyerPageTemplate():
 
 # ----------------------------------------------------------------------
 
-@app.route('/profilePage', methods=['GET'])
+@app.route('/profilePage', methods=['GET', 'POST'])
 def profilePageTemplate():
 
     username = CASClient().authenticate()
+    bid = request.args.get('list')
+    bidder = request.args.get('bidder')
+
+    database = QueryDatabase()
+    database.connect()
+
+    if 'accept' in request.form:
+        database.updateStatus(bid, bidder, 'accepted')
+    elif 'decline' in request.form:
+        database.updateStatus(bid, bidder, 'declined')
 
     # query database for the given user
+    try:
+        listings = database.auctionBids('vdhopte')
+        database.disconnect()
+    except Exception as e:
+        print("Error: " + str(e), file=stderr)
     # get books they are selling
     # if none set object to none, else pass along
     # get books that they have bid on
     # if none set object to none, else pass along
 
-    listings = []
-
-    listings.append(('The practice of coding', 'COS333', 'Programming in Advance', 15))
-    listings.append(('The practice of coding', 'COS333', 'Programming in Advance', 15))
-    listings.append(('The practice of coding', 'COS333', 'Programming in Advance', 15))
     # in html page I called the things: listings, purchases, bids
     html = render_template('profilePage.html', listings=listings, username=username)
 

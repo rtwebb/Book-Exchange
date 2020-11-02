@@ -153,3 +153,26 @@ class QueryDatabase:
         for book, course, listing in found:
             result.append((book.title, course.coursenum, course.coursename, listing.minPrice))
         return result
+
+    # ----------------------------------------------------------------------------------
+
+    def auctionBids(self, query):
+        result = []
+        found = self._connection.query(Books, Courses, Bids). \
+            filter(Listings.sellerID == query). \
+            filter(Listings.uniqueID == Bids.listingID). \
+            filter(Books.isbn == Listings.isbn). \
+            filter(Listings.isbn == Courses.isbn)
+        for book, course, bid in found:
+            result.append((book.title, course.coursenum, bid.buyerID,
+                           bid.bid, bid.status, bid.listingID))
+        return result
+
+    def updateStatus(self, listingID, buyerID, newStatus):
+        print(listingID, buyerID, newStatus)
+        found = self._connection.query(Bids).\
+            filter(Bids.buyerID == buyerID). \
+            filter(Bids.listingID == listingID).\
+            one()
+        found.status = newStatus
+        self._connection.commit()

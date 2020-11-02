@@ -2,7 +2,7 @@ from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
 test.connect()
-result = test.search(3, 'cos')
+result = test.auctionBids('vdhopte')
 test.disconnect()
 
 for row in result:

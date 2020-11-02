@@ -78,9 +78,9 @@
             <th> </th>
             <th> Course name: </th>
             <th> </th>
-            <th> Course title: </th>
+            <th> Bidder ID: </th>
             <th> </th>
-            <th> Min price: </th>
+            <th> Bid price: </th>
             <th> </th>
             <th> Action: </th>
             {% if listings|length == 0: %}
@@ -96,10 +96,15 @@
                               <td></td>
                               <td>${{book[3]}}</td>
                               <td></td>
-                              <td> <form method="POST">
-                                    <input type="submit" name="accept" id="accept" value="Accept">
-                                    <input type="submit" name="decline" id="decline" value="Decline">
-                                    </form> 
+                              <td>
+                                    {% if book[4] == 'pending' %}
+                                          <form method="post", action="profilePage?list={{book[5]}}&bidder={{book[2]}}">
+                                          <input type="submit" name="accept" id="accept" value="Accept">
+                                          <input type="submit" name="decline" id="decline" value="Decline">
+                                          </form>
+                                    {% else %}
+                                          {{book[4]}}
+                                    {% endif %}
                               </td>
                         </tr>
                   {%    endfor %}
