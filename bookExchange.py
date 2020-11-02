@@ -185,7 +185,7 @@ def profilePageTemplate():
     # if none set object to none, else pass along
 
     # in html page I called the things: listings, purchases, bids
-    html = render_template('profilePage.html', listings=listings,
+    html = render_template('profilePage.html', user=username, listings=listings,
                            purchases=purchases, bids=bids, username=username)
 
     response = make_response(html)

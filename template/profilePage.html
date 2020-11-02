@@ -64,7 +64,7 @@
   
   <body>
       {% include 'header.html' %}
-      <h1>Welcome (users netID)</h1>
+      <h1>Welcome {{user}}</h1>
       <div class= "divBox">
             {% if listings|length == 0: %}
                   <h3>My Listings: </h3> <span> You have no books listed, <a href="sellerPage"> list one here </a> </span>
