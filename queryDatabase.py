@@ -38,7 +38,7 @@ class QueryDatabase:
 
     # Function currently takes a URL but flask is passing through a file
     def add(self, isbn, title, authors, coursenum, coursename,
-            sellerID, condition, minPrice, buyNow, listTime, url):
+            sellerID, condition, minPrice, buyNow, listTime, urls):
         
         book = self._connection.query(Books).filter(Books.isbn == isbn).one_or_none()
         if book is not None:
@@ -62,10 +62,11 @@ class QueryDatabase:
         listing = Listings(uniqueID=uuid4(), sellerID=sellerID, isbn=isbn,
                            condition=condition, minPrice=minPrice,
                            buyNow=buyNow, listTime=listTime)
+        imagelist = []
+        for url in urls:
+            imagelist.append(Images(listingID=listing.uniqueID, url=url))
+        listing.images = imagelist
 
-        # image = Images(listingID=listing.uniqueID, url=url)
-
-        # listing.images = [image]
         self._connection.add(listing)
         self._connection.commit()
 
@@ -148,10 +149,8 @@ class QueryDatabase:
                 filter(Courses.coursename.ilike(newQuery, escape='\\')). \
                 order_by(Listings.listTime).all()
         for book, course, listing in found:
-            result.append((book.title, course.coursenum, course.coursename, listing.minPrice))
+            result.append((book.title, course.coursenum, course.coursename, listing.minPrice, listing.images))
         return result
-
-        # have to figure out all of the search options we will have
 
     # ----------------------------------------------------------------------------------
 
@@ -162,7 +161,7 @@ class QueryDatabase:
             filter(Listings.isbn == Courses.isbn). \
             order_by(Listings.listTime).all()
         for book, course, listing in found:
-            result.append((book.title, course.coursenum, course.coursename, listing.minPrice))
+            result.append((book.title, course.coursenum, course.coursename, listing.minPrice, listing.images))
         return result
 
     # ----------------------------------------------------------------------------------
