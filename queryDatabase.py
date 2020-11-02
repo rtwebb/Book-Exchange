@@ -33,9 +33,10 @@ class QueryDatabase:
 
     # ----------------------------------------------------------------------------------
 
+    # Function currently takes a URL but flask is passing through a file
     def add(self, isbn, title, authors, coursenum, coursename,
             sellerID, condition, minPrice, buyNow, listTime, url):
-
+        
         book = self._connection.query(Books).filter(Books.isbn == isbn).one_or_none()
         if book is not None:
             book.quantity += 1

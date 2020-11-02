@@ -109,8 +109,8 @@ def sellerPageTemplate():
     title = request.args.get('title')
     minprice = request.args.get('minprice')
     buynow = request.args.get('buynow')
-    # img = request.args.get('image')
-    # in html we need to add condition drop down; authors as a list; coursename vs coursenumber
+    img = request.args.get('image1')
+    # authors as a list; coursename vs coursenumber
     author = request.args.get('author')
     crsnum = request.args.get('crsnum')
     crsname = request.args.get('crsname')
