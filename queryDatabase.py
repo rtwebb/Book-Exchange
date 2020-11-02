@@ -166,10 +166,10 @@ class QueryDatabase:
     def auctionBids(self, query):
         result = []
         found = self._connection.query(Books, Courses, Bids). \
-            filter(Listings.sellerID == query). \
+            filter(Listings.sellerID.ilike(query)). \
             filter(Listings.uniqueID == Bids.listingID). \
             filter(Books.isbn == Listings.isbn). \
-            filter(Listings.isbn == Courses.isbn)
+            filter(Listings.isbn == Courses.isbn).all()
         for book, course, bid in found:
             result.append((book.title, course.coursenum, bid.buyerID,
                            bid.bid, bid.status, bid.listingID))
@@ -185,3 +185,7 @@ class QueryDatabase:
             one()
         found.status = newStatus
         self._connection.commit()
+
+    # ----------------------------------------------------------------------------------
+
+

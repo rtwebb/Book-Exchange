@@ -173,7 +173,7 @@ def profilePageTemplate():
             database.updateStatus(bid, bidder, 'declined')
 
         # query database for the given user
-        listings = database.auctionBids(username)
+        listings = database.auctionBids('vdhopte')
         database.disconnect()
     except Exception as e:
         print("Error: " + str(e), file=stderr)
