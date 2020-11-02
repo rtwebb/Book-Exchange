@@ -38,14 +38,14 @@ def homePageTemplate():
         errorMsg = 'An error occurred please contact email at bottom of the screen'
 
     # set cookies on search query to follow through searchResults and buyerPage
+    images = []
+    for result in results:
+        if result[4]:
+            images.append(result[4][0].url)
+        else:
+            images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/z3vnl0jbvb41kkhw8vpl.jpg")
 
- 
-    if not results:
-        if images in results[4]: 
-            image = images.url
-            print("image: " + str(image))
-
-    html = render_template('homePage.html', results=results, image=image, errorMsg=errorMsg, username=username)
+    html = render_template('homePage.html', results=results, image=images, errorMsg=errorMsg, username=username)
     response = make_response(html)
     return response
 
@@ -135,7 +135,9 @@ def sellerPageTemplate():
     try:
         database = QueryDatabase()
         database.connect()
-            images = []
+        images = []
+        print('img1', img1)
+        print('img2', img2)
         if img1 is not None:
             images.append(database.imageToURL(img1))
         if img2 is not None:
@@ -143,7 +145,7 @@ def sellerPageTemplate():
         if img3 is not None:
             images.append(database.imageToURL(img3))
 
-        database.add(isbn, title, [author], crsnum, crsname, username, dropDown,
+        database.add(isbn, title, [author], crsnum, crsname, username, condition,
                      minprice, buynow, listTime, images)
         database.disconnect()
     except Exception as e:

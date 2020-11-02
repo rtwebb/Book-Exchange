@@ -30,6 +30,14 @@
         <option value='good'>Good </option>
         <option value='veryGood'>Very good </option>
       </select>
+
+      <br>
+      * Required fields
+      <h2>Add Images</h2>
+      <input type="file" accept="image/*" name="image1">
+      <input type="file" accept="image/*" name="image2">
+      <input type="file" accept="image/*" name="image3">
+      <br>
     </form>
     <button
       type="submit"
@@ -39,13 +47,6 @@
     >
       Submit
     </button>
-    <br>  
-    * Required fields
-    <h2>Add Images</h2>
-    <input type="file" accept="image/*" name="image1">
-    <input type="file" accept="image/*" name="image2">
-    <input type="file" accept="image/*" name="image3">
-    <br>
     {% include 'footer.html' %}
   </body>
 </html>

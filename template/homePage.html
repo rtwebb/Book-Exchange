@@ -28,8 +28,8 @@
       {% if results is not none:  %}
         {% set length = results|length %} 
           {%  for i in range(length) %}
+            <a href="buyerPage"><img src="{{image[i]}}" width="150" height="110"></a>
             <div>
-              <a href="buyerPage"><img src="{{image}}" width="90" height="65"></a>
               <a href="buyerPage" method='get'> Book title: {{results[i][0]}} 
                 Course name: {{results[i][1]}} 
                 Min price: {{results[i][3]}} ...</a> 
