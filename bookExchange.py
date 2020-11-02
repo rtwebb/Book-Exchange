@@ -30,7 +30,7 @@ def homePageTemplate():
     try:
         database = QueryDatabase()
         database.connect()
-        result = database.homeRecents()
+        results = database.homeRecents()
         errorMsg = ''
         print(result)
     except Exception as e:
@@ -39,7 +39,13 @@ def homePageTemplate():
 
     # set cookies on search query to follow through searchResults and buyerPage
 
-    html = render_template('homePage.html', results=result, errorMsg=errorMsg, username=username)
+ 
+    if not results:
+        if images in results[4]: 
+            image = images.url
+            print("image: " + str(image))
+
+    html = render_template('homePage.html', results=results, image=image, errorMsg=errorMsg, username=username)
     response = make_response(html)
     return response
 
@@ -112,12 +118,14 @@ def sellerPageTemplate():
     title = request.args.get('title')
     minprice = request.args.get('minprice')
     buynow = request.args.get('buynow')
-    img = request.args.get('image1')
+    img1 = request.args.get('image1')
+    img2 = request.args.get('image2')
+    img3 = request.args.get('image3')
     # authors as a list; coursename vs coursenumber
     author = request.args.get('author')
     crsnum = request.args.get('crsnum')
     crsname = request.args.get('crsname')
-    dropDown = request.args.get('dropDown')
+    condition = request.args.get('bookCondition')
     time = datetime.now()
     listTime = time.strftime("%H:%M:%S")
 
@@ -127,8 +135,16 @@ def sellerPageTemplate():
     try:
         database = QueryDatabase()
         database.connect()
+            images = []
+        if img1 is not None:
+            images.append(database.imageToURL(img1))
+        if img2 is not None:
+            images.append(database.imageToURL(img2))
+        if img3 is not None:
+            images.append(database.imageToURL(img3))
+
         database.add(isbn, title, [author], crsnum, crsname, username, dropDown,
-                     minprice, buynow, listTime, None)
+                     minprice, buynow, listTime, images)
         database.disconnect()
     except Exception as e:
         print("Error: " + str(e), file=stderr)
