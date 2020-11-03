@@ -24,8 +24,8 @@ app.secret_key = b'\xcdt\x8dn\xe1\xbdW\x9d[}yJ\xfc\xa3~/'
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'emmandra@princeton.edu'
-app.config['MAIL_PASSWORD'] = 'shandrawright03'
+app.config['MAIL_USERNAME'] = 'tigerbookexchange@gmail.com'
+app.config['MAIL_PASSWORD'] = '123Book-Exchange'
 #app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
