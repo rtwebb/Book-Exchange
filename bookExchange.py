@@ -43,7 +43,7 @@ def homePageTemplate():
         if result[4]:
             images.append(result[4][0].url)
         else:
-            images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/z3vnl0jbvb41kkhw8vpl.jpg")
+            images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
 
     html = render_template('homePage.html', results=results, image=images, 
                             errorMsg=errorMsg, username=username)
@@ -104,7 +104,7 @@ def searchResultsTemplate():
                 if result[4]:
                     images.append(result[4][0].url)
                 else:
-                    images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/z3vnl0jbvb41kkhw8vpl.jpg")
+                    images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
 
         except Exception as e:
             print(argv[0] + ": " + str(e), file=stderr)
