@@ -20,13 +20,10 @@ app = Flask(__name__, template_folder='template')
 app.secret_key = b'\xcdt\x8dn\xe1\xbdW\x9d[}yJ\xfc\xa3~/'
 
 #email
-
-
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'tigerbookexchange@gmail.com'
 app.config['MAIL_PASSWORD'] = '123Book-Exchange'
-#app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
 mail = Mail(app)
@@ -210,22 +207,28 @@ def profilePageTemplate():
         database.connect()
 
         if 'accept' in request.form:
-            database.updateStatus(bid, bidder, 'accepted')
-           
+            bodyMsg = "Hello, " + bidder + "\n" + "\n" + "Your TigerBookExchange bid was accepted."
+            msg = Message('TigerBookExchange Bid', sender = 'tigerbookexchange@gmail.com', recipients = [bidder + '@princeton.edu'], body = bodyMsg)
+            mail.send(msg)
 
-            #mail = Mail(app)
-            #msg = Message('Hello', sender = 'yourId@gmail.com', recipients = ['id1@gmail.com'])
-            #msg.body = "Hello Flask message sent from Flask-Mail"
-            #mail.send(msg)
+            database.updateStatus(bid, bidder, 'accepted')
 
         elif 'decline' in request.form:
+            bodyMsg = "Hello, " + bidder + "\n" + "\n" + "Your TigerBookExchange bid was declined."
+            msg = Message('TigerBookExchange Bid', sender = 'tigerbookexchange@gmail.com', recipients = [bidder + '@princeton.edu'], body = bodyMsg)
+            mail.send(msg)
+
             database.updateStatus(bid, bidder, 'declined')
 
         # query database for the given user
         listings = database.bidsOnMyListings('vdhopte')
+        #use this to reset the forms in mylistings in the profilepage
+        #for book in listings:
+            #database.updateStatus(book[5], book[2], 'pending')
         purchases = database.myPurchases('tianaf')
         bids = database.myBids('tianaf')
         database.disconnect()
+
     except Exception as e:
         print("Error: " + str(e), file=stderr)
     # get books they are selling
@@ -254,21 +257,9 @@ def aboutUsTemplate():
 
 
 # ----------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------
-
-
-
-
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
 @app.route('/logout', methods=['GET'])
 def logout():
     casClient = CASClient()
-
-    msg = Message('Testing', sender = 'emmandra@princeton.edu', recipients = ['emmandrawright@gmail.com'], body ='it worked')
-    mail.send(msg)
-    print("sent email")
-        
     casClient.authenticate()
     casClient.logout()
