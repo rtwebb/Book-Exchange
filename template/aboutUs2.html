@@ -2,11 +2,37 @@
 
 <html>
     <head>
-        About Us 
+        <Title> About Us </Title>
+        <!--  <link rel="stylesheet" href="aboutUs2.css"> --> 
+
+         <link
+              rel="stylesheet"
+              href="{{ url_for('static', filename='css/aboutUs2.css') }}"
+            />
+          </head> 
+
     </head>
+
+    <h1>Meet the Team</h1>
 
     <body>
         {% include 'header.html' %}
+
+        <div class="teamMember"> 
+            <h2> <strong>Robert Webb</strong></h2>
+            <p> Description </p>
+
+           <!-- <img src=  --> 
+
+        </div>
+
+      <!--  <table> 
+
+
+
+
+
+        </table>    -->
 
 
         {% include footer.html}
