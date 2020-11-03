@@ -229,7 +229,7 @@ def profilePageTemplate():
 def aboutUsTemplate():
     username = CASClient().authenticate()
 
-    html = render_template('aboutUs.html', username=username)
+    html = render_template('aboutUs2.html', username=username)
 
     response = make_response(html)
     return response
