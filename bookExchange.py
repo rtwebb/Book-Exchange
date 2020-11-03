@@ -20,7 +20,7 @@ app = Flask(__name__, template_folder='template')
 app.secret_key = b'\xcdt\x8dn\xe1\xbdW\x9d[}yJ\xfc\xa3~/'
 
 #email
-mail = Mail(app)
+
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -28,6 +28,8 @@ app.config['MAIL_USERNAME'] = 'emmandra@princeton.edu'
 app.config['MAIL_PASSWORD'] = 'shandrawright03'
 #app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
+
+mail = Mail(app)
 
 # -----------------------------------------------------------------------
 @app.route('/', methods=['GET'])
@@ -209,10 +211,9 @@ def profilePageTemplate():
 
         if 'accept' in request.form:
             database.updateStatus(bid, bidder, 'accepted')
-
             #msg = Message('Testing', sender = 'emmandra@princeton.edu', recipients = ['emmandrawright@gmail.com'], body ='it worked')
             #mail.send(msg)
-            #print("sent email")
+            print("sent email")
 
             #mail = Mail(app)
             #msg = Message('Hello', sender = 'yourId@gmail.com', recipients = ['id1@gmail.com'])
@@ -255,6 +256,13 @@ def aboutUsTemplate():
 
 
 # ----------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------
+
+
+
+
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
 @app.route('/logout', methods=['GET'])
 def logout():
