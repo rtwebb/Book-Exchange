@@ -53,7 +53,8 @@ def homePageTemplate():
         if result[4]:
             images.append(result[4][0].url)
         else:
-            images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+            images.append(
+                "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
 
     uniqueIds = []
     for result in results:
@@ -77,7 +78,7 @@ def searchResultsTemplate():
     # set cookies on search query to follow through searchResults and buyerPage
 
     # drop down
-    # check if it is equal to value 
+    # check if it is equal to value
     dropDown = request.args.get('dropDown')
     print("Drop-down: ", dropDown)
     if dropDown == "isbn":
@@ -121,7 +122,8 @@ def searchResultsTemplate():
                 if result[4]:
                     images.append(result[4][0].url)
                 else:
-                    images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+                    images.append(
+                        "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
 
             uniqueIds = []
             for result in results:
@@ -197,25 +199,33 @@ def buyerPageTemplate():
     uniqueId = request.args.get('bookid')
 
     # how to check for malicious injection ...????????????????????
-    # if check for if uniqueID is none 
-    
+    # if check for if uniqueID is none
+    if (uniqueId == None):
+        return errorMsg('Invalid book ID')
+
     try:
         database = QueryDatabase()
         database.connect()
-        results = database.getDescription # whatever she called it and pass args 
+        results = database.getDescription  # whatever she called it and pass args
+
         errorMsg = ''
     except Exception as e:
         print("Error: " + str(e), file=stderr)
         errorMsg = 'An error occurred please contact email at bottom of the screen'
 
-    # buyerPage needs link back to home page 
+    # buyerPage needs link back to home page
 
     # If user makes a bid
     # check to make sure if they are sure about the amount
     # if it is correct show success page and have a link to go back to homePage
     # if no stay on buyer page
 
-    html = render_template('buyerPage.html', username=username)
+    html = render_template('buyerPage.html', results=results(uniqueId))
+
+    # from results, we get
+    # listing.sellerID, listing.isbn,
+    # listing.condition, listing.minPrice, listing.buyNow, listing.listTime, listing.images))
+    # in this order
 
     response = make_response(html)
     return response
@@ -234,7 +244,8 @@ def profilePageTemplate():
         database.connect()
 
         if 'accept' in request.form:
-            bodyMsg = "Hello, " + bidder + "\n" + "\n" + "Your TigerBookExchange bid was accepted."
+            bodyMsg = "Hello, " + bidder + "\n" + "\n" + \
+                "Your TigerBookExchange bid was accepted."
             msg = Message('TigerBookExchange Bid', sender='tigerbookexchange@gmail.com',
                           recipients=[bidder + '@princeton.edu'], body=bodyMsg)
             mail.send(msg)
@@ -242,7 +253,8 @@ def profilePageTemplate():
             database.updateStatus(bid, bidder, 'accepted')
 
         elif 'decline' in request.form:
-            bodyMsg = "Hello, " + bidder + "\n" + "\n" + "Your TigerBookExchange bid was declined."
+            bodyMsg = "Hello, " + bidder + "\n" + "\n" + \
+                "Your TigerBookExchange bid was declined."
             msg = Message('TigerBookExchange Bid', sender='tigerbookexchange@gmail.com',
                           recipients=[bidder + '@princeton.edu'], body=bodyMsg)
             mail.send(msg)

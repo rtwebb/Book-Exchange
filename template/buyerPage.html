@@ -5,6 +5,8 @@
   </head>
   <body>
     {% include 'header.html' %}
+
+
     <h1>Title of Book</h1>
     <img src="tiger.jpg"></img>
     <div>Lowest Ask:</div>
@@ -12,7 +14,7 @@
       <div>Make a Bid:</div>
       <button>SUBMIT</button>
     </div>
-    <div>Seller:</div>
+    <div>Seller: {{results}}</div>
     {% include 'footer.html' %}
   </body>
 </html>
