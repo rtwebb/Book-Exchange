@@ -1,15 +1,25 @@
 
 
 body {
-    background: #ff8f00;
+    position: relative;
+    width: 100%;
+    background: black;
+    text-align: center
 }
 
 .teamMember {
-color: grey;
-background: white;
+width: 100%;
+color: black;
+background: black;
 width: 150px;
 height: 100px;
+text-align: center;
+position: relative;
 
+}
+
+h1{
+    text-align: center;
 }
 
 
