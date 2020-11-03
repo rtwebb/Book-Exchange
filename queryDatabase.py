@@ -64,7 +64,6 @@ class QueryDatabase:
                            buyNow=buyNow, listTime=listTime)
         imagelist = []
         for url in urls:
-            print('add url', url)
             imagelist.append(Images(listingID=listing.uniqueID, url=url))
         listing.images = imagelist
 
@@ -229,11 +228,10 @@ class QueryDatabase:
 
         DEFAULT_TAG = "python_sample_basic"
 
-        print("--- Upload a local file")
+        print("--- Uploading image file")
         response = upload(image, tags=DEFAULT_TAG)
         url, options = cloudinary_url(
             response['public_id'],
             format=response['format'],
         )
-        print('imagetourl', url)
         return url

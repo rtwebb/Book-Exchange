@@ -6,7 +6,7 @@
   <body>
     {% include 'header.html' %}
     <h1>Add a new Listing</h1>
-    <form action="sellerPage" method="get" id="submitBookForm">
+    <form action="sellerPage" method="POST" id="submitBookForm" enctype="multipart/form-data">
       *Book Title:
       <input type="text" name="title" />
       *ISBN:
@@ -43,8 +43,7 @@
       type="submit"
       form="submitBookForm"
       onclick="confirm('Are you sure you would like to list this book?')"
-      value="Submit"
-    >
+      value="Submit">
       Submit
     </button>
     {% include 'footer.html' %}
