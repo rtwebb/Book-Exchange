@@ -1,11 +1,12 @@
 # --------------------------------------------------------------------------
 # bookExchange.py
 # book-exchange flask file, that works as web-framework
-# Author: Toussaint, Tiana
+# Author: Toussaint, Tiana, Emmandra
 # -----------------------------------------------------------------------
 from sys import stderr, argv
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
+#from flask_mail import Mail, Message
 from queryDatabase import QueryDatabase
 from datetime import datetime
 from CASClient import CASClient
@@ -200,6 +201,20 @@ def profilePageTemplate():
 
         if 'accept' in request.form:
             database.updateStatus(bid, bidder, 'accepted')
+
+            #email
+            #app.config['MAIL_SERVER']='smtp.gmail.com'
+            #app.config['MAIL_PORT'] = 465
+            #app.config['MAIL_USERNAME'] = 'yourId@gmail.com'
+            #app.config['MAIL_PASSWORD'] = '*****'
+            #app.config['MAIL_USE_TLS'] = False
+            #app.config['MAIL_USE_SSL'] = True
+
+            #mail = Mail(app)
+            #msg = Message('Hello', sender = 'yourId@gmail.com', recipients = ['id1@gmail.com'])
+            #msg.body = "Hello Flask message sent from Flask-Mail"
+            #mail.send(msg)
+
         elif 'decline' in request.form:
             database.updateStatus(bid, bidder, 'declined')
 
