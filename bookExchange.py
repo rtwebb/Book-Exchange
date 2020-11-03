@@ -50,7 +50,6 @@ def homePageTemplate():
     response = make_response(html)
     return response
 
-
 # -----------------------------------------------------------------------
 @app.route('/searchResults', methods=['GET'])
 def searchResultsTemplate():
@@ -252,7 +251,6 @@ def aboutUsTemplate():
 
 # ----------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
-# NEED TO MAKE A LOGOUT BUTTON
 @app.route('/logout', methods=['GET'])
 def logout():
     casClient = CASClient()
