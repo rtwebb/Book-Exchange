@@ -124,9 +124,9 @@ def searchResultsTemplate():
                     images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
 
             uniqueIds = []
-                for result in results:
-            if result[5]:
-                uniqueIds.append(result[5])
+            for result in results:
+                if result[5]:
+                    uniqueIds.append(result[5])
 
         except Exception as e:
             print(argv[0] + ": " + str(e), file=stderr)

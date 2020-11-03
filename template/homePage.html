@@ -33,7 +33,7 @@
           {%  for i in range(length) %}
             
             <div class="info">
-              {% set url = "buyerPage?bookid=" + uniqueIds[i]}
+              {% set url = "buyerPage?bookid=" + uniqueIds[i] %}
               <a href={{url}}><img src="{{image[i]}}" width="225" height="160"></a>
               <div>
               <a href={{url}} method='get'> Book title: {{results[i][0]}} 
