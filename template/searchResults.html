@@ -32,9 +32,10 @@
       {% set length = results|length %} 
         {%  for i in range(length) %}
         <div class="info">
-          <a href="buyerPage"><img src="{{image[i]}}" width="225" height="160"></a>
+          {% set url = "buyerPage?bookid=" + uniqueIds[i]}
+          <a href={{url}}><img src="{{image[i]}}" width="225" height="160"></a>
           <div>
-            <a href="buyerPage" method='get'> Book title: {{results[i][0]}} 
+            <a href={{url}} method='get'> Book title: {{results[i][0]}} 
               Course name: {{results[i][1]}} 
               Min price: {{results[i][3]}} ...</a> 
           </div>
