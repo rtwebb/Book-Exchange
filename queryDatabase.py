@@ -73,25 +73,22 @@ class QueryDatabase:
 
     # -----------------------------------------------------------------------------
 
-    def remove(self, isbn, sellerID):
+    def remove(self, isbn, uniqueID):
 
         # Deleting from Listings Table
-        listObj = Listings.query.filter(Listings.isbn == isbn). \
-            filter(Listings.sellerID == sellerID)
+        listObj = Listings.query.filter(Listings.uniqueID == uniqueID)
         # listObj = seld._connection.query(Listings).filter(Listings.isbn==isbn) .\
         # filter(Listings.sellerID == sellerID)
         self._connection.delete(listObj)
 
         # Deleting from Images Table
-        imgObj = Images.query.filter(Images.isbn == isbn). \
-            filter(Images.sellerID == sellerID)
+        imgObj = Images.query.filter(Images.listingID == uniqueID)
         # imgObj = self._connection.query(Images).filter(Images.isbn==isbn) .\
         # filter(Images.sellerID == sellerID)
         self._connecton.delete(imgObj)
 
         # Deleting from Bids Table
-        bidObj = Bids.query.filter(Bids.isbn == isbn). \
-            filter(Bids.sellerID == sellerID)
+        bidObj = Bids.query.filter(Bids.listingID == uniqueID)
         # bidObj = self._connection.query(Bids).filter(Bids.isbn==isbn) .\
         # filter(Bids.sellerID == sellerID)
         self._connecton.delete(bidObj)
@@ -111,8 +108,10 @@ class QueryDatabase:
             courseObj = Courses.query.filter(Courses.isbn == isbn)
             # courseObj = self._connection.query(Courses).filter(Courses.isbn==isbn)
             self._connection.delete(authObj)
+            self._connection.delete(courseObj)
+            self._connection.delete(bookObj)
 
-        self._connection.delete(bookObj)
+        
 
         self._connection.commit()
 

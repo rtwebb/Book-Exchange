@@ -1,11 +1,12 @@
 # --------------------------------------------------------------------------
 # bookExchange.py
 # book-exchange flask file, that works as web-framework
-# Author: Toussaint, Tiana
+# Author: Toussaint, Tiana, Emmandra
 # -----------------------------------------------------------------------
 from sys import stderr, argv
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
+#from flask_mail import Mail, Message
 from queryDatabase import QueryDatabase
 from datetime import datetime
 from CASClient import CASClient
@@ -43,13 +44,12 @@ def homePageTemplate():
         if result[4]:
             images.append(result[4][0].url)
         else:
-            images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/z3vnl0jbvb41kkhw8vpl.jpg")
+            images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
 
     html = render_template('homePage.html', results=results, image=images, 
                             errorMsg=errorMsg, username=username)
     response = make_response(html)
     return response
-
 
 # -----------------------------------------------------------------------
 @app.route('/searchResults', methods=['GET'])
@@ -105,7 +105,7 @@ def searchResultsTemplate():
                 if result[4]:
                     images.append(result[4][0].url)
                 else:
-                    images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/z3vnl0jbvb41kkhw8vpl.jpg")
+                    images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
 
         except Exception as e:
             print(argv[0] + ": " + str(e), file=stderr)
@@ -201,6 +201,20 @@ def profilePageTemplate():
 
         if 'accept' in request.form:
             database.updateStatus(bid, bidder, 'accepted')
+
+            #email
+            #app.config['MAIL_SERVER']='smtp.gmail.com'
+            #app.config['MAIL_PORT'] = 465
+            #app.config['MAIL_USERNAME'] = 'yourId@gmail.com'
+            #app.config['MAIL_PASSWORD'] = '*****'
+            #app.config['MAIL_USE_TLS'] = False
+            #app.config['MAIL_USE_SSL'] = True
+
+            #mail = Mail(app)
+            #msg = Message('Hello', sender = 'yourId@gmail.com', recipients = ['id1@gmail.com'])
+            #msg.body = "Hello Flask message sent from Flask-Mail"
+            #mail.send(msg)
+
         elif 'decline' in request.form:
             database.updateStatus(bid, bidder, 'declined')
 
@@ -230,7 +244,7 @@ def profilePageTemplate():
 def aboutUsTemplate():
     username = CASClient().authenticate()
 
-    html = render_template('aboutUs.html', username=username)
+    html = render_template('aboutUs2.html', username=username)
 
     response = make_response(html)
     return response
@@ -238,7 +252,6 @@ def aboutUsTemplate():
 
 # ----------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
-# NEED TO MAKE A LOGOUT BUTTON
 @app.route('/logout', methods=['GET'])
 def logout():
     casClient = CASClient()
