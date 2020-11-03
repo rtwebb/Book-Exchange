@@ -36,7 +36,8 @@ def homePageTemplate():
         print("Error: " + str(e), file=stderr)
         errorMsg = 'An error occurred please contact email at bottom of the screen'
 
-    # set cookies on search query to follow through searchResults and buyerPage
+    # getting images corresponding to each book
+    # if no image was uploaded - using a stock photo
     images = []
     for result in results:
         if result[4]:
