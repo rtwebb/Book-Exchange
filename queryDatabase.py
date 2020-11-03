@@ -39,7 +39,7 @@ class QueryDatabase:
     # Function currently takes a URL but flask is passing through a file
     def add(self, isbn, title, authors, coursenum, coursename,
             sellerID, condition, minPrice, buyNow, listTime, urls):
-        
+
         book = self._connection.query(Books).filter(Books.isbn == isbn).one_or_none()
         if book is not None:
             book.quantity += 1
@@ -110,8 +110,6 @@ class QueryDatabase:
             self._connection.delete(courseObj)
             self._connection.delete(bookObj)
 
-        
-
         self._connection.commit()
 
     # ----------------------------------------------------------------------------------
@@ -124,7 +122,7 @@ class QueryDatabase:
         newQuery = '%' + newQuery.lower() + '%'
         print(newQuery)
         if signal == 1:  # if query is by isbn
-            found = self._connection.query(Books, Courses, Listings).\
+            found = self._connection.query(Books, Courses, Listings). \
                 filter(Courses.isbn == Listings.isbn). \
                 filter(Books.isbn == Listings.isbn). \
                 filter(Listings.isbn.ilike(newQuery, escape='\\')). \
@@ -148,7 +146,8 @@ class QueryDatabase:
                 filter(Courses.coursename.ilike(newQuery, escape='\\')). \
                 order_by(Listings.listTime).all()
         for book, course, listing in found:
-            result.append((book.title, course.coursenum, course.coursename, listing.minPrice, listing.images))
+            result.append((book.title, course.coursenum, course.coursename, listing.minPrice, listing.images,
+                           listing.uniqueID))
         return result
 
     # ----------------------------------------------------------------------------------
@@ -160,7 +159,8 @@ class QueryDatabase:
             filter(Listings.isbn == Courses.isbn). \
             order_by(Listings.listTime).all()
         for book, course, listing in found:
-            result.append((book.title, course.coursenum, course.coursename, listing.minPrice, listing.images))
+            result.append((book.title, course.coursenum, course.coursename, listing.minPrice, listing.images,
+                           listing.uniqueID))
         return result
 
     # ----------------------------------------------------------------------------------
@@ -181,9 +181,9 @@ class QueryDatabase:
 
     def updateStatus(self, listingID, buyerID, newStatus):
         print('DONE')
-        found = self._connection.query(Bids).\
+        found = self._connection.query(Bids). \
             filter(Bids.buyerID == buyerID). \
-            filter(Bids.listingID == listingID).\
+            filter(Bids.listingID == listingID). \
             one()
         found.status = newStatus
         self._connection.commit()
@@ -225,7 +225,6 @@ class QueryDatabase:
             api_key="867126563973785",
             api_secret="tvtXgGn_OL2RzA1YxScf3nwxpPE"
         )
-
         DEFAULT_TAG = "python_sample_basic"
 
         print("--- Uploading image file")
@@ -235,3 +234,14 @@ class QueryDatabase:
             format=response['format'],
         )
         return url
+
+    # ----------------------------------------------------------------------------------
+
+    def getDescription(self, uniqueID):
+        result = []
+        found = self._connection.query(Listings). \
+            filter(Listings.uniqueID == uniqueID).all()
+        for listing in found:
+            result.append((listing.sellerID, listing.isbn, listing.condition, listing.minPrice,
+                           listing.buyNow, listing.listTime, listing.images))
+        return result
