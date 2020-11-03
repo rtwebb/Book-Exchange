@@ -202,7 +202,7 @@ def buyerPageTemplate():
     try:
         database = QueryDatabase()
         database.connect()
-        results = database. # whatever she called it and pass args 
+        results = database.getDescription # whatever she called it and pass args 
         errorMsg = ''
     except Exception as e:
         print("Error: " + str(e), file=stderr)
