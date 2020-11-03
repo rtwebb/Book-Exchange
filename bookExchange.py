@@ -211,9 +211,7 @@ def profilePageTemplate():
 
         if 'accept' in request.form:
             database.updateStatus(bid, bidder, 'accepted')
-            #msg = Message('Testing', sender = 'emmandra@princeton.edu', recipients = ['emmandrawright@gmail.com'], body ='it worked')
-            #mail.send(msg)
-            print("sent email")
+           
 
             #mail = Mail(app)
             #msg = Message('Hello', sender = 'yourId@gmail.com', recipients = ['id1@gmail.com'])
@@ -267,5 +265,10 @@ def aboutUsTemplate():
 @app.route('/logout', methods=['GET'])
 def logout():
     casClient = CASClient()
+
+    msg = Message('Testing', sender = 'emmandra@princeton.edu', recipients = ['emmandrawright@gmail.com'], body ='it worked')
+    mail.send(msg)
+    print("sent email")
+        
     casClient.authenticate()
     casClient.logout()
