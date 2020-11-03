@@ -101,7 +101,7 @@
                               <td>${{book[3]}}</td>
                               <td></td>
                               <td>
-                                    {% if book[4] == 'pending' %}
+                                    {% if book[4] == 'accepted' %}
                                           <form method="post", action="profilePage?list={{book[5]}}&bidder={{book[2]}}">
                                           <input type="submit" name="accept" id="accept" value="Accept">
                                           <input type="submit" name="decline" id="decline" value="Decline">

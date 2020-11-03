@@ -222,6 +222,7 @@ def profilePageTemplate():
             database.updateStatus(bid, bidder, 'declined')
 
         # query database for the given user
+        database.updateStatus(bid, bidder, 'pending')
         listings = database.bidsOnMyListings('vdhopte')
         purchases = database.myPurchases('tianaf')
         bids = database.myBids('tianaf')
