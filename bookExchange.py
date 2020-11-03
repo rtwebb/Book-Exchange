@@ -148,7 +148,7 @@ def sellerPageTemplate():
         crsname = request.form.get('crsname')
         condition = request.form.get('bookCondition')
         time = datetime.now()
-        listTime = time.strftime("%H:%M:%S")
+        listTime = time.strftime("%m:%d:%Y:%H:%M:%S")
 
         # confirmation JS stuff
 
