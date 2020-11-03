@@ -3,14 +3,13 @@
 body {
     position: relative;
     width: 100%;
-    background: rgb(233, 18, 18);
     text-align: center
 }
 
 .teamMember {
 width: 100%;
 color: black;
-background: black;
+background: #ff800f;
 width: 150px;
 height: 100px;
 text-align: center;
