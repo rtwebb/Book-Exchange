@@ -194,6 +194,20 @@ def sellerPageTemplate():
 def buyerPageTemplate():
     username = CASClient().authenticate()
 
+    uniqueId = request.args.get('bookid')
+
+    # how to check for malicious injection ...????????????????????
+    # if check for if uniqueID is none 
+    
+    try:
+        database = QueryDatabase()
+        database.connect()
+        results = database. # whatever she called it and pass args 
+        errorMsg = ''
+    except Exception as e:
+        print("Error: " + str(e), file=stderr)
+        errorMsg = 'An error occurred please contact email at bottom of the screen'
+
     # buyerPage needs link back to home page 
 
     # If user makes a bid
