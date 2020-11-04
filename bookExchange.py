@@ -42,10 +42,12 @@ def homePageTemplate():
         database.connect()
         results = database.homeRecents()
         errorMsg = ''
+        database.disconnect()
     except Exception as e:
         print("Error: " + str(e), file=stderr)
         errorMsg = 'An error occurred please contact email at bottom of the screen'
-
+        database.disconnect()
+        
     # getting images corresponding to each book
     # if no image was uploaded - using a stock photo
     images = []
