@@ -7,14 +7,19 @@
     {% include 'header.html' %}
 
 
-    <h1>Title of Book</h1>
-    <img src="tiger.jpg"></img>
-    <div>Lowest Ask:</div>
+    <h1>Title of Book (filler for ISBN: {{results[1]}}</h1>
+    <img src="https://images.unsplash.com/photo-1494548162494-384bba4ab999?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" width="225" height="160"></img>
+    <div>Lowest Ask: {{results[3]}}</div>
     <div>
       <div>Make a Bid:</div>
       <button>SUBMIT</button>
     </div>
-    <div>Seller: {{results}}</div>
+    <div>Seller: {{results[0]}}</div>
     {% include 'footer.html' %}
   </body>
 </html>
+
+<!-- # from results, we get
+    # listing.sellerID, listing.isbn,
+    # listing.condition, listing.minPrice, listing.buyNow, listing.listTime, listing.images))
+    # in this order -->

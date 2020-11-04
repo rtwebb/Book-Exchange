@@ -220,7 +220,7 @@ def buyerPageTemplate():
     # if it is correct show success page and have a link to go back to homePage
     # if no stay on buyer page
 
-    html = render_template('buyerPage.html', results=results(uniqueId))
+    html = render_template('buyerPage.html', results=results(uniqueId)[0])
 
     # from results, we get
     # listing.sellerID, listing.isbn,
