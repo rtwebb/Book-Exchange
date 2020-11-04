@@ -54,18 +54,19 @@
     <script>
       console.log("before setQuery");
       function setQuery() {
-        var query1 = {{query|safe}};
+        query1 = "" + "{{query|safe}}";
         let query = $('#searchQuery');
 
         query.val(query1);
 
-        var searchType = {{searchType|safe}};
+        var searchType = "{{searchType|safe}}";
         console.log(searchType);
         let dropDown = $('#searchType1');
         if (searchType == 1){
           dropDown.val("isbn");
         }
         else if (searchType == 2){
+          console.log("inside #2")
           dropDown.val("title");
         }
         else if(searchType == 3){
