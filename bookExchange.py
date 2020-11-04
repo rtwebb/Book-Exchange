@@ -208,12 +208,17 @@ def buyerPageTemplate():
     try:
         database = QueryDatabase()
         database.connect()
-        results = database.getDescription  # whatever she called it and pass args
-
+        results = database.getDescription(uniqueId)  # whatever she called it and pass args
+        database.disconnect()
         errorMsg = ''
     except Exception as e:
         print("Error: " + str(e), file=stderr)
         errorMsg = 'An error occurred please contact email at bottom of the screen'
+    images = []
+    for result in results:
+        if result[6]:
+            images.append(result[6][0].url)
+    print(images)
 
     # buyerPage needs link back to home page
 
@@ -222,7 +227,7 @@ def buyerPageTemplate():
     # if it is correct show success page and have a link to go back to homePage
     # if no stay on buyer page
 
-    html = render_template('buyerPage.html', results=results(uniqueId)[0])
+    html = render_template('buyerPage.html', results=results[0], images=images)
 
     # from results, we get
     # listing.sellerID, listing.isbn,

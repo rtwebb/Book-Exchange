@@ -6,10 +6,12 @@
   <body>
     {% include 'header.html' %}
 
+    <h1>{{results[7]}}</h1>
+    <img src={{images[0]}} width="225" height="160"></img>
+    <div>ISBN: {{results[1]}}</div>
 
-    <h1>Title of Book (filler for ISBN: {{results[1]}}</h1>
-    <img src="https://images.unsplash.com/photo-1494548162494-384bba4ab999?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" width="225" height="160"></img>
     <div>Lowest Ask: {{results[3]}}</div>
+    <div>Buy Now: {{results[4]}}</div>
     <div>
       <div>Make a Bid:<form></form></div>
       <button>SUBMIT</button>
@@ -20,6 +22,6 @@
 </html>
 
 <!-- # from results, we get
-    # listing.sellerID, listing.isbn,
-    # listing.condition, listing.minPrice, listing.buyNow, listing.listTime, listing.images))
-    # in this order -->
+    (listing.sellerID, listing.isbn, listing.condition, listing.minPrice,
+                           listing.buyNow, listing.listTime, listing.images, book.title,
+                           book.authors[0].name, course.coursenum, course.coursename)
