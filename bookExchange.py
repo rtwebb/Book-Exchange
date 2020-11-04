@@ -219,6 +219,7 @@ def buyerPageTemplate():
     for result in results:
         if result[6]:
             images.append(result[6][0].url)
+    print(results)
 
     if request.method == 'POST':
         buyerID = username
@@ -227,7 +228,7 @@ def buyerPageTemplate():
 
         database = QueryDatabase()
         database.connect()
-        results = database.addBid(buyerID, uniqueId, bid)  # whatever she called it and pass args
+        database.addBid(buyerID, uniqueId, bid)  # whatever she called it and pass args
         database.disconnect()
     # buyerPage needs link back to home page
     # If user makes a bid
@@ -235,7 +236,7 @@ def buyerPageTemplate():
     # if it is correct show success page and have a link to go back to homePage
     # if no stay on buyer page
 
-    html = render_template('buyerPage.html', results=results, images=images, listing=uniqueId)
+    html = render_template('buyerPage.html', results=results[0], images=images, listing=uniqueId)
     response = make_response(html)
     return response
 

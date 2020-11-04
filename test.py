@@ -6,7 +6,7 @@ result = test.myBids('tianaf')
 test.disconnect()
 
 for row in result:
-    print('row', row)
+    print(row)
 
 # from sys import argv, stderr, exit
 # from sqlalchemy import create_engine

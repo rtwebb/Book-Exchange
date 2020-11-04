@@ -209,13 +209,13 @@ class QueryDatabase:
 
     def myBids(self, query):
         result = []
-        found = self._connection.query(Books, Courses, Bids). \
+        found = self._connection.query(Bids, Books, Courses). \
+            filter(Bids.buyerID.contains(query)). \
             filter(Listings.uniqueID == Bids.listingID). \
             filter(Books.isbn == Listings.isbn). \
-            filter(Books.isbn == Courses.isbn). \
-            filter(Bids.buyerID.ilike(query)). \
+            filter(Courses.isbn == Books.isbn). \
             all()
-        for book, course, bid in found:
+        for bid, book, course in found:
             result.append((book.title, course.coursenum, course.coursename, bid.bid,
                            bid.status))
         return result
