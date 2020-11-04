@@ -2,11 +2,11 @@ from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
 test.connect()
-result = test.bidsOnMyListings('tianaf')
+result = test.myBids('tianaf')
 test.disconnect()
 
 for row in result:
-    print(row)
+    print('row', row)
 
 # from sys import argv, stderr, exit
 # from sqlalchemy import create_engine

@@ -194,16 +194,17 @@ def sellerPageTemplate():
 
 # -----------------------------------------------------------------------
 
-@app.route('/buyerPage', methods=['GET'])
+@app.route('/buyerPage', methods=['GET', 'POST'])
 def buyerPageTemplate():
     username = CASClient().authenticate()
 
     uniqueId = request.args.get('bookid')
+    print('uniqueID', uniqueId)
 
     # how to check for malicious injection ...????????????????????
     # if check for if uniqueID is none
-    if (uniqueId == None):
-        return errorMsg('Invalid book ID')
+    # if (uniqueId == None):
+    #     return errorMsg('Invalid book ID')
 
     try:
         database = QueryDatabase()
@@ -218,22 +219,23 @@ def buyerPageTemplate():
     for result in results:
         if result[6]:
             images.append(result[6][0].url)
-    print(images)
 
+    if request.method == 'POST':
+        buyerID = username
+        bid = request.form.get('bid')
+        print('bid', bid)
+
+        database = QueryDatabase()
+        database.connect()
+        results = database.addBid(buyerID, uniqueId, bid)  # whatever she called it and pass args
+        database.disconnect()
     # buyerPage needs link back to home page
-
     # If user makes a bid
     # check to make sure if they are sure about the amount
     # if it is correct show success page and have a link to go back to homePage
     # if no stay on buyer page
 
-    html = render_template('buyerPage.html', results=results[0], images=images)
-
-    # from results, we get
-    # listing.sellerID, listing.isbn,
-    # listing.condition, listing.minPrice, listing.buyNow, listing.listTime, listing.images))
-    # in this order
-
+    html = render_template('buyerPage.html', results=results, images=images, listing=uniqueId)
     response = make_response(html)
     return response
 

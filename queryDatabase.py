@@ -210,10 +210,11 @@ class QueryDatabase:
     def myBids(self, query):
         result = []
         found = self._connection.query(Books, Courses, Bids). \
-            filter(Bids.buyerID.ilike(query)). \
             filter(Listings.uniqueID == Bids.listingID). \
             filter(Books.isbn == Listings.isbn). \
-            filter(Listings.isbn == Courses.isbn).all()
+            filter(Books.isbn == Courses.isbn). \
+            filter(Bids.buyerID.ilike(query)). \
+            all()
         for book, course, bid in found:
             result.append((book.title, course.coursenum, course.coursename, bid.bid,
                            bid.status))
@@ -248,5 +249,12 @@ class QueryDatabase:
         for listing, book, course in found:
             result.append((listing.sellerID, listing.isbn, listing.condition, listing.minPrice,
                            listing.buyNow, listing.listTime, listing.images, book.title,
-                           book.authors[0].name, course.coursenum, course.coursename))
+                           book.authors[0].name, course.coursenum, course.coursename, listing.uniqueID))
         return result
+
+    # ----------------------------------------------------------------------------------
+
+    def addBid(self, buyerID, listingID, bid):
+        newBid = Bids(buyerID=buyerID, listingID=listingID, bid=bid, status='pending')
+        self._connection.add(newBid)
+        self._connection.commit()

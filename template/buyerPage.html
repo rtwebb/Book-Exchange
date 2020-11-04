@@ -8,15 +8,28 @@
 
     <h1>{{results[7]}}</h1>
     <img src={{images[0]}} width="225" height="160"></img>
+    <div>Authors: {{results[8]}}</div>
     <div>ISBN: {{results[1]}}</div>
-
+    <div>Course: {{results[9]}} -- {{results[10]}}</div>
+    <hr>
+    <div>Seller: {{results[0]}}</div>
+    <div>Condition: {{results[2]}}</div>
     <div>Lowest Ask: {{results[3]}}</div>
     <div>Buy Now: {{results[4]}}</div>
     <div>
-      <div>Make a Bid:<form></form></div>
-      <button>SUBMIT</button>
+      <div>Make a Bid:
+        <form action="buyerPage?bookid={{listing}}" method="POST" id="submitBidForm">
+        <input type="text" name="bid" /> (example input: 19.99)
+        </form>
+      </div>
+      <button
+      type="submit"
+      form="submitBidForm"
+      onclick="confirm('Are you sure you would like to bid this amount?')"
+      value="Submit">
+      Submit
+    </button>
     </div>
-    <div>Seller: {{results[0]}}</div>
     {% include 'footer.html' %}
   </body>
 </html>
