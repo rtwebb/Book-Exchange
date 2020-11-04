@@ -9,16 +9,33 @@ body {
 .teamMember {
 /*width: 100%;*/
 color: black;
-/*background: #ff800f;*/
-background: black;
-padding: 40px;
-width: 150px;
+background-image: linear-gradient(105deg, #ffa700, white ) ;
+padding: 50px;
+width: 200px;
 border-radius: 50%;
-height: 100px;
+height: 150px;
 text-align: center;
 position: relative;
-
+border: 5px ;
+display: inline-block;
+/*border-color: ;*/
 }
+
+.teamMember2 {
+    /*width: 100%;*/
+    color: black;
+    background-image: linear-gradient(105deg, #ffa700, white ) ;
+    padding: 50px;
+    width: 200px;
+    border-radius: 50%;
+    height: 150px;
+    text-align: center;
+    position: relative;
+    border: 5px ;
+    display: inline-block;
+    /*border-color: ;*/
+    }
+
 
 h1{
     text-align: center;
