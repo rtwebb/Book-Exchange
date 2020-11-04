@@ -272,12 +272,12 @@ def profilePageTemplate():
             database.updateStatus(bid, bidder, 'declined')
 
         # query database for the given user
-        listings = database.bidsOnMyListings('vdhopte')
+        listings = database.bidsOnMyListings(username)
         # use this to reset the forms in mylistings in the profilepage
         # for book in listings:
         # database.updateStatus(book[5], book[2], 'pending')
-        purchases = database.myPurchases('tianaf')
-        bids = database.myBids('tianaf')
+        purchases = database.myPurchases(username)
+        bids = database.myBids(username)
         database.disconnect()
 
     except Exception as e:
