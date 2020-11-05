@@ -2,7 +2,7 @@ from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
 test.connect()
-result = test.myBids('tianaf')
+result = test.myBids('raph')
 test.disconnect()
 
 for row in result:
