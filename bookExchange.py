@@ -28,6 +28,8 @@ app.config['MAIL_USE_SSL'] = True
 
 mail = Mail(app)
 
+database = QueryDatabase()
+
 
 # -----------------------------------------------------------------------
 @app.route('/', methods=['GET'])
@@ -38,15 +40,15 @@ def homePageTemplate():
     # need to get recently listed books to show
     results = []
     try:
-        database = QueryDatabase()
-        database.connect()
+        # database = QueryDatabase()
+        # database.connect()
         results = database.homeRecents()
         errorMsg = ''
-        database.disconnect()
+        # database.disconnect()
     except Exception as e:
         print("Error: " + str(e), file=stderr)
         errorMsg = 'An error occurred please contact email at bottom of the screen'
-        database.disconnect()
+        # database.disconnect()
 
     # getting images corresponding to each book
     # if no image was uploaded - using a stock photo
@@ -114,10 +116,10 @@ def searchResultsTemplate():
     # proper input (drop-down filled in and query sent)
     else:
         try:
-            database = QueryDatabase()
-            database.connect()
+            # database = QueryDatabase()
+            # database.connect()
             results = database.search(searchType, query)
-            database.disconnect()
+            # database.disconnect()
 
             images = []
             for result in results:
@@ -169,8 +171,8 @@ def sellerPageTemplate():
 
         # passing to database
         try:
-            database = QueryDatabase()
-            database.connect()
+            # database = QueryDatabase()
+            # database.connect()
             images = []
             if image1:
                 images.append(database.imageToURL(image1))
@@ -181,7 +183,7 @@ def sellerPageTemplate():
 
             database.add(isbn, title, [author], crsnum, crsname, username, condition,
                          minprice, buynow, listTime, images)
-            database.disconnect()
+            # database.disconnect()
         except Exception as e:
             print("Error: " + str(e), file=stderr)
 
@@ -207,10 +209,10 @@ def buyerPageTemplate():
     #     return errorMsg('Invalid book ID')
 
     try:
-        database = QueryDatabase()
-        database.connect()
+        # database = QueryDatabase()
+        # database.connect()
         results = database.getDescription(uniqueId)  # whatever she called it and pass args
-        database.disconnect()
+        # database.disconnect()
         errorMsg = ''
     except Exception as e:
         print("Error: " + str(e), file=stderr)
@@ -226,10 +228,10 @@ def buyerPageTemplate():
         bid = request.form.get('bid')
         print('bid', bid)
 
-        database = QueryDatabase()
-        database.connect()
+        # database = QueryDatabase()
+        # database.connect()
         database.addBid(buyerID, uniqueId, bid)  # whatever she called it and pass args
-        database.disconnect()
+        # database.disconnect()
     # buyerPage needs link back to home page
     # If user makes a bid
     # check to make sure if they are sure about the amount
@@ -250,8 +252,8 @@ def profilePageTemplate():
     bidder = request.args.get('bidder')
 
     try:
-        database = QueryDatabase()
-        database.connect()
+        # database = QueryDatabase()
+        # database.connect()
 
         if 'accept' in request.form:
             bodyMsg = "Hello, " + bidder + "\n" + "\n" + \
@@ -278,7 +280,7 @@ def profilePageTemplate():
         # database.updateStatus(book[5], book[2], 'pending')
         purchases = database.myPurchases(username)
         bids = database.myBids(username)
-        database.disconnect()
+        # database.disconnect()
 
     except Exception as e:
         print("Error: " + str(e), file=stderr)

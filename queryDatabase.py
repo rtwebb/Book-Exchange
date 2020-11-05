@@ -1,5 +1,5 @@
 # ---------------------------------------
-# QueryDatabase
+# queryDatabase.py
 
 # By: Emmandra, Tiana, Toussaint, Vedant
 # ----------------------------------------
@@ -17,24 +17,26 @@ DATABASE_URI = 'postgres://vjlbayumjwpewg:19bf7b1ddf47645b85ddd2a53327548' \
                'f856e138ec4104be1b99df2f432df9f85@ec2-23-23-36-227.compute-' \
                '1.amazonaws.com:5432/d1ud4l1r0mt58n'
 engine = create_engine(DATABASE_URI)
+Session = sessionmaker(bind=engine)
+session = Session()
 
 
 class QueryDatabase:
 
     def __init__(self):
         self._engine = engine
-        self._connection = None
+        self._connection = session
 
     # ----------------------------------------------------------------------------------
 
-    def connect(self):
-        Session = sessionmaker(bind=self._engine)
-        self._connection = Session()
-
-    # ----------------------------------------------------------------------------------
-
-    def disconnect(self):
-        self._connection.close()
+    # def connect(self):
+    #
+    #     self._connection = Session()
+    #
+    # # ----------------------------------------------------------------------------------
+    #
+    # def disconnect(self):
+    #     self._connection.close()
 
     # ----------------------------------------------------------------------------------
 
