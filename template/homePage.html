@@ -2,31 +2,17 @@
 <html>
   <head>
     <meta id="dropDown" searchType="{{searchType}}">
-    <style>
-      div{
-        display: inline-block;
-      }
-      .info div {
-        width: 220px;
-        padding: 1px;
-        border: 2px solid gray;
-        margin: 10 px;
-        white-space: pre-wrap;
-        display: block;
-        text-align: left;
-        font-size: 10px;
-      }  
-
-      A{
-	      text-decoration: none;
-        color: black;
-       }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/homePage.css') }}"
+    />
     <title> Book Exchange </title>
   </head>
   <body>
     {% include 'header.html' %}
-    <h1> Recently Listed </h1>
+    <h1 class=recently-listed> Recently Listed </h1>
     <br>
       {% if results is not none:  %}
         {% set length = results|length %} 
