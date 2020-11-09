@@ -81,44 +81,14 @@ class QueryDatabase:
 
     # -----------------------------------------------------------------------------
 
-    def remove(self, isbn, uniqueID):
+    def removeBids(self, uniqueID):
 
         try:
-            # Deleting from Listings Table
-            listObj = Listings.query.filter(Listings.uniqueID == uniqueID)
-            # listObj = seld._connection.query(Listings).filter(Listings.isbn==isbn) .\
-            # filter(Listings.sellerID == sellerID)
-            self._connection.delete(listObj)
-
-            # Deleting from Images Table
-            imgObj = Images.query.filter(Images.listingID == uniqueID)
-            # imgObj = self._connection.query(Images).filter(Images.isbn==isbn) .\
-            # filter(Images.sellerID == sellerID)
-            self._connecton.delete(imgObj)
-
-            # Deleting from Bids Table
-            bidObj = Bids.query.filter(Bids.listingID == uniqueID)
-            # bidObj = self._connection.query(Bids).filter(Bids.isbn==isbn) .\
-            # filter(Bids.sellerID == sellerID)
-            self._connecton.delete(bidObj)
-
-            # Deleting from Books Table & Authors Table if necessary
-            bookObj = Books.query.filter(Books.isbn == isbn)
-            # bookObj = self._connection.query(Books).filter(Books.isbn==isbn)
-            if bookObj.quantity > 1:
-                num = Books.query.filter(Books.isbn == isbn).update({Books.quantity: Books.quantity - 1})
-                # bookObj.quantity -= 1
-
-            # the last book with this isbn was so delete the row
-            else:
-
-                authObj = Authors.query.filter(Authors.isbn == isbn)
-                # authObj = self._connection.query(Authors).filter(Authors.isbn==isbn)
-                courseObj = Courses.query.filter(Courses.isbn == isbn)
-                # courseObj = self._connection.query(Courses).filter(Courses.isbn==isbn)
-                self._connection.delete(authObj)
-                self._connection.delete(courseObj)
-                self._connection.delete(bookObj)
+            bids = self._connection.query(Bids).\
+                filter(Bids.listingID == uniqueID).\
+                filter(Bids.status == 'pending').all()
+            for bid in bids:
+                self._connecton.delete(bid)
 
             self._connection.commit()
             return 0
