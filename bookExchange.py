@@ -10,6 +10,7 @@ from flask_mail import Mail, Message
 from queryDatabase import QueryDatabase
 from datetime import datetime
 from CASClient import CASClient
+from json import dumps
 
 # -----------------------------------------------------------------------
 
