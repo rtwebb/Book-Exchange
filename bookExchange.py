@@ -340,10 +340,8 @@ def autoComplete():
         for result in results:
             autoComplete.append(result[listIndex])
 
-
-    # is this necessary
-    response = make_response(autoComplete)
-    
+    jsonStr = dumps(autoComplete)
+    response = make_response(jsonStr)
     return response
 
 
