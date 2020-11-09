@@ -308,6 +308,46 @@ def aboutUsTemplate():
     response = make_response(html)
     return response
 
+# ----------------------------------------------------------------------
+@app.route('/autoComplete', methods=['GET'])
+def autoComplete():
+    username = CASClient().authenticate()
+
+    dropDown = request.args.get('dropDown')
+    query = request.args.get('query')
+
+    # ask Tiana to return ISBN
+    if dropDown == "isbn":
+        listIndex = 3
+    elif dropDown == "title":
+        listIndex = 0
+    elif dropDown == "crsnum":
+        listIndex = 1
+    else:
+        listIndex = 2
+
+    results = []
+    try:
+        results = database.search(searchType, query)
+    except Exception as e:
+        print("Error: " + str(e), file=stderr)
+        errorMsg = 'An error occurred please contact email at bottom of the screen'
+
+    # make the list of possible automcomplete
+    if results is not None:
+        autoComplete = []
+        for result in results:
+            autoComplete.append(result[listIndex])
+
+
+    # is this necessary
+    response = make_response(autoComplete)
+    
+    return response
+
+
+    
+
 
 # ----------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON

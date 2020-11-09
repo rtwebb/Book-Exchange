@@ -25,7 +25,7 @@
     <title> Book Exchange </title>
   </head>
   <body>
-    {% include 'header.html' %}
+    {% include 'head.html' %}
     <h1> Recently Listed </h1>
     <br>
       {% if results is not none:  %}
@@ -46,8 +46,64 @@
   
     <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
     <script>
+
+      'use strict';
+
+
+      function autoComplete(response){
+        // return array depending on search
+
+        // call jQuery autocomplete on said list
+        $("#searchQuery").autocomplete({
+          source: response
+         });
+
+        $('#searchQuery').change(function () {
+          alert($('#searchQuery').val());
+        });
+
+      }
+
+
+      request = null;
+
+      function getResults(){
+
+        let searchType = $('#dropDown').val();
+        searchType = encodeURIComponent(searchType);
+        console.log("searchType: ", searchType);
+
+        let query = $('#searchQuery').val();
+        query = encodeURIComponent(query);
+        console.log("query: ", query);
+
+        if (searchType !== '' || searchType !== null){
+          if(query !== null || query.trim() != ''){
+            let url = 'autoComplete?searchType=' + searchType + "&query=" + query
+          
+            if (request != null) {
+				      request.abort();
+			      }
+
+			      request = $.ajax(
+				      {
+					      type: 'GET',
+					      url: url, 
+					      success: handleResponse
+				      }
+
+			      );
+          }
+        }
+
+
+
+
+
+		}
       function setup(){
-        $('#searchQuery').focus()
+        $('#searchQuery').focus();
+        $('#searchQuery').on('input', getResults);
       }
       $('document').ready(setQuery);
     </script>
