@@ -103,7 +103,7 @@ class QueryDatabase:
                     # check to see if there are other bids on the listing
                     found = self._connection.query(Bids).\
                         filter(Bids.listingID == uniqueID).\
-                        order_by(Bids.bid).all()
+                        order_by(Bids.bid.desc()).all()
                     if found:
                         for item in found:
                             # set highest bid equal to new highest bid
