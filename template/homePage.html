@@ -55,7 +55,7 @@
 
       function getResults(){
 
-        let searchType = $('#dropDown').val();
+        let searchType = $('#searchType1').val();
         searchType = encodeURIComponent(searchType);
         console.log("searchType: ", searchType);
 
@@ -91,7 +91,7 @@
         $('#searchQuery').focus();
         $('#searchQuery').on('input', getResults);
       }
-      $('document').ready(setQuery);
+      $('document').ready(setup);
     </script>
 
     {% include 'footer.html' %}

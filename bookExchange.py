@@ -294,6 +294,8 @@ def aboutUsTemplate():
 def autoComplete():
     username = CASClient().authenticate()
 
+    print("inside autoComplete")
+
     dropDown = request.args.get('dropDown')
     query = request.args.get('query')
 
@@ -322,6 +324,15 @@ def autoComplete():
 
     jsonStr = dumps(autoComplete)
     response = make_response(jsonStr)
+    return response
+
+
+# ----------------------------------------------------------------------
+@app.route('/checkout', methods=['GET'])
+def checkout():
+    html = render_template('checkout.html')
+    response = make_response(html)
+
     return response
 
 

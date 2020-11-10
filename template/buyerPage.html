@@ -16,6 +16,7 @@
     <div>Condition: {{results[2]}}</div>
     <div>Lowest Ask: {{results[3]}}</div>
     <div>Buy Now: {{results[4]}}</div>
+    <div>Highest Bid: {{results[12]}}</div>
     <div>
       <div>Make a Bid:
         <form action="buyerPage?bookid={{listing}}" method="POST" id="submitBidForm">
@@ -37,4 +38,5 @@
 <!-- # from results, we get
     (listing.sellerID, listing.isbn, listing.condition, listing.minPrice,
                            listing.buyNow, listing.listTime, listing.images, book.title,
-                           book.authors[0].name, course.coursenum, course.coursename)
+                           book.authors[0].name, course.coursenum, course.coursename,
+                           listing.uniqueID, listing.highestBid)

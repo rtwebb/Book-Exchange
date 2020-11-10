@@ -53,7 +53,7 @@ def main():
     print('------------------------------------')
     for list in session.query(Listings).all():
         print(list.uniqueID, list.sellerID, list.isbn, list.condition, list.minPrice,
-              list.buyNow, list.listTime)
+              list.buyNow, list.highestBid, list.listTime)
 
     print('------------------------------------')
     print('images')
