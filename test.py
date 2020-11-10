@@ -1,11 +1,7 @@
 from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
-# test.addBid('test', '25ac1871-6f96-4a40-93fa-0aada74b080a', 40)
-result = test.bidsOnMyListings('vdhopte')
-
-for row in result:
-    print(row)
+test.removeMyBid('tianaf', 'f0a6dc68-ed6c-4663-ae6b-28c78c4ce9a2')
 
 # from sys import argv, stderr, exit
 # from sqlalchemy import create_engine

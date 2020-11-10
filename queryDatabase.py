@@ -81,14 +81,43 @@ class QueryDatabase:
 
     # -----------------------------------------------------------------------------
 
-    def removeBids(self, uniqueID):
+    def removeAllBids(self, uniqueID):
         try:
             bids = self._connection.query(Bids).\
                 filter(Bids.listingID == uniqueID).\
                 filter(Bids.status != 'accepted').all()
             for bid in bids:
-                self._connecton.delete(bid)
+                self._connection.delete(bid)
 
+            self._connection.commit()
+            return 0
+
+        except Exception as e:
+            print(argv[0] + ':', e, file=stderr)
+            return -1
+
+    # -----------------------------------------------------------------------------
+
+    def removeMyBid(self, buyerID, uniqueID):
+        try:
+            results = self._connection.query(Bids, Listings).\
+                filter(Bids.listingID == uniqueID). \
+                filter(Bids.buyerID.contains(buyerID)). \
+                filter(Listings.uniqueID == Bids.listingID).all()
+            for bid, listing in results:
+                if bid.bid == listing.highestBid:
+                    self._connection.delete(bid)
+                    self._connection.commit()
+                    found = self._connection.query(Bids).\
+                        filter(Bids.listingID == uniqueID).\
+                        order_by(Bids.bid).all()
+                    if found:
+                        for item in found:
+                            listing.highestBid = item.bid
+                            self._connection.commit()
+                            break
+                    else:
+                        listing.highestBid = 0
             self._connection.commit()
             return 0
 
