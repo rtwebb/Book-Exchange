@@ -55,11 +55,13 @@
             .fullTables hr{
                   color: #808080;
             }   
-           
-                 
-
+                            
         </style>
     <title>Profile Page</title>
+
+    <link rel="stylesheet" href=
+"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
   </head>
   
   <body>
@@ -87,6 +89,7 @@
             <th> Bid price: </th>
             <th> </th>
             <th> Action: </th>
+            <th></th>
             {% if listings|length == 0: %}
                   </table>
             {% else: %}
@@ -109,6 +112,12 @@
                                     {% else %}
                                           {{book[4]}}
                                     {% endif %}
+                              </td>
+                              <td>
+                                 <input type="submit" name="accept" id="accept" value="Accept">
+                              </td>
+                              <td><button class="glyphicon glyphicon-pencil"></span>
+                                  <button class="glyphicon glyphicon-trash"></span>
                               </td>
                         </tr>
                   {%    endfor %}
@@ -176,6 +185,7 @@
             <th> My offer: </th>
             <th> </th>
             <th> Offer status: </th>
+            <th></th>
             {% if bids|length == 0: %}
                   </table>
             {% else: %}
@@ -192,6 +202,9 @@
                               <td>${{book[4]}}</td>
                               <td></td>
                               <td> {{book[5]}}</td>
+                              <td><button class="glyphicon glyphicon-pencil" onclick="editBid()"></button>
+                                  <button class="glyphicon glyphicon-trash" onclick="deleteBid()"></button>
+                              </td>
                         </tr>
                   {%    endfor %}
             {% endif %}
@@ -200,5 +213,8 @@
     <br>
     <br>
     {% include 'footer.html' %}
+
+    <script>
+    </script>
   </body>
 </html>
