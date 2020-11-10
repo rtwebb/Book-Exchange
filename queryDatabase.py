@@ -185,7 +185,7 @@ class QueryDatabase:
                         "crsname": course.coursenum,
                         "crstitle": course.coursename,
                         "images": listing.images,
-                        "uniqueId": listing.uniequeID,
+                        "uniqueId": listing.uniqueID,
                         "minPrice": listing.minPrice
                     }
                    

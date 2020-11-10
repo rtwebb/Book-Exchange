@@ -29,15 +29,16 @@
     <h1> Search Results </h1>
     <br>
     {% if results is not none: %}
-      {% set length = results|length %} 
-        {%  for i in range(length) %}
+        {% set count = {'value': 0} %}
+        {%  for dict in results %}
         <div class="info">
-          {% set url = "buyerPage?bookid=" + uniqueIds[i] %}
-          <a href={{url}}><img src="{{image[i]}}" width="225" height="160"></a>
+          {% set url = "buyerPage?bookid=" + dict["uniqueId"] %}
+          <a href={{url}}><img src="{{images[count]}}" width="225" height="160"></a> 
+          {{incrementCount(count)}}
           <div>
-            <a href={{url}} method='get'> Book title: {{results["title"]}}
-              Course name: {{results["crsname"]}}
-              Min price: {{results["minPrice"]}} ...</a>
+            <a href={{url}} method='get'> Book title: {{dict["title"]}}
+              Course name: {{dict["crsname"]}}
+              Min price: {{dict["minPrice"]}} ...</a>
           </div>
         </div>
         {% endfor %}

@@ -33,6 +33,14 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 database = QueryDatabase()
+
+# -----------------------------------------------------------------------
+def incrementCount(count):
+    count['value'] += 1
+    return ''
+
+app.jinja_env.globals.update(incrementCount=incrementCount)
+
 # -----------------------------------------------------------------------
 
 @app.route('/', methods=['GET'])
@@ -115,15 +123,17 @@ def searchResultsTemplate():
     # proper input (drop-down filled in and query sent)
     else:
         uniqueIds = []
+        images = []
         try:
             results = database.search(searchType, query, 1)
+            print(results)
 
             # Acessing images
-            images = []
             for dict in results:
-                if dict[index]:
-                    image = dict[index]
+                if dict["images"]:
+                    image = dict["images"]
                     images.append(image[0].url)
+                    print("image: ", image[0].url)
                 else:
                     images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
 
@@ -142,7 +152,7 @@ def searchResultsTemplate():
         print('In else statement')
         html = render_template('searchResults.html', results=results,
                                username=username, uniqueIds=uniqueIds, query=query, searchType=searchType,
-                               image=images)
+                               images=images)
         response = make_response(html)
         return response
 
