@@ -82,7 +82,6 @@ class QueryDatabase:
     # -----------------------------------------------------------------------------
 
     def removeBids(self, uniqueID):
-
         try:
             bids = self._connection.query(Bids).\
                 filter(Bids.listingID == uniqueID).\
@@ -93,6 +92,25 @@ class QueryDatabase:
             self._connection.commit()
             return 0
 
+        except Exception as e:
+            print(argv[0] + ':', e, file=stderr)
+            return -1
+
+    # ----------------------------------------------------------------------------------
+
+    def removeListing(self, uniqueID):
+        try:
+            results = self._connection.query(Listings, Books, Courses).\
+                filter(Listings.uniqueID == uniqueID).\
+                filter(Listings.isbn == Books.isbn).\
+                filter(Books.isbn == Courses.isbn).all()
+            for listing, book, course in results:
+                self._connection.delete(listing)
+                if book.quantity - 1 == 0:
+                    self._connection.delete(book)
+                    self._connection.delete(course)
+
+            self._connection.commit()
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
