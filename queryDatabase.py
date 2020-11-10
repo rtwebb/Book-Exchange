@@ -279,7 +279,8 @@ class QueryDatabase:
             for listing, book, course in found:
                 result.append((listing.sellerID, listing.isbn, listing.condition, listing.minPrice,
                                listing.buyNow, listing.listTime, listing.images, book.title,
-                               book.authors[0].name, course.coursenum, course.coursename, listing.uniqueID))
+                               book.authors[0].name, course.coursenum, course.coursename, listing.uniqueID,
+                               listing.highestBid))
             return result
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
