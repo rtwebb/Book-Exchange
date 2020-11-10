@@ -203,18 +203,18 @@ class QueryDatabase:
     # ----------------------------------------------------------------------------------
 
     # provides info for bids on a user's listings
-    def bidsOnMyListings(self, query):
+    def myListings(self, query):
         try:
             result = []
-            found = self._connection.query(Books, Courses, Bids). \
-                filter(Listings.sellerID.ilike(query)). \
-                filter(Listings.uniqueID == Bids.listingID). \
+            found = self._connection.query(Listings, Books, Courses, Bids). \
+                filter(Listings.sellerID.contains(query)). \
                 filter(Books.isbn == Listings.isbn). \
-                filter(Listings.isbn == Courses.isbn).\
+                filter(Courses.isbn == Listings.isbn). \
+                filter(Bids.listingID == Listings.uniqueID).\
                 filter(Bids.bid == Listings.highestBid).all()
-            for book, course, bid in found:
+            for listing, book, course, bid in found:
                 result.append((book.title, course.coursenum, bid.buyerID,
-                               bid.bid, bid.status, bid.listingID))
+                               listing.highestBid, bid.status))
             return result
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
@@ -269,7 +269,7 @@ class QueryDatabase:
                 all()
             for bid, book, course, listing in found:
                 result.append((book.title, course.coursenum, course.coursename, listing.sellerID, bid.bid,
-                               bid.status))
+                               bid.status, listing.uniqueID))
             return result
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)

@@ -31,8 +31,8 @@ mail = Mail(app)
 
 database = QueryDatabase()
 
-
 # -----------------------------------------------------------------------
+
 @app.route('/', methods=['GET'])
 @app.route('/homePage', methods=['GET'])
 def homePageTemplate():
@@ -184,7 +184,6 @@ def sellerPageTemplate():
     response = make_response(html)
     return response
 
-
 # -----------------------------------------------------------------------
 
 @app.route('/buyerPage', methods=['GET', 'POST'])
@@ -255,7 +254,7 @@ def profilePageTemplate():
             database.updateStatus(bid, bidder, 'declined')
 
         # query database for the given user
-        listings = database.bidsOnMyListings(username)
+        listings = database.myListings(username)
         # use this to reset the forms in mylistings in the profilepage
         # for book in listings:
         # database.updateStatus(book[5], book[2], 'pending')
@@ -275,7 +274,6 @@ def profilePageTemplate():
 
     response = make_response(html)
     return response
-
 
 # ----------------------------------------------------------------------
 
