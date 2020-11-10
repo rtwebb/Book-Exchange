@@ -1,0 +1,16 @@
+.sellerHeading {
+  text-align: center;
+  color: orange;
+}
+
+.orange {
+  background-color: orange;
+}
+
+.form-check-inline {
+  display: inline-block;
+}
+
+.centering {
+  text-align: center;
+}
