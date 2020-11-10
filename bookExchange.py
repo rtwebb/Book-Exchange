@@ -37,7 +37,6 @@ database = QueryDatabase()
 #class searchForm(Form):
    # autocomp = TextField('Enter input', id='searchQuery_autocomplete')
 
-
 # -----------------------------------------------------------------------
 
 @app.route('/', methods=['GET'])
@@ -275,7 +274,7 @@ def profilePageTemplate():
         # database.updateStatus(book[5], book[2], 'pending')
         purchases = database.myPurchases(username)
         bids = database.myBids(username)
-
+        
     except Exception as e:
         print("Error: " + str(e), file=stderr)
     # get books they are selling

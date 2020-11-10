@@ -232,18 +232,28 @@ class QueryDatabase:
         try:
             result = []
             found = self._connection.query(Listings, Books, Courses, Bids). \
-                filter(Listings.sellerID.contains(query)). \
-                filter(Books.isbn == Listings.isbn). \
-                filter(Courses.isbn == Listings.isbn). \
-                filter(Bids.listingID == Listings.uniqueID).\
-                filter(Bids.bid == Listings.highestBid).all()
+                    filter(Listings.sellerID.contains(query)). \
+                    filter(Books.isbn == Listings.isbn). \
+                    filter(Bids.listingID == Listings.uniqueID). \
+                    filter(Bids.bid == Listings.highestBid). \
+                    filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course, bid in found:
                 result.append((book.title, course.coursenum, bid.buyerID,
-                               listing.highestBid, bid.status))
+                               listing.highestBid, listing.buyNow, bid.status))
+
+            # Case for listings with no bids
+            found = self._connection.query(Listings, Books, Courses). \
+                    filter(Listings.sellerID.contains(query)). \
+                    filter(Books.isbn == Listings.isbn). \
+                    filter(Courses.isbn == Listings.isbn).all()
+            for listing, book, course in found:
+                result.append((book.title, course.coursenum, "There are currently no bidders for this listing",
+                               listing.highestBid, listing.buyNow, "N/A"))
+
             return result
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
-            return -1
+            return None
 
     # ----------------------------------------------------------------------------------
 

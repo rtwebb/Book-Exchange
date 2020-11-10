@@ -95,6 +95,8 @@
             <th> </th>
             <th> Highest Bid Price: </th>
             <th> </th>
+            <th> Buy Now Price:</th>
+            <th> </th>
             <th> Action: </th>
             <th></th>
             {% if listings|length == 0: %}
@@ -110,19 +112,19 @@
                               <td></td>
                               <td>${{book[3]}}</td>
                               <td></td>
+                              <td>${{book[4]}}</td>
+                              <td></td>
                               <td>
-                                    {% if book[4] == 'pending' %}
+                                    {% if book[5] == 'pending' %}
                                           <form method="post", action="profilePage?list={{book[5]}}&bidder={{book[2]}}">
                                           <input type="submit" name="accept" id="accept" value="Accept">
                                           <input type="submit" name="decline" id="decline" value="Decline">
                                           </form>
                                     {% else %}
-                                          {{book[4]}}
+                                          {{book[5]}}
                                     {% endif %}
                               </td>
-                              <td>
-                                 <input type="submit" name="accept" id="accept" value="Accept">
-                              </td>
+                            
                               <td><form action="/sellerPage" method="POST">
                                      <button class="glyphicon glyphicon-pencil"></button>
                                   </form>
