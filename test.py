@@ -1,12 +1,7 @@
 from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
-test.connect()
-result = test.myBids('raph')
-test.disconnect()
-
-for row in result:
-    print(row)
+test.removeMyBid('tianaf', 'f0a6dc68-ed6c-4663-ae6b-28c78c4ce9a2')
 
 # from sys import argv, stderr, exit
 # from sqlalchemy import create_engine

@@ -51,6 +51,7 @@ class Listings(Base):
     minPrice = Column(Float)
     buyNow = Column(Float)
     listTime = Column(String)
+    highestBid = Column(Float)
     images = relationship('Images')
     bids = relationship('Bids')
 
