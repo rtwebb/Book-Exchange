@@ -208,8 +208,10 @@
                               <td>${{book[4]}}</td>
                               <td></td>
                               <td> {{book[5]}}</td>
-                              <td><button class="glyphicon glyphicon-pencil" onclick="editBid()"></button>
-                                  <button class="glyphicon glyphicon-trash" onclick="deleteBid()"></button>
+                              <td><form action="/buyerPage?bookid={{book[0]}}" method="POST">
+                                     <button class="glyphicon glyphicon-pencil" onclick="editBid({{book[0]}})"></button>
+                                  </form>
+                                  <button class="glyphicon glyphicon-trash" onclick="deleteBid({{book[0]}})"></button>
                               </td>
                         </tr>
                   {%    endfor %}
@@ -220,7 +222,36 @@
     <br>
     {% include 'footer.html' %}
 
-    <script>
+<!--
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
     </script>
+
+    let request = null;
+    
+    <script>
+
+       function handleResponse(response)
+       {
+          $('document').html(response);
+       }
+
+       function editBid(bookid)
+       {
+          bookID = encodeURIComponent(bookid);
+          let url = '/buyerPage?bookid=' + bookid
+          
+          if (request != null)
+             request.abort()
+
+          request = $.ajax(
+            {
+               type: 'POST',
+               url: url,
+               success: handleResponse
+            }
+          )
+       }
+    </script> -->
   </body>
 </html>
