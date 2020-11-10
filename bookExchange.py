@@ -328,9 +328,12 @@ def autoComplete():
 
 
 # ----------------------------------------------------------------------
-@app.route('/checkout', method=['GET'])
+@app.route('/checkout', methods=['GET'])
 def checkout():
-    return
+    html = render_template('checkout.html')
+    response = make_response(html)
+
+    return response
 
 
 # ----------------------------------------------------------------------
