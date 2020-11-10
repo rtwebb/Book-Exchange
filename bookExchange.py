@@ -34,17 +34,11 @@ mail = Mail(app)
 
 database = QueryDatabase()
 # -----------------------------------------------------------------------
-#class searchForm(Form):
-   # autocomp = TextField('Enter input', id='searchQuery_autocomplete')
-
-# -----------------------------------------------------------------------
 
 @app.route('/', methods=['GET'])
 @app.route('/homePage', methods=['GET'])
 def homePageTemplate():
     username = CASClient().authenticate()
-
-    #form = searchForm(request.form)
 
     # need to get recently listed books to show
     results = []
@@ -321,7 +315,7 @@ def autoComplete():
     elif dropDown == "title":
         index = 'title'
         searchType = 2
-    elif dropDown == "crsnum":
+    elif dropDown == "crsname":
         index = 'crsname'
         searchType = 3
     else:
