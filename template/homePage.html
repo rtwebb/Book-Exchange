@@ -11,6 +11,8 @@
     <title> Book Exchange </title>
   </head>
   <body>
+  
+
     {% include 'header.html' %}
     <h1 class=recently-listed> Recently Listed </h1>
     <br>
@@ -32,24 +34,37 @@
           
           {% endfor %}
       {% endif %}
+  
+   
   </div>
+    <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
     <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
     <script>
 
       'use strict';
 
 
-      function autoComplete(response){
+      function handleResponse(response){
         // return array depending on search
 
-        // call jQuery autocomplete on said list
-        $("#searchQuery").autocomplete({
-          source: response
-         });
+        try
+        {
+          let results = response;
 
-        $('#searchQuery').change(function () {
-          alert($('#searchQuery').val());
-        });
+                  // call jQuery autocomplete on said list
+          $("#searchQuery").autocomplete({
+            source: results
+          });
+
+          // $('#searchQuery').change(function () {
+            // alert($('#searchQuery').val());
+          // });
+        }
+        catch(e){
+          console.log("error: ", e);
+        }
+
 
       }
 
@@ -63,6 +78,7 @@
         console.log("searchType: ", searchType);
 
         let query = $('#searchQuery').val();
+     
         query = encodeURIComponent(query);
         console.log("query: ", query);
 

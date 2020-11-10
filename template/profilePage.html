@@ -77,6 +77,7 @@
             </form>
       <h1>Welcome {{user}}!</h1> 
 
+      <!-- MY LISTINGS -->
       <div class= "divBox">
             {% if listings|length == 0: %}
                   <h3>My Listings: </h3> <span> You have no books listed, <a href="sellerPage"> list one here </a> </span>
@@ -90,9 +91,11 @@
             <th> </th>
             <th> Course name: </th>
             <th> </th>
-            <th> Bidder ID: </th>
+            <th> Highest Bidder ID: </th>
             <th> </th>
-            <th> Bid price: </th>
+            <th> Highest Bid Price: </th>
+            <th> </th>
+            <th> Buy Now Price:</th>
             <th> </th>
             <th> Action: </th>
             <th></th>
@@ -109,20 +112,22 @@
                               <td></td>
                               <td>${{book[3]}}</td>
                               <td></td>
+                              <td>${{book[4]}}</td>
+                              <td></td>
                               <td>
-                                    {% if book[4] == 'pending' %}
+                                    {% if book[5] == 'pending' %}
                                           <form method="post", action="profilePage?list={{book[5]}}&bidder={{book[2]}}">
                                           <input type="submit" name="accept" id="accept" value="Accept">
                                           <input type="submit" name="decline" id="decline" value="Decline">
                                           </form>
                                     {% else %}
-                                          {{book[4]}}
+                                          {{book[5]}}
                                     {% endif %}
                               </td>
-                              <td>
-                                 <input type="submit" name="accept" id="accept" value="Accept">
-                              </td>
-                              <td><button class="glyphicon glyphicon-pencil"></span>
+                            
+                              <td><form action="/sellerPage" method="POST">
+                                     <button class="glyphicon glyphicon-pencil"></button>
+                                  </form>
                                   <button class="glyphicon glyphicon-trash"></span>
                               </td>
                         </tr>
@@ -132,6 +137,8 @@
       </div>
     
       <br>
+
+      <!-- MY PURCHASES -->
       <div class= "divBox">
             {% if purchases|length == 0: %}
                   <h3>Claimed books: </h3> <span> You have not claimed any books, <a href="homePage"> search books here </a> </span>
@@ -171,6 +178,8 @@
       </div>
 
       <br>
+
+      <!-- MY BIDS -->
       <div class= "divBox">
             {% if bids|length == 0: %}
                   <h3>Current bids: </h3> <span> You have no current bids, <a href="homePage"> search books here </a> </span>
@@ -208,8 +217,8 @@
                               <td>${{book[4]}}</td>
                               <td></td>
                               <td> {{book[5]}}</td>
-                              <td><form action="/buyerPage?bookid={{book[0]}}" method="POST">
-                                     <button class="glyphicon glyphicon-pencil" onclick="editBid({{book[0]}})"></button>
+                              <td><form action="/buyerPage?bookid={{book[6]}}" method="POST">
+                                     <button class="glyphicon glyphicon-pencil"></button>
                                   </form>
                                   <button class="glyphicon glyphicon-trash" onclick="deleteBid({{book[0]}})"></button>
                               </td>
