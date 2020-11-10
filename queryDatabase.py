@@ -289,6 +289,11 @@ class QueryDatabase:
 
     def addBid(self, buyerID, listingID, bid):
         try:
+            found = self._connection.query(Listings).\
+                filter(Listings.uniqueID == listingID).one()
+            if bid > found.highestBid:
+                found.highestBid = bid
+                self._connection.commit()
             newBid = Bids(buyerID=buyerID, listingID=listingID, bid=bid, status='pending')
             self._connection.add(newBid)
             self._connection.commit()
