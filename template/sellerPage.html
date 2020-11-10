@@ -2,10 +2,16 @@
 <html>
   <head>
     <title>Seller's Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/sellerPage.css') }}"
+    />
   </head>
   <body>
     {% include 'header.html' %}
-    <h1>Add a new Listing</h1>
+    <h1 class="sellerHeading">Add a new Listing</h1>
     <form action="sellerPage" method="POST" id="submitBookForm" enctype="multipart/form-data">
       *Book Title:
       <input type="text" name="title" />
@@ -38,7 +44,7 @@
       <input type="file" accept="image/*" name="image2">
       <input type="file" accept="image/*" name="image3">
       <br>
-    </form>
+    </form> 
     <button
       type="submit"
       form="submitBookForm"
@@ -46,6 +52,67 @@
       value="Submit">
       Submit
     </button>
+
+    <form>
+      
+      <div class="form-row">
+        <div class="form-group col-md-4">
+        <label for="inputTitle">Book Title</label>
+        <input type="text" class="form-control" id="inputTitle" placeholder="The Practice of Programming">
+      </div>
+        <div class="form-group col-md-4">
+          <label for="inputISBN">ISBN</label>
+          <input type="email" class="form-control" id="inputISBN" placeholder="1234567890">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputAuthors">Authors</label>
+          <input type="password" class="form-control" id="inputAuthors" placeholder="Professor Dondero">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="inputCourseTitle">Course Title</label>
+          <input type="text" class="form-control" id="inputCourseTitle" placeholder="Advanced Programming Techniques">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputCode">Course Code</label>
+          <input type="text" class="form-control" id="inputCode" placeholder="COS333">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          <label for="inputMin">Minimum Price</label>
+          <input type="text" class="form-control" id="inputMin" placeholder="$5">
+        </div>
+        <div class="form-group col-md-2">
+          <label for="inputBuy">Buy Now Price</label>
+          <input type="text" class="form-control" id="inputBuy" placeholder="$10">
+        </div>
+      </div>
+      <div class="centering">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="veryGood">
+        <label class="form-check-label" for="inlineRadio1">Very Good</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="good">
+        <label class="form-check-label" for="inlineRadio2">Good</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="fair" disabled>
+        <label class="form-check-label" for="inlineRadio3">Fair</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="poor">
+        <label class="form-check-label" for="inlineRadio3">Poor</label>
+      </div>
+      <button type="submit" class="btn orange">SUBMIT</button>
+    </div>
+    </form>
+
+
+
+
     {% include 'footer.html' %}
   </body>
 </html>

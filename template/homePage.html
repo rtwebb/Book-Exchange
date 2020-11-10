@@ -11,9 +11,12 @@
     <title> Book Exchange </title>
   </head>
   <body>
+  
+
     {% include 'header.html' %}
     <h1 class=recently-listed> Recently Listed </h1>
     <br>
+    <div class="results-container">
       {% if results is not none:  %}
         {% set length = results|length %} 
           {%  for i in range(length) %}
@@ -22,31 +25,46 @@
               {% set url = "buyerPage?bookid=" + uniqueIds[i] %}
               <a href={{url}}><img src="{{image[i]}}" width="225" height="160"></a>
               <div>
-              <a href={{url}} method='get'> Book title: {{results[i][1]}}
-                Course name: {{results[i][2]}}
-                Min price: {{results[i][4]}} ...</a>
+              <a href={{url}} method='get'>
+                <div>Book Title: {{results[i][1]}}</div>
+                <div>Course Name: {{results[i][2]}}</div>
+                <div>Min Price: ${{results[i][4]}}</div></a>
                 </div>
             </div>
+          
           {% endfor %}
       {% endif %}
   
+   
+  </div>
+    <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
     <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
     <script>
 
       'use strict';
 
 
-      function autoComplete(response){
+      function handleResponse(response){
         // return array depending on search
 
-        // call jQuery autocomplete on said list
-        $("#searchQuery").autocomplete({
-          source: response
-         });
+        try
+        {
+          let results = response;
 
-        $('#searchQuery').change(function () {
-          alert($('#searchQuery').val());
-        });
+                  // call jQuery autocomplete on said list
+          $("#searchQuery").autocomplete({
+            source: results
+          });
+
+          // $('#searchQuery').change(function () {
+            // alert($('#searchQuery').val());
+          // });
+        }
+        catch(e){
+          console.log("error: ", e);
+        }
+
 
       }
 
@@ -60,6 +78,7 @@
         console.log("searchType: ", searchType);
 
         let query = $('#searchQuery').val();
+     
         query = encodeURIComponent(query);
         console.log("query: ", query);
 
