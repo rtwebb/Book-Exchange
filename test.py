@@ -1,9 +1,7 @@
 from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
-test.connect()
-result = test.myBids('raph')
-test.disconnect()
+result = test.bidsOnMyListings('toussaint')
 
 for row in result:
     print(row)

@@ -52,7 +52,7 @@ def main():
     # ------------------------------------------------------------------------------------
 
     listing = Listings(uniqueID=uuid4(), sellerID='vdhopte', isbn=123, condition='good',
-                       minPrice=15.00, buyNow=30.00, listTime='16:45')
+                       minPrice=15.00, buyNow=30.00, listTime='16:45', highestBid=25.00)
     bid1 = Bids(buyerID='tianaf', listingID=listing.uniqueID, bid=19.99, status='pending')
     bid2 = Bids(buyerID='emmandra', listingID=listing.uniqueID, bid=25.00, status='pending')
     image = Images(listingID=listing.uniqueID,
@@ -61,7 +61,7 @@ def main():
     listing.images = [image]
     session.add(listing)
     listing = Listings(uniqueID=uuid4(), sellerID='toussaint', isbn=234, condition='okay',
-                       minPrice=20.00,buyNow=50.00, listTime='18:45')
+                       minPrice=20.00,buyNow=50.00, listTime='18:45', highestBid=25.00)
     bid = Bids(buyerID='raph', listingID=listing.uniqueID, bid=25.00, status='pending')
     listing.bids = [bid]
     session.add(listing)

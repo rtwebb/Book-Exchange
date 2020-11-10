@@ -183,7 +183,8 @@ class QueryDatabase:
                 filter(Listings.sellerID.ilike(query)). \
                 filter(Listings.uniqueID == Bids.listingID). \
                 filter(Books.isbn == Listings.isbn). \
-                filter(Listings.isbn == Courses.isbn).all()
+                filter(Listings.isbn == Courses.isbn).\
+                filter(Bids.bid == Listings.highestBid).all()
             for book, course, bid in found:
                 result.append((book.title, course.coursenum, bid.buyerID,
                                bid.bid, bid.status, bid.listingID))
