@@ -354,6 +354,15 @@ def autoComplete():
 
 
 # ----------------------------------------------------------------------
+@app.route('/checkout', methods=['GET'])
+def checkout():
+    html = render_template('checkout.html')
+    response = make_response(html)
+
+    return response
+
+
+# ----------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
 @app.route('/logout', methods=['GET'])
 def logout():

@@ -55,17 +55,25 @@
             .fullTables hr{
                   color: #808080;
             }   
-           
-                 
-
+                            
         </style>
     <title>Profile Page</title>
+
+    <link rel="stylesheet" href=
+"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
   </head>
   
   <body>
       {% include 'header.html' %}
             <form method="get" action="logout" > 
                   <input type="submit" name="logout"  value="Logout">
+            </form>
+
+
+            <!-- (Emmandra) This will eventually be attached to the accept button im just testing-->
+            <form method="get" action="/checkout">
+                  <input type="submit" name='checkout' id=checkout value="Checkout">
             </form>
       <h1>Welcome {{user}}!</h1> 
 
@@ -87,6 +95,7 @@
             <th> Bid price: </th>
             <th> </th>
             <th> Action: </th>
+            <th></th>
             {% if listings|length == 0: %}
                   </table>
             {% else: %}
@@ -109,6 +118,12 @@
                                     {% else %}
                                           {{book[4]}}
                                     {% endif %}
+                              </td>
+                              <td>
+                                 <input type="submit" name="accept" id="accept" value="Accept">
+                              </td>
+                              <td><button class="glyphicon glyphicon-pencil"></span>
+                                  <button class="glyphicon glyphicon-trash"></span>
                               </td>
                         </tr>
                   {%    endfor %}
@@ -176,6 +191,7 @@
             <th> My offer: </th>
             <th> </th>
             <th> Offer status: </th>
+            <th></th>
             {% if bids|length == 0: %}
                   </table>
             {% else: %}
@@ -192,6 +208,11 @@
                               <td>${{book[4]}}</td>
                               <td></td>
                               <td> {{book[5]}}</td>
+                              <td><form action="/buyerPage?bookid={{book[0]}}" method="POST">
+                                     <button class="glyphicon glyphicon-pencil" onclick="editBid({{book[0]}})"></button>
+                                  </form>
+                                  <button class="glyphicon glyphicon-trash" onclick="deleteBid({{book[0]}})"></button>
+                              </td>
                         </tr>
                   {%    endfor %}
             {% endif %}
@@ -200,5 +221,37 @@
     <br>
     <br>
     {% include 'footer.html' %}
+
+<!--
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
+    </script>
+
+    let request = null;
+    
+    <script>
+
+       function handleResponse(response)
+       {
+          $('document').html(response);
+       }
+
+       function editBid(bookid)
+       {
+          bookID = encodeURIComponent(bookid);
+          let url = '/buyerPage?bookid=' + bookid
+          
+          if (request != null)
+             request.abort()
+
+          request = $.ajax(
+            {
+               type: 'POST',
+               url: url,
+               success: handleResponse
+            }
+          )
+       }
+    </script> -->
   </body>
 </html>

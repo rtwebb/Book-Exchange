@@ -103,7 +103,7 @@ class QueryDatabase:
                     # check to see if there are other bids on the listing
                     found = self._connection.query(Bids).\
                         filter(Bids.listingID == uniqueID).\
-                        order_by(Bids.bid).all()
+                        order_by(Bids.bid.desc()).all()
                     if found:
                         for item in found:
                             # set highest bid equal to new highest bid
@@ -351,13 +351,11 @@ class QueryDatabase:
             # update highestBid for this listing
             listing = self._connection.query(Listings).\
                 filter(Listings.uniqueID == listingID).one_or_none()
-            if float(bid) > listing.highestBid:
-                listing.highestBid = bid
-                self._connection.commit()
             # if buyer already has a bid on that book, update the bid
-            foundBid = self._connection.query(Bids).\
-                filter(Bids.buyerID == buyerID).\
+            foundBid = self._connection.query(Bids). \
+                filter(Bids.buyerID == buyerID). \
                 filter(Bids.listingID == listingID).one_or_none()
+
             if foundBid:
                 foundBid.bid = bid
             # otherwise, create a new bid
@@ -365,6 +363,22 @@ class QueryDatabase:
                 newBid = Bids(buyerID=buyerID, listingID=listingID, bid=bid, status='pending')
                 self._connection.add(newBid)
             self._connection.commit()
+
+            if float(bid) > listing.highestBid:
+                listing.highestBid = bid
+                self._connection.commit()
+            elif float(bid) < listing.highestBid:
+                # check to see if there are other bids on the listing
+                found = self._connection.query(Bids). \
+                    filter(Bids.listingID == listingID). \
+                    order_by(Bids.bid.desc()).all()
+                if found:
+                    for item in found:
+                        # set highest bid equal to new highest bid
+                        print(item.bid)
+                        listing.highestBid = item.bid
+                        self._connection.commit()
+                        break
             return 0
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
