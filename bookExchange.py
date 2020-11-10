@@ -138,8 +138,7 @@ def searchResultsTemplate():
                     images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
 
 
-            print("image: ")
-            print(images)
+            print("imagelist: ", images)
 
             # Accessing unique Ids 
             for dict in results:
