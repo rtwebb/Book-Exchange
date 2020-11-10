@@ -346,10 +346,11 @@ class QueryDatabase:
                 # check to see if there are other bids on the listing
                 found = self._connection.query(Bids). \
                     filter(Bids.listingID == listingID). \
-                    order_by(Bids.bid).all()
+                    order_by(Bids.bid.desc()).all()
                 if found:
                     for item in found:
                         # set highest bid equal to new highest bid
+                        print(item.bid)
                         listing.highestBid = item.bid
                         self._connection.commit()
                         break
