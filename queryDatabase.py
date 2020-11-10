@@ -132,7 +132,7 @@ class QueryDatabase:
                     filter(Courses.coursename.ilike(newQuery, escape='\\')). \
                     order_by(Listings.listTime).all()
             for book, course, listing in found:
-                result.append((book.title, course.coursenum, course.coursename, listing.minPrice, listing.images,
+                result.append((book.isbn, book.title, course.coursenum, course.coursename, listing.minPrice, listing.images,
                                listing.uniqueID))
             return result
         except Exception as e:
@@ -149,7 +149,7 @@ class QueryDatabase:
                 filter(Listings.isbn == Courses.isbn). \
                 order_by(Listings.listTime).all()
             for book, course, listing in found:
-                result.append((book.title, course.coursenum, course.coursename, listing.minPrice, listing.images,
+                result.append((book.isbn, book.title, course.coursenum, course.coursename, listing.minPrice, listing.images,
                                listing.uniqueID))
             return result
         except Exception as e:

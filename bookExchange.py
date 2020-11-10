@@ -41,30 +41,26 @@ def homePageTemplate():
     # need to get recently listed books to show
     results = []
     try:
-        # database = QueryDatabase()
-        # database.connect()
         results = database.homeRecents()
         errorMsg = ''
-        # database.disconnect()
     except Exception as e:
         print("Error: " + str(e), file=stderr)
         errorMsg = 'An error occurred please contact email at bottom of the screen'
-        # database.disconnect()
 
     # getting images corresponding to each book
     # if no image was uploaded - using a stock photo
     images = []
     for result in results:
-        if result[4]:
-            images.append(result[4][0].url)
+        if result[5]:
+            images.append(result[5][0].url)
         else:
             images.append(
                 "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
 
     uniqueIds = []
     for result in results:
-        if result[5]:
-            uniqueIds.append(result[5])
+        if result[6]:
+            uniqueIds.append(result[6])
 
     html = render_template('homePage.html', results=results, image=images,
                            errorMsg=errorMsg, uniqueIds=uniqueIds, username=username)
@@ -117,23 +113,20 @@ def searchResultsTemplate():
     # proper input (drop-down filled in and query sent)
     else:
         try:
-            # database = QueryDatabase()
-            # database.connect()
             results = database.search(searchType, query)
-            # database.disconnect()
 
             images = []
             for result in results:
-                if result[4]:
-                    images.append(result[4][0].url)
+                if result[5]:
+                    images.append(result[5][0].url)
                 else:
                     images.append(
                         "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
 
             uniqueIds = []
             for result in results:
-                if result[5]:
-                    uniqueIds.append(result[5])
+                if result[6]:
+                    uniqueIds.append(result[6])
 
         except Exception as e:
             print(argv[0] + ": " + str(e), file=stderr)
@@ -172,8 +165,6 @@ def sellerPageTemplate():
 
         # passing to database
         try:
-            # database = QueryDatabase()
-            # database.connect()
             images = []
             if image1:
                 images.append(database.imageToURL(image1))
@@ -184,7 +175,6 @@ def sellerPageTemplate():
 
             database.add(isbn, title, [author], crsnum, crsname, username, condition,
                          minprice, buynow, listTime, images)
-            # database.disconnect()
         except Exception as e:
             print("Error: " + str(e), file=stderr)
 
@@ -204,16 +194,12 @@ def buyerPageTemplate():
     uniqueId = request.args.get('bookid')
     print('uniqueID', uniqueId)
 
-    # how to check for malicious injection ...????????????????????
     # if check for if uniqueID is none
     # if (uniqueId == None):
     #     return errorMsg('Invalid book ID')
 
     try:
-        # database = QueryDatabase()
-        # database.connect()
         results = database.getDescription(uniqueId)  # whatever she called it and pass args
-        # database.disconnect()
         errorMsg = ''
     except Exception as e:
         print("Error: " + str(e), file=stderr)
@@ -229,10 +215,7 @@ def buyerPageTemplate():
         bid = request.form.get('bid')
         print('bid', bid)
 
-        # database = QueryDatabase()
-        # database.connect()
         database.addBid(buyerID, uniqueId, bid)  # whatever she called it and pass args
-        # database.disconnect()
     # buyerPage needs link back to home page
     # If user makes a bid
     # check to make sure if they are sure about the amount
@@ -253,9 +236,6 @@ def profilePageTemplate():
     bidder = request.args.get('bidder')
 
     try:
-        # database = QueryDatabase()
-        # database.connect()
-
         if 'accept' in request.form:
             bodyMsg = "Hello, " + bidder + "\n" + "\n" + \
                       "Your TigerBookExchange bid was accepted."
@@ -281,7 +261,6 @@ def profilePageTemplate():
         # database.updateStatus(book[5], book[2], 'pending')
         purchases = database.myPurchases(username)
         bids = database.myBids(username)
-        # database.disconnect()
 
     except Exception as e:
         print("Error: " + str(e), file=stderr)
@@ -308,6 +287,7 @@ def aboutUsTemplate():
 
     response = make_response(html)
     return response
+
 
 # ----------------------------------------------------------------------
 @app.route('/autoComplete', methods=['GET'])
@@ -343,9 +323,6 @@ def autoComplete():
     jsonStr = dumps(autoComplete)
     response = make_response(jsonStr)
     return response
-
-
-    
 
 
 # ----------------------------------------------------------------------
