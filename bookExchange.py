@@ -129,14 +129,21 @@ def searchResultsTemplate():
             print(results)
 
             # Acessing images
+            i = 0
             for dict in results:
                 if dict["images"]:
                     image = dict["images"]
                     images.append(image[0].url)
                     print("image: ", image[0].url)
+                    dict["images"] = i
+                    print("image value: ", dict["images"])
+                    i += 1
+
                 else:
                     images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
-
+                    dict["images"] = i
+                    print("image value: ", dict["images"])
+                    i += 1
 
             print("imagelist: ", images)
 
@@ -144,6 +151,8 @@ def searchResultsTemplate():
             for dict in results:
                 if dict["uniqueId"]:
                     uniqueIds.append(dict["uniqueId"])
+
+            
 
         except Exception as e:
             print(argv[0] + ": " + str(e), file=stderr)
