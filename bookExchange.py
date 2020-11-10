@@ -314,6 +314,8 @@ def aboutUsTemplate():
 def autoComplete():
     username = CASClient().authenticate()
 
+    print("inside autoComplete")
+
     dropDown = request.args.get('dropDown')
     query = request.args.get('query')
 
