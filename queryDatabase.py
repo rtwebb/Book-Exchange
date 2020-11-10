@@ -85,7 +85,7 @@ class QueryDatabase:
         try:
             bids = self._connection.query(Bids).\
                 filter(Bids.listingID == uniqueID).\
-                filter(Bids.status == 'pending').all()
+                filter(Bids.status != 'accepted').all()
             for bid in bids:
                 self._connecton.delete(bid)
 
