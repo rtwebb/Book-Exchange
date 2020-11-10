@@ -328,6 +328,12 @@ def autoComplete():
 
 
 # ----------------------------------------------------------------------
+@app.route('/checkout', method=['GET'])
+def checkout():
+    return
+
+
+# ----------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
 @app.route('/logout', methods=['GET'])
 def logout():
