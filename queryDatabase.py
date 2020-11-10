@@ -65,7 +65,7 @@ class QueryDatabase:
 
             listing = Listings(uniqueID=uuid4(), sellerID=sellerID, isbn=isbn,
                                condition=condition, minPrice=minPrice,
-                               buyNow=buyNow, listTime=listTime)
+                               buyNow=buyNow, listTime=listTime, highestBid=0)
             imagelist = []
             for url in urls:
                 imagelist.append(Images(listingID=listing.uniqueID, url=url))
@@ -291,12 +291,18 @@ class QueryDatabase:
     def addBid(self, buyerID, listingID, bid):
         try:
             found = self._connection.query(Listings).\
-                filter(Listings.uniqueID == listingID).one()
-            if bid > found.highestBid:
+                filter(Listings.uniqueID == listingID).one_or_none()
+            if float(bid) > found.highestBid:
                 found.highestBid = bid
                 self._connection.commit()
-            newBid = Bids(buyerID=buyerID, listingID=listingID, bid=bid, status='pending')
-            self._connection.add(newBid)
+            foundBid = self._connection.query(Bids).\
+                filter(Bids.buyerID == buyerID).\
+                filter(Bids.listingID == listingID).one_or_none()
+            if foundBid:
+                foundBid.bid = bid
+            else:
+                newBid = Bids(buyerID=buyerID, listingID=listingID, bid=bid, status='pending')
+                self._connection.add(newBid)
             self._connection.commit()
             return 0
         except Exception as e:
