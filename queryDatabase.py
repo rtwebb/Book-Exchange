@@ -142,14 +142,17 @@ class QueryDatabase:
     # ----------------------------------------------------------------------------------
 
     # searches the database and returns data to show on searchResults
-    def search(self, signal, query):
+    def search(self, signal, query, requestType):
         try:
             # signal tells me what kind of query it is: book title, isbn, course, etc
-            result = []
             newQuery = query.replace("%", "\\%")
             newQuery = newQuery.replace("_", "\\_")
-            newQuery = '%' + newQuery.lower() + '%'
+            if requestType == 1:
+                newQuery = '%' + newQuery.lower() + '%'
+            else:
+                newQuery = newQuery.lower() + '%'
             print(newQuery)
+            results = []
             if signal == 1:  # if query is by isbn
                 found = self._connection.query(Books, Courses, Listings). \
                     filter(Courses.isbn == Listings.isbn). \
@@ -174,10 +177,32 @@ class QueryDatabase:
                     filter(Books.isbn == Courses.isbn). \
                     filter(Courses.coursename.ilike(newQuery, escape='\\')). \
                     order_by(Listings.listTime).all()
-            for book, course, listing in found:
-                result.append((book.isbn, book.title, course.coursenum, course.coursename, listing.minPrice, listing.images,
-                               listing.uniqueID))
-            return result
+            if requestType == 1:
+                for book, course, listing in found:
+                    result = { 
+                        "isbn": book.isbn, 
+                        "title": book.title,
+                        "crsname": course.coursenum,
+                        "crstitle": course.coursename,
+                        "images": listing.images,
+                        "uniqueId": listing.uniequeID,
+                        "minPrice": listing.minPrice
+                    }
+                   
+                    results.append(result)
+                return results
+            else:
+                for book, course, listing in found:
+                    result = {
+                        "isbn": book.isbn, 
+                        "title": book.title,
+                        "crsname": course.coursenum,
+                        "crstitle": course.coursename
+                    }
+                    results.append(result)
+                return results
+
+            
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
