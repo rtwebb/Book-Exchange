@@ -175,7 +175,7 @@ class QueryDatabase:
                     filter(Books.title.ilike(newQuery, escape='\\')). \
                     filter(Courses.isbn == Books.isbn). \
                     order_by(Listings.listTime).all()
-            elif signal == 3:  # query is a coursenum
+            elif signal == 3:  # query is a courseCode
                 found = self._connection.query(Books, Courses, Listings). \
                     filter(Listings.isbn == Courses.isbn). \
                     filter(Courses.courseCode.ilike(newQuery, escape='\\')). \
@@ -259,7 +259,7 @@ class QueryDatabase:
                     filter(Bids.bid == Listings.highestBid). \
                     filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course, bid in found:
-                result.append((book.title, course.coursenum, bid.buyerID,
+                result.append((book.title, course.courseCode, bid.buyerID,
                                listing.highestBid, listing.buyNow, bid.status, listing.uniqueID))
             
             # Case for listings with no bids
@@ -268,7 +268,7 @@ class QueryDatabase:
                     filter(Books.isbn == Listings.isbn). \
                     filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course in found:
-                result.append((book.title, course.coursenum, "There are currently no bidders for this listing",
+                result.append((book.title, course.courseCode, "There are currently no bidders for this listing",
                                listing.highestBid, listing.buyNow, "N/A", listing.uniqueID))
 
             return result
