@@ -31,6 +31,79 @@
       Submit
     </button>
     </div>
+
+    <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
+    <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+    <script>
+
+      'use strict';
+
+
+      function handleResponse(response){
+        // return array depending on search
+
+        try
+        {
+          let results = response;
+
+                  // call jQuery autocomplete on said list
+          $("#searchQuery").autocomplete({
+            source: results
+          });
+
+        }
+        catch(e){
+          console.log("error: ", e);
+        }
+
+
+      }
+
+
+      let request = null;
+
+      function getResults(){
+
+        let searchType = $('#searchType1').val();
+        searchType = encodeURIComponent(searchType);
+        console.log("searchType: ", searchType);
+
+        let query = $('#searchQuery').val();
+     
+        query = encodeURIComponent(query);
+        console.log("query: ", query);
+
+        if (searchType !== '' || searchType !== null){
+          if(query !== null || query.trim() != ''){
+            let url = 'autoComplete?searchType=' + searchType + "&query=" + query
+          
+            if (request != null) {
+				      request.abort();
+			      }
+
+			      request = $.ajax(
+				      {
+					      type: 'GET',
+					      url: url, 
+					      success: handleResponse
+				      }
+
+			      );
+          }
+        }
+
+		}
+      function setup(){
+        $('#searchQuery').focus();
+        $('#searchQuery').on('input', getResults);
+      }
+      $('document').ready(setup);
+    </script>
+
+
+
+
     {% include 'footer.html' %}
   </body>
 </html>

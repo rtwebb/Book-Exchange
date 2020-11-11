@@ -371,7 +371,7 @@ def autoComplete():
 
     print("Auto Complete list: ")
     print(autoComplete)
-
+ 
     jsonStr = dumps(autoComplete)
     response = make_response(jsonStr)
     response.headers['Content-Type'] = 'application/json'
