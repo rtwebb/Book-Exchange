@@ -37,9 +37,9 @@ class QueryDatabase:
             if book is not None:
                 book.quantity += 1
                 self._connection.commit()
-                course = self._connection.query(Courses).\
-                    filter(Courses.isbn == isbn).\
-                    filter(Courses.courseCode.contains(courseCode)).\
+                course = self._connection.query(Courses). \
+                    filter(Courses.isbn == isbn). \
+                    filter(Courses.courseCode.contains(courseCode)). \
                     one_or_none()
                 if not course:
                     course = Courses(isbn=isbn, courseCode=courseCode, courseTitle=courseTitle)
@@ -80,8 +80,8 @@ class QueryDatabase:
     # when a listing is bought, remove all bids other than the accepted one
     def removeAllBids(self, uniqueID):
         try:
-            bids = self._connection.query(Bids).\
-                filter(Bids.listingID == uniqueID).\
+            bids = self._connection.query(Bids). \
+                filter(Bids.listingID == uniqueID). \
                 filter(Bids.status != 'accepted').all()
             for bid in bids:
                 self._connection.delete(bid)
@@ -98,7 +98,7 @@ class QueryDatabase:
     # if a user wants to remove a bid, use this method
     def removeMyBid(self, buyerID, uniqueID):
         try:
-            results = self._connection.query(Bids, Listings).\
+            results = self._connection.query(Bids, Listings). \
                 filter(Bids.listingID.contains(uniqueID)). \
                 filter(Bids.buyerID.contains(buyerID)). \
                 filter(Listings.uniqueID == Bids.listingID).all()
@@ -109,8 +109,8 @@ class QueryDatabase:
                     self._connection.commit()
 
                     # check to see if there are other bids on the listing
-                    found = self._connection.query(Bids).\
-                        filter(Bids.listingID == uniqueID).\
+                    found = self._connection.query(Bids). \
+                        filter(Bids.listingID == uniqueID). \
                         order_by(Bids.bid.desc()).all()
                     if found:
                         for item in found:
@@ -120,7 +120,9 @@ class QueryDatabase:
                             break
                     else:  # if there no other bids, set highest equal to 0
                         listing.highestBid = 0
-            self._connection.commit()
+                else:
+                    self._connection.delete(bid)
+                    self._connection.commit()
             return 0
 
         except Exception as e:
@@ -132,9 +134,9 @@ class QueryDatabase:
     # if a seller wants to remove a listing, use this method
     def removeListing(self, uniqueID):
         try:
-            results = self._connection.query(Listings, Books, Courses).\
-                filter(Listings.uniqueID.contains(uniqueID)).\
-                filter(Books.isbn == Listings.isbn).\
+            results = self._connection.query(Listings, Books, Courses). \
+                filter(Listings.uniqueID.contains(uniqueID)). \
+                filter(Books.isbn == Listings.isbn). \
                 filter(Courses.isbn == Books.isbn).all()
             for listing, book, course in results:
                 self._connection.delete(listing)
@@ -175,7 +177,7 @@ class QueryDatabase:
                     filter(Books.title.ilike(newQuery, escape='\\')). \
                     filter(Courses.isbn == Books.isbn). \
                     order_by(Listings.listTime).all()
-            elif signal == 3:  # query is a coursenum
+            elif signal == 3:  # query is a courseCode
                 found = self._connection.query(Books, Courses, Listings). \
                     filter(Listings.isbn == Courses.isbn). \
                     filter(Courses.courseCode.ilike(newQuery, escape='\\')). \
@@ -189,8 +191,8 @@ class QueryDatabase:
                     order_by(Listings.listTime).all()
             if requestType == 1:
                 for book, course, listing in found:
-                    result = { 
-                        "isbn": book.isbn, 
+                    result = {
+                        "isbn": book.isbn,
                         "title": book.title,
                         "crscode": course.courseCode,
                         "crstitle": course.courseTitle,
@@ -198,13 +200,13 @@ class QueryDatabase:
                         "uniqueId": listing.uniqueID,
                         "minPrice": listing.minPrice
                     }
-                   
+
                     results.append(result)
                 return results
             else:
                 for book, course, listing in found:
                     result = {
-                        "isbn": book.isbn, 
+                        "isbn": book.isbn,
                         "title": book.title,
                         "crscode": course.courseCode,
                         "crstitle": course.courseTitle
@@ -212,7 +214,6 @@ class QueryDatabase:
                     results.append(result)
                 return results
 
-            
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
@@ -228,19 +229,17 @@ class QueryDatabase:
                 filter(Listings.isbn == Courses.isbn). \
                 order_by(Listings.listTime).all()
             for book, course, listing in found:
-                   for book, course, listing in found:
-                    result = { 
-                        "isbn": book.isbn, 
-                        "title": book.title,
-                        "crscode": course.courseCode,
-                        "crstitle": course.courseTitle,
-                        "images": listing.images,
-                        "uniqueId": listing.uniqueID,
-                        "minPrice": listing.minPrice
-                    }
+                result = {
+                    "isbn": book.isbn,
+                    "title": book.title,
+                    "crscode": course.courseCode,
+                    "crstitle": course.courseTitle,
+                    "images": listing.images,
+                    "uniqueId": listing.uniqueID,
+                    "minPrice": listing.minPrice
+                }
+                results.append(result)
 
-                    results.append(result)
-                    
             return results
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
@@ -253,22 +252,22 @@ class QueryDatabase:
         try:
             result = []
             found = self._connection.query(Listings, Books, Courses, Bids). \
-                    filter(Listings.sellerID.contains(query)). \
-                    filter(Books.isbn == Listings.isbn). \
-                    filter(Bids.listingID == Listings.uniqueID). \
-                    filter(Bids.bid == Listings.highestBid). \
-                    filter(Courses.isbn == Listings.isbn).all()
+                filter(Listings.sellerID.contains(query)). \
+                filter(Books.isbn == Listings.isbn). \
+                filter(Bids.listingID == Listings.uniqueID). \
+                filter(Bids.bid == Listings.highestBid). \
+                filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course, bid in found:
-                result.append((book.title, course.coursenum, bid.buyerID,
+                result.append((book.title, course.courseCode, bid.buyerID,
                                listing.highestBid, listing.buyNow, bid.status, listing.uniqueID))
-            
+
             # Case for listings with no bids
             found = self._connection.query(Listings, Books, Courses). \
-                    filter(Listings.sellerID.contains(query)). \
-                    filter(Books.isbn == Listings.isbn). \
-                    filter(Courses.isbn == Listings.isbn).all()
+                filter(Listings.sellerID.contains(query)). \
+                filter(Books.isbn == Listings.isbn). \
+                filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course in found:
-                result.append((book.title, course.coursenum, "There are currently no bidders for this listing",
+                result.append((book.title, course.courseCode, "There are currently no bidders for this listing",
                                listing.highestBid, listing.buyNow, "N/A", listing.uniqueID))
 
             return result
@@ -379,7 +378,7 @@ class QueryDatabase:
     def addBid(self, buyerID, listingID, bid):
         try:
             # update highestBid for this listing
-            listing = self._connection.query(Listings).\
+            listing = self._connection.query(Listings). \
                 filter(Listings.uniqueID == listingID).one_or_none()
             # if buyer already has a bid on that book, update the bid
             foundBid = self._connection.query(Bids). \
