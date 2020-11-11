@@ -240,27 +240,17 @@ class QueryDatabase:
                     filter(Bids.bid == Listings.highestBid). \
                     filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course, bid in found:
-<<<<<<< HEAD
                 result.append((book.title, course.coursenum, bid.buyerID,
                                listing.highestBid, listing.buyNow, bid.status, listing.uniqueID))
-=======
-                result.append((book.title, course.courseCode, bid.buyerID,
-                               listing.highestBid, listing.buyNow, bid.status))
->>>>>>> 9fe468f233f845bf2753c4dd4e6e22f402e02368
-
+            
             # Case for listings with no bids
             found = self._connection.query(Listings, Books, Courses). \
                     filter(Listings.sellerID.contains(query)). \
                     filter(Books.isbn == Listings.isbn). \
                     filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course in found:
-<<<<<<< HEAD
                 result.append((book.title, course.coursenum, "There are currently no bidders for this listing",
                                listing.highestBid, listing.buyNow, "N/A", listing.uniqueID))
-=======
-                result.append((book.title, course.courseCode, "There are currently no bidders for this listing",
-                               listing.highestBid, listing.buyNow, "N/A"))
->>>>>>> 9fe468f233f845bf2753c4dd4e6e22f402e02368
 
             return result
         except Exception as e:
