@@ -345,7 +345,7 @@ def aboutUsTemplate():
     client_token = generate_client_token()
 
     html = render_template(
-        'aboutUs2.html', client_token=client_token, username=username)
+        'aboutUs.html', client_token=client_token, username=username)
 
     response = make_response(html)
     return response
