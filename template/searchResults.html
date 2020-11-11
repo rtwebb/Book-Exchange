@@ -85,7 +85,7 @@
 				console.log("query: ", query);
 
 				if (searchType !== '' || searchType !== null){
-					if(query !== null || query.trim() != ''){
+					if(query !== null || query.trim() !== ''){
 						let url = 'autoComplete?searchType=' + searchType + "&query=" + query
 					
 						if (request != null) {
