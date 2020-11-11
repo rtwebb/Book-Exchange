@@ -147,6 +147,7 @@ class QueryDatabase:
                     book.quantity -= 1
 
             self._connection.commit()
+            return 0
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
