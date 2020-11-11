@@ -61,11 +61,11 @@
       </div>
         <div class="form-group col-md-4">
           <label for="inputISBN">ISBN</label>
-          <input type="email" class="form-control" id="inputISBN" placeholder="1234567890">
+          <input type="text" class="form-control" id="inputISBN" placeholder="1234567890">
         </div>
         <div class="form-group col-md-4">
           <label for="inputAuthors">Authors</label>
-          <input type="password" class="form-control" id="inputAuthors" placeholder="Professor Dondero">
+          <input type="text" class="form-control" id="inputAuthors" placeholder="Professor Dondero">
         </div>
       </div>
       <div class="form-row">
@@ -98,7 +98,7 @@
         <label class="form-check-label" for="inlineRadio2">Good</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="fair" disabled>
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="fair">
         <label class="form-check-label" for="inlineRadio3">Fair</label>
       </div>
       <div class="form-check form-check-inline">
@@ -111,82 +111,6 @@
       value="Submit">SUBMIT</button>
     </div>
     </form>
-
-<<<<<<< HEAD
-=======
-
-    <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
-    <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
-    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
-    <script>
-
-      'use strict';
-
-
-      function handleResponse(response){
-        // return array depending on search
-
-        try
-        {
-          let results = response;
-
-                  // call jQuery autocomplete on said list
-          $("#searchQuery").autocomplete({
-            source: results
-          });
-
-        }
-        catch(e){
-          console.log("error: ", e);
-        }
-
-
-      }
-
-
-      let request = null;
-
-      function getResults(){
-
-        let searchType = $('#searchType1').val();
-        searchType = encodeURIComponent(searchType);
-        console.log("searchType: ", searchType);
-
-        let query = $('#searchQuery').val();
-     
-        query = encodeURIComponent(query);
-        console.log("query: ", query);
-
-        if (searchType !== '' || searchType !== null){
-          if(query !== null || query.trim() !== ''){
-            let url = 'autoComplete?searchType=' + searchType + "&query=" + query
-          
-            if (request != null) {
-				      request.abort();
-			      }
-
-			      request = $.ajax(
-				      {
-					      type: 'GET',
-					      url: url, 
-					      success: handleResponse
-				      }
-
-			      );
-          }
-        }
-
-		}
-      function setup(){
-        $('#searchQuery').focus();
-        $('#searchQuery').on('input', getResults);
-      }
-      $('document').ready(setup);
-    </script>
-
-
-
->>>>>>> bd427081558a01543124294d605c8bfc2b87e086
     {% include 'footer.html' %}
   </body>
 </html>
