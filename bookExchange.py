@@ -96,7 +96,7 @@ def searchResultsTemplate():
         searchType = 1
     elif dropDown == "title":
         searchType = 2
-    elif dropDown == "crsnum":
+    elif dropDown == "crscode":
         searchType = 3
     else:
         searchType = 4
