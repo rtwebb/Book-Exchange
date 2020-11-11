@@ -37,6 +37,14 @@ class QueryDatabase:
             if book is not None:
                 book.quantity += 1
                 self._connection.commit()
+                course = self._connection.query(Courses).\
+                    filter(Courses.isbn == isbn).\
+                    filter(Courses.courseCode.contains(courseCode)).\
+                    one_or_none()
+                if not course:
+                    course = Courses(isbn=isbn, courseCode=courseCode, courseTitle=courseTitle)
+                    self._connection.add(course)
+                    self._connection.commit()
 
             else:
                 book = Books(isbn=isbn, title=title, quantity=1)
