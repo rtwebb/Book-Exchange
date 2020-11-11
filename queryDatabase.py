@@ -212,15 +212,26 @@ class QueryDatabase:
     # provides information for recent listings in order of listed time
     def homeRecents(self):
         try:
-            result = []
+            results = []
             found = self._connection.query(Books, Courses, Listings). \
                 filter(Listings.isbn == Books.isbn). \
                 filter(Listings.isbn == Courses.isbn). \
                 order_by(Listings.listTime).all()
             for book, course, listing in found:
-                result.append((book.isbn, book.title, course.courseCode, course.courseTitle, listing.minPrice, listing.images,
-                               listing.uniqueID))
-            return result
+                   for book, course, listing in found:
+                    result = { 
+                        "isbn": book.isbn, 
+                        "title": book.title,
+                        "crscode": course.courseCode,
+                        "crstitle": course.courseTitle,
+                        "images": listing.images,
+                        "uniqueId": listing.uniqueID,
+                        "minPrice": listing.minPrice
+                    }
+
+                    results.append(result)
+                    
+            return results
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1

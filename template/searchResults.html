@@ -32,10 +32,10 @@
         {%  for dict in results %}
         <div class="info">
           {% set url = "buyerPage?bookid=" + dict["uniqueId"] %}
-          <a href={{url}}><img src="{{images[dict['images']]}}" width="225" height="160"></a> 
+          <a href={{url}} method='POST'><img src="{{images[dict['images']]}}" width="225" height="160"></a> 
           <div>
-            <a href={{url}} method='get'> Book title: {{dict["title"]}}
-              Course name: {{dict["crsname"]}}
+            <a href={{url}} method='POST'> Book title: {{dict["title"]}}
+              Course Code: {{dict["crscode"]}}
               Min price: {{dict["minPrice"]}} ...</a>
           </div>
         </div>
