@@ -159,7 +159,7 @@ class QueryDatabase:
             # signal tells me what kind of query it is: book title, isbn, course, etc
             newQuery = query.replace("%", "\\%")
             newQuery = newQuery.replace("_", "\\_")
-            if requestType == 1:
+            if requestType == "1":
                 newQuery = '%' + newQuery.lower() + '%'
             else:
                 newQuery = newQuery.lower() + '%'
@@ -189,7 +189,7 @@ class QueryDatabase:
                     filter(Books.isbn == Courses.isbn). \
                     filter(Courses.courseTitle.ilike(newQuery, escape='\\')). \
                     order_by(Listings.listTime).all()
-            if requestType == 1:
+            if requestType == "1":
                 for book, course, listing in found:
                     result = {
                         "isbn": book.isbn,

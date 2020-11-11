@@ -44,10 +44,16 @@ def homePageTemplate():
     results = []
     try:
         results = database.homeRecents()
-        errorMsg = ''
+        if results == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+        
     except Exception as e:
         print("Error: " + str(e), file=stderr)
-        errorMsg = 'An error occurred please contact email at bottom of the screen'
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
 
     # getting images corresponding to each book
     # if no image was uploaded - using a stock photo
@@ -124,7 +130,11 @@ def searchResultsTemplate():
         uniqueIds = []
         images = []
         try:
-            results = database.search(searchType, query, 1)
+            results = database.search(searchType, query, "1")
+            if results == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
             print(results)
 
             # Acessing images
@@ -149,6 +159,9 @@ def searchResultsTemplate():
 
         except Exception as e:
             print(argv[0] + ": " + str(e), file=stderr)
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
 
         print('In else statement')
         html = render_template('searchResults.html', results=results,
@@ -196,6 +209,9 @@ def sellerPageTemplate():
                          minprice, buynow, listTime, images)
         except Exception as e:
             print("Error: " + str(e), file=stderr)
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
 
     # when sending to profile page have a "successful" message display
     html = render_template('sellerPage.html', method='GET', username=username)
@@ -219,11 +235,15 @@ def buyerPageTemplate():
     try:
         results = database.getDescription(uniqueId)  # whatever she called it and pass args
         if results == -1:
-            results = None
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
         errorMsg = ''
     except Exception as e:
         print("Error: " + str(e), file=stderr)
-        errorMsg = 'An error occurred please contact email at bottom of the screen'
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
     
     images = []
     for result in results:
@@ -295,6 +315,9 @@ def profilePageTemplate():
         
     except Exception as e:
         print("Error: " + str(e), file=stderr)
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
     # get books they are selling
     # if none set object to none, else pass along
     # get books that they have bid on
@@ -349,9 +372,15 @@ def autoComplete():
     results = []
     try:
         results = database.search(searchType, query, 0)
+        if results == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
     except Exception as e:
         print("Error: " + str(e), file=stderr)
-        errorMsg = 'An error occurred please contact email at bottom of the screen'
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
 
     # make the list of possible automcomplete
     values = []  # past values
