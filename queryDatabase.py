@@ -182,7 +182,7 @@ class QueryDatabase:
                     result = { 
                         "isbn": book.isbn, 
                         "title": book.title,
-                        "crsname": course.coursenum,
+                        "crscode": course.coursenum,
                         "crstitle": course.coursename,
                         "images": listing.images,
                         "uniqueId": listing.uniqueID,
@@ -196,7 +196,7 @@ class QueryDatabase:
                     result = {
                         "isbn": book.isbn, 
                         "title": book.title,
-                        "crsname": course.coursenum,
+                        "crscode": course.coursenum,
                         "crstitle": course.coursename
                     }
                     results.append(result)

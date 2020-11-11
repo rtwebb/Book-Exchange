@@ -333,8 +333,8 @@ def autoComplete():
     elif dropDown == "title":
         index = 'title'
         searchType = 2
-    elif dropDown == "crsname":
-        index = 'crsname'
+    elif dropDown == "crscode":
+        index = 'crscode'
         searchType = 3
     else:
         index = 'crstitle'
