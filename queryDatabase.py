@@ -29,7 +29,7 @@ class QueryDatabase:
 
     # Function currently takes a URL but flask is passing through a file
     # add a listing to the database
-    def add(self, isbn, title, authors, coursenum, coursename,
+    def add(self, isbn, title, authors, courseCode, courseTitle,
             sellerID, condition, minPrice, buyNow, listTime, urls):
 
         try:
@@ -47,7 +47,7 @@ class QueryDatabase:
                 self._connection.add(book)
                 self._connection.commit()
 
-                course = Courses(isbn=isbn, coursenum=coursenum, coursename=coursename)
+                course = Courses(isbn=isbn, courseCode=courseCode, courseTitle=courseTitle)
                 self._connection.add(course)
                 self._connection.commit()
 
@@ -170,22 +170,22 @@ class QueryDatabase:
             elif signal == 3:  # query is a coursenum
                 found = self._connection.query(Books, Courses, Listings). \
                     filter(Listings.isbn == Courses.isbn). \
-                    filter(Courses.coursenum.ilike(newQuery, escape='\\')). \
+                    filter(Courses.courseCode.ilike(newQuery, escape='\\')). \
                     filter(Books.isbn == Courses.isbn). \
                     order_by(Listings.listTime).all()
             else:  # search by course title
                 found = self._connection.query(Books, Courses, Listings). \
                     filter(Listings.isbn == Books.isbn). \
                     filter(Books.isbn == Courses.isbn). \
-                    filter(Courses.coursename.ilike(newQuery, escape='\\')). \
+                    filter(Courses.courseTitle.ilike(newQuery, escape='\\')). \
                     order_by(Listings.listTime).all()
             if requestType == 1:
                 for book, course, listing in found:
                     result = { 
                         "isbn": book.isbn, 
                         "title": book.title,
-                        "crsname": course.coursenum,
-                        "crstitle": course.coursename,
+                        "crscode": course.courseCode,
+                        "crstitle": course.courseTitle,
                         "images": listing.images,
                         "uniqueId": listing.uniqueID,
                         "minPrice": listing.minPrice
@@ -198,8 +198,8 @@ class QueryDatabase:
                     result = {
                         "isbn": book.isbn, 
                         "title": book.title,
-                        "crsname": course.coursenum,
-                        "crstitle": course.coursename
+                        "crscode": course.courseCode,
+                        "crstitle": course.courseTitle
                     }
                     results.append(result)
                 return results
@@ -220,7 +220,7 @@ class QueryDatabase:
                 filter(Listings.isbn == Courses.isbn). \
                 order_by(Listings.listTime).all()
             for book, course, listing in found:
-                result.append((book.isbn, book.title, course.coursenum, course.coursename, listing.minPrice, listing.images,
+                result.append((book.isbn, book.title, course.courseCode, course.courseTitle, listing.minPrice, listing.images,
                                listing.uniqueID))
             return result
         except Exception as e:
@@ -240,8 +240,13 @@ class QueryDatabase:
                     filter(Bids.bid == Listings.highestBid). \
                     filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course, bid in found:
+<<<<<<< HEAD
                 result.append((book.title, course.coursenum, bid.buyerID,
                                listing.highestBid, listing.buyNow, bid.status, listing.uniqueID))
+=======
+                result.append((book.title, course.courseCode, bid.buyerID,
+                               listing.highestBid, listing.buyNow, bid.status))
+>>>>>>> 9fe468f233f845bf2753c4dd4e6e22f402e02368
 
             # Case for listings with no bids
             found = self._connection.query(Listings, Books, Courses). \
@@ -249,8 +254,13 @@ class QueryDatabase:
                     filter(Books.isbn == Listings.isbn). \
                     filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course in found:
+<<<<<<< HEAD
                 result.append((book.title, course.coursenum, "There are currently no bidders for this listing",
                                listing.highestBid, listing.buyNow, "N/A", listing.uniqueID))
+=======
+                result.append((book.title, course.courseCode, "There are currently no bidders for this listing",
+                               listing.highestBid, listing.buyNow, "N/A"))
+>>>>>>> 9fe468f233f845bf2753c4dd4e6e22f402e02368
 
             return result
         except Exception as e:
@@ -284,7 +294,7 @@ class QueryDatabase:
                 filter(Books.isbn == Listings.isbn). \
                 filter(Listings.isbn == Courses.isbn).all()
             for book, course, listing, bid in found:
-                result.append((book.title, course.coursenum, course.coursename, listing.minPrice,
+                result.append((book.title, course.courseCode, course.courseTitle, listing.minPrice,
                                bid.bid))
             return result
         except Exception as e:
@@ -304,7 +314,7 @@ class QueryDatabase:
                 filter(Courses.isbn == Books.isbn). \
                 all()
             for bid, book, course, listing in found:
-                result.append((book.title, course.coursenum, course.coursename, listing.sellerID, bid.bid,
+                result.append((book.title, course.courseCode, course.courseTitle, listing.sellerID, bid.bid,
                                bid.status, listing.uniqueID))
             return result
         except Exception as e:
@@ -347,7 +357,7 @@ class QueryDatabase:
             for listing, book, course in found:
                 result.append((listing.sellerID, listing.isbn, listing.condition, listing.minPrice,
                                listing.buyNow, listing.listTime, listing.images, book.title,
-                               book.authors[0].name, course.coursenum, course.coursename, listing.uniqueID,
+                               book.authors[0].name, course.courseCode, course.courseTitle, listing.uniqueID,
                                listing.highestBid))
             return result
         except Exception as e:

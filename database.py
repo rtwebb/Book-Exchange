@@ -30,8 +30,8 @@ class Authors(Base):
 class Courses(Base):
     __tablename__ = 'courses'
     isbn = Column(String, primary_key=True)
-    coursenum = Column(String, primary_key=True)
-    coursename = Column(String)
+    courseCode = Column(String, primary_key=True)
+    courseTitle = Column(String)
 
 
 class Bids(Base):
