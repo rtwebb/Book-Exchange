@@ -273,7 +273,7 @@ class QueryDatabase:
             return result
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
-            return None
+            return -1
 
     # ----------------------------------------------------------------------------------
 

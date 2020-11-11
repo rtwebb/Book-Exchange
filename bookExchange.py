@@ -34,13 +34,6 @@ mail = Mail(app)
 database = QueryDatabase()
 
 # -----------------------------------------------------------------------
-def incrementCount(count):
-    count['value'] += 1
-    return ''
-
-app.jinja_env.globals.update(incrementCount=incrementCount)
-
-# -----------------------------------------------------------------------
 
 @app.route('/', methods=['GET'])
 @app.route('/homePage', methods=['GET'])
@@ -225,10 +218,13 @@ def buyerPageTemplate():
 
     try:
         results = database.getDescription(uniqueId)  # whatever she called it and pass args
+        if results == -1:
+            results = None
         errorMsg = ''
     except Exception as e:
         print("Error: " + str(e), file=stderr)
         errorMsg = 'An error occurred please contact email at bottom of the screen'
+    
     images = []
     for result in results:
         if result[6]:
