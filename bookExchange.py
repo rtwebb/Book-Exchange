@@ -358,10 +358,16 @@ def autoComplete():
         errorMsg = 'An error occurred please contact email at bottom of the screen'
 
     # make the list of possible automcomplete
+    values = []  # past values
     if results is not None:
         autoComplete = []
         for dict in results:
-            autoComplete.append(dict[index])
+            if dict[index] not in values:
+                values.append(dict[index])
+                autoComplete.append(dict[index])
+
+    print(autoComplete)
+    autoComplete.sort(key=lambda v: v.upper())
 
     print("Auto Complete list: ")
     print(autoComplete)
