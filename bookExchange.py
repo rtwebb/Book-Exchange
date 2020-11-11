@@ -11,6 +11,7 @@ from queryDatabase import QueryDatabase
 from datetime import datetime
 from CASClient import CASClient
 from json import dumps
+import braintree
 from payment import generate_client_token, transact, find_transaction
 # from wtforms import TextField, Form
 
@@ -335,8 +336,9 @@ def profilePageTemplate():
 @app.route('/aboutUs', methods=['GET'])
 def aboutUsTemplate():
     username = CASClient().authenticate()
+    client_token = generate_client_token()
 
-    html = render_template('aboutUs2.html', username=username)
+    html = render_template('aboutUs2.html', client_token=client_token, username=username)
 
     response = make_response(html)
     return response
