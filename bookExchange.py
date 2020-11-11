@@ -11,6 +11,7 @@ from queryDatabase import QueryDatabase
 from datetime import datetime
 from CASClient import CASClient
 from json import dumps
+from payment import generate_client_token, transact, find_transaction
 # from wtforms import TextField, Form
 
 # -----------------------------------------------------------------------
@@ -405,7 +406,10 @@ def autoComplete():
 # ----------------------------------------------------------------------
 @app.route('/checkout', methods=['GET'])
 def checkout():
-    html = render_template('checkout.html')
+    username = CASClient().authenticate()
+    client_token = generate_client_token()
+
+    html = render_template('checkout.html', client_token=client_token, username=username)
     response = make_response(html)
 
     return response
