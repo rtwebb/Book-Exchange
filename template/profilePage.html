@@ -116,7 +116,7 @@
                               <td></td>
                               <td>
                                     {% if book[5] == 'pending' %}
-                                          <form method="post", action="profilePage?list={{book[5]}}&bidder={{book[2]}}">
+                                          <form method="post", action="profilePage?list={{book[6]}}&bidder={{book[2]}}">
                                           <input type="submit" name="accept" id="accept" value="Accept">
                                           <input type="submit" name="decline" id="decline" value="Decline">
                                           </form>
@@ -128,7 +128,9 @@
                               <td><form action="/sellerPage" method="POST">
                                      <button class="glyphicon glyphicon-pencil"></button>
                                   </form>
-                                  <button class="glyphicon glyphicon-trash"></span>
+                                  <form action="/profilePage?deleteListingID={{book[6]}}" method="POST">
+                                     <button class="glyphicon glyphicon-trash"></button>
+                                  </form>
                               </td>
                         </tr>
                   {%    endfor %}
@@ -220,7 +222,9 @@
                               <td><form action="/buyerPage?bookid={{book[6]}}" method="POST">
                                      <button class="glyphicon glyphicon-pencil"></button>
                                   </form>
-                                  <button class="glyphicon glyphicon-trash" onclick="deleteBid({{book[0]}})"></button>
+                                  <form action="/profilePage?deleteBidBuyerID={{user}}&deleteBidListingID={{book[6]}}" method="POST">
+                                     <button class="glyphicon glyphicon-trash" onclick="deleteBid({{book[0]}})"></button>
+                                  </form>
                               </td>
                         </tr>
                   {%    endfor %}

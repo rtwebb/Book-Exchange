@@ -257,7 +257,7 @@ def buyerPageTemplate():
 @app.route('/profilePage', methods=['GET', 'POST'])
 def profilePageTemplate():
     username = CASClient().authenticate()
-    bid = request.args.get('list')
+    listingID = request.args.get('list')
     bidder = request.args.get('bidder')
 
     try:
@@ -268,7 +268,7 @@ def profilePageTemplate():
                           recipients=[bidder + '@princeton.edu'], body=bodyMsg)
             mail.send(msg)
 
-            database.updateStatus(bid, bidder, 'accepted')
+            database.updateStatus(listingID, bidder, 'accepted')
 
         elif 'decline' in request.form:
             bodyMsg = "Hello, " + bidder + "\n" + "\n" + \
@@ -277,7 +277,17 @@ def profilePageTemplate():
                           recipients=[bidder + '@princeton.edu'], body=bodyMsg)
             mail.send(msg)
 
-            database.updateStatus(bid, bidder, 'declined')
+            database.updateStatus(listingID, bidder, 'declined')
+        
+        deleteBidBuyerID = request.args.get('deleteBidBuyerID')
+        deleteBidListingID = request.args.get('deleteBidListingID')
+        
+        if deleteBidBuyerID is not None and deleteBidListingID is not None:
+            database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
+        
+        deleteListingID = request.args.get('deleteListingID')
+        if deleteListingID is not None:
+            database.removeListing(deleteListingID)
 
         # query database for the given user
         listings = database.myListings(username)
