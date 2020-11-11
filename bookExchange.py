@@ -37,6 +37,7 @@ database = QueryDatabase()
 
 # -----------------------------------------------------------------------
 
+
 @app.route('/', methods=['GET'])
 @app.route('/homePage', methods=['GET'])
 def homePageTemplate():
@@ -50,7 +51,7 @@ def homePageTemplate():
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
-        
+
     except Exception as e:
         print("Error: " + str(e), file=stderr)
         html = render_template('errorPage.html')
@@ -60,7 +61,7 @@ def homePageTemplate():
     # getting images corresponding to each book
     # if no image was uploaded - using a stock photo
     images = []
-    
+
     # Acessing images
     i = 0
     for dict in results:
@@ -72,16 +73,16 @@ def homePageTemplate():
             print("image value: ", dict["images"])
             i += 1
         else:
-            images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+            images.append(
+                "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
             dict["images"] = i
             print("image value: ", dict["images"])
             i += 1
 
         print("imagelist: ", images)
 
-
     html = render_template('homePage.html', results=results, images=images,
-                        username=username) 
+                           username=username)
     response = make_response(html)
     return response
 
@@ -151,13 +152,13 @@ def searchResultsTemplate():
                     i += 1
 
                 else:
-                    images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+                    images.append(
+                        "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
                     dict["images"] = i
                     print("image value: ", dict["images"])
                     i += 1
 
             print("imagelist: ", images)
-
 
         except Exception as e:
             print(argv[0] + ": " + str(e), file=stderr)
@@ -222,6 +223,7 @@ def sellerPageTemplate():
 
 # -----------------------------------------------------------------------
 
+
 @app.route('/buyerPage', methods=['GET', 'POST'])
 def buyerPageTemplate():
     username = CASClient().authenticate()
@@ -234,7 +236,8 @@ def buyerPageTemplate():
     #     return errorMsg('Invalid book ID')
 
     try:
-        results = database.getDescription(uniqueId)  # whatever she called it and pass args
+        # whatever she called it and pass args
+        results = database.getDescription(uniqueId)
         if results == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
@@ -245,7 +248,7 @@ def buyerPageTemplate():
         html = render_template('errorPage.html')
         response = make_response(html)
         return response
-    
+
     images = []
     for result in results:
         if result[6]:
@@ -257,14 +260,16 @@ def buyerPageTemplate():
         bid = request.form.get('bid')
         print('bid', bid)
 
-        database.addBid(buyerID, uniqueId, bid)  # whatever she called it and pass args
+        # whatever she called it and pass args
+        database.addBid(buyerID, uniqueId, bid)
     # buyerPage needs link back to home page
     # If user makes a bid
     # check to make sure if they are sure about the amount
     # if it is correct show success page and have a link to go back to homePage
     # if no stay on buyer page
 
-    html = render_template('buyerPage.html', results=results[0], images=images, listing=uniqueId)
+    html = render_template(
+        'buyerPage.html', results=results[0], images=images, listing=uniqueId)
     response = make_response(html)
     return response
 
@@ -295,13 +300,13 @@ def profilePageTemplate():
             mail.send(msg)
 
             database.updateStatus(listingID, bidder, 'declined')
-        
+
         deleteBidBuyerID = request.args.get('deleteBidBuyerID')
         deleteBidListingID = request.args.get('deleteBidListingID')
-        
+
         if deleteBidBuyerID is not None and deleteBidListingID is not None:
             database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
-        
+
         deleteListingID = request.args.get('deleteListingID')
         if deleteListingID is not None:
             database.removeListing(deleteListingID)
@@ -313,7 +318,7 @@ def profilePageTemplate():
         # database.updateStatus(book[5], book[2], 'pending')
         purchases = database.myPurchases(username)
         bids = database.myBids(username)
-        
+
     except Exception as e:
         print("Error: " + str(e), file=stderr)
         html = render_template('errorPage.html')
@@ -333,12 +338,14 @@ def profilePageTemplate():
 
 # ----------------------------------------------------------------------
 
+
 @app.route('/aboutUs', methods=['GET'])
 def aboutUsTemplate():
     username = CASClient().authenticate()
     client_token = generate_client_token()
 
-    html = render_template('aboutUs2.html', client_token=client_token, username=username)
+    html = render_template(
+        'aboutUs2.html', client_token=client_token, username=username)
 
     response = make_response(html)
     return response
@@ -356,7 +363,6 @@ def autoComplete():
 
     query = request.args.get('query')
 
-   
     # ask Tiana to return ISBN
     if dropDown == "isbn":
         index = 'isbn'
@@ -398,7 +404,7 @@ def autoComplete():
 
     print("Auto Complete list: ")
     print(autoComplete)
- 
+
     jsonStr = dumps(autoComplete)
     response = make_response(jsonStr)
     response.headers['Content-Type'] = 'application/json'
@@ -411,7 +417,8 @@ def checkout():
     username = CASClient().authenticate()
     client_token = generate_client_token()
 
-    html = render_template('checkout.html', client_token=client_token, username=username)
+    html = render_template(
+        'checkout.html', client_token=client_token, username=username)
     response = make_response(html)
 
     return response
