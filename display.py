@@ -40,7 +40,7 @@ def main():
     print('courses')
     print('------------------------------------')
     for course in session.query(Courses).all():
-        print(course.isbn, course.coursenum, course.coursename)
+        print(course.isbn, course.courseCode, course.courseTitle)
 
     print('------------------------------------')
     print('bids')

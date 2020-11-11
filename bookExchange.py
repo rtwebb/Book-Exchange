@@ -11,12 +11,13 @@ from queryDatabase import QueryDatabase
 from datetime import datetime
 from CASClient import CASClient
 from json import dumps
+import braintree
+from payment import generate_client_token, transact, find_transaction
 # from wtforms import TextField, Form
 
 # -----------------------------------------------------------------------
 
 app = Flask(__name__, template_folder='template')
-
 
 
 # Do we need this/ how do we use this??????
@@ -33,9 +34,6 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 database = QueryDatabase()
-# -----------------------------------------------------------------------
-#class searchForm(Form):
-   # autocomp = TextField('Enter input', id='searchQuery_autocomplete')
 
 # -----------------------------------------------------------------------
 
@@ -44,34 +42,46 @@ database = QueryDatabase()
 def homePageTemplate():
     username = CASClient().authenticate()
 
-    #form = searchForm(request.form)
-
     # need to get recently listed books to show
     results = []
     try:
         results = database.homeRecents()
-        errorMsg = ''
+        if results == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+        
     except Exception as e:
         print("Error: " + str(e), file=stderr)
-        errorMsg = 'An error occurred please contact email at bottom of the screen'
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
 
     # getting images corresponding to each book
     # if no image was uploaded - using a stock photo
     images = []
-    for result in results:
-        if result[5]:
-            images.append(result[5][0].url)
+    
+    # Acessing images
+    i = 0
+    for dict in results:
+        if dict["images"]:
+            image = dict["images"]
+            images.append(image[0].url)
+            print("image: ", image[0].url)
+            dict["images"] = i
+            print("image value: ", dict["images"])
+            i += 1
         else:
-            images.append(
-                "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+            images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+            dict["images"] = i
+            print("image value: ", dict["images"])
+            i += 1
 
-    uniqueIds = []
-    for result in results:
-        if result[6]:
-            uniqueIds.append(result[6])
+        print("imagelist: ", images)
 
-    html = render_template('homePage.html', results=results, image=images,
-                           errorMsg=errorMsg, uniqueIds=uniqueIds, username=username) 
+
+    html = render_template('homePage.html', results=results, images=images,
+                        username=username) 
     response = make_response(html)
     return response
 
@@ -94,7 +104,7 @@ def searchResultsTemplate():
         searchType = 1
     elif dropDown == "title":
         searchType = 2
-    elif dropDown == "crsnum":
+    elif dropDown == "crscode":
         searchType = 3
     else:
         searchType = 4
@@ -113,42 +123,51 @@ def searchResultsTemplate():
         if not results:
             results = None
             images = None
-            uniqueIds = None
         html = render_template('searchResults.html', results=results, searchType=searchType,
-                               username=username, query=query, image=images, uniqueIds=uniqueIds)
+                               username=username, query=query, image=images)
         response = make_response(html)
         return response
     # proper input (drop-down filled in and query sent)
     else:
         uniqueIds = []
+        images = []
         try:
-            results = database.search(searchType, query, 1)
+            results = database.search(searchType, query, "1")
+            if results == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+            print(results)
 
             # Acessing images
-            images = []
+            i = 0
             for dict in results:
-                if dict[index]:
-                    image = dict[index]
+                if dict["images"]:
+                    image = dict["images"]
                     images.append(image[0].url)
+                    print("image: ", image[0].url)
+                    dict["images"] = i
+                    print("image value: ", dict["images"])
+                    i += 1
+
                 else:
                     images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+                    dict["images"] = i
+                    print("image value: ", dict["images"])
+                    i += 1
 
+            print("imagelist: ", images)
 
-            print("image: ")
-            print(images)
-
-            # Accessing unique Ids 
-            for dict in results:
-                if dict["uniqueId"]:
-                    uniqueIds.append(dict["uniqueId"])
 
         except Exception as e:
             print(argv[0] + ": " + str(e), file=stderr)
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
 
-        print('In else statement')
         html = render_template('searchResults.html', results=results,
-                               username=username, uniqueIds=uniqueIds, query=query, searchType=searchType,
-                               image=images)
+                               username=username, query=query, searchType=searchType,
+                               images=images)
         response = make_response(html)
         return response
 
@@ -191,6 +210,9 @@ def sellerPageTemplate():
                          minprice, buynow, listTime, images)
         except Exception as e:
             print("Error: " + str(e), file=stderr)
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
 
     # when sending to profile page have a "successful" message display
     html = render_template('sellerPage.html', method='GET', username=username)
@@ -213,10 +235,17 @@ def buyerPageTemplate():
 
     try:
         results = database.getDescription(uniqueId)  # whatever she called it and pass args
+        if results == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
         errorMsg = ''
     except Exception as e:
         print("Error: " + str(e), file=stderr)
-        errorMsg = 'An error occurred please contact email at bottom of the screen'
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
+    
     images = []
     for result in results:
         if result[6]:
@@ -245,7 +274,7 @@ def buyerPageTemplate():
 @app.route('/profilePage', methods=['GET', 'POST'])
 def profilePageTemplate():
     username = CASClient().authenticate()
-    bid = request.args.get('list')
+    listingID = request.args.get('list')
     bidder = request.args.get('bidder')
 
     try:
@@ -256,7 +285,7 @@ def profilePageTemplate():
                           recipients=[bidder + '@princeton.edu'], body=bodyMsg)
             mail.send(msg)
 
-            database.updateStatus(bid, bidder, 'accepted')
+            database.updateStatus(listingID, bidder, 'accepted')
 
         elif 'decline' in request.form:
             bodyMsg = "Hello, " + bidder + "\n" + "\n" + \
@@ -265,7 +294,17 @@ def profilePageTemplate():
                           recipients=[bidder + '@princeton.edu'], body=bodyMsg)
             mail.send(msg)
 
-            database.updateStatus(bid, bidder, 'declined')
+            database.updateStatus(listingID, bidder, 'declined')
+        
+        deleteBidBuyerID = request.args.get('deleteBidBuyerID')
+        deleteBidListingID = request.args.get('deleteBidListingID')
+        
+        if deleteBidBuyerID is not None and deleteBidListingID is not None:
+            database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
+        
+        deleteListingID = request.args.get('deleteListingID')
+        if deleteListingID is not None:
+            database.removeListing(deleteListingID)
 
         # query database for the given user
         listings = database.myListings(username)
@@ -277,6 +316,9 @@ def profilePageTemplate():
         
     except Exception as e:
         print("Error: " + str(e), file=stderr)
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
     # get books they are selling
     # if none set object to none, else pass along
     # get books that they have bid on
@@ -294,8 +336,9 @@ def profilePageTemplate():
 @app.route('/aboutUs', methods=['GET'])
 def aboutUsTemplate():
     username = CASClient().authenticate()
+    client_token = generate_client_token()
 
-    html = render_template('aboutUs2.html', username=username)
+    html = render_template('aboutUs2.html', client_token=client_token, username=username)
 
     response = make_response(html)
     return response
@@ -321,8 +364,8 @@ def autoComplete():
     elif dropDown == "title":
         index = 'title'
         searchType = 2
-    elif dropDown == "crsnum":
-        index = 'crsname'
+    elif dropDown == "crscode":
+        index = 'crscode'
         searchType = 3
     else:
         index = 'crstitle'
@@ -331,19 +374,31 @@ def autoComplete():
     results = []
     try:
         results = database.search(searchType, query, 0)
+        if results == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
     except Exception as e:
         print("Error: " + str(e), file=stderr)
-        errorMsg = 'An error occurred please contact email at bottom of the screen'
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
 
     # make the list of possible automcomplete
+    values = []  # past values
     if results is not None:
         autoComplete = []
         for dict in results:
-            autoComplete.append(dict[index])
+            if dict[index] not in values:
+                values.append(dict[index])
+                autoComplete.append(dict[index])
+
+    print(autoComplete)
+    autoComplete.sort(key=lambda v: v.upper())
 
     print("Auto Complete list: ")
     print(autoComplete)
-
+ 
     jsonStr = dumps(autoComplete)
     response = make_response(jsonStr)
     response.headers['Content-Type'] = 'application/json'
@@ -353,7 +408,10 @@ def autoComplete():
 # ----------------------------------------------------------------------
 @app.route('/checkout', methods=['GET'])
 def checkout():
-    html = render_template('checkout.html')
+    username = CASClient().authenticate()
+    client_token = generate_client_token()
+
+    html = render_template('checkout.html', client_token=client_token, username=username)
     response = make_response(html)
 
     return response

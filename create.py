@@ -43,9 +43,9 @@ def main():
 
     # ------------------------------------------------------------------------------------
 
-    course = Courses(isbn=123, coursenum='COS333', coursename='Advanced Programming Techniques')
+    course = Courses(isbn=123, courseCode='COS333', courseTitle='Advanced Programming Techniques')
     session.add(course)
-    course = Courses(isbn=234, coursenum='COS217', coursename='Introduction to Programming Systems')
+    course = Courses(isbn=234, courseCode='COS217', courseTitle='Introduction to Programming Systems')
     session.add(course)
     session.commit()
 

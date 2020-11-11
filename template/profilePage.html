@@ -116,7 +116,7 @@
                               <td></td>
                               <td>
                                     {% if book[5] == 'pending' %}
-                                          <form method="post", action="profilePage?list={{book[5]}}&bidder={{book[2]}}">
+                                          <form method="post", action="profilePage?list={{book[6]}}&bidder={{book[2]}}">
                                           <input type="submit" name="accept" id="accept" value="Accept">
                                           <input type="submit" name="decline" id="decline" value="Decline">
                                           </form>
@@ -128,7 +128,9 @@
                               <td><form action="/sellerPage" method="POST">
                                      <button class="glyphicon glyphicon-pencil"></button>
                                   </form>
-                                  <button class="glyphicon glyphicon-trash"></span>
+                                  <form action="/profilePage?deleteListingID={{book[6]}}" method="POST">
+                                     <button class="glyphicon glyphicon-trash"></button>
+                                  </form>
                               </td>
                         </tr>
                   {%    endfor %}
@@ -220,13 +222,85 @@
                               <td><form action="/buyerPage?bookid={{book[6]}}" method="POST">
                                      <button class="glyphicon glyphicon-pencil"></button>
                                   </form>
-                                  <button class="glyphicon glyphicon-trash" onclick="deleteBid({{book[0]}})"></button>
+                                  <form action="/profilePage?deleteBidBuyerID={{user}}&deleteBidListingID={{book[6]}}" method="POST">
+                                     <button class="glyphicon glyphicon-trash" onclick="deleteBid({{book[0]}})"></button>
+                                  </form>
                               </td>
                         </tr>
                   {%    endfor %}
             {% endif %}
       </table>
       </div>
+
+      <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
+      <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+      <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+      <script>
+  
+        'use strict';
+  
+  
+        function handleResponse(response){
+          // return array depending on search
+  
+          try
+          {
+            let results = response;
+  
+                    // call jQuery autocomplete on said list
+            $("#searchQuery").autocomplete({
+              source: results
+            });
+  
+          }
+          catch(e){
+            console.log("error: ", e);
+          }
+  
+  
+        }
+  
+  
+        let request = null;
+  
+        function getResults(){
+  
+          let searchType = $('#searchType1').val();
+          searchType = encodeURIComponent(searchType);
+          console.log("searchType: ", searchType);
+  
+          let query = $('#searchQuery').val();
+       
+          query = encodeURIComponent(query);
+          console.log("query: ", query);
+  
+          if (searchType !== '' || searchType !== null){
+            if(query !== null || query.trim() !== ''){
+              let url = 'autoComplete?searchType=' + searchType + "&query=" + query
+            
+              if (request != null) {
+                                request.abort();
+                          }
+  
+                          request = $.ajax(
+                                {
+                                      type: 'GET',
+                                      url: url, 
+                                      success: handleResponse
+                                }
+  
+                          );
+            }
+          }
+  
+              }
+        function setup(){
+          $('#searchQuery').focus();
+          $('#searchQuery').on('input', getResults);
+        }
+        $('document').ready(setup);
+      </script>
+
     <br>
     <br>
     {% include 'footer.html' %}
