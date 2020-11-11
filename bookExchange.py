@@ -163,7 +163,6 @@ def searchResultsTemplate():
             response = make_response(html)
             return response
 
-        print('In else statement')
         html = render_template('searchResults.html', results=results,
                                username=username, query=query, searchType=searchType,
                                images=images)
