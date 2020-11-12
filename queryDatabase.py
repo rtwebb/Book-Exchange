@@ -27,6 +27,8 @@ class QueryDatabase:
         self._engine = engine
         self._connection = session
 
+    # -----------------------------------------------------------------------------
+
     # Function currently takes a URL but flask is passing through a file
     # add a listing to the database
     def add(self, isbn, title, authors, courseCode, courseTitle,
