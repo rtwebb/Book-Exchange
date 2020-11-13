@@ -20,7 +20,7 @@
     {% endfor %}
     <div>
       <div>Make a Bid:
-        <form action="buyerPage?bookid={{listing}}" method="POST" id="submitBidForm">
+        <form action="buyerPage?bookid={{dict['uniqueId']}}" method="POST" id="submitBidForm">
         <input type="text" name="bid" /> (example input: 19.99)
         </form>
       </div>
