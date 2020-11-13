@@ -166,7 +166,6 @@ class QueryDatabase:
                 newQuery = '%' + newQuery.lower() + '%'
             else:
                 newQuery = newQuery.lower() + '%'
-            print(newQuery)
             results = []
             if signal == 1:  # if query is by isbn
                 found = self._connection.query(Books, Courses, Listings). \
@@ -398,9 +397,7 @@ class QueryDatabase:
                 filter(Listings.uniqueID == uniqueID). \
                 filter(Books.isbn == Listings.isbn). \
                 filter(Courses.isbn == Listings.isbn).all()
-            print('before for')
             for listing, book, course in found:
-                print('in for')
                 result = {
                         "title": book.title,
                         "crscode": course.courseCode,
@@ -455,7 +452,6 @@ class QueryDatabase:
                 if found:
                     for item in found:
                         # set highest bid equal to new highest bid
-                        print(item.bid)
                         listing.highestBid = item.bid
                         self._connection.commit()
                         break
