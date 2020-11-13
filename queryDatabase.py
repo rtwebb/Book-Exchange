@@ -62,7 +62,7 @@ class QueryDatabase:
                 self._connection.commit()
 
             listing = Listings(uniqueID=uuid4(), sellerID=sellerID, isbn=isbn,
-                               condition=condition, minPrice=minPrice,
+                               condition=condition.title(), minPrice=minPrice,
                                buyNow=buyNow, listTime=listTime, highestBid=0)
             imagelist = []
             for url in urls:
