@@ -13,6 +13,7 @@ from CASClient import CASClient
 from json import dumps
 import braintree
 from payment import generate_client_token, transact, find_transaction
+from venmo_api import Client, get_user_id
 # from wtforms import TextField, Form
 
 # -----------------------------------------------------------------------
@@ -436,10 +437,25 @@ def autoComplete():
 @app.route('/checkout', methods=['GET'])
 def checkout():
     username = CASClient().authenticate()
-    client_token = generate_client_token()
+   # client_token = generate_client_token()
 
-    html = render_template(
-        'checkout.html', client_token=client_token, username=username)
+    access_token = Client.get_access_token(username='emmandrawright@yahoo.com',
+                                       password='Darrell1')
+
+    venmo = Client(access_token=access_token)
+
+    bac = venmo.user.search_for_users(query="BACDance", page=1)
+    i = 0
+    for user in bac:
+        print("user ", i, ": ", user.username)
+    
+    userID = get_user_id(bac[0], None)
+    
+    # Request money
+    venmo.payment.request_money(32.5, "house expenses", str(userID))
+
+
+    html = render_template('checkout.html', username=username)
     response = make_response(html)
 
     return response
