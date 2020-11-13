@@ -334,11 +334,26 @@ def profilePageTemplate():
 
         # query database for the given user
         listings = database.myListings(username)
+        if listings == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+            print("listings: ", listings)
         # use this to reset the forms in mylistings in the profilepage
         # for book in listings:
         # database.updateStatus(book[5], book[2], 'pending')
         purchases = database.myPurchases(username)
+        if purchases == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+            print("purchases: ", purchases)
         bids = database.myBids(username)
+        if listings == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+            print("bids: ", bids)
 
     except Exception as e:
         print("Error: " + str(e), file=stderr)
