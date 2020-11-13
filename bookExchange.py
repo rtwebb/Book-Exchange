@@ -290,7 +290,7 @@ def buyerPageTemplate():
     # if it is correct show success page and have a link to go back to homePage
     # if no stay on buyer page
 
-    html = render_template('buyerPage.html', results=results, images=images)
+    html = render_template('buyerPage.html', results=results, images=images, uniqueId=uniqueId)
     response = make_response(html)
     return response
 

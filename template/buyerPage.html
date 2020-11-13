@@ -20,7 +20,7 @@
     {% endfor %}
     <div>
       <div>Make a Bid:
-        {% set url = "buyerPage?bookid=" + dict["uniqueId"] %}
+        {% set url = "buyerPage?bookid=" + uniqueId %}
         <form action={{url}} method="POST" id="submitBidForm">
         <input type="text" name="bid" /> (example input: 19.99)
         </form>
