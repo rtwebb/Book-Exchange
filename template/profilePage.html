@@ -116,7 +116,8 @@
                               <td></td>
                               <td>
                                     {% if book["status"] == 'pending' %}
-                                          <form method="post", action="profilePage?list={{book[6]}}&bidder={{book[2]}}">
+                                    {% set url = "/profilePage?list=" + book["uniqueId"] + "&bidder=" + book["buyerId"] %}
+                                          <form method="post", action={{url}}>
                                           <input type="submit" name="accept" id="accept" value="Accept">
                                           <input type="submit" name="decline" id="decline" value="Decline">
                                           </form>
@@ -220,11 +221,14 @@
                               <td>${{book["bid"]}}</td>
                               <td></td>
                               <td> {{book["status"]}}</td>
-                              <td><form action="/buyerPage?bookid={{book[6]}}" method="POST">
+                              {% set url = "/buyerPage?bookid=" + book["uniqueId"] %}
+                              <td><form action={{url}} method="POST">
                                      <button class="glyphicon glyphicon-pencil"></button>
                                   </form>
-                                  <form action="/profilePage?deleteBidBuyerID={{user}}&deleteBidListingID={{book[6]}}" method="POST">
-                                     <button class="glyphicon glyphicon-trash" onclick="deleteBid({{book[0]}})"></button>
+                                  {% set url = "/profilePage?deleteBidBuyerID=" + username + "&deleteBidListingID=" + book["uniqueId"] %}
+                                  <form action={{url}} method="POST">
+                                    {% set uniqueId = book["uniqueId" %]}
+                                     <button class="glyphicon glyphicon-trash" onclick="deleteBid(uniqueId)"></button>
                                   </form>
                               </td>
                         </tr>
