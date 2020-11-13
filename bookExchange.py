@@ -234,27 +234,49 @@ def buyerPageTemplate():
     # if check for if uniqueID is none
     # if (uniqueId == None):
     #     return errorMsg('Invalid book ID')
-
+    results = []
     try:
-        # whatever she called it and pass args
+        
         results = database.getDescription(uniqueId)
+        print("results: ", results)
+
+        # error checking - if error render errorPage
         if results == -1:
+            print("inside error")
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
-        errorMsg = ''
+
     except Exception as e:
+        # error checking - if error render errorPage
+        print("inside except")
         print("Error: " + str(e), file=stderr)
         html = render_template('errorPage.html')
         response = make_response(html)
         return response
 
-    images = []
-    for result in results:
-        if result[6]:
-            images.append(result[6][0].url)
-    print(results)
 
+    # Acessing images
+    images = []
+
+    i = 0
+    for dict in results:
+        if dict["images"]:
+            image = dict["images"]
+            images.append(image[0].url)
+            print("image: ", image[0].url)
+            dict["images"] = i
+            print("image value: ", dict["images"])
+            i += 1
+        else:
+            images.append(
+                "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+            dict["images"] = i
+            print("image value: ", dict["images"])
+            i += 1
+
+
+    # what the fuck is this doing??????????????
     if request.method == 'POST':
         buyerID = username
         bid = request.form.get('bid')
@@ -268,8 +290,7 @@ def buyerPageTemplate():
     # if it is correct show success page and have a link to go back to homePage
     # if no stay on buyer page
 
-    html = render_template(
-        'buyerPage.html', results=results[0], images=images, listing=uniqueId)
+    html = render_template('buyerPage.html', results=results, images=images)
     response = make_response(html)
     return response
 
@@ -330,8 +351,8 @@ def profilePageTemplate():
     # if none set object to none, else pass along
 
     # in html page I called the things: listings, purchases, bids
-    html = render_template('profilePage.html', user=username, listings=listings,
-                           purchases=purchases, bids=bids, username=username)
+    html = render_template('profilePage.html', username=username, listings=listings,
+                           purchases=purchases, bids=bids)
 
     response = make_response(html)
     return response

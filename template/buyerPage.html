@@ -6,17 +6,17 @@
   <body>
     {% include 'header.html' %}
 
-    <h1>{{results[7]}}</h1>
-    <img src={{images[0]}} width="225" height="160"></img>
-    <div>Authors: {{results[8]}}</div>
-    <div>ISBN: {{results[1]}}</div>
-    <div>Course: {{results[9]}} -- {{results[10]}}</div>
+    <h1>{{results["title"]}}</h1>
+    <img src="{{images[results['images']]}}" width="225" height="160"></img>
+    <div>Authors: {{results["authors"]}}</div>
+    <div>ISBN: {{results["isbn"]}}</div>
+    <div>Course: {{results["crscode"]}} -- {{results["crstitle"]}}</div>
     <hr>
-    <div>Seller: {{results[0]}}</div>
-    <div>Condition: {{results[2]}}</div>
-    <div>Lowest Ask: {{results[3]}}</div>
-    <div>Buy Now: {{results[4]}}</div>
-    <div>Highest Bid: {{results[12]}}</div>
+    <div>Seller: {{results["sellerId"]}}</div>
+    <div>Condition: {{results["condition"]}}</div>
+    <div>Lowest Ask: {{results["minPrice"]}}</div>
+    <div>Buy Now: {{results["buyNow"]}}</div>
+    <div>Highest Bid: {{results["highestBid"]}}</div>
     <div>
       <div>Make a Bid:
         <form action="buyerPage?bookid={{listing}}" method="POST" id="submitBidForm">

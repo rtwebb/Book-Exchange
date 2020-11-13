@@ -75,7 +75,7 @@
             <form method="get" action="checkout">
                   <input type="submit" name="checkout" id="checkout" value="Checkout">
             </form>
-      <h1>Welcome {{user}}!</h1> 
+      <h1>Welcome {{username}}!</h1> 
 
       <!-- MY LISTINGS -->
       <div class= "divBox">
@@ -89,7 +89,7 @@
             <hr>
             <th>Book title:</th>
             <th> </th>
-            <th> Course name: </th>
+            <th> Course Code: </th>
             <th> </th>
             <th> Highest Bidder ID: </th>
             <th> </th>
@@ -104,24 +104,24 @@
             {% else: %}
                   {%    for book in listings: %}
                         <tr>
-                              <td>{{book[0]}}</td>
+                              <td>{{book["title"]}}</td>
                               <td></td>
-                              <td>{{book[1]}}</td>
+                              <td>{{book["crscode"]}}</td>
                               <td></td>
-                              <td>{{book[2]}}</td>
+                              <td>{{book["buyerId"]}}</td>
                               <td></td>
-                              <td>${{book[3]}}</td>
+                              <td>${{book["highestBid"]}}</td>
                               <td></td>
-                              <td>${{book[4]}}</td>
+                              <td>${{book["buyNow"]}}</td>
                               <td></td>
                               <td>
-                                    {% if book[5] == 'pending' %}
+                                    {% if book["status"] == 'pending' %}
                                           <form method="post", action="profilePage?list={{book[6]}}&bidder={{book[2]}}">
                                           <input type="submit" name="accept" id="accept" value="Accept">
                                           <input type="submit" name="decline" id="decline" value="Decline">
                                           </form>
                                     {% else %}
-                                          {{book[5]}}
+                                          {{book["status"]}}
                                     {% endif %}
                               </td>
                             
@@ -152,7 +152,7 @@
             <hr>
             <th>Book title:</th>
             <th> </th>
-            <th> Course name: </th>
+            <th> Course code: </th>
             <th> </th>
             <th> Course title: </th>
             <th> </th>
@@ -164,15 +164,15 @@
             {% else: %}
                   {%    for book in purchases: %}
                         <tr>
-                              <td>{{book[0]}}</td>
+                              <td>{{book["title"]}}</td>
                               <td></td>
-                              <td>{{book[1]}}</td>
+                              <td>{{book["crscode"]}}</td>
                               <td></td>
-                              <td>{{book[2]}}</td>
+                              <td>{{book["crstitle"]}}</td>
                               <td></td>
-                              <td>${{book[3]}}</td>
+                              <td>${{book["minPrice"]}}</td>
                               <td></td>
-                              <td>${{book[4]}}</td>
+                              <td>${{book["bid"]}}</td>
                         </tr>
                   {%    endfor %}
             {% endif %}
@@ -193,7 +193,7 @@
             <hr>
             <th>Book title:</th>
             <th> </th>
-            <th> Course name: </th>
+            <th> Course code: </th>
             <th> </th>
             <th> Course title: </th>
             <th> </th>
@@ -208,17 +208,17 @@
             {% else: %}
                   {%    for book in bids: %}
                         <tr>
-                              <td>{{book[0]}}</td>
+                              <td>{{book["title"]}}</td>
                               <td></td>
-                              <td>{{book[1]}}</td>
+                              <td>{{book["crscode"]}}</td>
                               <td></td>
-                              <td>{{book[2]}}</td>
+                              <td>{{book["crstitle"]}}</td>
                               <td></td>
-                              <td>{{book[3]}}</td>
+                              <td>{{book["sellerId"]}}</td>
                               <td></td>
-                              <td>${{book[4]}}</td>
+                              <td>${{book["bid"]}}</td>
                               <td></td>
-                              <td> {{book[5]}}</td>
+                              <td> {{book["status"]}}</td>
                               <td><form action="/buyerPage?bookid={{book[6]}}" method="POST">
                                      <button class="glyphicon glyphicon-pencil"></button>
                                   </form>
