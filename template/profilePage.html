@@ -128,7 +128,7 @@
                               <td><form action="/sellerPage" method="POST">
                                      <button class="glyphicon glyphicon-pencil"></button>
                                   </form>
-                                  {% set url = "/profilePage?deleteListingID=" + book["uniqueId"]}
+                                  {% set url = "/profilePage?deleteListingID=" + book["uniqueId"] %}
                                   <form action={{url}} method="POST">
                                      <button class="glyphicon glyphicon-trash"></button>
                                   </form>
