@@ -5,18 +5,19 @@
   </head>
   <body>
     {% include 'header.html' %}
-
-    <h1>{{results["title"]}}</h1>
-    <img src="{{images[results['images']]}}" width="225" height="160"></img>
-    <div>Authors: {{results["authors"]}}</div>
-    <div>ISBN: {{results["isbn"]}}</div>
-    <div>Course: {{results["crscode"]}} -- {{results["crstitle"]}}</div>
-    <hr>
-    <div>Seller: {{results["sellerId"]}}</div>
-    <div>Condition: {{results["condition"]}}</div>
-    <div>Lowest Ask: {{results["minPrice"]}}</div>
-    <div>Buy Now: {{results["buyNow"]}}</div>
-    <div>Highest Bid: {{results["highestBid"]}}</div>
+    {% for dict in results %}
+      <h1>{{dict["title"]}}</h1>
+      <img src="{{images[dict['images']]}}" width="225" height="160"></img>
+      <div>Authors: {{dict["authors"]}}</div>
+      <div>ISBN: {{dict["isbn"]}}</div>
+      <div>Course: {{dict["crscode"]}} -- {{dict["crstitle"]}}</div>
+      <hr>
+      <div>Seller: {{dict["sellerId"]}}</div>
+      <div>Condition: {{dict["condition"]}}</div>
+      <div>Lowest Ask: {{dict["minPrice"]}}</div>
+      <div>Buy Now: {{dict["buyNow"]}}</div>
+      <div>Highest Bid: {{dict["highestBid"]}}</div>
+    {% endfor %}
     <div>
       <div>Make a Bid:
         <form action="buyerPage?bookid={{listing}}" method="POST" id="submitBidForm">
