@@ -397,8 +397,10 @@ class QueryDatabase:
             found = self._connection.query(Listings, Books, Courses). \
                 filter(Listings.uniqueID == uniqueID). \
                 filter(Books.isbn == Listings.isbn). \
-                filter(Courses.isbn == Listings.isbn).one_or_none()
+                filter(Courses.isbn == Listings.isbn).all()
+            print('before for')
             for listing, book, course in found:
+                print('in for')
                 result = {
                         "title": book.title,
                         "crscode": course.courseCode,
