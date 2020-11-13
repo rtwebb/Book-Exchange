@@ -52,6 +52,7 @@ class Listings(Base):
     buyNow = Column(Float)
     listTime = Column(String)
     highestBid = Column(Float)
+    status = Column(String)
     images = relationship('Images', cascade='all, delete-orphan')
     bids = relationship('Bids', cascade='all, delete-orphan')
 
