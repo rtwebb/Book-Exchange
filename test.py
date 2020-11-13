@@ -1,7 +1,7 @@
 from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
-result = test.removeListing('471da55d-1d9d-4714-a0ab-17d6d8894b69')
+result = test.myListings('vdhopte')
 
 print(result)
 
