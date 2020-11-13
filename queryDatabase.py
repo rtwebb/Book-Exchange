@@ -254,40 +254,34 @@ class QueryDatabase:
         try:
             results = []
             # find highest bid(s) to show on profile page
-            found = self._connection.query(Listings, Books, Courses, Bids). \
+            found = self._connection.query(Listings, Books, Courses). \
                 filter(Listings.sellerID.contains(query)). \
                 filter(Books.isbn == Listings.isbn). \
-                filter(Bids.listingID == Listings.uniqueID). \
-                filter(Bids.bid == Listings.highestBid). \
                 filter(Courses.isbn == Listings.isbn).all()
-            if found:
-                for listing, book, course, bid in found:
+            for listing, book, course in found:
+                if len(listing.bids) > 0:  # bids are connected to listing already, so check if there are some
+                    for bid in listing.bids:
+                        if bid.bid == listing.highestBid:  # only show highest bid(s)
+                            result = {
+                                    "title": book.title,
+                                    "crscode": course.courseCode,
+                                    "buyerId": bid.buyerID,
+                                    "highestBid": listing.highestBid,
+                                    "buyNow": listing.buyNow,
+                                    "status": bid.status,
+                                    "uniqueId": listing.uniqueID
+                                }
+                            results.append(result)
+                else:  # case of no bids on book
                     result = {
-                            "title": book.title,
-                            "crscode": course.courseCode,
-                            "buyerId": bid.buyerID,
-                            "highestBid": listing.highestBid,
-                            "buyNow": listing.buyNow,
-                            "status": bid.status,
-                            "uniqueId": listing.uniqueID
-                        }
-                    results.append(result)
-            else:
-                # Case for listings with no bids
-                found = self._connection.query(Listings, Books, Courses). \
-                    filter(Listings.sellerID.contains(query)). \
-                    filter(Books.isbn == Listings.isbn). \
-                    filter(Courses.isbn == Listings.isbn).all()
-                for listing, book, course in found:
-                    result = {
-                            "title": book.title,
-                            "crscode": course.courseCode,
-                            "buyerId": "There are currently no bidders for this listing",
-                            "highestBid": listing.highestBid,
-                            "buyNow": listing.buyNow,
-                            "status": "N/A",
-                            "uniqueId": listing.uniqueID
-                        }
+                        "title": book.title,
+                        "crscode": course.courseCode,
+                        "buyerId": "There are currently no bidders for this listing",
+                        "highestBid": listing.highestBid,
+                        "buyNow": listing.buyNow,
+                        "status": "N/A",
+                        "uniqueId": listing.uniqueID
+                    }
                     results.append(result)
             return results
         except Exception as e:
