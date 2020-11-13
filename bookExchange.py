@@ -68,18 +68,13 @@ def homePageTemplate():
         if dict["images"]:
             image = dict["images"]
             images.append(image[0].url)
-            print("image: ", image[0].url)
             dict["images"] = i
-            print("image value: ", dict["images"])
             i += 1
         else:
             images.append(
                 "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
             dict["images"] = i
-            print("image value: ", dict["images"])
             i += 1
-
-        print("imagelist: ", images)
 
     html = render_template('homePage.html', results=results, images=images,
                            username=username)
@@ -138,7 +133,6 @@ def searchResultsTemplate():
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
-            print(results)
 
             # Acessing images
             i = 0
@@ -146,19 +140,14 @@ def searchResultsTemplate():
                 if dict["images"]:
                     image = dict["images"]
                     images.append(image[0].url)
-                    print("image: ", image[0].url)
                     dict["images"] = i
-                    print("image value: ", dict["images"])
                     i += 1
 
                 else:
                     images.append(
                         "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
                     dict["images"] = i
-                    print("image value: ", dict["images"])
                     i += 1
-
-            print("imagelist: ", images)
 
         except Exception as e:
             print(argv[0] + ": " + str(e), file=stderr)
@@ -365,6 +354,8 @@ def profilePageTemplate():
     # get books that they have bid on
     # if none set object to none, else pass along
 
+    for list1 in listings:
+        print("uniqueId from database: ", list1["uniqueId"])
     # in html page I called the things: listings, purchases, bids
     html = render_template('profilePage.html', username=username, listings=listings,
                            purchases=purchases, bids=bids)
@@ -391,8 +382,6 @@ def aboutUsTemplate():
 @app.route('/autoComplete', methods=['GET'])
 def autoComplete():
     username = CASClient().authenticate()
-
-    print("inside autoComplete")
 
     dropDown = request.args.get('searchType')
     query = request.args.get('query')
@@ -435,11 +424,7 @@ def autoComplete():
                 values.append(dict[index])
                 autoComplete.append(dict[index])
 
-    print(autoComplete)
     autoComplete.sort(key=lambda v: v.upper())
-
-    print("Auto Complete list: ")
-    print(autoComplete)
 
     jsonStr = dumps(autoComplete)
     response = make_response(jsonStr)
