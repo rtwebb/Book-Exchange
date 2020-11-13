@@ -227,7 +227,7 @@
                                   </form>
                                   {% set url = "/profilePage?deleteBidBuyerID=" + username + "&deleteBidListingID=" + book["uniqueId"] %}
                                   <form action={{url}} method="POST">
-                                    {% set uniqueId = book["uniqueId" %]}
+                                    {% set uniqueId = book["uniqueId"] %}
                                      <button class="glyphicon glyphicon-trash" onclick="deleteBid(uniqueId)"></button>
                                   </form>
                               </td>
