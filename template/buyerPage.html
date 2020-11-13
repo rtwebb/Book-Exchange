@@ -20,15 +20,16 @@
     {% endfor %}
     <div>
       <div>Make a Bid:
-        <form action="buyerPage?bookid={{dict['uniqueId']}}" method="POST" id="submitBidForm">
+        {% set url = "buyerPage?bookid=" + dict["uniqueId"] %}
+        <form action={{url}} method="POST" id="submitBidForm">
         <input type="text" name="bid" /> (example input: 19.99)
         </form>
       </div>
       <button
-      type="submit"
-      form="submitBidForm"
-      onclick="confirm('Are you sure you would like to bid this amount?')"
-      value="Submit">
+        type="submit"
+        form="submitBidForm"
+        onclick="confirm('Are you sure you would like to bid this amount?')"
+        value="Submit">
       Submit
     </button>
     </div>
