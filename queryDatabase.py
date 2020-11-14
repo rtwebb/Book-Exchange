@@ -102,7 +102,7 @@ class QueryDatabase:
         print(uniqueID)
         try:
             results = self._connection.query(Bids, Listings). \
-                filter(Bids.listingID == uniqueID). \
+                filter(Bids.listingID.contains(uniqueID)). \
                 filter(Bids.buyerID.contains(buyerID)). \
                 filter(Listings.uniqueID == Bids.listingID).all()
             for bid, listing in results:
