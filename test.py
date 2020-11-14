@@ -1,10 +1,9 @@
 from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
-result = test.getAllBids('7ba1617d-1888-43d9-a9d4-024d1556eb44')
+result = test.getAllBids('7842440b-c8ab-4eb6-83fe-9bfbe74c4044')
 
-for bid in result:
-    print(bid.status)
+print(result)
 
 # from sys import argv, stderr, exit
 # from sqlalchemy import create_engine
