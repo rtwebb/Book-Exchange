@@ -472,4 +472,29 @@ class QueryDatabase:
             return -1
 
 #-----------------------------------------------------------------------
-    def
+    def buyNow(self, buyerID, listingID, bid):
+        try:
+            listing = self._connection.query(Listings). \
+                      filter(Listings.uniqueID == listingID).one()
+
+            if listing:
+                listing.status = "Bought Now"
+                buyNowPrice = listing.buyNow
+
+            foundBid = self._connection.query(Bids). \
+                filter(Bids.buyerID == buyerID). \
+                filter(Bids.listingID == listingID).one_or_none()
+
+            if foundBid:
+                foundBid.bid = buyNowPrice
+
+            else:
+                newBid = Bids(buyerID=buyerID, listingID=listingID, bid=buyNowPrice, status='pending')
+                self._connection.add(newBid)
+            self._connection.commit()
+
+            return 0
+            
+        except Exception as e:
+            print(argv[0] + ':', e, file=stderr)
+            return -1

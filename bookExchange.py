@@ -270,11 +270,15 @@ def buyerPageTemplate():
     # what the fuck is this doing??????????????
     if request.method == 'POST':
         buyerID = username
-        bid = request.form.get('bid')
-        print('bid', bid)
-
+        buyNow = request.args.get('buyNow')
+        if buyNow is not None:
+            database.buyNow(buyerID, uniqueId, buyNow)
+        else:
+            bid = request.form.get('bid')
+            database.addBid(buyerID, uniqueId, bid)
+            
         # whatever she called it and pass args
-        database.addBid(buyerID, uniqueId, bid)
+        
     # buyerPage needs link back to home page
     # If user makes a bid
     # check to make sure if they are sure about the amount
