@@ -440,14 +440,14 @@ class QueryDatabase:
                 filter(Listings.uniqueID == listingID).one_or_none()
             # if buyer already has a bid on that book, update the bid
             foundBid = self._connection.query(Bids). \
-                filter(Bids.buyerID == buyerID). \
+                filter(Bids.buyerID.contains(buyerID.rstrip())). \
                 filter(Bids.listingID == listingID).one_or_none()
 
             if foundBid:
                 foundBid.bid = bid
             # otherwise, create a new bid
             else:
-                newBid = Bids(buyerID=buyerID, listingID=listingID, bid=bid, status='pending')
+                newBid = Bids(buyerID=buyerID.rstrip(), listingID=listingID, bid=bid, status='pending')
                 self._connection.add(newBid)
             self._connection.commit()
 

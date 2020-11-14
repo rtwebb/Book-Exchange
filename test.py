@@ -1,9 +1,10 @@
 from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
-result = test.myListings('vdhopte')
+result = test.getAllBids('7ba1617d-1888-43d9-a9d4-024d1556eb44')
 
-print(result)
+for bid in result:
+    print(bid.status)
 
 # from sys import argv, stderr, exit
 # from sqlalchemy import create_engine
