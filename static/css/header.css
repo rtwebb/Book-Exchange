@@ -40,6 +40,16 @@ th input {
 .searchBar A {
   color: #383838;
 }
+
+.searchBar {
+  width: 100%;
+}
+
+
+.searchBar th {
+  padding-left: 2em;
+}
+
 .text-field {
   color: black;
   background-color: #f2f3f4;

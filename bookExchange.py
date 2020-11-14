@@ -11,6 +11,9 @@ from queryDatabase import QueryDatabase
 from datetime import datetime
 from CASClient import CASClient
 from json import dumps
+import braintree
+from payment import generate_client_token, transact, find_transaction
+from venmo_api import Client, get_user_id
 # from wtforms import TextField, Form
 
 # -----------------------------------------------------------------------
@@ -34,13 +37,7 @@ mail = Mail(app)
 database = QueryDatabase()
 
 # -----------------------------------------------------------------------
-def incrementCount(count):
-    count['value'] += 1
-    return ''
 
-app.jinja_env.globals.update(incrementCount=incrementCount)
-
-# -----------------------------------------------------------------------
 
 @app.route('/', methods=['GET'])
 @app.route('/homePage', methods=['GET'])
@@ -51,36 +48,37 @@ def homePageTemplate():
     results = []
     try:
         results = database.homeRecents()
-        errorMsg = ''
+        if results == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
     except Exception as e:
         print("Error: " + str(e), file=stderr)
-        errorMsg = 'An error occurred please contact email at bottom of the screen'
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
 
     # getting images corresponding to each book
     # if no image was uploaded - using a stock photo
     images = []
-    
+
     # Acessing images
     i = 0
     for dict in results:
         if dict["images"]:
             image = dict["images"]
             images.append(image[0].url)
-            print("image: ", image[0].url)
             dict["images"] = i
-            print("image value: ", dict["images"])
             i += 1
         else:
-            images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+            images.append(
+                "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
             dict["images"] = i
-            print("image value: ", dict["images"])
             i += 1
 
-        print("imagelist: ", images)
-
-
     html = render_template('homePage.html', results=results, images=images,
-                        username=username) 
+                           username=username)
     response = make_response(html)
     return response
 
@@ -131,8 +129,11 @@ def searchResultsTemplate():
         uniqueIds = []
         images = []
         try:
-            results = database.search(searchType, query, 1)
-            print(results)
+            results = database.search(searchType, query, "1")
+            if results == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
             # Acessing images
             i = 0
@@ -140,24 +141,21 @@ def searchResultsTemplate():
                 if dict["images"]:
                     image = dict["images"]
                     images.append(image[0].url)
-                    print("image: ", image[0].url)
                     dict["images"] = i
-                    print("image value: ", dict["images"])
                     i += 1
 
                 else:
-                    images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+                    images.append(
+                        "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
                     dict["images"] = i
-                    print("image value: ", dict["images"])
                     i += 1
-
-            print("imagelist: ", images)
-
 
         except Exception as e:
             print(argv[0] + ": " + str(e), file=stderr)
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
 
-        print('In else statement')
         html = render_template('searchResults.html', results=results,
                                username=username, query=query, searchType=searchType,
                                images=images)
@@ -203,6 +201,9 @@ def sellerPageTemplate():
                          minprice, buynow, listTime, images)
         except Exception as e:
             print("Error: " + str(e), file=stderr)
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
 
     # when sending to profile page have a "successful" message display
     html = render_template('sellerPage.html', method='GET', username=username)
@@ -211,6 +212,7 @@ def sellerPageTemplate():
     return response
 
 # -----------------------------------------------------------------------
+
 
 @app.route('/buyerPage', methods=['GET', 'POST'])
 def buyerPageTemplate():
@@ -222,32 +224,63 @@ def buyerPageTemplate():
     # if check for if uniqueID is none
     # if (uniqueId == None):
     #     return errorMsg('Invalid book ID')
-
+    results = []
     try:
-        results = database.getDescription(uniqueId)  # whatever she called it and pass args
-        errorMsg = ''
-    except Exception as e:
-        print("Error: " + str(e), file=stderr)
-        errorMsg = 'An error occurred please contact email at bottom of the screen'
-    images = []
-    for result in results:
-        if result[6]:
-            images.append(result[6][0].url)
-    print(results)
+        
+        results = database.getDescription(uniqueId)
+        print("results: ", results)
 
+        # error checking - if error render errorPage
+        if results == -1:
+            print("inside error")
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
+    except Exception as e:
+        # error checking - if error render errorPage
+        print("inside except")
+        print("Error: " + str(e), file=stderr)
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
+
+
+    # Acessing images
+    images = []
+
+    i = 0
+    for dict in results:
+        if dict["images"]:
+            image = dict["images"]
+            images.append(image[0].url)
+            print("image: ", image[0].url)
+            dict["images"] = i
+            print("image value: ", dict["images"])
+            i += 1
+        else:
+            images.append(
+                "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+            dict["images"] = i
+            print("image value: ", dict["images"])
+            i += 1
+
+
+    # what the fuck is this doing??????????????
     if request.method == 'POST':
         buyerID = username
         bid = request.form.get('bid')
         print('bid', bid)
 
-        database.addBid(buyerID, uniqueId, bid)  # whatever she called it and pass args
+        # whatever she called it and pass args
+        database.addBid(buyerID, uniqueId, bid)
     # buyerPage needs link back to home page
     # If user makes a bid
     # check to make sure if they are sure about the amount
     # if it is correct show success page and have a link to go back to homePage
     # if no stay on buyer page
 
-    html = render_template('buyerPage.html', results=results[0], images=images, listing=uniqueId)
+    html = render_template('buyerPage.html', results=results, images=images, uniqueId=uniqueId)
     response = make_response(html)
     return response
 
@@ -278,46 +311,69 @@ def profilePageTemplate():
             mail.send(msg)
 
             database.updateStatus(listingID, bidder, 'declined')
-        
+
         deleteBidBuyerID = request.args.get('deleteBidBuyerID')
         deleteBidListingID = request.args.get('deleteBidListingID')
-        
+
         if deleteBidBuyerID is not None and deleteBidListingID is not None:
             database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
-        
+
         deleteListingID = request.args.get('deleteListingID')
         if deleteListingID is not None:
             database.removeListing(deleteListingID)
 
         # query database for the given user
         listings = database.myListings(username)
+        if listings == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+            print("listings: ", listings)
         # use this to reset the forms in mylistings in the profilepage
         # for book in listings:
         # database.updateStatus(book[5], book[2], 'pending')
         purchases = database.myPurchases(username)
+        if purchases == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+            print("purchases: ", purchases)
         bids = database.myBids(username)
-        
+        if listings == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+            print("bids: ", bids)
+
     except Exception as e:
         print("Error: " + str(e), file=stderr)
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
     # get books they are selling
     # if none set object to none, else pass along
     # get books that they have bid on
     # if none set object to none, else pass along
 
+    for list1 in listings:
+        print("uniqueId from database: ", list1["uniqueId"])
     # in html page I called the things: listings, purchases, bids
-    html = render_template('profilePage.html', user=username, listings=listings,
-                           purchases=purchases, bids=bids, username=username)
+    html = render_template('profilePage.html', username=username, listings=listings,
+                           purchases=purchases, bids=bids)
 
     response = make_response(html)
     return response
 
 # ----------------------------------------------------------------------
 
+
 @app.route('/aboutUs', methods=['GET'])
 def aboutUsTemplate():
     username = CASClient().authenticate()
+    client_token = generate_client_token()
 
-    html = render_template('aboutUs2.html', username=username)
+    html = render_template(
+        'aboutUs.html', client_token=client_token, username=username)
 
     response = make_response(html)
     return response
@@ -328,14 +384,11 @@ def aboutUsTemplate():
 def autoComplete():
     username = CASClient().authenticate()
 
-    print("inside autoComplete")
-
     dropDown = request.args.get('searchType')
     query = request.args.get('query')
 
     query = request.args.get('query')
 
-   
     # ask Tiana to return ISBN
     if dropDown == "isbn":
         index = 'isbn'
@@ -353,18 +406,26 @@ def autoComplete():
     results = []
     try:
         results = database.search(searchType, query, 0)
+        if results == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
     except Exception as e:
         print("Error: " + str(e), file=stderr)
-        errorMsg = 'An error occurred please contact email at bottom of the screen'
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
 
     # make the list of possible automcomplete
+    values = []  # past values
     if results is not None:
         autoComplete = []
         for dict in results:
-            autoComplete.append(dict[index])
+            if dict[index] not in values:
+                values.append(dict[index])
+                autoComplete.append(dict[index])
 
-    print("Auto Complete list: ")
-    print(autoComplete)
+    autoComplete.sort(key=lambda v: v.upper())
 
     jsonStr = dumps(autoComplete)
     response = make_response(jsonStr)
@@ -375,7 +436,26 @@ def autoComplete():
 # ----------------------------------------------------------------------
 @app.route('/checkout', methods=['GET'])
 def checkout():
-    html = render_template('checkout.html')
+    username = CASClient().authenticate()
+   # client_token = generate_client_token()
+
+    access_token = Client.get_access_token(username='emmandrawright@yahoo.com',
+                                       password='Darrell1')
+
+    venmo = Client(access_token=access_token)
+
+    bac = venmo.user.search_for_users(query="BACDance", page=1)
+    i = 0
+    for user in bac:
+        print("user ", i, ": ", user.username)
+    
+    userID = get_user_id(bac[0], None)
+    
+    # Request money
+    venmo.payment.request_money(32.5, "house expenses", str(userID))
+
+
+    html = render_template('checkout.html', username=username)
     response = make_response(html)
 
     return response

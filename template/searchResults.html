@@ -1,88 +1,147 @@
 <!DOCTYPE html>
 <html>
-  {% block content %}
-  <head>
-    <style>
-      div{
-        display: inline-block;
-      }
-      .info div {
-        width: 220px;
-        padding: 1px;
-        border: 2px solid gray;
-        margin: 10 px;
-        white-space: pre-wrap;
-        display: block;
-        text-align: left;
-        font-size: 10px;
-      }  
+	{% block content %}
+	<head>
+		<style>
+			div{
+				display: inline-block;
+			}
+			.info div {
+				width: 220px;
+				padding: 1px;
+				border: 2px solid gray;
+				margin: 10 px;
+				white-space: pre-wrap;
+				display: block;
+				text-align: left;
+				font-size: 10px;
+			}  
 
-      A{
-	      text-decoration: none;
-        color: black;
-       }
-       </style>
-    <title> Book Exchange </title>
-  </head>
-  <body>
-    {% include 'header.html' %}
-    <h1> Search Results </h1>
-    <br>
-    {% if results is not none: %}
-        {%  for dict in results %}
-        <div class="info">
-          {% set url = "buyerPage?bookid=" + dict["uniqueId"] %}
-          <a href={{url}} method='POST'><img src="{{images[dict['images']]}}" width="225" height="160"></a> 
-          <div>
-            <a href={{url}} method='POST'> Book title: {{dict["title"]}}
-              Course Code: {{dict["crscode"]}}
-              Min price: {{dict["minPrice"]}} ...</a>
-          </div>
-        </div>
-        {% endfor %}
-    {% else: %}
-       <h4> No Books Found </h4>
-      
+			A{
+				text-decoration: none;
+				color: black;
+			 }
+			 </style>
+		<title> Book Exchange </title>
+	</head>
+	<body>
+		{% include 'header.html' %}
+		<h1> Search Results </h1>
+		<br>
+		{% if results is not none: %}
+				{%  for dict in results %}
+				<div class="info">
+					{% set url = "buyerPage?bookid=" + dict["uniqueId"] %}
+					<a href={{url}} method='POST'><img src="{{images[dict['images']]}}" width="225" height="160"></a> 
+					<div>
+						<a href={{url}} method='POST'> Book title: {{dict["title"]}}
+							Course Code: {{dict["crscode"]}}
+							Min price: {{dict["minPrice"]}} ...</a>
+					</div>
+				</div>
+				{% endfor %}
+		{% else: %}
+			 <h4> No Books Found </h4>
+			
 
-    {% endif %}
+		{% endif %}
 
-    {% include 'footer.html' %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		{% include 'footer.html' %}
+		<link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
+		<script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+		<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
 
-    
-    <script>
-      console.log("before setQuery");
-      function setQuery() {
-        query1 = "" + "{{query|safe}}";
-        let query = $('#searchQuery');
+		
+		<script>
+			
+			function handleResponse(response){
+				// return array depending on search
+				try
+				{
+					let results = response;
 
-        query.val(query1);
+									// call jQuery autocomplete on said list
+					$("#searchQuery").autocomplete({
+						source: results
+					});
 
-        var searchType = "{{searchType|safe}}";
-        console.log(searchType);
-        let dropDown = $('#searchType1');
-        if (searchType == 1){
-          dropDown.val("isbn");
-        }
-        else if (searchType == 2){
-          console.log("inside #2")
-          dropDown.val("title");
-        }
-        else if(searchType == 3){
-          dropDown.val("crscode");
-        }
-        else if(searchType == 4){
-          dropDown.val("crstitle");
-        }
+				}
+				catch(e){
+					console.log("error: ", e);
+				}
 
-      }
-      function setup(){
-        $('#searchQuery').focus()
-        setQuery();
-      }
+			}
 
-      $('document').ready(setup);
-    </script>
-  </body>
-  {% endblock content %}
+			let request = null;
+
+			function getResults(){
+				let searchType = $('#searchType1').val();
+				searchType = encodeURIComponent(searchType);
+				console.log("searchType: ", searchType);
+
+				let query = $('#searchQuery').val();
+
+				query = encodeURIComponent(query);
+				console.log("query: ", query);
+
+				if (searchType !== '' || searchType !== null){
+					if(query !== null || query.trim() !== ''){
+						let url = 'autoComplete?searchType=' + searchType + "&query=" + query
+					
+						if (request != null) {
+							request.abort();
+						}
+
+						request = $.ajax(
+							{
+								type: 'GET',
+								url: url, 
+								success: handleResponse
+							}
+
+						);
+					}
+				}
+
+			}
+
+			function setQuery() {
+				query1 = "" + "{{query|safe}}";
+				let query = $('#searchQuery');
+
+				query.val(query1);
+
+				var searchType = "{{searchType|safe}}";
+				console.log(searchType);
+				let dropDown = $('#searchType1');
+				if (searchType == 1){
+					dropDown.val("isbn");
+				}
+				else if (searchType == 2){
+					console.log("inside #2")
+					dropDown.val("title");
+				}
+				else if(searchType == 3){
+					dropDown.val("crscode");
+				}
+				else if(searchType == 4){
+					dropDown.val("crstitle");
+				}
+
+			}
+			function setup(){
+				$('#searchQuery').focus()
+				setQuery();
+				$('#searchQuery').on('input', getResults);
+			}
+
+			$('document').ready(setup);
+		</script>
+	</body>
+	{% endblock content %}
 </html>
+
+
+
+	
+

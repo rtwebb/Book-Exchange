@@ -17,7 +17,7 @@ class Books(Base):
     isbn = Column(String, primary_key=True)
     title = Column(String)
     quantity = Column(Integer)
-    authors = relationship('Authors', back_populates='books')
+    authors = relationship('Authors', back_populates='books', cascade='all, delete-orphan')
 
 
 class Authors(Base):
@@ -52,8 +52,9 @@ class Listings(Base):
     buyNow = Column(Float)
     listTime = Column(String)
     highestBid = Column(Float)
-    images = relationship('Images')
-    bids = relationship('Bids')
+    status = Column(String)
+    images = relationship('Images', cascade='all, delete-orphan')
+    bids = relationship('Bids', cascade='all, delete-orphan')
 
 
 class Images(Base):

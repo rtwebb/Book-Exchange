@@ -5,32 +5,107 @@
   </head>
   <body>
     {% include 'header.html' %}
-
-    <h1>{{results[7]}}</h1>
-    <img src={{images[0]}} width="225" height="160"></img>
-    <div>Authors: {{results[8]}}</div>
-    <div>ISBN: {{results[1]}}</div>
-    <div>Course: {{results[9]}} -- {{results[10]}}</div>
-    <hr>
-    <div>Seller: {{results[0]}}</div>
-    <div>Condition: {{results[2]}}</div>
-    <div>Lowest Ask: {{results[3]}}</div>
-    <div>Buy Now: {{results[4]}}</div>
-    <div>Highest Bid: {{results[12]}}</div>
+    {% for dict in results %}
+      <h1>{{dict["title"]}}</h1>
+      <img src="{{images[dict['images']]}}" width="225" height="160"></img>
+      <div>Authors: {{dict["authors"]}}</div>
+      <div>ISBN: {{dict["isbn"]}}</div>
+      <div>Course: {{dict["crscode"]}} -- {{dict["crstitle"]}}</div>
+      <hr>
+      <div>Seller: {{dict["sellerId"]}}</div>
+      <div>Condition: {{dict["condition"]}}</div>
+      <div>Lowest Ask: {{dict["minPrice"]}}</div>
+      <div>Buy Now: {{dict["buyNow"]}}</div>
+      <div>Highest Bid: {{dict["highestBid"]}}</div>
+    {% endfor %}
     <div>
       <div>Make a Bid:
-        <form action="buyerPage?bookid={{listing}}" method="POST" id="submitBidForm">
+        {% set url = "buyerPage?bookid=" + uniqueId %}
+        <form action={{url}} method="POST" id="submitBidForm">
         <input type="text" name="bid" /> (example input: 19.99)
         </form>
       </div>
       <button
-      type="submit"
-      form="submitBidForm"
-      onclick="confirm('Are you sure you would like to bid this amount?')"
-      value="Submit">
+        type="submit"
+        form="submitBidForm"
+        onclick="confirm('Are you sure you would like to bid this amount?')"
+        value="Submit">
       Submit
     </button>
     </div>
+
+    <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
+    <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+    <script>
+
+      'use strict';
+
+
+      function handleResponse(response){
+        // return array depending on search
+
+        try
+        {
+          let results = response;
+
+                  // call jQuery autocomplete on said list
+          $("#searchQuery").autocomplete({
+            source: results
+          });
+
+        }
+        catch(e){
+          console.log("error: ", e);
+        }
+
+
+      }
+
+
+      let request = null;
+
+      function getResults(){
+
+        let searchType = $('#searchType1').val();
+        searchType = encodeURIComponent(searchType);
+        console.log("searchType: ", searchType);
+
+        let query = $('#searchQuery').val();
+     
+        query = encodeURIComponent(query);
+        console.log("query: ", query);
+
+        if (searchType !== '' || searchType !== null){
+          if(query !== null || query.trim() !== ''){
+            let url = 'autoComplete?searchType=' + searchType + "&query=" + query
+          
+            if (request != null) {
+				      request.abort();
+			      }
+
+			      request = $.ajax(
+				      {
+					      type: 'GET',
+					      url: url, 
+					      success: handleResponse
+				      }
+
+			      );
+          }
+        }
+
+		}
+      function setup(){
+        $('#searchQuery').focus();
+        $('#searchQuery').on('input', getResults);
+      }
+      $('document').ready(setup);
+    </script>
+
+
+
+
     {% include 'footer.html' %}
   </body>
 </html>

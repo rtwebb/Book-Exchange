@@ -4,13 +4,14 @@ html {
 }
 .info {
   display: inline-block;
-  border: 2px solid green;
+  border: 2px solid orange;
   border-radius: 1em;
   overflow: hidden;
   text-align: center;
   text-overflow: ellipsis;
   width: 15%;
   height: 15%;
+  margin-right: 1em;
 }
 
 .info div {
@@ -30,10 +31,12 @@ a:hover {
 
 .recently-listed {
   text-align: center;
+  color: orange;
 }
 
 .results-container {
   width: 100%;
   display: inline-flexbox;
-  border: 3px solid salmon;
+  padding-left: 1em;
+  padding-right: 1em;
 }

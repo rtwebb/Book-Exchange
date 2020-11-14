@@ -72,10 +72,10 @@
 
 
             <!-- (Emmandra) This will eventually be attached to the accept button im just testing-->
-            <form method="get" action="/checkout">
-                  <input type="submit" name='checkout' id=checkout value="Checkout">
+            <form method="get" action="checkout">
+                  <input type="submit" name="checkout" id="checkout" value="Checkout">
             </form>
-      <h1>Welcome {{user}}!</h1> 
+      <h1>Welcome {{username}}!</h1> 
 
       <!-- MY LISTINGS -->
       <div class= "divBox">
@@ -89,7 +89,7 @@
             <hr>
             <th>Book title:</th>
             <th> </th>
-            <th> Course name: </th>
+            <th> Course Code: </th>
             <th> </th>
             <th> Highest Bidder ID: </th>
             <th> </th>
@@ -104,31 +104,33 @@
             {% else: %}
                   {%    for book in listings: %}
                         <tr>
-                              <td>{{book[0]}}</td>
+                              <td>{{book["title"]}}</td>
                               <td></td>
-                              <td>{{book[1]}}</td>
+                              <td>{{book["crscode"]}}</td>
                               <td></td>
-                              <td>{{book[2]}}</td>
+                              <td>{{book["buyerId"]}}</td>
                               <td></td>
-                              <td>${{book[3]}}</td>
+                              <td>${{book["highestBid"]}}</td>
                               <td></td>
-                              <td>${{book[4]}}</td>
+                              <td>${{book["buyNow"]}}</td>
                               <td></td>
                               <td>
-                                    {% if book[5] == 'pending' %}
-                                          <form method="post", action="profilePage?list={{book[6]}}&bidder={{book[2]}}">
+                                    {% if book["status"] == 'pending' %}
+                                    {% set url = "/profilePage?list=" + book["uniqueId"] + "&bidder=" + book["buyerId"] %}
+                                          <form method="post", action={{url}}>
                                           <input type="submit" name="accept" id="accept" value="Accept">
                                           <input type="submit" name="decline" id="decline" value="Decline">
                                           </form>
                                     {% else %}
-                                          {{book[5]}}
+                                          {{book["status"]}}
                                     {% endif %}
                               </td>
                             
                               <td><form action="/sellerPage" method="POST">
                                      <button class="glyphicon glyphicon-pencil"></button>
                                   </form>
-                                  <form action="/profilePage?deleteListingID={{book[6]}}" method="POST">
+                                  {% set url = "/profilePage?deleteListingID=" + book["uniqueId"] %}
+                                  <form action={{url}} method="POST">
                                      <button class="glyphicon glyphicon-trash"></button>
                                   </form>
                               </td>
@@ -152,7 +154,7 @@
             <hr>
             <th>Book title:</th>
             <th> </th>
-            <th> Course name: </th>
+            <th> Course code: </th>
             <th> </th>
             <th> Course title: </th>
             <th> </th>
@@ -164,15 +166,15 @@
             {% else: %}
                   {%    for book in purchases: %}
                         <tr>
-                              <td>{{book[0]}}</td>
+                              <td>{{book["title"]}}</td>
                               <td></td>
-                              <td>{{book[1]}}</td>
+                              <td>{{book["crscode"]}}</td>
                               <td></td>
-                              <td>{{book[2]}}</td>
+                              <td>{{book["crstitle"]}}</td>
                               <td></td>
-                              <td>${{book[3]}}</td>
+                              <td>${{book["minPrice"]}}</td>
                               <td></td>
-                              <td>${{book[4]}}</td>
+                              <td>${{book["bid"]}}</td>
                         </tr>
                   {%    endfor %}
             {% endif %}
@@ -193,7 +195,7 @@
             <hr>
             <th>Book title:</th>
             <th> </th>
-            <th> Course name: </th>
+            <th> Course code: </th>
             <th> </th>
             <th> Course title: </th>
             <th> </th>
@@ -208,22 +210,25 @@
             {% else: %}
                   {%    for book in bids: %}
                         <tr>
-                              <td>{{book[0]}}</td>
+                              <td>{{book["title"]}}</td>
                               <td></td>
-                              <td>{{book[1]}}</td>
+                              <td>{{book["crscode"]}}</td>
                               <td></td>
-                              <td>{{book[2]}}</td>
+                              <td>{{book["crstitle"]}}</td>
                               <td></td>
-                              <td>{{book[3]}}</td>
+                              <td>{{book["sellerId"]}}</td>
                               <td></td>
-                              <td>${{book[4]}}</td>
+                              <td>${{book["bid"]}}</td>
                               <td></td>
-                              <td> {{book[5]}}</td>
-                              <td><form action="/buyerPage?bookid={{book[6]}}" method="POST">
+                              <td> {{book["status"]}}</td>
+                              {% set url = "/buyerPage?bookid=" + book["uniqueId"] %}
+                              <td><form action={{url}} method="POST">
                                      <button class="glyphicon glyphicon-pencil"></button>
                                   </form>
-                                  <form action="/profilePage?deleteBidBuyerID={{user}}&deleteBidListingID={{book[6]}}" method="POST">
-                                     <button class="glyphicon glyphicon-trash" onclick="deleteBid({{book[0]}})"></button>
+                                  {% set url = "/profilePage?deleteBidBuyerID=" + username + "&deleteBidListingID=" + book["uniqueId"] %}
+                                  <form action={{url}} method="POST">
+                                    {% set uniqueId = book["uniqueId"] %}
+                                     <button class="glyphicon glyphicon-trash" onclick="deleteBid(uniqueId)"></button>
                                   </form>
                               </td>
                         </tr>
@@ -231,6 +236,76 @@
             {% endif %}
       </table>
       </div>
+
+      <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
+      <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+      <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+      <script>
+  
+        'use strict';
+  
+  
+        function handleResponse(response){
+          // return array depending on search
+  
+          try
+          {
+            let results = response;
+  
+                    // call jQuery autocomplete on said list
+            $("#searchQuery").autocomplete({
+              source: results
+            });
+  
+          }
+          catch(e){
+            console.log("error: ", e);
+          }
+  
+  
+        }
+  
+  
+        let request = null;
+  
+        function getResults(){
+  
+          let searchType = $('#searchType1').val();
+          searchType = encodeURIComponent(searchType);
+          console.log("searchType: ", searchType);
+  
+          let query = $('#searchQuery').val();
+       
+          query = encodeURIComponent(query);
+          console.log("query: ", query);
+  
+          if (searchType !== '' || searchType !== null){
+            if(query !== null || query.trim() !== ''){
+              let url = 'autoComplete?searchType=' + searchType + "&query=" + query
+            
+              if (request != null) {
+                                request.abort();
+                          }
+  
+                          request = $.ajax(
+                                {
+                                      type: 'GET',
+                                      url: url, 
+                                      success: handleResponse
+                                }
+  
+                          );
+            }
+          }
+  
+              }
+        function setup(){
+          $('#searchQuery').focus();
+          $('#searchQuery').on('input', getResults);
+        }
+        $('document').ready(setup);
+      </script>
+
     <br>
     <br>
     {% include 'footer.html' %}
