@@ -7,7 +7,7 @@
 
 from flask_mail import Mail, Message
 
-def massEmail(mail, bidders, message):
+def sendEmail(mail, bidders, message):
 
     for bidder in bidders:
         bidder = bidder + '@princeton.edu'
