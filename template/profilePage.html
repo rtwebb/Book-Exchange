@@ -66,26 +66,27 @@
   
   <body>
       {% include 'header.html' %}
-            <form method="get" action="logout" > 
-                  <input type="submit" name="logout"  value="Logout">
-            </form>
+      <form method="get" action="logout" > 
+            <input type="submit" name="logout"  value="Logout">
+      </form>
 
 
             <!-- (Emmandra) This will eventually be attached to the accept button im just testing-->
-            <form method="get" action="checkout">
-                  <input type="submit" name="checkout" id="checkout" value="Checkout">
-            </form>
+      <form method="get" action="checkout">
+            <input type="submit" name="checkout" id="checkout" value="Checkout">
+      </form>
       <h1>Welcome {{username}}!</h1> 
 
       <!-- MY LISTINGS -->
       <div class= "divBox">
-            {% if listings|length == 0: %}
-                  <h3>My Listings: </h3> <span> You have no books listed, <a href="sellerPage"> list one here </a> </span>
-                  <table class="emptyTables">
-            {% else: %}
-                  <h3> My Listings: </h3>
-                  <table class="fullTables">
-            {% endif %}
+      {% if listings|length == 0: %}
+            <h3>My Listings: </h3> <span> You have no books listed, <a href="sellerPage"> list one here </a> </span>
+            <table class="emptyTables">
+      {% else: %}
+            <h3> My Listings: </h3>
+            <table class="fullTables">
+            
+      {% endif %}
             <hr>
             <th>Book title:</th>
             <th> </th>
@@ -118,8 +119,8 @@
                                     {% if book["status"] == 'pending' %}
                                     {% set url = "/profilePage?list=" + book["uniqueId"] + "&bidder=" + book["buyerId"] %}
                                           <form method="post", action={{url}}>
-                                          <input type="submit" name="accept" id="accept" value="Accept">
-                                          <input type="submit" name="decline" id="decline" value="Decline">
+                                                <input type="submit" name="accept" id="accept" value="Accept">
+                                                <input type="submit" name="decline" id="decline" value="Decline">
                                           </form>
                                     {% else %}
                                           {{book["status"]}}
