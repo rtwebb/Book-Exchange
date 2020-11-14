@@ -29,7 +29,6 @@ class QueryDatabase:
 
     # -----------------------------------------------------------------------------
 
-    # Function currently takes a URL but flask is passing through a file
     # add a listing to the database
     def add(self, isbn, title, authors, courseCode, courseTitle,
             sellerID, condition, minPrice, buyNow, listTime, urls):
@@ -102,7 +101,7 @@ class QueryDatabase:
         print(uniqueID)
         try:
             results = self._connection.query(Bids, Listings). \
-                filter(Bids.listingID.contains(uniqueID)). \
+                filter(Bids.listingID == uniqueID). \
                 filter(Bids.buyerID.contains(buyerID)). \
                 filter(Listings.uniqueID == Bids.listingID).all()
             for bid, listing in results:
@@ -176,7 +175,7 @@ class QueryDatabase:
                     filter(Listings.isbn.ilike(newQuery, escape='\\')). \
                     filter(Listings.status != 'accepted'). \
                     filter(Listings.status != 'confirmed'). \
-                    order_by(Listings.listTime).all()
+                    order_by(Listings.listTime.desc()).all()
             elif signal == 2:  # query is a book title
                 found = self._connection.query(Books, Courses, Listings). \
                     filter(Listings.isbn == Books.isbn). \
@@ -184,7 +183,7 @@ class QueryDatabase:
                     filter(Courses.isbn == Books.isbn). \
                     filter(Listings.status != 'accepted'). \
                     filter(Listings.status != 'confirmed'). \
-                    order_by(Listings.listTime).all()
+                    order_by(Listings.listTime.desc()).all()
             elif signal == 3:  # query is a courseCode
                 found = self._connection.query(Books, Courses, Listings). \
                     filter(Listings.isbn == Courses.isbn). \
@@ -192,7 +191,7 @@ class QueryDatabase:
                     filter(Books.isbn == Courses.isbn). \
                     filter(Listings.status != 'accepted'). \
                     filter(Listings.status != 'confirmed'). \
-                    order_by(Listings.listTime).all()
+                    order_by(Listings.listTime.desc()).all()
             else:  # search by course title
                 found = self._connection.query(Books, Courses, Listings). \
                     filter(Listings.isbn == Books.isbn). \
@@ -200,7 +199,7 @@ class QueryDatabase:
                     filter(Courses.courseTitle.ilike(newQuery, escape='\\')). \
                     filter(Listings.status != 'accepted'). \
                     filter(Listings.status != 'confirmed'). \
-                    order_by(Listings.listTime).all()
+                    order_by(Listings.listTime.desc()).all()
             if requestType == "1":
                 for book, course, listing in found:
                     result = {
@@ -241,7 +240,7 @@ class QueryDatabase:
                 filter(Listings.isbn == Courses.isbn). \
                 filter(Listings.status != 'accepted'). \
                 filter(Listings.status != 'confirmed'). \
-                order_by(Listings.listTime).all()
+                order_by(Listings.listTime.desc()).all()
             for book, course, listing in found:
                 result = {
                     "isbn": book.isbn,
@@ -275,14 +274,14 @@ class QueryDatabase:
                     for bid in listing.bids:
                         if bid.bid == listing.highestBid:  # only show highest bid(s)
                             result = {
-                                    "title": book.title,
-                                    "crscode": course.courseCode,
-                                    "buyerId": bid.buyerID,
-                                    "highestBid": listing.highestBid,
-                                    "buyNow": listing.buyNow,
-                                    "status": bid.status,
-                                    "uniqueId": listing.uniqueID
-                                }
+                                "title": book.title,
+                                "crscode": course.courseCode,
+                                "buyerId": bid.buyerID,
+                                "highestBid": listing.highestBid,
+                                "buyNow": listing.buyNow,
+                                "status": bid.status,
+                                "uniqueId": listing.uniqueID
+                            }
                             results.append(result)
                 else:  # case of no bids on book
                     result = {
@@ -307,7 +306,7 @@ class QueryDatabase:
         try:
             bid = self._connection.query(Bids). \
                 filter(Bids.buyerID.contains(buyerID)). \
-                filter(Bids.listingID.contains(listingID)).all()
+                filter(Bids.listingID == listingID).all()
             bid.status = newStatus
             self._connection.commit()
             if newStatus == 'confirmed':
@@ -333,14 +332,14 @@ class QueryDatabase:
                 filter(Listings.isbn == Courses.isbn).all()
             for book, course, listing, bid in found:
                 result = {
-                        "title": book.title,
-                        "crscode": course.courseCode,
-                        "crstitle": course.courseTitle,
-                        "minPirce": listing.minPrice,
-                        "bid": bid.bid
-                    }
+                    "title": book.title,
+                    "crscode": course.courseCode,
+                    "crstitle": course.courseTitle,
+                    "minPirce": listing.minPrice,
+                    "bid": bid.bid
+                }
                 results.append(result)
-                
+
             return results
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
@@ -360,14 +359,14 @@ class QueryDatabase:
                 all()
             for bid, book, course, listing in found:
                 result = {
-                        "title": book.title,
-                        "crscode": course.courseCode,
-                        "crstitle": course.courseTitle,
-                        "sellerId": listing.sellerID,
-                        "bid": bid.bid,
-                        "status": bid.status,
-                        "uniqueId": listing.uniqueID
-                    }
+                    "title": book.title,
+                    "crscode": course.courseCode,
+                    "crstitle": course.courseTitle,
+                    "sellerId": listing.sellerID,
+                    "bid": bid.bid,
+                    "status": bid.status,
+                    "uniqueId": listing.uniqueID
+                }
                 results.append(result)
 
             return results
@@ -410,20 +409,20 @@ class QueryDatabase:
                 filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course in found:
                 result = {
-                        "title": book.title,
-                        "crscode": course.courseCode,
-                        "crstitle": course.courseTitle,
-                        "sellerId": listing.sellerID,
-                        "uniqueId": listing.uniqueID,
-                        "isbn": listing.isbn,
-                        "condition": listing.condition,
-                        "minPrice": listing.minPrice,
-                        "highestBid": listing.highestBid,
-                        "buyNow": listing.buyNow,
-                        "listTime": listing.listTime,
-                        "images": listing.images,
-                        "authors": book.authors[0].name
-                    }
+                    "title": book.title,
+                    "crscode": course.courseCode,
+                    "crstitle": course.courseTitle,
+                    "sellerId": listing.sellerID,
+                    "uniqueId": listing.uniqueID,
+                    "isbn": listing.isbn,
+                    "condition": listing.condition,
+                    "minPrice": listing.minPrice,
+                    "highestBid": listing.highestBid,
+                    "buyNow": listing.buyNow,
+                    "listTime": listing.listTime,
+                    "images": listing.images,
+                    "authors": book.authors[0].name
+                }
                 results.append(result)
 
             return results
@@ -431,7 +430,7 @@ class QueryDatabase:
             print(argv[0] + ':', e, file=stderr)
             return -1
 
-    # ------------------------------------------------------------------
+    # ----------------------------------------------------------------------------------
 
     # add a bid to the database or update an existing one
     def addBid(self, buyerID, listingID, bid):
@@ -471,11 +470,11 @@ class QueryDatabase:
             print(argv[0] + ':', e, file=stderr)
             return -1
 
-#-----------------------------------------------------------------------
+    # ----------------------------------------------------------------------------------
     def buyNow(self, buyerID, listingID, bid):
         try:
             listing = self._connection.query(Listings). \
-                      filter(Listings.uniqueID == listingID).one()
+                filter(Listings.uniqueID == listingID).one()
 
             if listing:
                 listing.status = "Bought Now"
@@ -494,7 +493,19 @@ class QueryDatabase:
             self._connection.commit()
 
             return 0
-            
+
+        except Exception as e:
+            print(argv[0] + ':', e, file=stderr)
+            return -1
+
+    # ----------------------------------------------------------------------------------
+    def getAllBids(self, listingID):
+        try:
+            results = []
+            found = self._connection.query(Bids).filter(Bids.listingID == listingID).all()
+            for bid in found:
+                results.append(bid.buyerID)
+            return results
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
