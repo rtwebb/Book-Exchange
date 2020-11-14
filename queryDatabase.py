@@ -431,7 +431,7 @@ class QueryDatabase:
             print(argv[0] + ':', e, file=stderr)
             return -1
 
-    # ----------------------------------------------------------------------------------
+    # ------------------------------------------------------------------
 
     # add a bid to the database or update an existing one
     def addBid(self, buyerID, listingID, bid):
@@ -470,3 +470,5 @@ class QueryDatabase:
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
+
+#-----------------------------------------------------------------------

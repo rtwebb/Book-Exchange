@@ -15,8 +15,11 @@
       <div>Seller: {{dict["sellerId"]}}</div>
       <div>Condition: {{dict["condition"]}}</div>
       <div>Lowest Ask: {{dict["minPrice"]}}</div>
-      <div>Buy Now: {{dict["buyNow"]}}</div>
       <div>Highest Bid: {{dict["highestBid"]}}</div>
+      <div>Buy Now Price: {{dict["buyNow"]}}
+           <button type="submit" form="submitBidForm" onclick="confirm('Are you sure you would like to buy this item now at ')" value="Submit">
+             Buy Now
+    </button></div>
     {% endfor %}
     <div>
       <div>Make a Bid:
