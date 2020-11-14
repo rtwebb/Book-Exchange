@@ -305,21 +305,15 @@ def profilePageTemplate():
                 #link to site to confim
                 # give time limit
         if 'accept' in request.form:
-            bodyMsg = "Hello, " + bidder + "\n" + "\n" + \
-                "Your bid was accepted by" + username + ". Below is the summary of your bid." + \
-                "Please log into book-exchange-cos333herokuapp.com to confirm or deny your purchase of this book." + "\n" + "\n" + \
+            bodyMsg = "Hello " + bidder + "," + "\n" + "\n" + \
+                "Your bid was accepted by" + username + ". "  + \
+                "Please log into book-exchange-cos333herokuapp.com to confirm or deny your purchase of this book." + \
+                "Below is the summary of your bid." + "\n" + "\n" + \
                 "Book Title: " + title + "\n" + \
                 "Cost: " + cost + "\n" + \
                 "SellerID: " + username + "\n" + "\n" + \
-                "Sincerely," + "\n" + "The Book-Exchange team"
-
-
-            sendEmail(mail, bidder, bodyMsg)
-            #bodyMsg = "Hello, " + bidder + "\n" + "\n" + \
-                     # "Your TigerBookExchange bid was accepted."
-            #msg = Message('TigerBookExchange Bid', sender='tigerbookexchange@gmail.com',
-                          #recipients=[bidder + '@princeton.edu'], body=bodyMsg)
-            #mail.send(msg)
+                "Sincerely," + "\n" + \
+                "The Book-Exchange team"
 
             database.updateStatus(listingID, bidder, 'accepted')
 
