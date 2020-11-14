@@ -15,7 +15,7 @@ from json import dumps
 import braintree
 from payment import generate_client_token, transact, find_transaction
 from venmo_api import Client, get_user_id
-# from wtforms import TextField, Form
+from wtforms import TextField, Form
 
 # -----------------------------------------------------------------------
 
