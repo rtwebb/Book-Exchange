@@ -15,6 +15,7 @@ from json import dumps
 import braintree
 from payment import generate_client_token, transact, find_transaction
 from venmo_api import Client, get_user_id
+from my_email import sendEmail
 #from wtforms import TextField, Form
 
 # -----------------------------------------------------------------------
@@ -297,14 +298,28 @@ def profilePageTemplate():
     username = CASClient().authenticate()
     listingID = request.args.get('list')
     bidder = request.args.get('bidder')
+    title = request.args.get('title')
+    cost = request.args.get('cost')
 
     try:
+                #link to site to confim
+                # give time limit
         if 'accept' in request.form:
             bodyMsg = "Hello, " + bidder + "\n" + "\n" + \
-                      "Your TigerBookExchange bid was accepted."
-            msg = Message('TigerBookExchange Bid', sender='tigerbookexchange@gmail.com',
-                          recipients=[bidder + '@princeton.edu'], body=bodyMsg)
-            mail.send(msg)
+                "Your bid was accepted by" + username + ". Below is the summary of your bid." + \
+                "Please log into book-exchange-cos333herokuapp.com to confirm or deny your purchase of this book." + "\n" + "\n" + \
+                "Book Title: " + title + "\n" + \
+                "Cost: " + cost + "\n" + \
+                "SellerID: " + username + "\n" + "\n" + \
+                "Sincerely," + "\n" + "The Book-Exchange team"
+
+
+            sendEmail(mail, bidder, bodyMsg)
+            #bodyMsg = "Hello, " + bidder + "\n" + "\n" + \
+                     # "Your TigerBookExchange bid was accepted."
+            #msg = Message('TigerBookExchange Bid', sender='tigerbookexchange@gmail.com',
+                          #recipients=[bidder + '@princeton.edu'], body=bodyMsg)
+            #mail.send(msg)
 
             database.updateStatus(listingID, bidder, 'accepted')
 
