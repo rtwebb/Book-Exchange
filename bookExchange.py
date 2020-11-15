@@ -267,12 +267,11 @@ def buyerPageTemplate():
             print("image value: ", dict["images"])
             i += 1
 
-
-    # what the fuck is this doing??????????????
     if request.method == 'POST':
         buyerID = username
         buyNow = request.args.get('buyNow')
         if buyNow is not None:
+            print('buyNow')
             database.buyNow(buyerID, uniqueId, buyNow)
         else:
             bid = request.form.get('bid')

@@ -83,7 +83,8 @@ class QueryDatabase:
         try:
             bids = self._connection.query(Bids). \
                 filter(Bids.listingID == uniqueID). \
-                filter(Bids.status != 'accepted').all()
+                filter(Bids.status != 'accepted').\
+                filter(Bids.status != 'confirmed').all()
             for bid in bids:
                 self._connection.delete(bid)
 
@@ -174,7 +175,7 @@ class QueryDatabase:
                     filter(Books.isbn == Listings.isbn). \
                     filter(Listings.isbn.ilike(newQuery, escape='\\')). \
                     filter(Listings.status != 'accepted'). \
-                    filter(Listings.status != 'confirmed'). \
+                    filter(Listings.status != 'purchased'). \
                     order_by(Listings.listTime.desc()).all()
             elif signal == 2:  # query is a book title
                 found = self._connection.query(Books, Courses, Listings). \
@@ -182,7 +183,7 @@ class QueryDatabase:
                     filter(Books.title.ilike(newQuery, escape='\\')). \
                     filter(Courses.isbn == Books.isbn). \
                     filter(Listings.status != 'accepted'). \
-                    filter(Listings.status != 'confirmed'). \
+                    filter(Listings.status != 'purchased'). \
                     order_by(Listings.listTime.desc()).all()
             elif signal == 3:  # query is a courseCode
                 found = self._connection.query(Books, Courses, Listings). \
@@ -190,7 +191,7 @@ class QueryDatabase:
                     filter(Courses.courseCode.ilike(newQuery, escape='\\')). \
                     filter(Books.isbn == Courses.isbn). \
                     filter(Listings.status != 'accepted'). \
-                    filter(Listings.status != 'confirmed'). \
+                    filter(Listings.status != 'purchased'). \
                     order_by(Listings.listTime.desc()).all()
             else:  # search by course title
                 found = self._connection.query(Books, Courses, Listings). \
@@ -198,7 +199,7 @@ class QueryDatabase:
                     filter(Books.isbn == Courses.isbn). \
                     filter(Courses.courseTitle.ilike(newQuery, escape='\\')). \
                     filter(Listings.status != 'accepted'). \
-                    filter(Listings.status != 'confirmed'). \
+                    filter(Listings.status != 'purchased'). \
                     order_by(Listings.listTime.desc()).all()
             if requestType == "1":
                 for book, course, listing in found:
@@ -239,7 +240,7 @@ class QueryDatabase:
                 filter(Listings.isbn == Books.isbn). \
                 filter(Listings.isbn == Courses.isbn). \
                 filter(Listings.status != 'accepted'). \
-                filter(Listings.status != 'confirmed'). \
+                filter(Listings.status != 'purchased'). \
                 order_by(Listings.listTime.desc()).all()
             for book, course, listing in found:
                 result = {
@@ -474,10 +475,10 @@ class QueryDatabase:
     def buyNow(self, buyerID, listingID, bid):
         try:
             listing = self._connection.query(Listings). \
-                filter(Listings.uniqueID == listingID).one()
+                filter(Listings.uniqueID == listingID).one_or_none()
 
             if listing:
-                listing.status = "Bought Now"
+                listing.status = "purchased"
                 buyNowPrice = listing.buyNow
 
             foundBid = self._connection.query(Bids). \
@@ -488,11 +489,16 @@ class QueryDatabase:
                 foundBid.bid = buyNowPrice
 
             else:
-                newBid = Bids(buyerID=buyerID, listingID=listingID, bid=buyNowPrice, status='pending')
+                newBid = Bids(buyerID=buyerID, listingID=listingID, bid=buyNowPrice, status='confirmed')
                 self._connection.add(newBid)
             self._connection.commit()
 
-            return 0
+            allBids = self.getAllBids(listingID)
+            check = self.removeAllBids(listingID)
+            if check == -1:
+                return -1
+
+            return allBids
 
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
