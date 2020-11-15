@@ -107,7 +107,7 @@
                 <button type="submit"
                         class="btn orange" 
                         form="submitBookForm"
-                        onclick="confirm('Are you sure you would like to list this book?')"
+                        onclick="return verifyListing();"
                         value="Submit">
                   SUBMIT
                 </button>
@@ -127,17 +127,22 @@
     <script>
 
       'use strict';
-      function verifyBid(){
+      function verifyListing(){
         
         // make sure none of the required entrys are null
         // if none are null ask if they are sure they want to list - if yes do success listing
 
         let isbn = $('#isbn').val();
+        console.log("isbn: ", isbn);
         let title = $('#title').val();
+        console.log("title: ", title);
         let authors = $('#authors').val();
+        console.log("authors: ", authors);
         let crscode = $('#crscode').val();
+        console.log("crscode: ", crscode);
         let crstitle = $('#crstitle').val();
-        let minPrice = $('#minPrince').val();
+        console.log("crstitle: ", crstitle);
+        let minPrice = $('#minPrice').val();
         let buyNow = $('#buyNow').val();
         let condition1 = $('#conditionVery').val();
         let condition2 = $('#conditionGood').val();
@@ -147,12 +152,15 @@
         // null value check
         if (isbn == null || title == null || authors == null || crscode == null 
         || crstitle == null || minPrice == null || buyNow == null){
-          alert('Please make sure you complete all required fields!');
+          console.log("in first if statement");
+          alert('All required fields are not filled, please make sure you complete all required fields!');
           return false;
-        } else if (condition1 == null || condition2 == null || condition3 == null || condtion4 == null){
-          alert('Please make sure you complete all required fields!');
+        } else if (condition1 == null && condition2 == null && condition3 == null && condtion4 == null){
+          console.log("in second if statement");
+          alert('All required fields are not filled, please make sure you complete all required fields!');
           return false;
         } else{
+          console.log("in third if statement");
           if (confirm('Are you sure you would like to post this listing?')){
             alert("Congratulations!  You have succesfully listed an tem :)!")
             return true;
@@ -162,36 +170,8 @@
           }
 
         }
-
-
-        let bid = $(userBid).val();
-        let highestBid = $('#highestBid').data('name');
-        let buyNow = $('#buyNow').data('name2');
-
-        console.log("inside the function; highestBid:", highestBid);
-        console.log("inside the function; buyNow:", buyNow);
-        // higher than buy now price 
-        if (bid > buyNow) {
-          if (confirm("Are you sure you want to bid higher than the buy now price?")){
-            alert("Congratulations!  You have succesfully placed your bid :)!")
-            return true;
-          }
-          else{
-            return false;
-          }
-           
-        } else if (bid < highestBid){ // less than highest bid
-          if (confirm('Are you sure you would like to bid this amount, it is lower than the highest current bid?')){
-            alert("Congratulations!  You have succesfully placed your bid :)!")
-            return true;
-          }
-          else{
-            return false;
-          }
-        } 
-
-        return true;
       }
+
 
       function handleResponse(response){
         // return array depending on search
