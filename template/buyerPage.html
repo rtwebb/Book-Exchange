@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
+    {% for dict in results %}
+    <meta id="highestBid" data-name="{{dict['highestBid']}}" >
+    <meta id="buyNow" data-name2="{{dict['buyNow']}}" >
+
+    {% endfor %}
     <title>Buyers Page</title>
   </head>
   <body>
@@ -35,7 +40,8 @@
       <button
         type="submit"
         form="submitBidForm"
-        onclick="confirm('Are you sure you would like to bid this amount?')"
+        id="userBid"
+        onclick="return verifyBid();"
         value="Submit">
       Submit
     </button>
@@ -48,7 +54,26 @@
 
       'use strict';
 
+      function verifyBid(){
+        let bid = $(userBid).val();
+        let highestBid = $('#highestBid').data('name');
+        let buyNow = $('#buyNow').data('name2');
 
+        console.log("inside the function; highestBid:", highestBid);
+        console.log("inside the function; buyNow:", buyNow);
+        // higher than buy now price 
+        if (bid > buyNow) {
+          alert("Are you sure you want to bid higher than buy now price?");
+           
+        } else if (bid < highestBid){ // less than highest bid
+          alert('Are you sure you would like to bid this amount, it is lower than the highest current bid?');
+        } else {
+          alert('Are you sure you would like to bid this amount?');
+        }
+
+        return true;
+
+      }
       function handleResponse(response){
         // return array depending on search
 
