@@ -117,8 +117,7 @@
                               <td></td>
                               <td>
                                     {% if book["status"] == 'pending' %}
-                                    {% set url = "/profilePage?list=" + book["uniqueId"] + "&bidder=" + book["buyerId"] + "&title=" + book["title"] + "&cost=" + book["highestBid"] %}
-                                          <form method="post", action={{url}}>
+                                          <form method="POST" action="/profilePage?list={{book['uniqueId']}}&bidder={{book['buyerId']}}&title={{book['title']}}&cost={{book['highestBid']}}">
                                                 <input type="submit" name="accept" id="accept" value="Accept" onclick="return confirmBid();">
                                                 <input type="submit" name="decline" id="decline" value="Decline" onclick="return confirmDecline();">      
                                           </form>
