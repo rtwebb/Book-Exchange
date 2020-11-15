@@ -169,6 +169,11 @@
           console.log("in second if statement");
           alert('All required fields are not filled, please make sure you complete all required fields!');
           return false;
+        } else if (isbn.trim() === '' || title.trim() === '' || authors.trim() === '' || crscode.trim() === '' ||
+          crstitle.trim() === '' || minPrice.strip() === '' || buyNow.trim() === '') {
+          
+          alert('All required fields are not filled, please make sure you complete all required fields!');
+          return false;
         } else{
           console.log("in third if statement");
           if (confirm('Are you sure you would like to post this listing?')){
