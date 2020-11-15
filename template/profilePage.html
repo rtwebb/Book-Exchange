@@ -142,12 +142,6 @@
                                     </button>
                                   </form>
                               </td>
-
-                              <td> <form action="checkout" method=post>
-                                          <input type="submit" name="confirm" id="confirm" value="Confirm">
-                                          <input type="submit" name="deny" id="deny" value="Deny">
-                                    </form> 
-                              </td>
                         </tr>
                   {%    endfor %}
             {% endif %}
@@ -252,6 +246,13 @@
                                     </button>
                                   </form>
                               </td>
+                              {% if book["status"] == "accepted" %}
+                              <td> <form action="checkout" method=post>
+                                    <input type="submit" name="confirm" id="confirm" value="Confirm">
+                                    <input type="submit" name="deny" id="deny" value="Deny">
+                              </form> 
+                              </td>
+                              {endif}
                         </tr>
                   {%    endfor %}
             {% endif %}

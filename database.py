@@ -38,7 +38,7 @@ class Bids(Base):
     __tablename__ = 'bids'
     buyerID = Column(String, primary_key=True)
     listingID = Column(String, ForeignKey('listings.uniqueID'), primary_key=True)
-    bid = Column(Float)  # pending, accepted, declined, confirmed
+    bid = Column(Float)  # pending, accepted, declined, confirmed, denied
     status = Column(String)
 
 
