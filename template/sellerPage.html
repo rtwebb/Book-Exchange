@@ -36,63 +36,63 @@
             <form action="sellerPage" method="POST" id="submitBookForm" enctype="multipart/form-data">
               <div class="form-row">
                 <div class="form-group col-md-4">
-                  <label for="inputTitle">Book Title</label>
-                  <input type="text" class="form-control" name="title" id="inputTitle" placeholder="The Practice of Programming" required>
+                  <label for="inputTitle" id="title">Book Title</label>
+                  <input type="text" class="form-control" name="title" id="title" placeholder="The Practice of Programming" required>
                 </div>
 
                 <div class="form-group col-md-4">
                   <label for="inputISBN">ISBN</label>
-                  <input type="text" class="form-control" name="isbn" id="inputISBN" placeholder="1234567890" required>
+                  <input type="text" class="form-control" name="isbn" id="isbn" placeholder="1234567890" required>
                 </div>
 
                 <div class="form-group col-md-4">
                   <label for="inputAuthors">Authors</label>
-                  <input type="text" class="form-control" name="author" id="inputAuthos" placeholder="Professor Dondero">
+                  <input type="text" class="form-control" name="authors" id="authors" placeholder="Professor Dondero">
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="form-group col-md-4">
                   <label for="inputCourseTitle">Course Title</label>
-                  <input type="text" class="form-control" name="crsname" id="crsname" placeholder="Advanced Programming Techniques">
+                  <input type="text" class="form-control" name="crstitle" id="crstitle" placeholder="Advanced Programming Techniques">
                 </div>
 
                 <div class="form-group col-md-4">
                   <label for="inputCode">Course Code</label>
-                  <input type="text" class="form-control" name="crsnum" id="crsnum" placeholder="COS333" required>
+                  <input type="text" class="form-control" name="crscode" id="crscode" placeholder="COS333" required>
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="form-group col-md-2">
                   <label for="inputMin">Minimum Price</label>
-                  <input type="number" class="form-control" name="minprice" id="minprice" placeholder="$5" required>
+                  <input type="number" class="form-control" name="minPrice" id="minPrice" placeholder="$5" required>
                 </div>
               
                 <div class="form-group col-md-2">
                   <label for="inputBuy">Buy Now Price</label>
-                  <input type="text" class="form-control" name="buynow" id="buynow" placeholder="$10" required>
+                  <input type="text" class="form-control" name="buyNow" id="buyNow" placeholder="$10" required>
                 </div>
               </div>
 
               <div class="centering" id="condition">
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="bookCondition" id="inlineRadio1" value="veryGood">
+                  <input class="form-check-input" type="radio" name="bookCondition" id="conditionVery" value="veryGood">
                   <label class="form-check-label" for="inlineRadio1">Very Good</label>
                 </div>
 
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="bookCondition" id="inlineRadio2" value="good">
+                  <input class="form-check-input" type="radio" name="bookCondition" id="conditionGood" value="good">
                   <label class="form-check-label" for="inlineRadio2">Good</label>
                 </div>
 
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="bookCondition" id="inlineRadio3" value="fair">
+                  <input class="form-check-input" type="radio" name="bookCondition" id="conditionFair" value="fair">
                   <label class="form-check-label" for="inlineRadio3">Fair</label>
                 </div>
 
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="bookCondition" id="inlineRadio3" value="poor">
+                  <input class="form-check-input" type="radio" name="bookCondition" id="conditionPoor" value="poor">
                   <label class="form-check-label" for="inlineRadio3">Poor</label>
                 </div>
 
@@ -127,7 +127,71 @@
     <script>
 
       'use strict';
+      function verifyBid(){
+        
+        // make sure none of the required entrys are null
+        // if none are null ask if they are sure they want to list - if yes do success listing
 
+        let isbn = $('#isbn').val();
+        let title = $('#title').val();
+        let authors = $('#authors').val();
+        let crscode = $('#crscode').val();
+        let crstitle = $('#crstitle').val();
+        let minPrice = $('#minPrince').val();
+        let buyNow = $('#buyNow').val();
+        let condition1 = $('#conditionVery').val();
+        let condition2 = $('#conditionGood').val();
+        let condition3 = $('#conditionFair').val();
+        let condition4 = $('#conditionPoor').val();
+
+        // null value check
+        if (isbn == null || title == null || authors == null || crscode == null 
+        || crstitle == null || minPrice == null || buyNow == null){
+          alert('Please make sure you complete all required fields!');
+          return false;
+        } else if (condition1 == null || condition2 == null || condition3 == null || condtion4 == null){
+          alert('Please make sure you complete all required fields!');
+          return false;
+        } else{
+          if (confirm('Are you sure you would like to post this listing?')){
+            alert("Congratulations!  You have succesfully listed an tem :)!")
+            return true;
+          }
+          else{
+            return false;
+          }
+
+        }
+
+
+        let bid = $(userBid).val();
+        let highestBid = $('#highestBid').data('name');
+        let buyNow = $('#buyNow').data('name2');
+
+        console.log("inside the function; highestBid:", highestBid);
+        console.log("inside the function; buyNow:", buyNow);
+        // higher than buy now price 
+        if (bid > buyNow) {
+          if (confirm("Are you sure you want to bid higher than the buy now price?")){
+            alert("Congratulations!  You have succesfully placed your bid :)!")
+            return true;
+          }
+          else{
+            return false;
+          }
+           
+        } else if (bid < highestBid){ // less than highest bid
+          if (confirm('Are you sure you would like to bid this amount, it is lower than the highest current bid?')){
+            alert("Congratulations!  You have succesfully placed your bid :)!")
+            return true;
+          }
+          else{
+            return false;
+          }
+        } 
+
+        return true;
+      }
 
       function handleResponse(response){
         // return array depending on search
