@@ -216,7 +216,7 @@
             {% if bids|length == 0: %}
                   </table>
             {% else: %}
-                  {%    for book in bids: %}
+                  {%    for book in bids %}
                         <tr>
                               <td>{{book["title"]}}</td>
                               <td></td>
@@ -254,7 +254,7 @@
                               </td>
                               {endif}
                         </tr>
-                  {%    endfor %}
+                  {%   endfor %}
             {% endif %}
       </table>
       </div>
