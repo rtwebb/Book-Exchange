@@ -2,125 +2,122 @@
 <html>
   <head>
     <title>Seller's Page</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   
-    <link
+    <!--link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/sellerPage.css') }}"
-    />
+    /-->
+
+    <style>
+      .jumbotron{
+          background-color:#2E2D88;
+      }
+    </style>
+
   </head>
+  
   <body>
     {% include 'header.html' %}
-    <h1 class="sellerHeading">Add a new Listing</h1>
-    <!-- <form action="sellerPage" method="POST" id="submitBookForm" enctype="multipart/form-data">
-      *Book Title:
-      <input type="text" name="title" />
-      *ISBN:
-      <input type="text" name="isbn" />
-      *Course Title:
-      <input type="text" name="crsnum" />
-      *Course Name:
-      <input type="text" name="crsname" />
-      *Author:
-      <input type="text" name="author" />
-      <br />
-      *Minimum Price:
-      <input type="text" name="minprice" />
-      *Buy Now:
-      <input type="text" name="buynow" />
 
-      <select id="condition" name="bookCondition">
-        <option value="" disabled="disabled"  style="display:none" selected="selected">Condition</option>
-        <option value='poor'>Poor </option>
-        <option value='fair'>Fair </option>
-        <option value='good'>Good </option>
-        <option value='veryGood'>Very good </option>
-      </select>
--->
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="jumbotron">
 
-    <form action="sellerPage" method="POST" id="submitBookForm" enctype="multipart/form-data">
-      <div class="form-row">
-        <div class="form-group col-md-4">
-        <label for="inputTitle">Book Title</label>
-        <input type="text" class="form-control" name="title" id="inputTitle" placeholder="The Practice of Programming" required>
-      </div>
-        <div class="form-group col-md-4">
-          <label for="inputISBN">ISBN</label>
-          <input type="text" class="form-control" name="isbn" id="inputISBN" placeholder="1234567890" required>
-        </div>
-        <div class="form-group col-md-4">
-          <label for="inputAuthors">Authors</label>
-          <input type="text" class="form-control" name="author" id="inputAuthos" placeholder="Professor Dondero">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-4">
-          <label for="inputCourseTitle">Course Title</label>
-          <input type="text" class="form-control" name="crsname" id="crsname" placeholder="Advanced Programming Techniques">
-        </div>
-        <div class="form-group col-md-4">
-          <label for="inputCode">Course Code</label>
-          <input type="text" class="form-control" name="crsnum" id="crsnum" placeholder="COS333" required>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-2">
-          <label for="inputMin">Minimum Price</label>
-          <input type="number" class="form-control" name="minprice" id="minprice" placeholder="$5" required>
-        </div>
-        <div class="form-group col-md-2">
-          <label for="inputBuy">Buy Now Price</label>
-          <input type="text" class="form-control" name="buynow" id="buynow" placeholder="$10" required>
-        </div>
-      </div>
-      <div class="centering" id="condition">
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="bookCondition" id="inlineRadio1" value="veryGood">
-        <label class="form-check-label" for="inlineRadio1">Very Good</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="bookCondition" id="inlineRadio2" value="good">
-        <label class="form-check-label" for="inlineRadio2">Good</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="bookCondition" id="inlineRadio3" value="fair">
-        <label class="form-check-label" for="inlineRadio3">Fair</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="bookCondition" id="inlineRadio3" value="poor">
-        <label class="form-check-label" for="inlineRadio3">Poor</label>
-      </div>
-      
-      <!-- <div class="custom-file col-md-4">
-        <input type="file" class="custom-file-input" id="customFile" accept="image/*" name="image1">
-        <label class="custom-file-label" for="customFile">Add Image 1...</label>
-      </div>
-      <div class="custom-file col-md-4">
-        <input type="file" class="custom-file-input" id="customFile" accept="image/*" name="image2">
-        <label class="custom-file-label" for="customFile">Add Image 2...</label>
-      </div>
-      <div class="custom-file">
-        <input type="file" class="custom-file-input" id="customFile" accept="image/*" name="image3">
-        <label class="custom-file-label" for="customFile">Add Image 3...</label>
-      </div>
-      -->
-      <br>
-      * Required fields
-      <h2>Add Images</h2>
-      <input type="file" accept="image/*" name="image1">
-      <input type="file" accept="image/*" name="image2">
-      <input type="file" accept="image/*" name="image3">
-      <br> 
+            <h1 class="sellerHeading">Add a new Listing</h1>
 
-      <button type="submit" class="btn orange"
-      form="submitBookForm"
-      onclick="confirm('Are you sure you would like to list this book?')"
-      value="Submit">SUBMIT</button>
-    </div> 
-    </form>
+            <form action="sellerPage" method="POST" id="submitBookForm" enctype="multipart/form-data">
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="inputTitle">Book Title</label>
+                  <input type="text" class="form-control" name="title" id="inputTitle" placeholder="The Practice of Programming" required>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label for="inputISBN">ISBN</label>
+                  <input type="text" class="form-control" name="isbn" id="inputISBN" placeholder="1234567890" required>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label for="inputAuthors">Authors</label>
+                  <input type="text" class="form-control" name="author" id="inputAuthos" placeholder="Professor Dondero">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="inputCourseTitle">Course Title</label>
+                  <input type="text" class="form-control" name="crsname" id="crsname" placeholder="Advanced Programming Techniques">
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label for="inputCode">Course Code</label>
+                  <input type="text" class="form-control" name="crsnum" id="crsnum" placeholder="COS333" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-2">
+                  <label for="inputMin">Minimum Price</label>
+                  <input type="number" class="form-control" name="minprice" id="minprice" placeholder="$5" required>
+                </div>
+              
+                <div class="form-group col-md-2">
+                  <label for="inputBuy">Buy Now Price</label>
+                  <input type="text" class="form-control" name="buynow" id="buynow" placeholder="$10" required>
+                </div>
+              </div>
+
+              <div class="centering" id="condition">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="bookCondition" id="inlineRadio1" value="veryGood">
+                  <label class="form-check-label" for="inlineRadio1">Very Good</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="bookCondition" id="inlineRadio2" value="good">
+                  <label class="form-check-label" for="inlineRadio2">Good</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="bookCondition" id="inlineRadio3" value="fair">
+                  <label class="form-check-label" for="inlineRadio3">Fair</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="bookCondition" id="inlineRadio3" value="poor">
+                  <label class="form-check-label" for="inlineRadio3">Poor</label>
+                </div>
+
+                <br>
+
+                * Required fields
+                <h2>Add Images</h2>
+                <input type="file" accept="image/*" name="image1">
+                <input type="file" accept="image/*" name="image2">
+                <input type="file" accept="image/*" name="image3">
+                <br> 
+                <button type="submit"
+                        class="btn orange" 
+                        form="submitBookForm"
+                        onclick="confirm('Are you sure you would like to list this book?')"
+                        value="Submit">
+                  SUBMIT
+                </button>
+              </div> 
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     {% include 'footer.html' %}
 
 
