@@ -143,11 +143,21 @@
         let crstitle = $('#crstitle').val();
         console.log("crstitle: ", crstitle);
         let minPrice = $('#minPrice').val();
+        minPrice = parseInt(minPrice, 10);
+        console.log('Min price: ', minPrice);
         let buyNow = $('#buyNow').val();
+        buyNow = parseInt(buyNow, 10);
+        console.log('buyNow: ', buyNow);
         let condition1 = $('#conditionVery').val();
         let condition2 = $('#conditionGood').val();
         let condition3 = $('#conditionFair').val();
         let condition4 = $('#conditionPoor').val();
+
+        if (buyNow < minPrice){
+          alert('Your buy now price is less than the minimum ask, please update!')
+          return false;
+        }
+
 
         // null value check
         if (isbn == null || title == null || authors == null || crscode == null 
