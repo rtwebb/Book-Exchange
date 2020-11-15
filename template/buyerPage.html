@@ -34,17 +34,16 @@
       <div>Make a Bid:
         {% set url = "buyerPage?bookid=" + uniqueId %}
         <form action={{url}} method="POST" id="submitBidForm">
-        <input type="text" name="bid" /> (example input: 19.99)
+        <input type="text" name="bid" id="userBid" /> (example input: 19.99)
         </form>
       </div>
       <button
-        type="submit"
         form="submitBidForm"
-        id="userBid"
-        value="Submit">
-      Submit
+        onclick="return verifyBid();"
+        style="visibility: hidden;">
+
     </button>
-      <!--        onclick="return verifyBid();"-->
+     
     </div>
 
     <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
@@ -63,16 +62,30 @@
         console.log("inside the function; buyNow:", buyNow);
         // higher than buy now price 
         if (bid > buyNow) {
-          alert("Are you sure you want to bid higher than buy now price?");
+          if (confirm("Are you sure you want to bid higher than the buy now price?")){
+            return true;
+          }
+          else{
+            return false;
+          }
            
         } else if (bid < highestBid){ // less than highest bid
-          alert('Are you sure you would like to bid this amount, it is lower than the highest current bid?');
+          if (confirm('Are you sure you would like to bid this amount, it is lower than the highest current bid?')){
+            return true;
+          }
+          else{
+            return false;
+          }
         } else {
-          alert('Are you sure you would like to bid this amount?');
+          if (confirm('Are you sure you would like to bid this amount?')){
+            return true;
+          }
+          else{
+            return false;
+          }
         }
 
         return true;
-
       }
       function handleResponse(response){
         // return array depending on search
