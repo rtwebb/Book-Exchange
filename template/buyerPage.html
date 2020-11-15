@@ -41,10 +41,10 @@
         type="submit"
         form="submitBidForm"
         id="userBid"
-        onclick="return verifyBid();"
         value="Submit">
       Submit
     </button>
+      <!--        onclick="return verifyBid();"-->
     </div>
 
     <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
@@ -141,9 +141,3 @@
     {% include 'footer.html' %}
   </body>
 </html>
-
-<!-- # from results, we get
-    (listing.sellerID, listing.isbn, listing.condition, listing.minPrice,
-                           listing.buyNow, listing.listTime, listing.images, book.title,
-                           book.authors[0].name, course.coursenum, course.coursename,
-                           listing.uniqueID, listing.highestBid)
