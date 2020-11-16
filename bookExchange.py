@@ -193,9 +193,13 @@ def sellerPageTemplate():
         image2 = request.files.get('image2')
         image3 = request.files.get('image3')
         # authors as a list; coursename vs coursenumber
-        author = request.form.get('authors')
+        # author = request.form.get('prof1')
+        author = "jackson"
+        print("author: ", author)
         crscode = request.form.get('crscode')
-        crstitle = request.form.get('crstitle')
+        print('Coursecode:', crscode)
+        crstitle = request.args.get('crstitle')
+        print('Coursetitle:', crstitle)
         condition = request.form.get('bookCondition')
         time = datetime.now()
         listTime = time.strftime("%m:%d:%Y:%H:%M:%S")
