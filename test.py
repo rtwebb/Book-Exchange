@@ -2,12 +2,12 @@ from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
 # test.add('353431', 'CCC', ['CCC'], 'CCC101', 'CCC', 'tianaf\n', 'good', 10, 50, '11:14:2020:22:05:42', [])
-test.addBid('vdhopte\n', '33bccd52-f075-4f7b-a3bc-e33141046ce6', 23)
-test.addBid('emmandrar\n', '33bccd52-f075-4f7b-a3bc-e33141046ce6', 33)
-# test.addBid('tianaf\n', '479a56f7-e7e8-4da8-a58c-da6fa363075e', 28)
-test.updateStatus('33bccd52-f075-4f7b-a3bc-e33141046ce6', 'vdhopte\n', 'confirmed')
+# test.addBid('vdhopte\n', '02ac4736-8078-4ec7-a499-b320b7eaf416', 23)
+# test.addBid('emmandrar\n', '02ac4736-8078-4ec7-a499-b320b7eaf416', 33)
+test.addBid('tianaf\n', '02ac4736-8078-4ec7-a499-b320b7eaf416', 40)
+# test.updateStatus('33bccd52-f075-4f7b-a3bc-e33141046ce6', 'vdhopte\n', 'confirmed')
 # test.removeAllBids('479a56f7-e7e8-4da8-a58c-da6fa363075e')
-test.removeListing('33bccd52-f075-4f7b-a3bc-e33141046ce6')
+# test.removeListing('33bccd52-f075-4f7b-a3bc-e33141046ce6')
 
 
 
