@@ -70,9 +70,11 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label for="inputCourseTitle" class="form-label">Course Title</label>
-                  <input type="text" class="form-control" name="crstitle" id="inputCourseTitle" placeholder="Ex: Advanced Programming Techniques">
+                  <input type="text" class="form-control" name="crstitle" id="inputCourseTitle" placeholder="Ex: Advanced Programming Techniques" required>
                 </div>
-
+                <div class="invalid-feedback">
+                  Course title is required
+                </div>
                 <div class="form-group col-md-2">
                   <label for="inputCode" class="form-label">Course Code</label>
                   <input type="text" class="form-control" name="crscode" id="inputCode" placeholder="Ex: COS 333" required>
@@ -93,7 +95,7 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="inputMin" class="form-label">Minimum Price</label>
                   <input type="number" class="form-control" name="minPrice" id="inputMin" required>

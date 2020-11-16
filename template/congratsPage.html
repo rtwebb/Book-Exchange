@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html> 
+	<head> 
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sigmar+One">
+		<style>
+			body {
+				background: #3da1d1;
+				color: #fff;
+				overflow: hidden;
+			}
+			
+			.congrats {
+				position: absolute;
+				top: 140px;
+				width: 550px;
+				height: 100px;
+				padding: 20px 10px;
+				text-align: center;
+				margin: 0 auto;
+				left: 0;
+				right: 0;
+			}
+			.msg {
+				position: absolute;
+				text-align: center;
+				top: 350px;
+				width: 550px;
+				height: 100px;
+				margin: 0 auto;
+				left: 0;
+				right: 0;
+				
+
+			}
+			
+			h1 {
+				transform-origin: 50% 50%;
+				font-size: 50px;
+				font-family: 'Sigmar One', cursive;
+				cursor: pointer;
+				z-index: 2;
+				position: absolute;
+				top: 0;
+				text-align: center;
+				width: 100%;
+			}
+
+		</style> 
+	</head>
+
+<div class="congrats">
+	<h1>Congratulations {{username}}!</h1>
+	<br>
+</div>
+
+<div class="msg">
+	<br>
+	{{msg}}
+	<br>
+	Click here to do <a href="homePage"> another search </a> 
+	otherwise you will be redirected to your profile page! 
+</div>
+
+
+
+<script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+
+<script>
+
+	function redirect(){
+		console.log("in redirect");
+		location.replace('profilePage');
+	}
+
+	function setup(){
+		console.log("in setup");
+		window.setInterval(redirect, 11000);
+
+	}
+
+$('#document').ready(setup);
+
+</script>
+
+</html>
