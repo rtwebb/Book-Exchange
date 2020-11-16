@@ -98,6 +98,7 @@ class QueryDatabase:
     # -----------------------------------------------------------------------------
 
     # if a user wants to remove a bid, use this method
+    # for some reason, when bid is removed, highestBid is not updated??
     def removeMyBid(self, buyerID, uniqueID):
         try:
             results = self._connection.query(Bids, Listings). \
@@ -320,6 +321,11 @@ class QueryDatabase:
                     filter(Listings.uniqueID == listingID).one()
                 listing.status = 'closed'
                 self._connection.commit()
+            if newStatus == 'declined':
+                listing = self._connection.query(Listings). \
+                    filter(Listings.uniqueID == listingID).one()
+                listing.status = 'open'
+                self._connection.commit()
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
@@ -362,7 +368,7 @@ class QueryDatabase:
                 filter(Listings.uniqueID == Bids.listingID). \
                 filter(Books.isbn == Listings.isbn). \
                 filter(Courses.isbn == Books.isbn). \
-                all()
+                filter(Bids.status != 'confirmed').all()
             for bid, book, course, listing in found:
                 result = {
                     "title": book.title,
@@ -452,6 +458,7 @@ class QueryDatabase:
 
             if foundBid:
                 foundBid.bid = bid
+                foundBid.status = 'pending'
             # otherwise, create a new bid
             else:
                 newBid = Bids(buyerID=buyerID, listingID=listingID, bid=bid, status='pending')

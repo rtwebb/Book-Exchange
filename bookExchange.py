@@ -308,48 +308,173 @@ def profilePageTemplate():
     cost = request.args.get('cost')
 
     try:
-                #link to site to confim
-                # give time limit
+        # link to site to confirm
+        # give time limit
+
+        # seller actions: accept or decline a bid
         if 'accept' in request.form:
-            bodyMsg = "Hello " + bidder + "," + "\n" + "\n" + \
-                "Your bid was accepted by" + username + ". "  + \
-                "Please log into book-exchange-cos333herokuapp.com to confirm or deny your purchase of this book within the next 48hrs." + \
-                "If you do not make a decision within the next 48hrs your bid will automatically be deleted." + \
-                "Below is the summary of your bid." + "\n" + "\n" + \
-                "Book Title: " + title + "\n" + \
-                "Cost: " + cost + "\n" + \
-                "SellerID: " + username + "\n" + "\n" + \
-                "Sincerely," + "\n" + \
-                "The Book-Exchange team"
+            bodyMsg = """
+            Hello %s,
+            
+            Your bid was accepted by %s! 
+            Please log into book-exchange-cos333.herokuapp.com to confirm or deny your purchase of this book within the next 48 hours. 
+            If you do not make a decision within the next 48 hours, your bid will automatically be deleted. Below is the summary of your bid.
+            
+            Book Title: %s
+            Cost: %s
+            Seller ID: %s
+            
+            Sincerely,
+            The Book-Exchange Team
+            
+            """ % (bidder, username.rstrip(), title, cost, username.rstrip())
 
-            sendEmail(mail, bidder, bodyMsg)
+            sendEmail(mail, [bidder], bodyMsg)
             error = database.updateStatus(listingID, bidder, 'accepted')
+            if error == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
         elif 'decline' in request.form:
-            bodyMsg = "Hello, " + bidder + "\n" + "\n" + \
-                      "Your TigerBookExchange bid was declined."
-            msg = Message('TigerBookExchange Bid', sender='tigerbookexchange@gmail.com',
-                          recipients=[bidder + '@princeton.edu'], body=bodyMsg)
-            mail.send(msg)
+            bodyMsg = """
+            Hello %s,
+            
+            Your Book-Exchange bid was declined. The book information is as follows:
+            
+            Book Title: %s
+            Seller ID: %s
+            
+            Your bid has thus been deleted -- feel free to bid again! Good luck with your future bids!
+            
+            Sincerely,
+            The Book-Exchange Team
+            """ % (bidder, title, username.rstrip())
+            sendEmail(mail, [bidder], bodyMsg)
+            error1 = database.updateStatus(listingID, bidder, 'declined')
+            error2 = database.removeMyBid(bidder, listingID)
+            if error1 == -1 or error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
-            database.updateStatus(listingID, bidder, 'declined')
+        # buyer options: confirm or deny an accepted bid
+        elif 'confirm' in request.form:
+            seller = request.args.get('sellerId').rstrip()
+            # message for the seller
+            bodyMsg = """
+            Hello %s,
 
+            %s has confirmed their bid! Information about the listing is below:
+
+            Book Title: %s
+            Buyer ID: %s
+            
+            Congratulations! Please contact the buyer to set details regarding the exchange. Thanks!
+
+            Best,
+            The Book-Exchange Team
+
+            """ % (seller, username.rstrip(), title, username.rstrip())
+            sendEmail(mail, [seller], bodyMsg)
+
+            # message for the other bidders
+            bodyMsg = """
+            The following book has been purchased by %s and is no longer available:
+            
+            Book Title: %s
+            Seller ID: %s
+            
+            Thank you for bidding, and good luck on your future bids!
+            
+            Best,
+            The Book-Exchange Team
+            """ % (username.rstrip(), title, seller)
+            bidders = database.getAllBids(listingID)
+            bidders = [cur for cur in bidders if cur != username]
+            sendEmail(mail, bidders, bodyMsg)
+
+            # message for the buyer
+            bodyMsg = """
+            Hello %s,
+            
+            Thank you for confirming your bid on the book with the following information:
+
+            Book Title: %s
+            Seller ID: %s
+
+            Please contact the seller for details regarding the exchange. Thanks!
+
+            Best,
+            The Book-Exchange Team
+            """ % (username.rstrip(), title, seller)
+            sendEmail(mail, [username.rstrip()], bodyMsg)
+
+            error1 = database.updateStatus(listingID, username, 'confirmed')
+            error2 = database.removeAllBids(listingID)
+
+            if error1 == -1 or error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+            return redirect(url_for('checkout'))
+        elif 'deny' in request.form:
+            seller = request.args.get('sellerId').rstrip()
+            # message for the seller
+            bodyMsg = """
+            Hello %s,
+
+            %s has revoked their bid on your listing with the information below:
+
+            Book Title: %s
+
+            Please check back on your profile page and watch out for future bids!
+
+            Best,
+            The Book-Exchange Team
+
+            """ % (seller, username.rstrip(), title)
+            sendEmail(mail, [seller], bodyMsg)
+
+            # message for the buyer
+            bodyMsg = """
+            Hello %s,
+
+            You have revoked your bid on the book with the following information:
+
+            Book Title: %s
+            Seller ID: %s
+
+            Your bid has thus been deleted -- feel free to bid again! Good luck with your future bids!
+
+            Best,
+            The Book-Exchange Team
+            """ % (username.rstrip(), title, seller)
+            sendEmail(mail, [username.rstrip()], bodyMsg)
+
+            error1 = database.updateStatus(listingID, username, 'declined')
+            error2 = database.removeMyBid(username, listingID)
+            if error1 == -1 or error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+        # user wants to delete their bid
         deleteBidBuyerID = request.args.get('deleteBidBuyerID')
         deleteBidListingID = request.args.get('deleteBidListingID')
-
         if deleteBidBuyerID is not None and deleteBidListingID is not None:
             database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
 
+        # user wants to delete their listing
         deleteListingID = request.args.get('deleteListingID')
         if deleteListingID is not None:
             database.removeListing(deleteListingID)
 
-        # query database for the given user
+        # query database for the given user to update profilePage
         listings = database.myListings(username)
         if listings == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
-            print("listings: ", listings)
         # use this to reset the forms in mylistings in the profilepage
         # for book in listings:
         # database.updateStatus(book[5], book[2], 'pending')
@@ -369,15 +494,9 @@ def profilePageTemplate():
         html = render_template('errorPage.html')
         response = make_response(html)
         return response
-    # get books they are selling
-    # if none set object to none, else pass along
-    # get books that they have bid on
-    # if none set object to none, else pass along
 
-    # in html page I called the things: listings, purchases, bids
     html = render_template('profilePage.html', username=username, listings=listings,
                            purchases=purchases, bids=bids)
-
     response = make_response(html)
     return response
 
@@ -451,7 +570,7 @@ def autoComplete():
 
 
 # ----------------------------------------------------------------------
-@app.route('/checkout', methods=['GET'])
+@app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     username = CASClient().authenticate()
    # client_token = generate_client_token()

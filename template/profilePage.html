@@ -230,27 +230,30 @@
                               <td></td>
                               <td> {{book["status"]}}</td>
                               {% set url = "/buyerPage?bookid=" + book["uniqueId"] %}
-                              <td><form action={{url}} method="POST">
-                                    <button 
-                                          class="glyphicon glyphicon-pencil"
-                                          type="submit"
-                                          onclick="confirm('Are you sure you would like to edit this bid?')">
-                                    </button>
-                                  </form>
+                              <td>
+                                  {% if book["status"] != 'accepted' %}
+                                      <form action={{url}} method="POST">
+                                        <button
+                                              class="glyphicon glyphicon-pencil"
+                                              type="submit"
+                                              onclick="confirm('Are you sure you would like to edit this bid?')">
+                                        </button>
+                                      </form>
 
-                                  <form action="/profilePage?deleteBidBuyerID={{username}}&deleteBidListingID={{book['uniqueId']}}" method="POST">
-                                    <button 
-                                          class="glyphicon glyphicon-trash"
-                                          type="submit"
-                                          onclick="confirm('Are you sure you would like to delete this bid?')">                   
-                                    </button>
-                                  </form>
+                                      <form action="/profilePage?deleteBidBuyerID={{username}}&deleteBidListingID={{book['uniqueId']}}" method="POST">
+                                        <button
+                                              class="glyphicon glyphicon-trash"
+                                              type="submit"
+                                              onclick="confirm('Are you sure you would like to delete this bid?')">
+                                        </button>
+                                      </form>
+                                  {% endif %}
                               </td>
                               {% if book["status"] == "accepted" %}
-                              <td> <form action="checkout" method=post>
+                              <td> <form method="post" action="profilePage?list={{book['uniqueId']}}&sellerId={{book['sellerId']}}&title={{book['title']}}&cost={{book['highestBid']}}">
                                     <input type="submit" name="confirm" id="confirm" value="Confirm">
                                     <input type="submit" name="deny" id="deny" value="Deny">
-                              </form> 
+                                  </form>
                               </td>
                               {% endif %}
                         </tr>
