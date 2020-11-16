@@ -73,7 +73,7 @@
     {% endfor %}
     <div>
       <div>Make a Bid:
-        {% set url = "homePage?bookid=" + uniqueId %}
+        {% set url = "congratsPage?bookid=" + uniqueId %}
         <form action={{url}} method="POST" id="submitBidForm">
         <input type="text" name="bid" id="userBid" /> (example input: 19.99)
         </form>
@@ -134,7 +134,6 @@
 
         } else if (bid < highestBid){ // less than highest bid
           if (confirm('Are you sure you would like to bid this amount, it is lower than the highest current bid?')){
-            alert("Congratulations!  You have succesfully placed your bid :)!")
             return true;
           }
           else{
@@ -142,7 +141,6 @@
           }
         } else if (bid === highestBid){
           if (confirm('Are you sure you would like to bid this amount, it is the same as the current highest bid?')){
-            alert("Congratulations!  You have succesfully placed your bid :)!")
             return true;
           }
           else{
@@ -151,7 +149,6 @@
 
         }  else {
           if (confirm('Are you sure you would like to bid this amount?')){
-            alert("Congratulations!  You have succesfully placed your bid :)!")
             return true;
           }
           else{

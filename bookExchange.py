@@ -77,18 +77,6 @@ def homePageTemplate():
                 "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
             dict["images"] = i
             i += 1
-
-    if request.args.get('bookid'):
-        buyerID = username
-        buyNow = request.args.get('buyNow')
-        uniqueId = request.args.get('bookid')
-        if buyNow is not None:
-            print('buyNow')
-            database.buyNow(buyerID, uniqueId, buyNow)
-        else:
-            bid = request.form.get('bid')
-            print('bid: ', bid)
-            database.addBid(buyerID, uniqueId, bid)
     
     html = render_template('homePage.html', results=results, images=images,
                            username=username)
@@ -533,6 +521,43 @@ def checkout():
     response = make_response(html)
 
     return response
+
+# ----------------------------------------------------------------------
+@app.route('/congratsPage', methods=['GET', 'POST'])
+def congratsPage():
+    username = CASClient().authenticate()
+    username = username.strip()
+    # succesfull listing
+
+
+
+    # profile page: accepting a bid on your listing; confirming your bid to purchase book
+        # Congrats you have accepted a bid, now we just need bidder to confirm
+        # Congrats you and the seller have agreed on purchase, proceed to checkout
+
+
+    # bid update 
+    if request.args.get('bookid'):
+        buyerID = username
+        buyNow = request.args.get('buyNow')
+        uniqueId = request.args.get('bookid')
+        if buyNow is not None:
+            print('buyNow')
+            database.buyNow(buyerID, uniqueId, buyNow)
+            message = "You have succesfully placed your bid, now we are just waiting on confirmation from the seller!"
+        else:
+            bid = request.form.get('bid')
+            print('bid: ', bid)
+            database.addBid(buyerID, uniqueId, bid)
+            msg = "You have succesfully placed your bid, now we are just waiting on confirmation from the seller!"
+
+    # busy wait before redirect
+
+    html = render_template('congratsPage.html', username=username, msg=msg)
+    response = make_response(html)
+
+    return response
+
 
 
 # ----------------------------------------------------------------------
