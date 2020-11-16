@@ -354,13 +354,11 @@ def profilePageTemplate():
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
-            print("purchases: ", purchases)
         bids = database.myBids(username)
         if listings == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
-            print("bids: ", bids)
 
     except Exception as e:
         print("Error: " + str(e), file=stderr)
@@ -372,12 +370,6 @@ def profilePageTemplate():
     # get books that they have bid on
     # if none set object to none, else pass along
 
- 
-
-
-
-    for list1 in listings:
-        print("uniqueId from database: ", list1["uniqueId"])
     # in html page I called the things: listings, purchases, bids
     html = render_template('profilePage.html', username=username, listings=listings,
                            purchases=purchases, bids=bids)
