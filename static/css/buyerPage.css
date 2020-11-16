@@ -2,12 +2,13 @@ h1 {
   text-align: center;
 }
 
-.containrrr {
+.buyer-container {
   border: 2px solid green;
   width: 50%;
 }
 
-.img {
-  width: 300px;
-  height: 300px;
+img {
+  width: 30%;
+  height: 30%;
+  display: inline-block;
 }

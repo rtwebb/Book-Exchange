@@ -53,6 +53,10 @@
 
     {% for dict in results %}
       <h1>{{dict["title"]}}</h1>
+
+
+
+    <div class=buyer-container>
       <img src="{{images[dict['images']]}}" width="225" height="160"></img>
       <div>Authors: {{dict["authors"]}}</div>
       <div>ISBN: {{dict["isbn"]}}</div>
@@ -86,7 +90,7 @@
     </button>
      
     </div>
-
+</div>
     <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
     <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
