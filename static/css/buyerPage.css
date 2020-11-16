@@ -4,11 +4,24 @@ h1 {
 
 .buyer-container {
   border: 2px solid green;
-  width: 50%;
+  width: 100%;
+  padding: 1em;
 }
 
-img {
+.body-img {
   width: 30%;
-  height: 30%;
+  height: 100%;
   display: inline-block;
+  border: 2px solid green;
+}
+
+.info-container {
+  display: inline-block;
+  width: 60%;
+  padding: 1em;
+  border: magenta solid 2px;
+}
+
+span {
+  font-weight: bold;
 }
