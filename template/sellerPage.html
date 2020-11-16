@@ -16,6 +16,15 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/sellerPage.css') }}"
     /-->
+<<<<<<< HEAD
+    <style>
+      .jumbotron{
+          background-color:#F0AD4E;
+          color:white;
+      }
+    </style>
+=======
+>>>>>>> e88939b914ce72375b6376f769faad2f90347f7c
 
   </head>
   
@@ -27,9 +36,9 @@
         <div class="col-sm-12">
           <div class="jumbotron">
 
-            <h1 class="sellerHeading">Add a new Listing</h1>
+            <h1 class="sellerHeading">Add a New Listing</h1>
 
-            <form action="/profilePage" method="POST" id="submitBookForm" enctype="multipart/form-data">
+            <form action="/sellerPage" method="POST" id="submitBookForm" enctype="multipart/form-data">
               <div class="row">
                 <div class="col-md-8">
                   <label for="inputTitle" class="form-label">Book Title</label>
@@ -49,10 +58,24 @@
               </div>
 
               <div class="row">
+                <input type="hidden" name="count" value="1"/>
                 <div class="form-group col-md-4">
+                  <label class="control-label" for="field1">Authors</label>
+                  <div class="controls" id="profs"> 
+                    <form class="input-append">
+                      <div id="field">
+                        <input autocomplete="off" class="input" id="field1" name="prof1" type="text" placeholder="Type something" data-items="8"/>
+                        <button id="b1" class="btn add-more" type="button">+</button>
+                      </div>
+                    </form>
+                    <br>
+                    <small>Press + to add another author</small>
+                  </div>
+                </div>
+                <!--div class="form-group col-md-4">
                   <label for="inputAuthors" class="form-label">Authors</label>
                   <input type="text" class="form-control" name="authors" id="inputAuthors" placeholder="Ex: Brian Kernighan">
-                </div>
+                </div-->
               </div>
 
               <div class="row">
@@ -71,7 +94,7 @@
 
                 <div class="form-group col-md-4">
                   <label for="inputCondition" class="form-label">Condition</label>
-                  <select id="inputCondition" class="form-control">
+                  <select id="inputCondition" name="bookCondition" class="form-control">
                     <option selected>Choose...</option>
                     <option>Poor</option>
                     <option>Slightly Worn</option>
@@ -82,55 +105,35 @@
               </div>
 
               <div class="row">
-                <div class="form-group col-md-2">
-                  <label for="inputMin">Minimum Price</label>
-                  <input type="number" class="form-control" name="minPrice" id="minPrice" placeholder="$5" required>
+                <div class="form-group col-md-6">
+                  <label for="inputMin" class="form-label">Minimum Price</label>
+                  <input type="number" class="form-control" name="minPrice" id="inputMin" required>
+                  <div class="invalid-feedback">
+                    Min Price is required
+                  </div>
                 </div>
               
-                <div class="form-group col-md-2">
-                  <label for="inputBuy">Buy Now Price</label>
-                  <input type="text" class="form-control" name="buyNow" id="buyNow" placeholder="$10" required>
+                <div class="form-group col-md-6">
+                  <label for="inputBuy" class="form-label">Buy Now Price</label>
+                  <input type="number" class="form-control" name="buyNow" id="inputBuy" required>
+                  <div class="invalid-feedback">
+                    Buy Now Price is required
+                  </div>
                 </div>
               </div>
 
-              <div class="centering" id="condition">
-                <!--div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="bookCondition" id="conditionVery" value="veryGood">
-                  <label class="form-check-label" for="inlineRadio1">Very Good</label>
-                </div>
-
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="bookCondition" id="conditionGood" value="good">
-                  <label class="form-check-label" for="inlineRadio2">Good</label>
-                </div>
-
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="bookCondition" id="conditionFair" value="fair">
-                  <label class="form-check-label" for="inlineRadio3">Fair</label>
-                </div>
-
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="bookCondition" id="conditionPoor" value="poor">
-                  <label class="form-check-label" for="inlineRadio3">Poor</label>
-                </div>
--->
-
-                <br>
-
-               <!-- * Required fields-->
-                <h2>Add Images</h2>
-                <input type="file" accept="image/*" name="image1">
-                <input type="file" accept="image/*" name="image2">
-                <input type="file" accept="image/*" name="image3">
-                <br> 
-                <button type="submit"
-                        class="btn orange" 
-                        form="submitBookForm"
-                        onclick="return verifyListing();"
-                        value="Submit">
-                  SUBMIT
-                </button>
-              </div> 
+              <h2>Add Images</h2>
+              <input type="file" accept="image/*" name="image1">
+              <input type="file" accept="image/*" name="image2">
+              <input type="file" accept="image/*" name="image3">
+              <br> 
+              <button type="submit"
+                      class="btn orange" 
+                      form="submitBookForm"
+                      onclick="return verifyListing();"
+                      value="Submit">
+                SUBMIT
+              </button> 
             </form>
           </div>
         </div>
