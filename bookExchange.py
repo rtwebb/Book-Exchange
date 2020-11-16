@@ -460,22 +460,21 @@ def autoComplete():
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     username = CASClient().authenticate()
-   # client_token = generate_client_token()
 
-    access_token = Client.get_access_token(username='emmandrawright@yahoo.com',
-                                       password='Darrell1')
+    #access_token = Client.get_access_token(username='emmandrawright@yahoo.com',
+                                      # password='Darrell1')
 
-    venmo = Client(access_token=access_token)
+    #venmo = Client(access_token=access_token)
 
-    bac = venmo.user.search_for_users(query="BACDance", page=1)
-    i = 0
-    for user in bac:
-        print("user ", i, ": ", user.username)
+    #bac = venmo.user.search_for_users(query="BACDance", page=1)
+    #i = 0
+    #for user in bac:
+        #print("user ", i, ": ", user.username)
     
-    userID = get_user_id(bac[0], None)
+    #userID = get_user_id(bac[0], None)
     
     # Request money
-    venmo.payment.request_money(32.5, "house expenses", str(userID))
+    #venmo.payment.request_money(32.5, "house expenses", str(userID))
 
 
     html = render_template('checkout.html', username=username)
