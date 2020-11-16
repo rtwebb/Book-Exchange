@@ -12,7 +12,6 @@ from queryDatabase import QueryDatabase
 from datetime import datetime
 from CASClient import CASClient
 from json import dumps
-from payment import generate_client_token, transact, find_transaction
 from venmo_api import Client, get_user_id
 from my_email import sendEmail
 #from wtforms import TextField, Form
