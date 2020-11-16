@@ -74,7 +74,7 @@
     <div>
       <div>Make a Bid:
         {% set url = "homePage?bookid=" + uniqueId %}
-        <form action={{url}} id="submitBidForm">
+        <form action={{url}} method="POST" id="submitBidForm">
         <input type="text" name="bid" id="userBid" /> (example input: 19.99)
         </form>
       </div>
@@ -97,6 +97,7 @@
       function verifyBid(){
         let bid = $(userBid).val();
         let highestBid = $('#highestBid').data('name');
+        highestBid = parseFloat(highestBid, 10.00);
         let buyNow = $('#buyNow').data('name2');
 
         // check for letters
@@ -104,6 +105,15 @@
           alert("Please enter a numerical value, no letters")
           return false;
         }
+
+        //bid.replace('.', 1);
+        //let ascii = /^[ -~\t\n\r]+$/;
+        //if (ascii.test(bid)){
+         //alert("Please enter a numerical value, no special characters")
+         ////return false;
+        //}
+
+
 
         // parse to float
         bid = parseFloat(bid, 10.00);
