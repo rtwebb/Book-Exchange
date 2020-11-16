@@ -254,7 +254,7 @@ def profilePageTemplate():
     sellerID = request.args.get('sellerID')
     bidder = request.args.get('bidder')
     title = request.args.get('title')
-    cost = request.args.get('cost')
+    highestBid = request.args.get('highest')
 
     try:
         # link to site to confirm
