@@ -26,10 +26,7 @@ table {
   display: inline-block;
   overflow: hidden;
   width: 100%;
-}
-th {
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+  border: 2px solid magenta;
 }
 
 th input {
@@ -43,11 +40,6 @@ th input {
 
 .searchBar {
   width: 100%;
-}
-
-
-.searchBar th {
-  padding-left: 2em;
 }
 
 .text-field {
@@ -71,6 +63,7 @@ th input {
   border-radius: 1em;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
+  height: 2em;
 }
 
 .nav {
@@ -105,4 +98,43 @@ nav a {
   text-align: center;
   display: block;
   opacity: 50%;
+}
+
+.header-entry {
+  padding-left: 2em;
+  padding-right: 2em;
+  background-color: yellow;
+}
+
+.padding-left {
+  padding-left: 2em;
+}
+
+.padding-right {
+  padding-right: 2em;
+}
+
+.input-box {
+  border: orange 2px solid;
+  height: 2em;
+  border-left: 0;
+  padding-left: 1em;
+}
+
+.go-btn {
+  border-radius: 2em;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  border: 2px solid orange;
+  height: 2em;
+  border-left: 0;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+.btn-info {
+  background-color: orange;
+  border-color: black;
+  margin: 1.5em;
+  padding-left: 1em;
+  padding-right: 1em;
 }

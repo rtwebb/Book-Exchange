@@ -10,14 +10,13 @@
     />
   </head>
 <header>
-  <span> <table class="searchBar"> </span>
+  <span> <table class="searchBar padding-left"> </span>
     <th class="h1 title text-dark"> <a href="homePage"><span class="orange">BOOK</span> Exchange </a></th>
 
-    <form name='searchType' action="searchResults" method='get'>
-      <th>
-        
+    <form  name='searchType' action="searchResults" method='get'>
+      <th class="padding-left">
         <select id="searchType1" class="selector" name='dropDown' class=dropdown>
-          <option class="orange" value="" disabled="disabled"  style="display:none" selected="selected">Search by:</option>
+          <option value="" disabled="disabled"  style="display:none" selected="selected">Search by:</option>
 	        <option value='isbn'> ISBN </option> 
 	        <option value='title'> Book Title </option>
   	      <option value='crscode'> Course Code </option>
@@ -26,21 +25,19 @@
     
     </th>
   
-      <th> <input type='text' id='searchQuery' name='query' placeholder="Enter your input"> </th> 
-      <th> <input type='submit' value='Go'> </th>
+      <th > <input class="input-box" type='text' id='searchQuery' name='query' size="95" placeholder="Enter your input"> </th> 
+      <th class="padding-right"> <input class="go-btn" type='submit' value='Go'> </th>
     </form>
-
+</div>
     <th><a href="profilePage"><img src="http://res.cloudinary.com/dijpr9qcs/image/upload/ze6qjgvblfhtqjw5iaat.jpg" width="60" height="49"></a></th>
   </table>
 </header>
 
 <table class="navBar">
-  <th> </th>
-  <th> </th>
-  <th> <a href="profilePage"> My Profile </a></th> 
-  <th> <a href="sellerPage" method="GET">Sell a Book</a></th>
-  <th> <a href="aboutUs">AboutUs</a> </th>
-  <th> <a href="https://registrar.princeton.edu/course-offerings" target="_blank">Tiger Courses</a> </th>
+  <th> <a class="btn btn-info" href="profilePage" role="button"> My Profile </a></th> 
+  <th> <a class="btn btn-info" href="sellerPage" method="GET">Sell a Book</a></th>
+  <th> <a class="btn btn-info" href="aboutUs">AboutUs</a> </th>
+  <th> <a class="btn btn-info" href="https://registrar.princeton.edu/course-offerings" target="_blank">Tiger Courses</a> </th>
 </table>
 <hr>
 
