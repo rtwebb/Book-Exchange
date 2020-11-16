@@ -29,7 +29,7 @@ class QueryDatabase:
 
     # -----------------------------------------------------------------------------
 
-    # add a listing to the database
+    # add a listing to the database (pending)
     def add(self, isbn, title, authors, courseCode, courseTitle,
             sellerID, condition, minPrice, buyNow, listTime, urls):
 
@@ -62,7 +62,7 @@ class QueryDatabase:
 
             listing = Listings(uniqueID=uuid4(), sellerID=sellerID, isbn=isbn,
                                condition=condition.title(), minPrice=minPrice,
-                               buyNow=buyNow, listTime=listTime, highestBid=0, status='pending')
+                               buyNow=buyNow, listTime=listTime, highestBid=0, status='open')
             imagelist = []
             for url in urls:
                 imagelist.append(Images(listingID=listing.uniqueID, url=url))
@@ -78,7 +78,7 @@ class QueryDatabase:
 
     # -----------------------------------------------------------------------------
 
-    # when a listing is bought, remove all bids other than the accepted one
+    # when a listing is bought, remove all bids other than the accepted/confirmed one
     def removeAllBids(self, uniqueID):
         try:
             bids = self._connection.query(Bids). \
@@ -99,7 +99,6 @@ class QueryDatabase:
 
     # if a user wants to remove a bid, use this method
     def removeMyBid(self, buyerID, uniqueID):
-        print(uniqueID)
         try:
             results = self._connection.query(Bids, Listings). \
                 filter(Bids.listingID == uniqueID). \
@@ -136,7 +135,6 @@ class QueryDatabase:
 
     # if a seller wants to remove a listing, use this method
     def removeListing(self, uniqueID):
-        print(uniqueID)
         try:
             results = self._connection.query(Listings, Books, Courses). \
                 filter(Listings.uniqueID == uniqueID). \
@@ -174,7 +172,7 @@ class QueryDatabase:
                     filter(Courses.isbn == Listings.isbn). \
                     filter(Books.isbn == Listings.isbn). \
                     filter(Listings.isbn.ilike(newQuery, escape='\\')). \
-                    filter(Listings.status != 'accepted'). \
+                    filter(Listings.status != 'closed'). \
                     filter(Listings.status != 'purchased'). \
                     order_by(Listings.listTime.desc()).all()
             elif signal == 2:  # query is a book title
@@ -182,7 +180,7 @@ class QueryDatabase:
                     filter(Listings.isbn == Books.isbn). \
                     filter(Books.title.ilike(newQuery, escape='\\')). \
                     filter(Courses.isbn == Books.isbn). \
-                    filter(Listings.status != 'accepted'). \
+                    filter(Listings.status != 'closed'). \
                     filter(Listings.status != 'purchased'). \
                     order_by(Listings.listTime.desc()).all()
             elif signal == 3:  # query is a courseCode
@@ -190,7 +188,7 @@ class QueryDatabase:
                     filter(Listings.isbn == Courses.isbn). \
                     filter(Courses.courseCode.ilike(newQuery, escape='\\')). \
                     filter(Books.isbn == Courses.isbn). \
-                    filter(Listings.status != 'accepted'). \
+                    filter(Listings.status != 'closed'). \
                     filter(Listings.status != 'purchased'). \
                     order_by(Listings.listTime.desc()).all()
             else:  # search by course title
@@ -198,7 +196,7 @@ class QueryDatabase:
                     filter(Listings.isbn == Books.isbn). \
                     filter(Books.isbn == Courses.isbn). \
                     filter(Courses.courseTitle.ilike(newQuery, escape='\\')). \
-                    filter(Listings.status != 'accepted'). \
+                    filter(Listings.status != 'closed'). \
                     filter(Listings.status != 'purchased'). \
                     order_by(Listings.listTime.desc()).all()
             if requestType == "1":
@@ -239,7 +237,7 @@ class QueryDatabase:
             found = self._connection.query(Books, Courses, Listings). \
                 filter(Listings.isbn == Books.isbn). \
                 filter(Listings.isbn == Courses.isbn). \
-                filter(Listings.status != 'accepted'). \
+                filter(Listings.status != 'closed'). \
                 filter(Listings.status != 'purchased'). \
                 order_by(Listings.listTime.desc()).all()
             for book, course, listing in found:
@@ -307,13 +305,18 @@ class QueryDatabase:
         try:
             bid = self._connection.query(Bids). \
                 filter(Bids.buyerID.contains(buyerID)). \
-                filter(Bids.listingID == listingID).all()
+                filter(Bids.listingID == listingID).one()
             bid.status = newStatus
             self._connection.commit()
             if newStatus == 'confirmed':
                 listing = self._connection.query(Listings). \
                     filter(Listings.uniqueID == listingID).one()
                 listing.status = 'purchased'
+                self._connection.commit()
+            if newStatus == 'accepted':
+                listing = self._connection.query(Listings). \
+                    filter(Listings.uniqueID == listingID).one()
+                listing.status = 'closed'
                 self._connection.commit()
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
@@ -407,6 +410,7 @@ class QueryDatabase:
             found = self._connection.query(Listings, Books, Courses). \
                 filter(Listings.uniqueID == uniqueID). \
                 filter(Books.isbn == Listings.isbn). \
+                filter(Listings.status != 'purchased'). \
                 filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course in found:
                 result = {
@@ -475,11 +479,10 @@ class QueryDatabase:
     def buyNow(self, buyerID, listingID, bid):
         try:
             listing = self._connection.query(Listings). \
-                filter(Listings.uniqueID == listingID).one_or_none()
+                filter(Listings.uniqueID == listingID).one()
 
-            if listing:
-                listing.status = "purchased"
-                buyNowPrice = listing.buyNow
+            listing.status = "purchased"
+            buyNowPrice = listing.buyNow
 
             foundBid = self._connection.query(Bids). \
                 filter(Bids.buyerID == buyerID). \
@@ -487,7 +490,6 @@ class QueryDatabase:
 
             if foundBid:
                 foundBid.bid = buyNowPrice
-
             else:
                 newBid = Bids(buyerID=buyerID, listingID=listingID, bid=buyNowPrice, status='confirmed')
                 self._connection.add(newBid)
