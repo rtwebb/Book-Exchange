@@ -186,6 +186,7 @@ def sellerPageTemplate():
     if request.method == 'POST':
         isbn = request.form.get('isbn')
         title = request.form.get('title')
+        print("title: ", title)
         minprice = request.form.get('minPrice')
         buynow = request.form.get('buyNow')
         image1 = request.files.get('image1')
@@ -211,7 +212,7 @@ def sellerPageTemplate():
             if image3:
                 images.append(database.imageToURL(image3))
 
-            database.add(isbn, title, [author], crsnum, crsname, username, condition,
+            database.add(isbn, title, [author], crscode, crstitle, username, condition,
                          minprice, buynow, listTime, images)
         except Exception as e:
             print("Error: " + str(e), file=stderr)

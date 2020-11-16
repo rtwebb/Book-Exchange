@@ -53,7 +53,7 @@
                   <div class="controls" id="profs"> 
                     <form class="input-append">
                       <div id="field">
-                        <input autocomplete="off" class="input" id="field1" name="prof1" type="text" placeholder="Type something" data-items="8"/>
+                        <input autocomplete="off" class="input" id="authorField1" name="prof1" type="text" placeholder="Type something" data-items="8"/>
                         <button id="b1" class="btn add-more" type="button">+</button>
                       </div>
                     </form>
@@ -146,8 +146,7 @@
                       class="btn orange" 
                       form="submitBookForm"
                       onclick="return verifyListing();"
-                      value="Submit">
-                SUBMIT
+                      value="Submit"> Submit
               </button> 
             </form>
           </div>
@@ -160,7 +159,7 @@
     <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"></link>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"</script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script>
 
       'use strict';
@@ -170,26 +169,33 @@
         // make sure none of the required entrys are null
         // if none are null ask if they are sure they want to list - if yes do success listing
 
-        let isbn = $('#isbn').val();
+        let isbn = $('#inputISBN').val();
         console.log("isbn: ", isbn);
-        let title = $('#title').val();
+        let title = $('#inputTitle').val();
         console.log("title: ", title);
-        let authors = $('#authors').val();
+        let authors = $('#authorField1').val();
         console.log("authors: ", authors);
-        let crscode = $('#crscode').val();
+        let crscode = $('#inputCode').val();
         console.log("crscode: ", crscode);
-        let crstitle = $('#crstitle').val();
+        let crstitle = $('#inputCourseTitle').val();
         console.log("crstitle: ", crstitle);
-        let minPrice = $('#minPrice').val();
-        minPrice = parseInt(minPrice, 10);
+        let minPrice = $('#inputMin').val();
         console.log('Min price: ', minPrice);
-        let buyNow = $('#buyNow').val();
-        buyNow = parseInt(buyNow, 10);
+        minPrice = parseFloat(minPrice, 10.00);
+        console.log('Min price: ', minPrice);
+        if (Number.isNaN(minPrice)){
+          alert('All required fields are not filled, please make sure you complete all required fields!');
+          return false;
+        } 
+        let buyNow = $('#inputBuy').val();
+        buyNow = parseFloat(buyNow, 10.00);
+        if (Number.isNaN(buyNow)){
+          alert('All required fields are not filled, please make sure you complete all required fields!');
+          return false;
+        }
         console.log('buyNow: ', buyNow);
-        let condition1 = $('#conditionVery').val();
-        let condition2 = $('#conditionGood').val();
-        let condition3 = $('#conditionFair').val();
-        let condition4 = $('#conditionPoor').val();
+        let condition = $('#inputCondition').val();
+        console.log("inputCondition: ", condition);
 
         if (buyNow < minPrice){
           alert('Your buy now price is less than the minimum ask, please update!')
@@ -197,32 +203,54 @@
         }
 
 
-        // null value check
+        // missing value checks
         if (isbn == null || title == null || authors == null || crscode == null 
-        || crstitle == null || minPrice == null || buyNow == null){
+        || crstitle == null || minPrice == null || buyNow == null || condition == null){
           console.log("in first if statement");
           alert('All required fields are not filled, please make sure you complete all required fields!');
           return false;
-        } else if (condition1 == null && condition2 == null && condition3 == null && condtion4 == null){
-          console.log("in second if statement");
+        } 
+        if (isbn.trim() === '' || title.trim() === '' || authors.trim() === '' || crscode.trim() === '' ||
+          crstitle.trim() === '') {
           alert('All required fields are not filled, please make sure you complete all required fields!');
           return false;
-        } else if (isbn.trim() === '' || title.trim() === '' || authors.trim() === '' || crscode.trim() === '' ||
-          crstitle.trim() === '' || minPrice.strip() === '' || buyNow.trim() === '') {
-          
-          alert('All required fields are not filled, please make sure you complete all required fields!');
+        } 
+        
+        // negative values
+        if (minPrice < 0.0 || buyNow < 0.0){
+          alert("Incorrect minimum price or buy now price, values have to be greater than zero");
           return false;
-        } else{
-          console.log("in third if statement");
+        }
+
+        // incorrect isbn
+        let numHyphen = 0;
+        for (i = 0; i < isbn.length; i++){
+          if ((/[a-zA-Z]/).test(isbn.charAt(i))){
+            if(isbn.charAt(i) === '-'){
+              numHyphen += 1;
+            }
+              alert("Incorrect isbn, isbn can only be integers seperated by a hyphen '-'");
+              return false;
+        }
+        if (numHyphen > 4){
+          alert("Incorrect isbn value, too many hyphens only allowed to have four");
+          return false;
+        }
+        }
+        
+        if(true){
           if (confirm('Are you sure you would like to post this listing?')){
-            alert("Congratulations!  You have succesfully listed an tem :)!")
+            alert("Congratulations!  You have succesfully listed an tem :)!");
             return true;
           }
           else{
             return false;
-          }
-
         }
+        }
+
+
+
+
       }
 
 
