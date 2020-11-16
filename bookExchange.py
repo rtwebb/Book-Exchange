@@ -41,8 +41,8 @@ database = QueryDatabase()
 # -----------------------------------------------------------------------
 
 
-@app.route('/', methods=['GET'])
-@app.route('/homePage', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/homePage', methods=['GET', 'POST'])
 def homePageTemplate():
     username = CASClient().authenticate()
 
@@ -79,6 +79,18 @@ def homePageTemplate():
             dict["images"] = i
             i += 1
 
+    if request.method == 'POST':
+        buyerID = username
+        buyNow = request.args.get('buyNow')
+        uniqueId = request.args.get('bookid')
+        if buyNow is not None:
+            print('buyNow')
+            database.buyNow(buyerID, uniqueId, buyNow)
+        else:
+            bid = request.form.get('bid')
+            print('bid: ', bid)
+            database.addBid(buyerID, uniqueId, bid)
+    
     html = render_template('homePage.html', results=results, images=images,
                            username=username)
     response = make_response(html)
@@ -267,17 +279,8 @@ def buyerPageTemplate():
             print("image value: ", dict["images"])
             i += 1
 
-    if request.method == 'POST':
-        buyerID = username
-        buyNow = request.args.get('buyNow')
-        if buyNow is not None:
-            print('buyNow')
-            database.buyNow(buyerID, uniqueId, buyNow)
-        else:
-            bid = request.form.get('bid')
-            database.addBid(buyerID, uniqueId, bid)
             
-        # whatever she called it and pass args
+    # whatever she called it and pass args
         
     # buyerPage needs link back to home page
     # If user makes a bid
@@ -368,6 +371,10 @@ def profilePageTemplate():
     # if none set object to none, else pass along
     # get books that they have bid on
     # if none set object to none, else pass along
+
+ 
+
+
 
     for list1 in listings:
         print("uniqueId from database: ", list1["uniqueId"])

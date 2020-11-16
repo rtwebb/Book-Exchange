@@ -1,9 +1,15 @@
 from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
-result = test.getAllBids('7842440b-c8ab-4eb6-83fe-9bfbe74c4044')
+# test.add('353431', 'CCC', ['CCC'], 'CCC101', 'CCC', 'tianaf\n', 'good', 10, 50, '11:14:2020:22:05:42', [])
+test.addBid('vdhopte\n', '33bccd52-f075-4f7b-a3bc-e33141046ce6', 23)
+test.addBid('emmandrar\n', '33bccd52-f075-4f7b-a3bc-e33141046ce6', 33)
+# test.addBid('tianaf\n', '479a56f7-e7e8-4da8-a58c-da6fa363075e', 28)
+test.updateStatus('33bccd52-f075-4f7b-a3bc-e33141046ce6', 'vdhopte\n', 'confirmed')
+# test.removeAllBids('479a56f7-e7e8-4da8-a58c-da6fa363075e')
+test.removeListing('33bccd52-f075-4f7b-a3bc-e33141046ce6')
 
-print(result)
+
 
 # from sys import argv, stderr, exit
 # from sqlalchemy import create_engine
