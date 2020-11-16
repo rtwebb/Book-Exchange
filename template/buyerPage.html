@@ -64,7 +64,7 @@
       <div>Highest Bid: {{dict["highestBid"]}}</div>
       <div>Buy Now Price: {{dict["buyNow"]}}
            {% set message = "Are you sure you would like to buy this item at the Buy Now Price?" %}
-           <form action="/buyerPage?bookid={{uniqueId}}&buyNow={{dict['buyNow']}}" method="POST" id="buyNowForm">
+           <form action="/buyerPage?bookid={{uniqueId}}&buyNow={{dict['buyNow']}}" id="buyNowForm">
               <button type="submit" form="buyNowForm" onclick="confirm({{message}})" value="Submit">
               Buy Now
               </button>
@@ -80,8 +80,8 @@
       </div>
       <button
         form="submitBidForm"
-        onclick="return verifyBid();"
-        style="visibility: hidden;">
+        value="Submit"
+        onclick="return verifyBid();">
 
     </button>
      
@@ -97,20 +97,41 @@
       function verifyBid(){
         let bid = $(userBid).val();
         let highestBid = $('#highestBid').data('name');
+        highestBid = parseFloat(highestBid, 10.00);
         let buyNow = $('#buyNow').data('name2');
+
+        // check for letters
+        if ((/[a-zA-Z]/).test(bid)){
+          alert("Please enter a numerical value, no letters")
+          return false;
+        }
+
+        //bid.replace('.', 1);
+        //let ascii = /^[ -~\t\n\r]+$/;
+        //if (ascii.test(bid)){
+         //alert("Please enter a numerical value, no special characters")
+         ////return false;
+        //}
+
+
+
+        // parse to float
+        bid = parseFloat(bid, 10.00);
 
         console.log("inside the function; highestBid:", highestBid);
         console.log("inside the function; buyNow:", buyNow);
+
+
+
+        if (bid < 0){
+          alert("Bid cannot be a negative number");
+          return false;
+        }
         // higher than buy now price 
         if (bid > buyNow) {
-          if (confirm("Are you sure you want to bid higher than the buy now price?")){
-            alert("Congratulations!  You have succesfully placed your bid :)!")
-            return true;
-          }
-          else{
-            return false;
-          }
-           
+          alert("You cannot bid higher than the buy now price");
+          return false;
+
         } else if (bid < highestBid){ // less than highest bid
           if (confirm('Are you sure you would like to bid this amount, it is lower than the highest current bid?')){
             alert("Congratulations!  You have succesfully placed your bid :)!")
@@ -119,7 +140,16 @@
           else{
             return false;
           }
-        } else {
+        } else if (bid === highestBid){
+          if (confirm('Are you sure you would like to bid this amount, it is the same as the current highest bid?')){
+            alert("Congratulations!  You have succesfully placed your bid :)!")
+            return true;
+          }
+          else{
+            return false;
+          }
+
+        }  else {
           if (confirm('Are you sure you would like to bid this amount?')){
             alert("Congratulations!  You have succesfully placed your bid :)!")
             return true;
