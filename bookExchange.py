@@ -510,10 +510,13 @@ def congratsPage():
             msg += "You have succesfully placed your bid, now we are just waiting on the sellers confirmation!"
     elif request.method == 'POST':  
         isbn = request.form.get('isbn')
+        print("isbn: ", isbn)
         title = request.form.get('title')
         print("title: ", title)
         minprice = request.form.get('minPrice')
+        print("minPrice: ", minprice)
         buynow = request.form.get('buyNow')
+        print("buyNow: ", buynow)
         image1 = request.files.get('image1')
         image2 = request.files.get('image2')
         image3 = request.files.get('image3')
@@ -522,9 +525,10 @@ def congratsPage():
         print("author: ", author)
         crscode = request.form.get('crscode')
         print('Coursecode:', crscode)
-        crstitle = request.args.get('crstitle')
+        crstitle = request.form.get('crstitle')
         print('Coursetitle:', crstitle)
         condition = request.form.get('bookCondition')
+        print('condition: ', condition)
         time = datetime.now()
         listTime = time.strftime("%m:%d:%Y:%H:%M:%S")
 
