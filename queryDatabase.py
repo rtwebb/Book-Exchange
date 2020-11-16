@@ -208,7 +208,8 @@ class QueryDatabase:
                         "crstitle": course.courseTitle,
                         "images": listing.images,
                         "uniqueId": listing.uniqueID,
-                        "minPrice": listing.minPrice
+                        "highestBid": listing.highestBid,
+                        "buyNow": listing.buyNow
                     }
 
                     results.append(result)
