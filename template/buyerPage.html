@@ -73,7 +73,8 @@
     {% endfor %}
     <div>
       <div>Make a Bid:
-        <form action="profilePage" method="POST" id="submitBidForm">
+        {% set url = "profilePage?bookid=" + uniqueId %}
+        <form action={{url}} method="POST" id="submitBidForm">
         <input type="text" name="bid" id="userBid" /> (example input: 19.99)
         </form>
       </div>

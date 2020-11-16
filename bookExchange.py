@@ -267,17 +267,8 @@ def buyerPageTemplate():
             print("image value: ", dict["images"])
             i += 1
 
-    if request.method == 'POST':
-        buyerID = username
-        buyNow = request.args.get('buyNow')
-        if buyNow is not None:
-            print('buyNow')
-            database.buyNow(buyerID, uniqueId, buyNow)
-        else:
-            bid = request.form.get('bid')
-            database.addBid(buyerID, uniqueId, bid)
             
-        # whatever she called it and pass args
+    # whatever she called it and pass args
         
     # buyerPage needs link back to home page
     # If user makes a bid
@@ -368,6 +359,20 @@ def profilePageTemplate():
     # if none set object to none, else pass along
     # get books that they have bid on
     # if none set object to none, else pass along
+
+    if request.method == 'POST':
+        buyerID = username
+        buyNow = request.args.get('buyNow')
+        uniqueId = request.args.get('bookid')
+        if buyNow is not None:
+            print('buyNow')
+            database.buyNow(buyerID, uniqueId, buyNow)
+        else:
+            bid = request.form.get('bid')
+            print('bid: ', bid)
+            database.addBid(buyerID, uniqueId, bid)
+
+
 
     for list1 in listings:
         print("uniqueId from database: ", list1["uniqueId"])
