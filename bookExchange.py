@@ -170,46 +170,6 @@ def searchResultsTemplate():
 def sellerPageTemplate():
     username = CASClient().authenticate()
 
-    if request.method == 'POST':
-        isbn = request.form.get('isbn')
-        title = request.form.get('title')
-        print("title: ", title)
-        minprice = request.form.get('minPrice')
-        buynow = request.form.get('buyNow')
-        image1 = request.files.get('image1')
-        image2 = request.files.get('image2')
-        image3 = request.files.get('image3')
-        # authors as a list; coursename vs coursenumber
-        author = request.form.get('prof1')
-        print("author: ", author)
-        crscode = request.form.get('crscode')
-        print('Coursecode:', crscode)
-        crstitle = request.args.get('crstitle')
-        print('Coursetitle:', crstitle)
-        condition = request.form.get('bookCondition')
-        time = datetime.now()
-        listTime = time.strftime("%m:%d:%Y:%H:%M:%S")
-
-        # confirmation JS stuff
-
-        # passing to database
-        try:
-            images = []
-            if image1:
-                images.append(database.imageToURL(image1))
-            if image2:
-                images.append(database.imageToURL(image2))
-            if image3:
-                images.append(database.imageToURL(image3))
-
-            database.add(isbn, title, [author], crscode, crstitle, username, condition,
-                         minprice, buynow, listTime, images)
-        except Exception as e:
-            print("Error: " + str(e), file=stderr)
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
-
     # when sending to profile page have a "successful" message display
     html = render_template('sellerPage.html', method='GET', username=username)
 
@@ -289,6 +249,7 @@ def buyerPageTemplate():
 @app.route('/profilePage', methods=['GET', 'POST'])
 def profilePageTemplate():
     username = CASClient().authenticate()
+    username = username.strip()
     listingID = request.args.get('list')
     sellerID = request.args.get('sellerID')
     bidder = request.args.get('bidder')
@@ -527,14 +488,11 @@ def checkout():
 def congratsPage():
     username = CASClient().authenticate()
     username = username.strip()
-    # succesfull listing
-
-
+    msg = ""
 
     # profile page: accepting a bid on your listing; confirming your bid to purchase book
         # Congrats you have accepted a bid, now we just need bidder to confirm
         # Congrats you and the seller have agreed on purchase, proceed to checkout
-
 
     # bid update 
     if request.args.get('bookid'):
@@ -544,14 +502,53 @@ def congratsPage():
         if buyNow is not None:
             print('buyNow')
             database.buyNow(buyerID, uniqueId, buyNow)
-            message = "You have succesfully placed your bid, now we are just waiting on confirmation from the seller!"
+            msg += "You have succesfully placed your bid, now we are just waiting on the sellers confirmation!"
         else:
             bid = request.form.get('bid')
             print('bid: ', bid)
             database.addBid(buyerID, uniqueId, bid)
-            msg = "You have succesfully placed your bid, now we are just waiting on confirmation from the seller!"
+            msg += "You have succesfully placed your bid, now we are just waiting on the sellers confirmation!"
+    elif request.method == 'POST':  
+        isbn = request.form.get('isbn')
+        title = request.form.get('title')
+        print("title: ", title)
+        minprice = request.form.get('minPrice')
+        buynow = request.form.get('buyNow')
+        image1 = request.files.get('image1')
+        image2 = request.files.get('image2')
+        image3 = request.files.get('image3')
+        # authors as a list; coursename vs coursenumber
+        author = request.form.get('prof1')
+        print("author: ", author)
+        crscode = request.form.get('crscode')
+        print('Coursecode:', crscode)
+        crstitle = request.args.get('crstitle')
+        print('Coursetitle:', crstitle)
+        condition = request.form.get('bookCondition')
+        time = datetime.now()
+        listTime = time.strftime("%m:%d:%Y:%H:%M:%S")
 
-    # busy wait before redirect
+        # confirmation JS stuff
+
+        # passing to database
+        try:
+            images = []
+            if image1:
+                images.append(database.imageToURL(image1))
+            if image2:
+                images.append(database.imageToURL(image2))
+            if image3:
+                images.append(database.imageToURL(image3))
+
+            database.add(isbn, title, [author], crscode, crstitle, username, condition,
+                         minprice, buynow, listTime, images)
+            msg += "You have sucessfully created a listing! It won't be long until the bids start rolling in!"
+        except Exception as e:
+            print("Error: " + str(e), file=stderr)
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
 
     html = render_template('congratsPage.html', username=username, msg=msg)
     response = make_response(html)
