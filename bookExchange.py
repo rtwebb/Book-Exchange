@@ -314,13 +314,18 @@ def profilePageTemplate():
         # send to bidder
         if 'accept' in request.form:
 
-            error = database.updateStatus(listingID, bidder, 'accepted')
-            if error == -1:
+            error1 = database.updateStatus(listingID, bidder, 'accepted')
+            if error1 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
-            sendEmail(mail, bidder, 'accept', username)
+            error2 = sendEmail(mail, bidder, 'accept', username)
+            if error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
 
         #send to bidder -> if it was the highest bidder send to everyone 
         elif 'decline' in request.form:
@@ -336,7 +341,11 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            sendEmail(mail, bidder, 'decline')
+            error3 = sendEmail(mail, bidder, 'decline')
+            if error3 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
         #confirm button should stay up
         #dont send to all bidders until it'spurchased
@@ -348,10 +357,13 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-      
-
             #later need to distinguish between confirm and purchase so can delete bids
-            sendEmail(mail, bidder, 'confirm', sellerID)
+            error2 = sendEmail(mail, bidder, 'confirm', sellerID)
+            if error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
             return redirect(url_for('checkout'))
 
         #tell what the next highest bid is
@@ -375,7 +387,11 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            sendEmail(mail, allBidders, 'deny', sellerID)
+            error3 = sendEmail(mail, allBidders, 'deny', sellerID)
+            if error3 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
 
         #if it's the highest bid need to notify everyone
