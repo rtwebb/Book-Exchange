@@ -10,8 +10,10 @@ from sys import stderr
 
 
 def sendEmail(mail, bidders: [], status, seller: None, cost: None, title: None):
+    recipients = []
 
     if status == 'accept':
+        recipients = bidders
         message = "Hello " + bidders[0] + "," + "\n" + "\n" + \
             "Congratulations! Your bid was accepted by" + seller + ". "  + \
             "Please log into book-exchange-cos333herokuapp.com to confirm or deny your purchase of this book within the next 48hrs." + \
@@ -22,13 +24,79 @@ def sendEmail(mail, bidders: [], status, seller: None, cost: None, title: None):
             "SellerID: " + seller + "\n" + "\n" + \
             "Sincerely," + "\n" + \
             "The Book-Exchange team"
-    
+        
+
+    #maybe change this to highest bid not cost
     if status == 'decline':
-        message = ""
+        recipients = bidders
+        message = "Hello " + bidders[0] + "," + "\n" + "\n" + \
+            "Your bid was declined by" + seller + ". "  + \
+            "You may log into book-exchange-cos333herokuapp.com and place a bid on the same book or a different one. " +\
+            "Below is the summary of your bid." + "\n" + "\n" + \
+            "Book Title: " + title + "\n" + \
+            "Cost: " + str(cost) + "\n" + \
+            "SellerID: " + seller + "\n" + "\n" + \
+            "Sincerely," + "\n" + \
+            "The Book-Exchange team"
+
+    #maybe change this to highest bid not cost
     if status == 'confirm':
-        message = ""
+        recipients = [seller]
+        message = "Hello " + seller + "," + "\n" + "\n" + \
+            bidders[0] + "confirmed their bid." + \
+            "If you do not recieve a confirmation email from us within the next 48hours saying the book was purchased, " +\
+            "you are authorized to delete this bid. " + \
+            "Below is the summary of your Listing." + "\n" + "\n" + \
+            "Book Title: " + title + "\n" + \
+            "Cost: " + str(cost) + "\n" + \
+            "SellerID: " + seller + "\n" + "\n" + \
+            "Status: confirmed" + \
+            "Sincerely," + "\n" + \
+            "The Book-Exchange team"
+            
+        
+
     if status == 'deny':
-        message = ""
+        recipients = [seller]
+        message = "Hello " + seller + "," + "\n" + "\n" + \
+            bidders[0] + "denied their bid." + \
+            "You may log into book-exchange-cos333heroku.com and accept another bid if your listing has any." + \
+            "Below is the summary of your listing." + "\n" + "\n" + \
+            "Book Title: " + title + "\n" + \
+            "Cost: " + str(cost) + "\n" + \
+            "SellerID: " + seller + "\n" + "\n" + \
+            "Status: confirmed" + \
+            "Sincerely," + "\n" + \
+            "The Book-Exchange team"
+
+    #need to send seperate one to seller
+    if status == 'purchased':
+        recipients = bidders
+        message1 = "Hello," + "\n" + "\n" + \
+            "A listing you bidded on has been purchased. " + \
+            "Your bid for this book has been deleted, but if you have any other active bids they are still valid." + \
+            "You may log into book-exchange-cos333heroku.com and place more bids at any time." + \
+            "Below is the summary of this listing." + "\n" + "\n" + \
+            "Book Title: " + title + "\n" + \
+            "Cost: " + str(cost) + "\n" + \
+            "SellerID: " + seller + "\n" + "\n" + \
+            "Status: confirmed" + \
+            "Sincerely," + "\n" + \
+            "The Book-Exchange team"
+        
+        #message to seller
+        message2 = "Hello " + seller + ", " + "\n" + "\n" + \
+            "Your listing has been purchased. " + \
+            "Please log into book-exchange-cos333heroku.com and enter your venmo information" + \
+            "Once we recieve confirmation from the buyer that they recieved the book, your money will be released to you." + \
+            "Below is the summary of this listing." + "\n" + "\n" + \
+            "Book Title: " + title + "\n" + \
+            "Cost: " + str(cost) + "\n" + \
+            "SellerID: " + seller + "\n" + "\n" + \
+            "Status: purchased" + \
+            "Sincerely," + "\n" + \
+            "The Book-Exchange team"
+
 
     try:
         for i in range(len(bidders)):
