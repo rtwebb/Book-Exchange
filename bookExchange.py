@@ -79,7 +79,7 @@ def homePageTemplate():
             dict["images"] = i
             i += 1
 
-    if request.method == 'POST':
+    if request.args.get('bookid'):
         buyerID = username
         buyNow = request.args.get('buyNow')
         uniqueId = request.args.get('bookid')
