@@ -338,6 +338,8 @@ def profilePageTemplate():
 
             sendEmail(mail, bidder, 'decline')
 
+        #confirm button should stay up
+        #dont send to all bidders until it'spurchased
         # send email to all bidders and seller
         elif 'confirm' in request.form:
             error1 = database.updateStatus(listingID, username, 'confirmed')
@@ -346,16 +348,13 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            allBidders = database.getAllBids(listingID)
-            if allBidders == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+      
 
             #later need to distinguish between confirm and purchase so can delete bids
-            sendEmail(mail, allBidders, 'confirm', sellerID)
+            sendEmail(mail, bidder, 'confirm', sellerID)
             return redirect(url_for('checkout'))
 
+        #tell what the next highest bid is
         #send to seller and bidders
         elif 'deny' in request.form:
             error1 = database.updateStatus(listingID, username, 'declined')
@@ -369,8 +368,14 @@ def profilePageTemplate():
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
+            
+            allBidders = database.getAllBids(listingID)
+            if allBidders == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
-            sendEmail(mail, allBidders, 'confirm', sellerID)
+            sendEmail(mail, allBidders, 'deny', sellerID)
 
 
         #if it's the highest bid need to notify everyone
