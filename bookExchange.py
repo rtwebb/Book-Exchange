@@ -302,6 +302,7 @@ def buyerPageTemplate():
 def profilePageTemplate():
     username = CASClient().authenticate()
     listingID = request.args.get('list')
+    sellerID = request.args.get('sellerID')
     bidder = request.args.get('bidder')
     title = request.args.get('title')
     cost = request.args.get('cost')
@@ -310,159 +311,76 @@ def profilePageTemplate():
         # link to site to confirm
         # give time limit
 
-        # seller actions: accept or decline a bid
+        # send to bidder
         if 'accept' in request.form:
-            bodyMsg = """
-            Hello %s,
-            
-            Your bid was accepted by %s! 
-            Please log into book-exchange-cos333.herokuapp.com to confirm or deny your purchase of this book within the next 48 hours. 
-            If you do not make a decision within the next 48 hours, your bid will automatically be deleted. Below is the summary of your bid.
-            
-            Book Title: %s
-            Cost: %s
-            Seller ID: %s
-            
-            Sincerely,
-            The Book-Exchange Team
-            
-            """ % (bidder, username.rstrip(), title, cost, username.rstrip())
 
-            sendEmail(mail, [bidder], bodyMsg)
             error = database.updateStatus(listingID, bidder, 'accepted')
             if error == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
+
+            sendEmail(mail, bidder, 'accept', username)
+
+        #send to bidder -> if it was the highest bidder send to everyone 
         elif 'decline' in request.form:
-            bodyMsg = """
-            Hello %s,
-            
-            Your Book-Exchange bid was declined. The book information is as follows:
-            
-            Book Title: %s
-            Seller ID: %s
-            
-            Your bid has thus been deleted -- feel free to bid again! Good luck with your future bids!
-            
-            Sincerely,
-            The Book-Exchange Team
-            """ % (bidder, title, username.rstrip())
-            sendEmail(mail, [bidder], bodyMsg)
             error1 = database.updateStatus(listingID, bidder, 'declined')
+            if error1 == -1 :
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
             error2 = database.removeMyBid(bidder, listingID)
             if error1 == -1 or error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
-        # buyer options: confirm or deny an accepted bid
+            sendEmail(mail, bidder, 'decline')
+
+        # send email to all bidders and seller
         elif 'confirm' in request.form:
-            seller = request.args.get('sellerId').rstrip()
-            # message for the seller
-            bodyMsg = """
-            Hello %s,
-
-            %s has confirmed their bid! Information about the listing is below:
-
-            Book Title: %s
-            Buyer ID: %s
-            
-            Congratulations! Please contact the buyer to set details regarding the exchange. Thanks!
-
-            Best,
-            The Book-Exchange Team
-
-            """ % (seller, username.rstrip(), title, username.rstrip())
-            sendEmail(mail, [seller], bodyMsg)
-
-            # message for the other bidders
-            bodyMsg = """
-            The following book has been purchased by %s and is no longer available:
-            
-            Book Title: %s
-            Seller ID: %s
-            
-            Thank you for bidding, and good luck on your future bids!
-            
-            Best,
-            The Book-Exchange Team
-            """ % (username.rstrip(), title, seller)
-            bidders = database.getAllBids(listingID)
-            bidders = [cur for cur in bidders if cur != username]
-            sendEmail(mail, bidders, bodyMsg)
-
-            # message for the buyer
-            bodyMsg = """
-            Hello %s,
-            
-            Thank you for confirming your bid on the book with the following information:
-
-            Book Title: %s
-            Seller ID: %s
-
-            Please contact the seller for details regarding the exchange. Thanks!
-
-            Best,
-            The Book-Exchange Team
-            """ % (username.rstrip(), title, seller)
-            sendEmail(mail, [username.rstrip()], bodyMsg)
-
             error1 = database.updateStatus(listingID, username, 'confirmed')
-            error2 = database.removeAllBids(listingID)
-
-            if error1 == -1 or error2 == -1:
+            if error1 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
+
+            allBidders = database.getAllBids(listingID)
+            if allBidders == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+            #later need to distinguish between confirm and purchase so can delete bids
+            sendEmail(mail, allBidders, 'confirm', sellerID)
             return redirect(url_for('checkout'))
+
+        #send to seller and bidders
         elif 'deny' in request.form:
-            seller = request.args.get('sellerId').rstrip()
-            # message for the seller
-            bodyMsg = """
-            Hello %s,
-
-            %s has revoked their bid on your listing with the information below:
-
-            Book Title: %s
-
-            Please check back on your profile page and watch out for future bids!
-
-            Best,
-            The Book-Exchange Team
-
-            """ % (seller, username.rstrip(), title)
-            sendEmail(mail, [seller], bodyMsg)
-
-            # message for the buyer
-            bodyMsg = """
-            Hello %s,
-
-            You have revoked your bid on the book with the following information:
-
-            Book Title: %s
-            Seller ID: %s
-
-            Your bid has thus been deleted -- feel free to bid again! Good luck with your future bids!
-
-            Best,
-            The Book-Exchange Team
-            """ % (username.rstrip(), title, seller)
-            sendEmail(mail, [username.rstrip()], bodyMsg)
-
             error1 = database.updateStatus(listingID, username, 'declined')
-            error2 = database.removeMyBid(username, listingID)
-            if error1 == -1 or error2 == -1:
+            if error1 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
+            error2 = database.removeMyBid(username, listingID)
+            if error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+            sendEmail(mail, allBidders, 'confirm', sellerID)
+
+
+        #if it's the highest bid need to notify everyone
         # user wants to delete their bid
         deleteBidBuyerID = request.args.get('deleteBidBuyerID')
         deleteBidListingID = request.args.get('deleteBidListingID')
         if deleteBidBuyerID is not None and deleteBidListingID is not None:
             database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
 
+        #Need to notify bidders
         # user wants to delete their listing
         deleteListingID = request.args.get('deleteListingID')
         if deleteListingID is not None:
