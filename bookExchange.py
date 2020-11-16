@@ -193,8 +193,7 @@ def sellerPageTemplate():
         image2 = request.files.get('image2')
         image3 = request.files.get('image3')
         # authors as a list; coursename vs coursenumber
-        # author = request.form.get('prof1')
-        author = "jackson"
+        author = request.form.get('prof1')
         print("author: ", author)
         crscode = request.form.get('crscode')
         print('Coursecode:', crscode)
