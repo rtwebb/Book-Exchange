@@ -140,7 +140,7 @@
         // if none are null ask if they are sure they want to list - if yes do success listing
 
         let isbn = $('#inputISBN').val();
-        //isbn = parseInt(isbn, 10);
+        isbn = parseInt(isbn, 10);
         console.log("isbn: ", isbn);
         let title = $('#inputTitle').val();
         console.log("title: ", title);
@@ -161,12 +161,18 @@
         console.log("inputCondition: ", condition);
 
         // missing value checks
-        if (isbn == null || title == null || author == null || crscode == null || crstitle == null || Number.isNaN(minPrice) || Number.isNaN(buyNow) || condition == null){
+        if (title == null || author == null || crscode == null || crstitle == null || Number.isNaN(minPrice) || Number.isNaN(buyNow) || condition == null){
           alert('All required fields are not filled, please make sure you complete all required fields!');
           return false;
         }
 
-        if (isbn.trim() === '' || title.trim() === '' || author.trim() === '' || crscode.trim() === '' || crstitle.trim() === ''){
+        // check ISBN for letters
+        if(Number.isNaN(isbn) ){
+          alert('ISBN should be a numerical value with no special characters, please make sure to omit hyphens');
+          return false;
+        }
+
+        if (title.trim() === '' || author.trim() === '' || crscode.trim() === '' || crstitle.trim() === ''){
           alert('All required fields are not filled, please make sure you complete all required fields!');
           return false;
         }
