@@ -462,7 +462,9 @@ def checkout():
     username = CASClient().authenticate()
     username = username.strip()
     title = request.args.get('title')
+    print('title: ', title)
     cost = request.args.get('cost')
+    print('cost: ', cost)
     indicator = 0
 
     venmoUsername = request.form.get('username')
@@ -490,7 +492,7 @@ def checkout():
         # Use the same device-id: 96321548-32Y8-2S28-00Z8-6YK71H070SM8 next time to avoid 2-factor-auth process.
 
         # Request money
-        venmo.payment.request_money(32.5, "cos project", str(userID))
+        venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(userID))
 
     html = render_template('checkout.html', username=username, indicator=indicator, title=title, cost=cost)
     response = make_response(html)

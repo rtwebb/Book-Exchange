@@ -78,6 +78,48 @@ class QueryDatabase:
 
     # -----------------------------------------------------------------------------
 
+    # add a bid to the database or update an existing one
+    def addBid(self, buyerID, listingID, bid):
+        try:
+            # update highestBid for this listing
+            listing = self._connection.query(Listings). \
+                filter(Listings.uniqueID == listingID).one_or_none()
+            # if buyer already has a bid on that book, update the bid
+            foundBid = self._connection.query(Bids). \
+                filter(Bids.buyerID.contains(buyerID)). \
+                filter(Bids.listingID == listingID).one_or_none()
+
+            if foundBid:
+                foundBid.bid = bid
+                self._connection.commit()
+                foundBid.status = 'pending'
+                self._connection.commit()
+
+            # otherwise, create a new bid
+            else:
+                newBid = Bids(buyerID=buyerID, listingID=listingID, bid=bid, status='pending')
+                self._connection.add(newBid)
+                self._connection.commit()
+
+            if float(bid) > listing.highestBid:
+                listing.highestBid = bid
+                self._connection.commit()
+            elif float(bid) < listing.highestBid:
+                # check to see if there are other bids on the listing
+                found = self._connection.query(Bids). \
+                    filter(Bids.listingID == listingID). \
+                    order_by(Bids.bid.desc()).first()
+                if found:
+                    # set highest bid equal to new highest bid
+                    listing.highestBid = found.bid
+                    self._connection.commit()
+            return 0
+        except Exception as e:
+            print(argv[0] + ':', e, file=stderr)
+            return -1
+
+    # ----------------------------------------------------------------------------------
+
     # when a listing is bought, remove all bids other than the accepted/confirmed one
     def removeAllBids(self, uniqueID):
         try:
@@ -264,6 +306,37 @@ class QueryDatabase:
 
     # ----------------------------------------------------------------------------------
 
+    # update bid status [pending, accepted, declined, confirmed]
+    def updateStatus(self, listingID, buyerID, newStatus):
+        try:
+            bid = self._connection.query(Bids). \
+                filter(Bids.buyerID.contains(buyerID)). \
+                filter(Bids.listingID == listingID).one()
+            bid.status = newStatus
+            self._connection.commit()
+            if newStatus == 'received':
+                listing = self._connection.query(Listings). \
+                    filter(Listings.uniqueID == listingID).one()
+                listing.status = 'purchased'
+                self._connection.commit()
+            if newStatus == 'accepted':
+                listing = self._connection.query(Listings). \
+                    filter(Listings.uniqueID == listingID).one()
+                listing.status = 'closed'
+                self._connection.commit()
+            if newStatus == 'declined':
+                listing = self._connection.query(Listings). \
+                    filter(Listings.uniqueID == listingID).one()
+                listing.status = 'open'
+                self._connection.commit()
+
+            return 0
+        except Exception as e:
+            print(argv[0] + ':', e, file=stderr)
+            return -1
+
+    # ----------------------------------------------------------------------------------
+
     # provides info for bids on a user's listings
     def myListings(self, query):
         try:
@@ -271,6 +344,7 @@ class QueryDatabase:
             # find listing
             found = self._connection.query(Listings, Books, Courses). \
                 filter(Listings.sellerID.contains(query)). \
+                filter(Listings.status != 'purchased'). \
                 filter(Books.isbn == Listings.isbn). \
                 filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course in found:
@@ -299,37 +373,6 @@ class QueryDatabase:
                     }
                     results.append(result)
             return results
-        except Exception as e:
-            print(argv[0] + ':', e, file=stderr)
-            return -1
-
-    # ----------------------------------------------------------------------------------
-
-    # update bid status [pending, accepted, declined, confirmed]
-    def updateStatus(self, listingID, buyerID, newStatus):
-        try:
-            bid = self._connection.query(Bids). \
-                filter(Bids.buyerID.contains(buyerID)). \
-                filter(Bids.listingID == listingID).one()
-            bid.status = newStatus
-            self._connection.commit()
-            if newStatus == 'confirmed':
-                listing = self._connection.query(Listings). \
-                    filter(Listings.uniqueID == listingID).one()
-                listing.status = 'purchased'
-                self._connection.commit()
-            if newStatus == 'accepted':
-                listing = self._connection.query(Listings). \
-                    filter(Listings.uniqueID == listingID).one()
-                listing.status = 'closed'
-                self._connection.commit()
-            if newStatus == 'declined':
-                listing = self._connection.query(Listings). \
-                    filter(Listings.uniqueID == listingID).one()
-                listing.status = 'open'
-                self._connection.commit()
-
-            return 0
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
@@ -384,6 +427,35 @@ class QueryDatabase:
                     "uniqueId": listing.uniqueID
                 }
                 results.append(result)
+
+            return results
+        except Exception as e:
+            print(argv[0] + ':', e, file=stderr)
+            return -1
+
+    # ----------------------------------------------------------------------------------
+
+    def mySoldBooks(self, query):
+        try:
+            results = []
+            # find listing
+            found = self._connection.query(Listings, Books, Courses). \
+                filter(Listings.sellerID.contains(query)). \
+                filter(Listings.status == 'purchased'). \
+                filter(Books.isbn == Listings.isbn). \
+                filter(Courses.isbn == Listings.isbn).all()
+            for listing, book, course in found:
+                for bid in listing.bids:
+                    result = {
+                        "title": book.title,
+                        "crscode": course.courseCode,
+                        "buyerId": bid.buyerID,
+                        "highestBid": listing.highestBid,
+                        "buyNow": listing.buyNow,
+                        "status": bid.status,
+                        "uniqueId": listing.uniqueID
+                    }
+                    results.append(result)
 
             return results
         except Exception as e:
@@ -450,47 +522,6 @@ class QueryDatabase:
 
     # ----------------------------------------------------------------------------------
 
-    # add a bid to the database or update an existing one
-    def addBid(self, buyerID, listingID, bid):
-        try:
-            # update highestBid for this listing
-            listing = self._connection.query(Listings). \
-                filter(Listings.uniqueID == listingID).one_or_none()
-            # if buyer already has a bid on that book, update the bid
-            foundBid = self._connection.query(Bids). \
-                filter(Bids.buyerID.contains(buyerID)). \
-                filter(Bids.listingID == listingID).one_or_none()
-
-            if foundBid:
-                foundBid.bid = bid
-                self._connection.commit()
-                foundBid.status = 'pending'
-                self._connection.commit()
-
-            # otherwise, create a new bid
-            else:
-                newBid = Bids(buyerID=buyerID, listingID=listingID, bid=bid, status='pending')
-                self._connection.add(newBid)
-                self._connection.commit()
-
-            if float(bid) > listing.highestBid:
-                listing.highestBid = bid
-                self._connection.commit()
-            elif float(bid) < listing.highestBid:
-                # check to see if there are other bids on the listing
-                found = self._connection.query(Bids). \
-                    filter(Bids.listingID == listingID). \
-                    order_by(Bids.bid.desc()).first()
-                if found:
-                    # set highest bid equal to new highest bid
-                    listing.highestBid = found.bid
-                    self._connection.commit()
-            return 0
-        except Exception as e:
-            print(argv[0] + ':', e, file=stderr)
-            return -1
-
-    # ----------------------------------------------------------------------------------
     def buyNow(self, buyerID, listingID, bid):
         try:
             listing = self._connection.query(Listings). \

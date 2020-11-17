@@ -20,9 +20,6 @@
 		<input type="submit" name="logout" value="Logout">
 	</form>
 
-	<form method="get" action="/checkout">
-		<input type="submit" name="checkout" id="checkout" value="Checkout">
-	</form>
 
 	<br>
 	<h1 style="text-align: center;">Welcome {{username}}!</h1>
@@ -179,8 +176,11 @@
 						<td>
 							<form method="post"
 								  action="profilePage?list={{book['uniqueId']}}&sellerId={{book['sellerId']}}&title={{book['title']}}&cost={{book['highestBid']}}">
-								<input type="submit" name="confirm" id="confirm" value="Confirm">
 								<input type="submit" name="deny" id="deny" value="Deny">
+							</form>
+
+							<form method="post" action="/checkout?cost={{book['bid']}}&title={{book['title']}}">
+								<input type="submit" name="confirm" id="confirm" value="Confirm">
 							</form>
 						</td>
 						{% else %}
