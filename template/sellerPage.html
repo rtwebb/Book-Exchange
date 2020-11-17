@@ -139,6 +139,7 @@
         // if none are null ask if they are sure they want to list - if yes do success listing
 
         let isbn = $('#inputISBN').val();
+        //isbn = parseInt(isbn, 10);
         console.log("isbn: ", isbn);
         let title = $('#inputTitle').val();
         console.log("title: ", title);
@@ -158,6 +159,15 @@
         let condition = $('#inputCondition').val();
         console.log("inputCondition: ", condition);
 
+        // checking isbn has no unique characters
+        //bid.replace('.', 1);
+        //let ascii = /^[ -~\t\n\r]+$/;
+        //if (ascii.test(bid)){
+         //alert("Please enter a numerical value, no special characters")
+         ////return false;
+        //}
+
+
         // missing value checks
         if (isbn == null || title == null || author == null || crscode == null || crstitle == null || Number.isNaN(minPrice) || Number.isNaN(buyNow) || condition == null){
           alert('All required fields are not filled, please make sure you complete all required fields!');
@@ -170,10 +180,17 @@
         }
 
         // negative values
-        if (minPrice < 0.0 || buyNow < 0.0){
+        if (minPrice < 0.0 || buyNow < 0.0 ){ 
           alert("Invalid minimum price or buy now price, values have to be greater than zero");
           return false;
-        } 
+        }
+
+        // negative isbn
+        //if (isbn < 0){
+          //alert("Invalid isbn value, number must not be negative");
+          //return false;
+        //}
+        
 
         if (buyNow < minPrice){
           alert('Your buy now price is less than the minimum ask, please update!');
