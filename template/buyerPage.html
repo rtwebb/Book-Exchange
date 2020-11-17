@@ -66,9 +66,8 @@
       <div><span>Lowest Ask:</span> {{dict["minPrice"]}}</div>
       <div><span>Highest Bid:</span> {{dict["highestBid"]}}</div>
       <div>Buy Now Price: {{dict["buyNow"]}}
-           {% set message = "Are you sure you would like to buy this item at the Buy Now Price?" %}
            <form action="/congratsPage?bookid={{uniqueId}}&buyNow={{dict['buyNow']}}" id="buyNowForm">
-              <button type="submit" form="buyNowForm" onclick="confirm(message)" value="Submit">
+              <button type="submit" form="buyNowForm" onclick="return buyNow();" value="Submit">
               Buy Now
               </button>
            </form>
@@ -120,8 +119,6 @@
          ////return false;
         //}
 
-
-
         // parse to float
         bid = parseFloat(bid, 10.00);
 
@@ -165,6 +162,17 @@
 
         return true;
       }
+
+      function buyNow(){
+        if(confirm("Are you sure you would like to buy this item at the Buy Now Price?")){
+          return true;
+        }
+        else{
+          return false;
+        }
+
+      }
+
       function handleResponse(response){
         // return array depending on search
 
