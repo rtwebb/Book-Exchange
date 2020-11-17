@@ -290,7 +290,7 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            error3 = sendEmail(mail, bidder, 'decline', username, highestBid, title)
+            error3 = sendEmail(mail, [bidder], 'decline', username, highestBid, title)
             if error3 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
