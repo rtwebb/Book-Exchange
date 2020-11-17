@@ -5,9 +5,9 @@
 # ----------------------------------------
 
 from sys import stderr, argv
-from sqlalchemy import create_engine, update
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database import Base, Books, Authors, Bids, Courses, Listings, Images
+from database import Books, Authors, Bids, Courses, Listings, Images
 from uuid import uuid4
 import cloudinary
 from cloudinary.uploader import upload
@@ -497,6 +497,8 @@ class QueryDatabase:
 
             listing.status = "purchased"
             self._connection.commit()
+            listing.highestBid = bid
+            self._connection.commit()
             buyNowPrice = listing.buyNow
 
             foundBid = self._connection.query(Bids). \
@@ -505,6 +507,8 @@ class QueryDatabase:
 
             if foundBid:
                 foundBid.bid = buyNowPrice
+                self._connection.commit()
+                foundBid.status = 'confirmed'
                 self._connection.commit()
             else:
                 newBid = Bids(buyerID=buyerID, listingID=listingID, bid=buyNowPrice, status='confirmed')

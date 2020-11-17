@@ -66,9 +66,13 @@
       <div><span>Lowest Ask:</span> {{dict["minPrice"]}}</div>
       <div><span>Highest Bid:</span> {{dict["highestBid"]}}</div>
       <div>Buy Now Price: {{dict["buyNow"]}}
-           <form action="/congratsPage?bookid={{uniqueId}}&buyNow={{dict['buyNow']}}" id="buyNowForm">
-              <button type="submit" form="buyNowForm" onclick="return buyNow();" value="Submit">
-              Buy Now
+          {% set url = "congratsPage?bookid=" + uniqueId + "&buyNow=" + dict['buyNow']|string %}
+           <form action="{{url}}" method="POST" id="buyNowForm">
+              <button
+                  form="buyNowForm"
+                  value="Submit"
+                  onclick="return buyNow();">
+                  Buy Now
               </button>
            </form>
       </div>
@@ -86,7 +90,7 @@
       <button
         form="submitBidForm"
         value="Submit"
-        onclick="return verifyBid();"> Submit
+        onclick="return verifyBid();">Submit
 
     </button>
      
