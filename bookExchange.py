@@ -531,6 +531,13 @@ def congratsPage():
         time = datetime.now()
         listTime = time.strftime("%m:%d:%Y:%H:%M:%S")
 
+
+        # hardcode
+        crscode = "COS340"
+        crstitle = "The practice of life"
+        condition = "Poor"
+        minprice = 24
+        buynow = 34
         # confirmation JS stuff
 
         # passing to database
@@ -558,7 +565,150 @@ def congratsPage():
 
     return response
 
+# ----------------------------------------------------------------------
+# MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
+@app.route('/collapse', methods=['GET'])
+def collapse():
+    username = CASClient().authenticate()
+    username = username.strip()
 
+    listingID = request.args.get('list')
+    sellerID = request.args.get('sellerID')
+    bidder = request.args.get('bidder')
+    title = request.args.get('title')
+    highestBid = request.args.get('highest')
+
+    try:
+        # link to site to confirm
+        # give time limit
+
+        # send to bidder
+        if 'accept' in request.form:
+
+            error1 = database.updateStatus(listingID, bidder, 'accepted')
+            if error1 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+            error2 = sendEmail(mail, bidder, 'accept', username, highestBid, title)
+            if error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+
+        #send to bidder -> if it was the highest bidder send to everyone 
+        elif 'decline' in request.form:
+            error1 = database.updateStatus(listingID, bidder, 'declined')
+            if error1 == -1 :
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+            #need to update highest bid 
+            error2 = database.removeMyBid(bidder, listingID)
+            if error1 == -1 or error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+            error3 = sendEmail(mail, bidder, 'decline', username, highestBid, title)
+            if error3 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+        #confirm button should stay up
+        #dont send to all bidders until it'spurchased
+        # send email to all bidders and seller
+        elif 'confirm' in request.form:
+            error1 = database.updateStatus(listingID, username, 'confirmed')
+            if error1 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+            #later need to distinguish between confirm and purchase so can delete bids
+            error2 = sendEmail(mail, username, 'confirm', sellerID, highestBid, title)
+            if error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+            return redirect(url_for('checkout'))
+
+        #tell what the next highest bid is
+        #send to seller and bidders
+        elif 'deny' in request.form:
+            error1 = database.updateStatus(listingID, username, 'declined')
+            if error1 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+            error2 = database.removeMyBid(username, listingID)
+            if error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+            
+            allBidders = database.getAllBids(listingID)
+            if allBidders == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+            error3 = sendEmail(mail, allBidders, 'deny', sellerID, highestBid, title)
+            if error3 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+
+        #if it's the highest bid need to notify everyone
+        # user wants to delete their bid
+        deleteBidBuyerID = request.args.get('deleteBidBuyerID')
+        deleteBidListingID = request.args.get('deleteBidListingID')
+        if deleteBidBuyerID is not None and deleteBidListingID is not None:
+            database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
+
+        #Need to notify bidders
+        # user wants to delete their listing
+        deleteListingID = request.args.get('deleteListingID')
+        if deleteListingID is not None:
+            database.removeListing(deleteListingID)
+
+        # query database for the given user to update profilePage
+        listings = database.myListings(username)
+        if listings == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+        # use this to reset the forms in mylistings in the profilepage
+        # for book in listings:
+        # database.updateStatus(book[5], book[2], 'pending')
+        purchases = database.myPurchases(username)
+        if purchases == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+        bids = database.myBids(username)
+        if listings == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
+    except Exception as e:
+        print("Error: " + str(e), file=stderr)
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
+
+    html = render_template('collapse.html', username=username, listings=listings,
+                           purchases=purchases, bids=bids)
+    response = make_response(html)
+    return response
 
 # ----------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
