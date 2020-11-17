@@ -2,12 +2,20 @@
 <html>
 
 <head>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet"
+		  type="style/css"
+		  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+	<title>{{username}}'s Profile Page</title>
+
 </head>
 
 <body>
 	{% include 'head.html' %}
+
 	<form method="get" action="logout">
 		<input type="submit" name="logout" value="Logout">
 	</form>
@@ -20,21 +28,22 @@
 	<h1 style="text-align: center;">Welcome {{username}}!</h1>
 
 	<div class="accordion" id="accordionExample">
+
 		<div class="card">
 			<div class="card-header" id="headingOne">
 				<h5 class="mb-0">
-					<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
-						aria-expanded="true" aria-controls="collapseOne">
+					<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 						{% if listings|length == 0: %}
-						<h3 style="text-align: left;">My Listings: </h3> <span> You have no books listed, <a
-								href="sellerPage"> list one here </a> </span>
+							<h3 style="text-align: left;">My Listings:</h3>
+							<span>
+								You have no books listed, <a href="sellerPage"> list one here </a>
+							</span>
 						{% else: %}
-						<h3 style="text-align: left;"> My Listings: </h3>
+							<h3 style="text-align: left;"> My Listings: </h3>
 						{% endif %}
 					</button>
 				</h5>
 			</div>
-
 			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 				<div class="card-body">
 					<table class="table">
@@ -50,68 +59,87 @@
 						<th> </th>
 						<th> Action: </th>
 						<th></th>
-						{% if listings|length == 0: %}
+					{% if listings|length == 0: %}
 					</table>
 					{% else: %}
 					{%    for book in listings: %}
-					<tr>
-						<td>{{book["title"]}}</td>
-						<td></td>
-						<td>{{book["crscode"]}}</td>
-						<td></td>
-						<td>{{book["buyerId"]}}</td>
-						<td></td>
-						<td>${{book["highestBid"]}}</td>
-						<td></td>
-						<td>${{book["buyNow"]}}</td>
-						<td></td>
-						<td>
-							{% if book["status"] == 'pending' %}
-							<form method="POST"
-								action="/profilePage?list={{book['uniqueId']}}&bidder={{book['buyerId']}}&title={{book['title']}}&highest={{book['highestBid']}}">
-								<input type="submit" name="accept" id="accept" value="Accept"
-									onclick="return acceptBid();">
-								<input type="submit" name="decline" id="decline" value="Decline"
-									onclick="return declineBid();">
-							</form>
-							{% else %}
-							{{book["status"]}}
-							{% endif %}
-						</td>
-						<td>
-							<form action="/sellerPage" method="POST">
-								<button class="glyphicon glyphicon-pencil" type="submit"
-									onclick="return editListing();">
-								</button>
-							</form>
-							{% set url = "/profilePage?deleteListingID=" + book["uniqueId"] %}
-							<form action={{url}} method="POST">
-								<button class="glyphicon glyphicon-trash" type="submit"
-									onclick="return deleteListing();">
-								</button>
-							</form>
-						</td>
-					</tr>
+						<tr>
+							<td>{{book["title"]}}</td>
+							<td></td>
+							<td>{{book["crscode"]}}</td>
+							<td></td>
+							<td>{{book["buyerId"]}}</td>
+							<td></td>
+							<td>${{book["highestBid"]}}</td>
+							<td></td>
+							<td>${{book["buyNow"]}}</td>
+							<td></td>
+							<td>
+								{% if book["status"] == 'pending' %}
+								<form method="POST"
+									  action="/profilePage?list={{book['uniqueId']}}&bidder={{book['buyerId']}}&title={{book['title']}}&highest={{book['highestBid']}}">
+									<input type="submit"
+										   name="accept"
+										   id="accept"
+										   value="Accept"
+										   onclick="return acceptBid();">
+									<input type="submit"
+										   name="decline"
+										   id="decline"
+										   value="Decline"
+										   onclick="return declineBid();">
+								</form>
+								{% else %}
+									{{book["status"]}}
+								{% endif %}
+							</td>
+							<td>
+								<form action="/sellerPage" method="POST">
+									<button class="btn btn-warning btn-sm"
+											type="submit"
+											onclick="return editListing();">
+										Edit
+									</button>
+								</form>
+
+								{% set url = "/profilePage?deleteListingID=" + book["uniqueId"] %}
+								<form action={{url}} method="POST">
+									<button class="btn btn-warning btn-sm"
+											type="submit"
+											onclick="return deleteListing();">
+										Delete
+									</button>
+								</form>
+							</td>
+						</tr>
 					{%    endfor %}
 					{% endif %}
 					</table>
 				</div>
 			</div>
 		</div>
+
 		<div class="card">
 			<div class="card-header" id="headingTwo">
 				<h5 class="mb-0">
-					<button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-						data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+					<button class="btn btn-link collapsed"
+							type="button"
+							data-toggle="collapse"
+							data-target="#collapseTwo"
+							aria-expanded="false"
+							aria-controls="collapseTwo">
 						{% if purchases|length == 0: %}
-						<h3 style="text-align: left;">Claimed books: </h3> <span> You have not claimed any books, <a
-								href="homePage"> search books here </a> </span>
+						<h3 style="text-align: left;">Claimed books:</h3>
+						<span>
+							You have not claimed any books, <a href="homePage"> search books here </a>
+						</span>
 						{% else: %}
 						<h3 style="text-align: left;"> Claimed books: </h3>
 						{% endif %}
 					</button>
 				</h5>
 			</div>
+
 			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
 				<div class="card-body">
 					<table class="table">
@@ -124,38 +152,42 @@
 						<th> List price: </th>
 						<th> </th>
 						<th> Accepted price: </th>
-						{% if purchases|length == 0: %}
+					{% if purchases|length == 0: %}
 					</table>
 					{% else: %}
 					{%    for book in purchases: %}
-					<tr>
-						<td>{{book["title"]}}</td>
-						<td></td>
-						<td>{{book["crscode"]}}</td>
-						<td></td>
-						<td>{{book["crstitle"]}}</td>
-						<td></td>
-						<td>${{book["minPrice"]}}</td>
-						<td></td>
-						<td>${{book["bid"]}}</td>
-					</tr>
+						<tr>
+							<td>{{book["title"]}}</td>
+							<td></td>
+							<td>{{book["crscode"]}}</td>
+							<td></td>
+							<td>{{book["crstitle"]}}</td>
+							<td></td>
+							<td>${{book["minPrice"]}}</td>
+							<td></td>
+							<td>${{book["bid"]}}</td>
+						</tr>
 					{%    endfor %}
 					{% endif %}
-					</table>
-
-
 					</table>
 				</div>
 			</div>
 		</div>
+
 		<div class="card">
 			<div class="card-header" id="headingThree">
 				<h5 class="mb-0">
-					<button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-						data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+					<button class="btn btn-link collapsed"
+							type="button"
+							data-toggle="collapse"
+							data-target="#collapseThree"
+							aria-expanded="false"
+							aria-controls="collapseThree">
 						{% if bids|length == 0: %}
-						<h3 style="text-align: left;">Current bids: </h3> <span> You have no current bids, <a
-								href="homePage"> search books here </a> </span>
+						<h3 style="text-align: left;">Current bids: </h3>
+						<span>
+							You have no current bids, <a href="homePage"> search books here </a>
+						</span>
 						{% else: %}
 						<h3 style="text-align: left;"> Current bids: </h3>
 						{% endif %}
@@ -177,10 +209,12 @@
 						<th> </th>
 						<th> Offer status: </th>
 						<th></th>
-						{% if bids|length == 0: %}
+						<th> Action: </th>
+
+					{% if bids|length == 0: %}
 					</table>
 					{% else: %}
-					{%    for book in bids %}
+						{%    for book in bids %}
 					<tr>
 						<td>{{book["title"]}}</td>
 						<td></td>
@@ -193,46 +227,46 @@
 						<td>${{book["bid"]}}</td>
 						<td></td>
 						<td> {{book["status"]}}</td>
-						{% set url = "/buyerPage?bookid=" + book["uniqueId"] %}
-						<td>
-							{% if book["status"] != 'accepted' %}
-							<form action={{url}} method="POST">
-								<button class="glyphicon glyphicon-pencil" type="submit" onclick="return editBid();">
-								</button>
-							</form>
-							<form
-								action="/profilePage?deleteBidBuyerID={{username}}&deleteBidListingID={{book['uniqueId']}}"
-								method="POST">
-								<button class="glyphicon glyphicon-trash" type="submit" onclick="return deleteBid();">
-								</button>
-							</form>
-							{% endif %}
-						</td>
+						<td></td>
 						{% if book["status"] == "accepted" %}
 						<td>
 							<form method="post"
-								action="profilePage?list={{book['uniqueId']}}&sellerId={{book['sellerId']}}&title={{book['title']}}&cost={{book['highestBid']}}">
+								  action="profilePage?list={{book['uniqueId']}}&sellerId={{book['sellerId']}}&title={{book['title']}}&cost={{book['highestBid']}}">
 								<input type="submit" name="confirm" id="confirm" value="Confirm">
 								<input type="submit" name="deny" id="deny" value="Deny">
 							</form>
 						</td>
+						{% else %}
+						<td>N/A</td>
 						{% endif %}
+						<td>
+							{% set url = "/buyerPage?bookid=" + book["uniqueId"] %}
+							<form action={{url}} method="POST">
+								<button class="btn btn-warning btn-sm" type="submit" onclick="return editBid();">
+									Edit
+								</button>
+							</form>
+
+							<form action="/profilePage?deleteBidBuyerID={{username}}&deleteBidListingID={{book['uniqueId']}}" method="POST">
+								<button class="btn btn-warning btn-sm" type="submit" onclick="return deleteBid();">
+									Delete
+								</button>
+							</form>
+						</td>
 					</tr>
-					{%   endfor %}
+						{%   endfor %}
 					{% endif %}
 					</table>
 				</div>
 			</div>
 		</div>
 	</div>
-	<link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet">
-	</link>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+	<link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"></link>
 	<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-	<script>
-
-		'use strict';
+	<script>'use strict';
 
 		function acceptBid() {
 			if (confirm("Are you sure you want to accept this bid?")) {
@@ -350,8 +384,7 @@
 			$('#searchQuery').focus();
 			$('#searchQuery').on('input', getResults);
 		}
-		$('document').ready(setup);
-	</script>
+		$('document').ready(setup);</script>
 
 	<br>
 	<br>
