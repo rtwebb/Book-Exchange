@@ -268,12 +268,11 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            error2 = sendEmail(mail, bidder, 'accept', username, highestBid, title)
+            error2 = sendEmail(mail, [bidder], 'accept', username, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
-
 
         # send to bidder -> if it was the highest bidder send to everyone
         elif 'decline' in request.form:
@@ -297,7 +296,7 @@ def profilePageTemplate():
                 return response
 
         # confirm button should stay up
-        # dont send to all bidders until it'spurchased
+        # dont send to all bidders until it's purchased
         # send email to all bidders and seller
         elif 'confirm' in request.form:
             error1 = database.updateStatus(listingID, username, 'confirmed')
@@ -307,7 +306,7 @@ def profilePageTemplate():
                 return response
 
             # later need to distinguish between confirm and purchase so can delete bids
-            error2 = sendEmail(mail, username, 'confirm', sellerID, highestBid, title)
+            error2 = sendEmail(mail, [username], 'confirm', sellerID, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
