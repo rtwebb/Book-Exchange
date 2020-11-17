@@ -206,6 +206,11 @@
           return false;
         }
 
+        if (buyNow === minPrice){
+          alert('Your buy now price and minimum ask are the same, please update!');
+          return false;
+        }
+
         if (confirm('Are you sure you would like to post this listing?')){
           return true;
         } else{
