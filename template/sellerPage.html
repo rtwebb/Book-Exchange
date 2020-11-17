@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Seller's Page</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" 
-          type="text/css"
+          type="style/css"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
     <style>
@@ -15,6 +13,8 @@
           color:black;
       }
     </style>
+    
+    <title>Seller's Page</title>
   </head>
   
   <body>
@@ -22,22 +22,22 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-md-12">
           <div class="jumbotron">
 
             <h1 class="sellerHeading">Add a New Listing</h1>
 
             <form action="/congratsPage" method="POST" id="submitBookForm" enctype="multipart/form-data">
               <div class="row">
-                <div class="col-md-8">
+                <div class="col-lg-8">
                   <label for="inputTitle" class="form-label">Book Title</label>
                   <input type="text" class="form-control" name="title" id="inputTitle" placeholder="Ex: The Practice of Programming" required>
                   <div class="invalid-feedback">
                     Book title is required
                   </div>
-                </div>
+                </div>   
 
-                <div class="form-group col-md-4">
+                <div class="form-group col-lg-4">
                   <label for="inputISBN" class="form-label">ISBN</label>
                   <input type="text" class="form-control" name="isbn" id="inputISBN" required>
                   <div class="invalid-feedback">
@@ -47,24 +47,13 @@
               </div>
 
               <div class="row">
-                <input type="hidden" name="count" value="1"/>
                 <div class="form-group col-md-4">
-                  <label class="control-label" for="field1">Authors</label>
-                  <div class="controls" id="profs"> 
-                    <form class="input-append">
-                      <div id="field">
-                        <input autocomplete="off" class="input" id="authorField1" name="prof1" type="text" placeholder="Type something" data-items="8"/>
-                        <button id="b1" class="btn add-more" type="button">+</button>
-                      </div>
-                    </form>
-                    <br>
-                    <small>Press + to add another author</small>
+                  <label for="inputAuthor" class="form-label">Author</label>
+                  <input type="text" class="form-control" name="author" id="inputAuthor" placeholder="Ex: Brian Kernighan">
+                  <div class="invalid-feedback">
+                     Author field is required
                   </div>
                 </div>
-                <!--div class="form-group col-md-4">
-                  <label for="inputAuthors" class="form-label">Authors</label>
-                  <input type="text" class="form-control" name="authors" id="inputAuthors" placeholder="Ex: Brian Kernighan">
-                </div-->
               </div>
 
               <div class="row">
@@ -92,6 +81,9 @@
                     <option>Good</option>
                     <option>Brand New</option>
                   </select>
+                  <div class="invalid-feedback">
+                    Condition is required
+                  </div>
                 </div>
               </div>
 
@@ -111,45 +103,20 @@
                     Buy Now Price is required
                   </div>
                 </div>
-              </div>
+              </div> 
 
               <h2>Add Images</h2>
-              <!--input type="file" accept="image/*" name="image1">
+              <input type="file" accept="image/*" name="image1">
               <input type="file" accept="image/*" name="image2">
-              <input type="file" accept="image/*" name="image3"-->
+              <input type="file" accept="image/*" name="image3">
 
-              <!--script src="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1569993029/imgur.js"></script-->
-              <div class="d-flex justify-content-center mt-100">
-                <div class="row ">
-                  <div class="col-md-12">
-                    <div class="dropzone uploadfuzone fuzone">
-                      <div class="row">
-                        <div class="col-md-8">
-                          <div class="fu-text"> 
-                            <span><i class="fa fa-picture-o"></i> Click here or drop file to upload</span> 
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="snippet_image_div"> 
-                          </div>
-                        </div>
-                      </div> 
-                      <input type="file" class="input" accept="image/*">
-                    </div>
-                    <div class="status">
-                      </div>
-                      <div class="text-center"><span class="imgur-link"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <br> 
               <button
                       class="btn orange" 
                       form="submitBookForm"
                       onclick="return verifyListing();"
                       value="Submit"> Submit
-              </button> 
+              </button>
             </form>
           </div>
         </div>
@@ -158,14 +125,14 @@
 
     {% include 'footer.html' %}
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"></link>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    
     <script>
 
       'use strict';
-
+      
       function verifyListing(){
         
         // make sure none of the required entrys are null
@@ -175,7 +142,7 @@
         console.log("isbn: ", isbn);
         let title = $('#inputTitle').val();
         console.log("title: ", title);
-        let authors = $('#authorField1').val();
+        let author = $('#inputAuthor').val();
         console.log("authors: ", authors);
         let crscode = $('#inputCode').val();
         console.log("crscode: ", crscode);
@@ -185,58 +152,42 @@
         console.log('Min price: ', minPrice);
         minPrice = parseFloat(minPrice, 10.00);
         console.log('Min price: ', minPrice);
-        if (Number.isNaN(minPrice)){
-          alert('All required fields are not filled, please make sure you complete all required fields!');
-          return false;
-        } 
         let buyNow = $('#inputBuy').val();
         buyNow = parseFloat(buyNow, 10.00);
-        if (Number.isNaN(buyNow)){
-          alert('All required fields are not filled, please make sure you complete all required fields!');
-          return false;
-        }
-        console.log('buyNow: ', buyNow);
+        console.log('Buy Now Price: ', buyNow);
         let condition = $('#inputCondition').val();
         console.log("inputCondition: ", condition);
 
-        if (buyNow < minPrice){
-          alert('Your buy now price is less than the minimum ask, please update!')
+        // missing value checks
+        if (isbn == null || title == null || author == null || crscode == null || crstitle == null || Number.isNaN(minPrice) || Number.isNaN(buyNow) || condition == null){
+          alert('All required fields are not filled, please make sure you complete all required fields!');
           return false;
         }
 
-
-        // missing value checks
-        if (isbn == null || title == null || authors == null || crscode == null 
-        || crstitle == null || minPrice == null || buyNow == null || condition == null){
-          console.log("in first if statement");
+        if (isbn.trim() === '' || title.trim() === '' || author.trim() === '' || crscode.trim() === '' || crstitle.trim() === ''){
           alert('All required fields are not filled, please make sure you complete all required fields!');
           return false;
-        } 
-        if (isbn.trim() === '' || title.trim() === '' || authors.trim() === '' || crscode.trim() === '' ||
-          crstitle.trim() === '') {
-          alert('All required fields are not filled, please make sure you complete all required fields!');
-          return false;
-        } 
-        
+        }
 
-          // negative values
+        // negative values
         if (minPrice < 0.0 || buyNow < 0.0){
           alert("Incorrect minimum price or buy now price, values have to be greater than zero");
           return false;
-        } else{
+        } 
+
+        if (buyNow < minPrice){
+          alert('Your buy now price is less than the minimum ask, please update!');
+          return false;
+        }
+
         if (confirm('Are you sure you would like to post this listing?')){
           alert("Congratulations!  You have succesfully listed an tem :)!");
           return true;
-        }
-        else{
+        } else{
           return false;
         }
-        }
-
-
       }
-
-
+      
       function handleResponse(response){
         // return array depending on search
 
