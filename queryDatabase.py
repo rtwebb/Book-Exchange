@@ -170,6 +170,7 @@ class QueryDatabase:
                 newQuery = newQuery.lower() + '%'
             results = []
             if signal == 1:  # if query is by isbn
+                newQuery = newQuery.replace("-", "")
                 found = self._connection.query(Books, Courses, Listings). \
                     filter(Courses.isbn == Listings.isbn). \
                     filter(Books.isbn == Listings.isbn). \
