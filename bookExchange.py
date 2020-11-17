@@ -466,10 +466,11 @@ def checkout():
         # venmoUsername = venmoUsername.strip()
         indicator = 1
 
-        access_token = Client.get_access_token(username='emmandrawright@yahoo.com',
-                                               password='Darrell1')
+       
 
-        venmo = Client(access_token=access_token)
+        print('before client')
+        venmo = Client(access_token='d095f97905ba8bb6a2b84477e411d08cc000f6eadf261624b29e88ef15ab4ada')
+        print('after client')
 
         buyers = venmo.user.search_for_users(query=venmoUsername, page=1)
         i = 0
