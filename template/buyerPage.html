@@ -58,14 +58,14 @@
       <div class="info-container">
       <h1>{{dict["title"]}}</h1>
       <div><span>Authors:</span> {{dict["authors"]}}</div>
-      <div><span>ISBN:</span>{{dict["isbn"]}}</div>
+      <div><span>ISBN: </span>{{dict["isbn"]}}</div>
       <div><span>Course:</span> {{dict["crscode"]}} -- {{dict["crstitle"]}}</div>
       <hr>
       <div><span>Seller:</span> {{dict["sellerId"]}}</div>
       <div><span>Condition:</span> {{dict["condition"]}}</div>
       <div><span>Lowest Ask:</span> {{dict["minPrice"]}}</div>
       <div><span>Highest Bid:</span> {{dict["highestBid"]}}</div>
-      <div>Buy Now Price: {{dict["buyNow"]}}
+          <div><span>Buy Now Price: </span> {{dict["buyNow"]}}
           {% set url = "congratsPage?bookid=" + uniqueId + "&buyNow=" + dict['buyNow']|string %}
            <form action="{{url}}" method="POST" id="buyNowForm">
               <button
