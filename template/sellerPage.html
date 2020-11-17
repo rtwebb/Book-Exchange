@@ -107,16 +107,19 @@
               </div> 
 
               <h2>Add Images</h2>
-              <input type="file" accept="image/*" name="image1">
-              <input type="file" accept="image/*" name="image2">
-              <input type="file" accept="image/*" name="image3">
 
-              <br> 
-              <button
-                      class="btn orange" 
+              <div class="form-row">
+                  <input type="file" accept="image/*" name="image1">
+                  <input type="file" accept="image/*" name="image2">
+                  <input type="file" accept="image/*" name="image3">
+              </div>
+
+              <br>
+              <button class="btn btn-warning"
                       form="submitBookForm"
                       onclick="return verifyListing();"
-                      value="Submit"> Submit
+                      value="Submit">
+                Submit
               </button>
             </form>
           </div>
@@ -209,13 +212,13 @@
       }
       
       function handleResponse(response){
-        // return array depending on search
+      // return array depending on search
 
         try
         {
           let results = response;
 
-                  // call jQuery autocomplete on said list
+          // call jQuery autocomplete on said list
           $("#searchQuery").autocomplete({
             source: results
           });
