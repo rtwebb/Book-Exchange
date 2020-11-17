@@ -67,7 +67,7 @@
       <div><span>Highest Bid:</span> {{dict["highestBid"]}}</div>
       <div>Buy Now Price: {{dict["buyNow"]}}
            {% set message = "Are you sure you would like to buy this item at the Buy Now Price?" %}
-           <form action="/buyerPage?bookid={{uniqueId}}&buyNow={{dict['buyNow']}}" id="buyNowForm">
+           <form action="/congratsPage?bookid={{uniqueId}}&buyNow={{dict['buyNow']}}" id="buyNowForm">
               <button type="submit" form="buyNowForm" onclick="confirm({{message}})" value="Submit">
               Buy Now
               </button>

@@ -42,7 +42,7 @@ class QueryDatabase:
                     filter(Courses.isbn == isbn). \
                     filter(Courses.courseCode.contains(courseCode)). \
                     one_or_none()
-                if not course:
+                if course is None:
                     course = Courses(isbn=isbn, courseCode=courseCode.upper(), courseTitle=courseTitle.title())
                     self._connection.add(course)
                     self._connection.commit()
@@ -87,8 +87,8 @@ class QueryDatabase:
                 filter(Bids.status != 'confirmed').all()
             for bid in bids:
                 self._connection.delete(bid)
+                self._connection.commit()
 
-            self._connection.commit()
             return 0
 
         except Exception as e:
@@ -98,7 +98,6 @@ class QueryDatabase:
     # -----------------------------------------------------------------------------
 
     # if a user wants to remove a bid, use this method
-    # for some reason, when bid is removed, highestBid is not updated??
     def removeMyBid(self, buyerID, uniqueID):
         try:
             results = self._connection.query(Bids, Listings). \
@@ -114,15 +113,14 @@ class QueryDatabase:
                     # check to see if there are other bids on the listing
                     found = self._connection.query(Bids). \
                         filter(Bids.listingID == uniqueID). \
-                        order_by(Bids.bid.desc()).all()
+                        order_by(Bids.bid.desc()).first()
                     if found:
-                        for item in found:
-                            # set highest bid equal to new highest bid
-                            listing.highestBid = item.bid
-                            self._connection.commit()
-                            break
+                        # set highest bid equal to new highest bid
+                        listing.highestBid = found.bid
+                        self._connection.commit()
                     else:  # if there no other bids, set highest equal to 0
                         listing.highestBid = 0
+                        self._connection.commit()
                 else:
                     self._connection.delete(bid)
                     self._connection.commit()
@@ -143,13 +141,16 @@ class QueryDatabase:
                 filter(Courses.isbn == Books.isbn).all()
             for listing, book, course in results:
                 self._connection.delete(listing)
+                self._connection.commit()
                 if book.quantity - 1 == 0:
                     self._connection.delete(book)
+                    self._connection.commit()
                     self._connection.delete(course)
+                    self._connection.commit()
                 else:
                     book.quantity -= 1
+                    self._connection.commit()
 
-            self._connection.commit()
             return 0
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
@@ -266,7 +267,7 @@ class QueryDatabase:
     def myListings(self, query):
         try:
             results = []
-            # find highest bid(s) to show on profile page
+            # find listing
             found = self._connection.query(Listings, Books, Courses). \
                 filter(Listings.sellerID.contains(query)). \
                 filter(Books.isbn == Listings.isbn). \
@@ -290,7 +291,7 @@ class QueryDatabase:
                         "title": book.title,
                         "crscode": course.courseCode,
                         "buyerId": "There are currently no bidders for this listing",
-                        "highestBid": listing.highestBid,
+                        "highestBid": 0.0,
                         "buyNow": listing.buyNow,
                         "status": "N/A",
                         "uniqueId": listing.uniqueID
@@ -326,6 +327,8 @@ class QueryDatabase:
                     filter(Listings.uniqueID == listingID).one()
                 listing.status = 'open'
                 self._connection.commit()
+
+            return 0
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
@@ -418,6 +421,7 @@ class QueryDatabase:
             found = self._connection.query(Listings, Books, Courses). \
                 filter(Listings.uniqueID == uniqueID). \
                 filter(Books.isbn == Listings.isbn). \
+                filter(Listings.status != 'closed'). \
                 filter(Listings.status != 'purchased'). \
                 filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course in found:
@@ -458,12 +462,15 @@ class QueryDatabase:
 
             if foundBid:
                 foundBid.bid = bid
+                self._connection.commit()
                 foundBid.status = 'pending'
+                self._connection.commit()
+
             # otherwise, create a new bid
             else:
                 newBid = Bids(buyerID=buyerID, listingID=listingID, bid=bid, status='pending')
                 self._connection.add(newBid)
-            self._connection.commit()
+                self._connection.commit()
 
             if float(bid) > listing.highestBid:
                 listing.highestBid = bid
@@ -472,13 +479,11 @@ class QueryDatabase:
                 # check to see if there are other bids on the listing
                 found = self._connection.query(Bids). \
                     filter(Bids.listingID == listingID). \
-                    order_by(Bids.bid.desc()).all()
+                    order_by(Bids.bid.desc()).first()
                 if found:
-                    for item in found:
-                        # set highest bid equal to new highest bid
-                        listing.highestBid = item.bid
-                        self._connection.commit()
-                        break
+                    # set highest bid equal to new highest bid
+                    listing.highestBid = found.bid
+                    self._connection.commit()
             return 0
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
@@ -491,6 +496,7 @@ class QueryDatabase:
                 filter(Listings.uniqueID == listingID).one()
 
             listing.status = "purchased"
+            self._connection.commit()
             buyNowPrice = listing.buyNow
 
             foundBid = self._connection.query(Bids). \
@@ -499,10 +505,11 @@ class QueryDatabase:
 
             if foundBid:
                 foundBid.bid = buyNowPrice
+                self._connection.commit()
             else:
                 newBid = Bids(buyerID=buyerID, listingID=listingID, bid=buyNowPrice, status='confirmed')
                 self._connection.add(newBid)
-            self._connection.commit()
+                self._connection.commit()
 
             allBids = self.getAllBids(listingID)
             check = self.removeAllBids(listingID)
