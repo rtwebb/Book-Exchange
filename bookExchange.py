@@ -268,12 +268,11 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            error2 = sendEmail(mail, bidder, 'accept', username, highestBid, title)
+            error2 = sendEmail(mail, [bidder], 'accept', username, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
-
 
         # send to bidder -> if it was the highest bidder send to everyone
         elif 'decline' in request.form:
@@ -290,14 +289,14 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            error3 = sendEmail(mail, bidder, 'decline', username, highestBid, title)
+            error3 = sendEmail(mail, [bidder], 'decline', username, highestBid, title)
             if error3 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
         # confirm button should stay up
-        # dont send to all bidders until it'spurchased
+        # dont send to all bidders until it's purchased
         # send email to all bidders and seller
         elif 'confirm' in request.form:
             error1 = database.updateStatus(listingID, username, 'confirmed')
@@ -307,7 +306,7 @@ def profilePageTemplate():
                 return response
 
             # later need to distinguish between confirm and purchase so can delete bids
-            error2 = sendEmail(mail, username, 'confirm', sellerID, highestBid, title)
+            error2 = sendEmail(mail, [username], 'confirm', sellerID, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
@@ -467,10 +466,11 @@ def checkout():
         # venmoUsername = venmoUsername.strip()
         indicator = 1
 
-        access_token = Client.get_access_token(username='emmandrawright@yahoo.com',
-                                               password='Darrell1')
+       
 
-        venmo = Client(access_token=access_token)
+        print('before client')
+        venmo = Client(access_token='d095f97905ba8bb6a2b84477e411d08cc000f6eadf261624b29e88ef15ab4ada')
+        print('after client')
 
         buyers = venmo.user.search_for_users(query=venmoUsername, page=1)
         i = 0
