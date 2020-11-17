@@ -393,10 +393,10 @@ def profilePageTemplate():
 @app.route('/aboutUs', methods=['GET'])
 def aboutUsTemplate():
     username = CASClient().authenticate()
-    client_token = generate_client_token()
+    #client_token = generate_client_token()
 
     html = render_template(
-        'aboutUs.html', client_token=client_token, username=username)
+        'aboutUs2.html', username=username)#client_token=client_token, 
 
     response = make_response(html)
     return response
