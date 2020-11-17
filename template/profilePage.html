@@ -95,7 +95,7 @@
 							</td>
 							<td>
 								<form action="/sellerPage" method="POST">
-									<button class="btn btn-warning btn-sm"
+									<button class="btn btn-warning btn-xs"
 											type="submit"
 											onclick="return editListing();">
 										Edit
@@ -104,7 +104,7 @@
 
 								{% set url = "/profilePage?deleteListingID=" + book["uniqueId"] %}
 								<form action={{url}} method="POST">
-									<button class="btn btn-warning btn-sm"
+									<button class="btn btn-warning btn-xs"
 											type="submit"
 											onclick="return deleteListing();">
 										Delete
@@ -242,13 +242,13 @@
 						<td>
 							{% set url = "/buyerPage?bookid=" + book["uniqueId"] %}
 							<form action={{url}} method="POST">
-								<button class="btn btn-warning btn-sm" type="submit" onclick="return editBid();">
+								<button class="btn btn-warning btn-xs" type="submit" onclick="return editBid();">
 									Edit
 								</button>
 							</form>
 
 							<form action="/profilePage?deleteBidBuyerID={{username}}&deleteBidListingID={{book['uniqueId']}}" method="POST">
-								<button class="btn btn-warning btn-sm" type="submit" onclick="return deleteBid();">
+								<button class="btn btn-warning btn-xs" type="submit" onclick="return deleteBid();">
 									Delete
 								</button>
 							</form>
