@@ -34,12 +34,12 @@
 				<h5 class="mb-0">
 					<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 						{% if listings|length == 0: %}
-							<h3 style="text-align: left;">My Listings:</h3>
+							<h3 style="text-align: left;">Current Listings:</h3>
 							<span>
 								You have no books listed, <a href="sellerPage"> list one here </a>
 							</span>
 						{% else: %}
-							<h3 style="text-align: left;"> My Listings: </h3>
+							<h3 style="text-align: left;">Current Listings: </h3>
 						{% endif %}
 					</button>
 				</h5>
@@ -47,7 +47,7 @@
 			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 				<div class="card-body">
 					<table class="table">
-						<th>Book title:</th>
+						<th>Book Title:</th>
 						<th> </th>
 						<th> Course Code: </th>
 						<th> </th>
@@ -119,60 +119,7 @@
 			</div>
 		</div>
 
-		<div class="card">
-			<div class="card-header" id="headingTwo">
-				<h5 class="mb-0">
-					<button class="btn btn-link collapsed"
-							type="button"
-							data-toggle="collapse"
-							data-target="#collapseTwo"
-							aria-expanded="false"
-							aria-controls="collapseTwo">
-						{% if purchases|length == 0: %}
-						<h3 style="text-align: left;">Claimed books:</h3>
-						<span>
-							You have not claimed any books, <a href="homePage"> search books here </a>
-						</span>
-						{% else: %}
-						<h3 style="text-align: left;"> Claimed books: </h3>
-						{% endif %}
-					</button>
-				</h5>
-			</div>
 
-			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-				<div class="card-body">
-					<table class="table">
-						<th>Book title:</th>
-						<th> </th>
-						<th> Course code: </th>
-						<th> </th>
-						<th> Course title: </th>
-						<th> </th>
-						<th> List price: </th>
-						<th> </th>
-						<th> Accepted price: </th>
-					{% if purchases|length == 0: %}
-					</table>
-					{% else: %}
-					{%    for book in purchases: %}
-						<tr>
-							<td>{{book["title"]}}</td>
-							<td></td>
-							<td>{{book["crscode"]}}</td>
-							<td></td>
-							<td>{{book["crstitle"]}}</td>
-							<td></td>
-							<td>${{book["minPrice"]}}</td>
-							<td></td>
-							<td>${{book["bid"]}}</td>
-						</tr>
-					{%    endfor %}
-					{% endif %}
-					</table>
-				</div>
-			</div>
-		</div>
 
 		<div class="card">
 			<div class="card-header" id="headingThree">
@@ -180,34 +127,34 @@
 					<button class="btn btn-link collapsed"
 							type="button"
 							data-toggle="collapse"
-							data-target="#collapseThree"
+							data-target="#collapseTwo"
 							aria-expanded="false"
-							aria-controls="collapseThree">
+							aria-controls="collapseTwo">
 						{% if bids|length == 0: %}
-						<h3 style="text-align: left;">Current bids: </h3>
+						<h3 style="text-align: left;">Current Bids: </h3>
 						<span>
 							You have no current bids, <a href="homePage"> search books here </a>
 						</span>
 						{% else: %}
-						<h3 style="text-align: left;"> Current bids: </h3>
+						<h3 style="text-align: left;"> Current Bids: </h3>
 						{% endif %}
 					</button>
 				</h5>
 			</div>
-			<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+			<div id="collapseTwo" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
 				<div class="card-body">
 					<table class="table">
-						<th>Book title:</th>
+						<th>Book Title:</th>
 						<th> </th>
-						<th> Course code: </th>
+						<th> Course Code: </th>
 						<th> </th>
-						<th> Course title: </th>
+						<th> Course Title: </th>
 						<th> </th>
 						<th>Seller:</th>
 						<th> </th>
-						<th> My offer: </th>
+						<th> My Offer: </th>
 						<th> </th>
-						<th> Offer status: </th>
+						<th> Offer Status: </th>
 						<th></th>
 						<th> Action: </th>
 
@@ -255,6 +202,108 @@
 						</td>
 					</tr>
 						{%   endfor %}
+					{% endif %}
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header" id="headingTwo">
+				<h5 class="mb-0">
+					<button class="btn btn-link collapsed"
+							type="button"
+							data-toggle="collapse"
+							data-target="#collapseThree"
+							aria-expanded="false"
+							aria-controls="collapseThree">
+						{% if purchases|length == 0: %}
+						<h3 style="text-align: left;">Claimed Books:</h3>
+						<span>
+							You have not claimed any books, <a href="homePage"> search books here </a>
+						</span>
+						{% else: %}
+						<h3 style="text-align: left;"> Claimed Books: </h3>
+						{% endif %}
+					</button>
+				</h5>
+			</div>
+
+			<div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+				<div class="card-body">
+					<table class="table">
+						<th>Book Title:</th>
+						<th> </th>
+						<th> Course Code: </th>
+						<th> </th>
+						<th> Course Title: </th>
+						<th> </th>
+						<th> List Price: </th>
+						<th> </th>
+						<th> Accepted Price: </th>
+					{% if purchases|length == 0: %}
+					</table>
+					{% else: %}
+					{%    for book in purchases: %}
+						<tr>
+							<td>{{book["title"]}}</td>
+							<td></td>
+							<td>{{book["crscode"]}}</td>
+							<td></td>
+							<td>{{book["crstitle"]}}</td>
+							<td></td>
+							<td>${{book["minPrice"]}}</td>
+							<td></td>
+							<td>${{book["bid"]}}</td>
+						</tr>
+					{%    endfor %}
+					{% endif %}
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-header" id="headingTwo">
+				<h5 class="mb-0">
+					<button class="btn btn-link collapsed"
+							type="button"
+							data-toggle="collapse"
+							data-target="#collapseFour"
+							aria-expanded="false"
+							aria-controls="collapseFour">
+						{% if purchases|length == 0: %}
+						<h3 style="text-align: left;">Sold Books:</h3>
+						<span>
+							You have not sold any books, <a href="sellerPage"> list books here </a>
+						</span>
+						{% else: %}
+						<h3 style="text-align: left;"> Sold Books: </h3>
+						{% endif %}
+					</button>
+				</h5>
+			</div>
+
+			<div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+				<div class="card-body">
+					<table class="table">
+						<th>Book Title:</th>
+						<th> </th>
+						<th> </th>
+						<th> </th>
+						<th> Sell Price: </th>
+						<th> </th>
+					{% if purchases|length == 0: %}
+					</table>
+					{% else: %}
+					{%    for book in sales: %}
+						<tr>
+							<td>{{book["title"]}}</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>{{book["sellPrice"]}}</td>
+						</tr>
+					{%    endfor %}
 					{% endif %}
 					</table>
 				</div>
