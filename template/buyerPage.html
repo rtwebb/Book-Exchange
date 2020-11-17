@@ -105,31 +105,34 @@
       'use strict';
 
       function verifyBid(){
-        let bid = $(userBid).val();
+        let bid = $('#userBid').val();
         let highestBid = $('#highestBid').data('name');
         highestBid = parseFloat(highestBid, 10.00);
         let buyNow = $('#buyNow').data('name2');
 
-        // check for letters
-        if ((/[a-zA-Z]/).test(bid)){
-          alert("Please enter a numerical value, no letters")
+
+        // checking isbn has no unique characters
+        let ascii = /[`!@#$%/^&*~()_/-/+/={}?<>,:;\[\]\-|\'\\\/""]/;
+        if (ascii.test(bid)){
+          alert('Bid should be a numerical value with no special characters, please make sure to omit hyphens');
           return false;
         }
 
-        //bid.replace('.', 1);
-        //let ascii = /^[ -~\t\n\r]+$/;
-        //if (ascii.test(bid)){
-         //alert("Please enter a numerical value, no special characters")
-         ////return false;
-        //}
-
-        // parse to float
+         // parse to float
         bid = parseFloat(bid, 10.00);
+        console.log("bid: ", bid);
+        highestBid = parseFloat(highestBid, 10.00);
+        buyNow = parseFloat(buyNow, 10.00);
+        if (Number.isNaN(bid)){
+          alert("Please enter a numerical value, no letters or special characters");
+          return false;
+        }
 
-        console.log("inside the function; highestBid:", highestBid);
-        console.log("inside the function; buyNow:", buyNow);
-
-
+        // check for letters
+        if ((/[a-zA-Z]/).test(bid)){
+          alert("Please enter a numerical value, no letters");
+          return false;
+        } 
 
         if (bid < 0){
           alert("Bid cannot be a negative number");
