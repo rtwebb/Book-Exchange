@@ -350,7 +350,7 @@ class QueryDatabase:
                     "title": book.title,
                     "crscode": course.courseCode,
                     "crstitle": course.courseTitle,
-                    "minPirce": listing.minPrice,
+                    "minPrice": listing.minPrice,
                     "bid": bid.bid
                 }
                 results.append(result)

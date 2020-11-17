@@ -393,10 +393,10 @@ def profilePageTemplate():
 @app.route('/aboutUs', methods=['GET'])
 def aboutUsTemplate():
     username = CASClient().authenticate()
-    client_token = generate_client_token()
+    #client_token = generate_client_token()
 
     html = render_template(
-        'aboutUs.html', client_token=client_token, username=username)
+        'aboutUs2.html', username=username)#client_token=client_token, 
 
     response = make_response(html)
     return response
@@ -460,24 +460,39 @@ def autoComplete():
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     username = CASClient().authenticate()
-
-    #access_token = Client.get_access_token(username='emmandrawright@yahoo.com',
-                                      # password='Darrell1')
-
-    #venmo = Client(access_token=access_token)
-
-    #bac = venmo.user.search_for_users(query="BACDance", page=1)
-    #i = 0
-    #for user in bac:
-        #print("user ", i, ": ", user.username)
+    indicator = 0
     
-    #userID = get_user_id(bac[0], None)
-    
-    # Request money
-    #venmo.payment.request_money(32.5, "house expenses", str(userID))
+    venmoUsername = request.form.get('username')
+    if venmoUsername != None:
+        #venmoUsername = venmoUsername.strip()
+        indicator = 1
+
+        access_token = Client.get_access_token(username='emmandrawright@yahoo.com',
+                                        password='Darrell1')
+
+        venmo = Client(access_token=access_token)
+
+        buyers = venmo.user.search_for_users(query=venmoUsername, page=1)
+        i = 0
+
+        userID = None
+        for buyer in buyers:
+            print(buyer.username)
+            print(username)
+            if buyer.username == venmoUsername:
+                print('in if')
+                userID = get_user_id(buyer, None)
+
+        #Use the same device-id: 96321548-32Y8-2S28-00Z8-6YK71H070SM8 next time to avoid 2-factor-auth process.
+                
+        
+
+        
+        #Request money
+        venmo.payment.request_money(32.5, "cos project", str(userID))
 
 
-    html = render_template('checkout.html', username=username)
+    html = render_template('checkout.html', username=username, indicator=indicator)
     response = make_response(html)
 
     return response
