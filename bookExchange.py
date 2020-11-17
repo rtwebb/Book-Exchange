@@ -44,7 +44,7 @@ database = QueryDatabase()
 @app.route('/homePage', methods=['GET', 'POST'])
 def homePageTemplate():
     username = CASClient().authenticate()
-
+    username = username.strip()
     # need to get recently listed books to show
     results = []
     try:
@@ -88,7 +88,7 @@ def homePageTemplate():
 @app.route('/searchResults', methods=['GET'])
 def searchResultsTemplate():
     username = CASClient().authenticate()
-
+    username = username.strip()
     # need to get results based on search query
     # once get object send to searchResults
     # each book needs to link to buyerPage with more information
@@ -392,6 +392,7 @@ def profilePageTemplate():
 @app.route('/aboutUs2', methods=['GET'])
 def aboutUsTemplate():
     username = CASClient().authenticate()
+    username = username.strip()
     #client_token = generate_client_token()
 
     html = render_template(
@@ -459,6 +460,7 @@ def autoComplete():
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     username = CASClient().authenticate()
+    username = username.strip()
     indicator = 0
 
     venmoUsername = request.form.get('username')
