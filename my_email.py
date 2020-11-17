@@ -46,7 +46,8 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
             recipients = [seller]
             message = "Hello " + seller + "," + "\n" + "\n" + \
                 bidders[0] + "confirmed their bid.  " + \
-                "If you do not recieve a confirmation email from us within the next 48hours saying the book was purchased,  " +\
+                "You should receive a confimration email from us within the next 48 hours, once the buyer has sent payment for the book.  " +\
+                "If you do not recieve a confirmation email from us within the next 48 hours saying the book was purchased,  " +\
                 "you are authorized to delete this bid.  " + \
                 "Below is the summary of your Listing." + "\n" + "\n" + \
                 "Book Title: " + title + "\n" + \
