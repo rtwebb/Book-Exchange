@@ -268,7 +268,7 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            error2 = sendEmail(mail, bidder, 'accept', username, highestBid, title)
+            error2 = sendEmail(mail, [bidder], 'accept', username, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
@@ -290,7 +290,7 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            error3 = sendEmail(mail, bidder, 'decline', username, highestBid, title)
+            error3 = sendEmail(mail, [bidder], 'decline', username, highestBid, title)
             if error3 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
@@ -307,7 +307,7 @@ def profilePageTemplate():
                 return response
 
             #later need to distinguish between confirm and purchase so can delete bids
-            error2 = sendEmail(mail, username, 'confirm', sellerID, highestBid, title)
+            error2 = sendEmail(mail, [username], 'confirm', sellerID, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
