@@ -520,7 +520,7 @@ def congratsPage():
         image2 = request.files.get('image2')
         image3 = request.files.get('image3')
         # authors as a list; coursename vs coursenumber
-        author = request.form.get('prof1')
+        author = request.form.get('author')
         print("author: ", author)
         crscode = request.form.get('crscode')
         print('Coursecode:', crscode)
