@@ -40,6 +40,7 @@
                 <div class="form-group col-lg-4">
                   <label for="inputISBN" class="form-label">ISBN</label>
                   <input type="text" class="form-control" name="isbn" id="inputISBN" required>
+                  <small>Please omit hyphens</small>
                   <div class="invalid-feedback">
                     ISBN is required
                   </div>
@@ -159,15 +160,6 @@
         let condition = $('#inputCondition').val();
         console.log("inputCondition: ", condition);
 
-        // checking isbn has no unique characters
-        //bid.replace('.', 1);
-        //let ascii = /^[ -~\t\n\r]+$/;
-        //if (ascii.test(bid)){
-         //alert("Please enter a numerical value, no special characters")
-         ////return false;
-        //}
-
-
         // missing value checks
         if (isbn == null || title == null || author == null || crscode == null || crstitle == null || Number.isNaN(minPrice) || Number.isNaN(buyNow) || condition == null){
           alert('All required fields are not filled, please make sure you complete all required fields!');
@@ -179,18 +171,24 @@
           return false;
         }
 
-        // negative values
-        if (minPrice < 0.0 || buyNow < 0.0 ){ 
-          alert("Invalid minimum price or buy now price, values have to be greater than zero");
+        // checking isbn has no unique characters
+        let ascii = /[`!@#$%/^&*~()_/-/+/={}?<>.,:;\[\]\-|\'\\\/""]/;
+        if (ascii.test(isbn)){
+          alert('ISBN should be a numerical value with no special characters, please make sure to omit hyphens');
           return false;
         }
 
-        // negative isbn
-        //if (isbn < 0){
-          //alert("Invalid isbn value, number must not be negative");
-          //return false;
-        //}
+        // check ISBN for letters
+        if ((/[a-zA-Z]/).test(isbn)){
+          alert('ISBN should be a numerical value, please do not enter any letters');
+          return false;
+        }
         
+        // negative values
+        if (minPrice < 0.0 || buyNow < 0.0 ){ 
+          alert('Invalid minimum price or buy now price, values have to be greater than zero');
+          return false;
+        }
 
         if (buyNow < minPrice){
           alert('Your buy now price is less than the minimum ask, please update!');
