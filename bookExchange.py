@@ -435,9 +435,9 @@ def autoComplete():
     username = CASClient().authenticate()
 
     dropDown = request.args.get('searchType')
+    print('dropDown: ', dropDown)
     query = request.args.get('query')
-
-    query = request.args.get('query')
+    print('query: ', query)
 
     # ask Tiana to return ISBN
     if dropDown == "isbn":
@@ -476,6 +476,8 @@ def autoComplete():
                 autoComplete.append(dict[index])
 
     autoComplete.sort(key=lambda v: v.upper())
+
+    print('autocomplete: ', autoComplete)
 
     jsonStr = dumps(autoComplete)
     response = make_response(jsonStr)

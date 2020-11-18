@@ -212,6 +212,7 @@ class QueryDatabase:
                 newQuery = '%' + newQuery.lower() + '%'
             else:
                 newQuery = newQuery.lower() + '%'
+
             results = []
             if signal == 1:  # if query is by isbn
                 newQuery = newQuery.replace("-", "")
