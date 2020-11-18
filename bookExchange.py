@@ -354,22 +354,30 @@ def profilePageTemplate():
         if deleteListingID is not None:
             database.removeListing(deleteListingID)
 
-        # query database for the given user to update profilePage
+        # Listings
         listings = database.myListings(username)
         if listings == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
-        # use this to reset the forms in mylistings in the profilepage
-        # for book in listings:
-        # database.updateStatus(book[5], book[2], 'pending')
+        
+        # bids
+        bids = database.myBids(username)
+        if listings == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
+        # purchases
         purchases = database.myPurchases(username)
         if purchases == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
-        bids = database.myBids(username)
-        if listings == -1:
+        
+        # books sold
+        soldBooks = database.mySoldBooks(username)
+        if soldBooks == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
@@ -381,7 +389,7 @@ def profilePageTemplate():
         return response
 
     html = render_template('profilePage.html', username=username, listings=listings,
-                           purchases=purchases, bids=bids)
+                           purchases=purchases, bids=bids, soldBooks=soldBooks)
     response = make_response(html)
     return response
 

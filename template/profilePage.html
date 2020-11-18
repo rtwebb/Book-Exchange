@@ -295,13 +295,13 @@
 					{% if purchases|length == 0: %}
 					</table>
 					{% else: %}
-					{%    for book in sales: %}
+					{%    for book in soldBooks: %}
 						<tr>
 							<td>{{book["title"]}}</td>
 							<td></td>
 							<td></td>
 							<td></td>
-							<td>{{book["sellPrice"]}}</td>
+							<td>{{book["highestBid"]}}</td>
 						</tr>
 					{%    endfor %}
 					{% endif %}
