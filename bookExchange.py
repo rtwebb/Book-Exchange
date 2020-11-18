@@ -341,6 +341,28 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
+        # book received now must: send seller the money and change book status
+        elif 'recieved' in request.form:
+            # send seller money 
+
+            # update status
+            error1 = database.updateStatus(listingID, bidder, 'received')
+            if error1 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+            # send email to seller
+            error2 = sendEmail()
+            if error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+
+           
+
+
+
         # if it's the highest bid need to notify everyone
         # user wants to delete their bid
         deleteBidBuyerID = request.args.get('deleteBidBuyerID')

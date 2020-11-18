@@ -240,6 +240,8 @@
 						<th> List Price: </th>
 						<th> </th>
 						<th> Accepted Price: </th>
+						<th> </th>
+						<th> Shipping Status: </th>
 					{% if purchases|length == 0: %}
 					</table>
 					{% else: %}
@@ -254,6 +256,18 @@
 							<td>${{book["minPrice"]}}</td>
 							<td></td>
 							<td>${{book["bid"]}}</td>
+							<td></td>
+							<td>
+								<form method="POST"
+								action="/profilePage?list={{book['uniqueId']}}&seller={{book['sellerId']}}">
+									  <input 
+									  	type="submit"
+									 	name="received"
+									 	id="received"
+									 	value="Received"
+									 	onclick="return receivedBook();">    
+								</form>	
+							</td>
 						</tr>
 					{%    endfor %}
 					{% endif %}
@@ -292,7 +306,7 @@
 						<th> </th>
 						<th> Sell Price: </th>
 						<th> </th>
-					{% if purchases|length == 0: %}
+					{% if soldBooks|length == 0: %}
 					</table>
 					{% else: %}
 					{%    for book in soldBooks: %}
@@ -374,6 +388,15 @@
 				return false;
 			}
 
+		}
+		
+		function receivedBook(){
+			if(confirm('After clicking, the money will be released to the seller of this book')){
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
 
 		function handleResponse(response) {
