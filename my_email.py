@@ -111,7 +111,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
 
 
         elif status == 'received':
-            recipients[seller]
+            recipients = [seller]
             message = "Hello " + seller + ", " + "\n" + "\n" + \
                 "You have succesfully sold your book titled " + title + " for $" + highestBid + "! " + \
                 "We know that it is a long process, but congrats!  " +\
@@ -120,7 +120,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
                 "The Book-Exchange team"
 
         elif status == 'sendBook':
-            recipients[seller]
+            recipients = [seller]
             message = "Hello " + seller + ", " + "\n" + "\n" + \
                 "We have received the funds from the buyer, please send the book to the buyer.  " +\
                 "Once the buyer receives the book, funds will be released to your venmo account." + "\n" + "\n" +\
