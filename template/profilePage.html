@@ -67,9 +67,9 @@
 							<td></td>
 							<td>{{book["buyerId"]}}</td>
 							<td></td>
-							<td>${{book["highestBid"]}}</td>
+							<td>${{book["highestBid"]}}0</td>
 							<td></td>
-							<td>${{book["buyNow"]}}</td>
+							<td>${{book["buyNow"]}}0</td>
 							<td></td>
 							<td>
 								{% if book["status"] == 'pending' %}
@@ -138,7 +138,7 @@
 					</button>
 				</h5>
 			</div>
-			<div id="collapseTwo" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+			<div id="collapseTwo" class="collapse show" aria-labelledby="headingThree" data-parent="#accordionExample">
 				<div class="card-body">
 					<table class="table">
 						<th>Book Title:</th>
@@ -168,7 +168,7 @@
 						<td></td>
 						<td>{{book["sellerId"]}}</td>
 						<td></td>
-						<td>${{book["bid"]}}</td>
+						<td>${{book["bid"]}}0</td>
 						<td></td>
 						<td> {{book["status"]}}</td>
 						<td></td>
@@ -253,9 +253,9 @@
 							<td></td>
 							<td>{{book["crstitle"]}}</td>
 							<td></td>
-							<td>${{book["minPrice"]}}</td>
+							<td>${{book["minPrice"]}}0</td>
 							<td></td>
-							<td>${{book["bid"]}}</td>
+							<td>${{book["bid"]}}0</td>
 							<td></td>
 							<td>
 								<!-- {% if book["status"] == "purchased": %} -->
@@ -319,7 +319,7 @@
 							<td></td>
 							<td></td>
 							<td></td>
-							<td>{{book["highestBid"]}}</td>
+							<td>{{book["highestBid"]}}0</td>
 						</tr>
 					{%    endfor %}
 					{% endif %}

@@ -73,7 +73,7 @@
                 <p><b>Seller NetID: </b>{{results[0]["sellerId"]}}</p>
                 <p><b>Condition: </b>{{results[0]["condition"]}}</p>
                 <p>
-                    <b>Buy Now Price: </b>${{results[0]["buyNow"]}}
+                    <b>Buy Now Price: </b>${{results[0]["buyNow"]}}0
 
                     {% set url = "congratsPage?bookid=" + uniqueId + "&buyNow=" + results[0]['buyNow']|string %}
                     <form action="{{url}}" method="POST" id="buyNowForm">
@@ -85,8 +85,8 @@
                         </button>
                     </form>
                 </p>
-                <p><b>Lowest Ask: </b>${{results[0]["minPrice"]}}</p>
-                <p><b>Current Highest Bid: </b>${{results[0]["highestBid"]}}</p>
+                <p><b>Lowest Ask: </b>${{results[0]["minPrice"]}}0</p>
+                <p><b>Current Highest Bid: </b>${{results[0]["highestBid"]}}0</p>
 
                 <p><b>Make a Bid:</b></p>
                 {% set url = "congratsPage?bookid=" + uniqueId %}
