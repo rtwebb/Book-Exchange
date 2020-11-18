@@ -18,7 +18,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
             message = "Hello " + bidders[0] + "," + "\n" + "\n" + \
                       "Congratulations! Your bid was accepted by" + seller + ".  " + \
                       "Please log into book-exchange-cos333.herokuapp.com to confirm or deny your purchase of this book within the next 48hrs.  " + \
-                      "If you do not make a decision within the next 48hrs the seller is aythorized to delete your bid.  " + \
+                      "If you do not make a decision within the next 48hrs the seller is authorized to delete your bid.  " + \
                       "Below is the summary of your bid." + "\n" + "\n" + \
                       "Book Title: " + title + "\n" + \
                       "Cost: " + str(highestBid) + "\n" + \
