@@ -395,7 +395,8 @@ class QueryDatabase:
                     "crscode": course.courseCode,
                     "crstitle": course.courseTitle,
                     "minPrice": listing.minPrice,
-                    "bid": bid.bid
+                    "bid": bid.bid,
+                    "sellerId": listing.sellerID
                 }
                 results.append(result)
 

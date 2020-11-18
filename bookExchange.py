@@ -346,22 +346,18 @@ def profilePageTemplate():
             # send seller money 
 
             # update status
-            error1 = database.updateStatus(listingID, bidder, 'received')
+            error1 = database.updateStatus(listingID, username, 'received')
             if error1 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
             # send email to seller
-            error2 = sendEmail()
+            error2 = sendEmail(mail, 'received')
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
-
-           
-
-
 
         # if it's the highest bid need to notify everyone
         # user wants to delete their bid

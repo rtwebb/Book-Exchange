@@ -102,6 +102,24 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
                 "The Book-Exchange team"
 
 
+        elif status == 'received':
+            receipients[seller]
+            message = "Hello " + seller + ", " + "\n" + "\n" + \
+                "You have succesfully sold your book! We know that it is a long process, but congrats!  " +\
+                "You should be receiving the funds in your venmo shortly." + "\n" + "\n"
+                "Sincerely," + "\n" + \
+                "The Book-Exchange team"
+
+        elif status == 'sendMoney':
+            receipients[seller]
+            message = "Hello " + seller + ", " + "\n" + "\n" + \
+                "We have received the funds from the buyer, please send the book to the buyer.  " +\
+                "Once the buyer receives the book, funds will be released to your venmo account." + "\n" + "\n"
+                "Sincerely," + "\n" + \
+                "The Book-Exchange team"
+
+        
+        
     
         for i in range(len(bidders)):
             bidders[i] = bidders[i] + '@princeton.edu'
