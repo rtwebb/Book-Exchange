@@ -54,44 +54,52 @@
     {% for dict in results %}
 
     <div class="buyer-container">
+      <div class="img-container">
       <img class="body-img" src="{{images[dict['images']]}}" width="225" height="160"></img>
+      </div>
       <div class="info-container">
       <h1>{{dict["title"]}}</h1>
       <div><span>Authors:</span> {{dict["authors"]}}</div>
       <div><span>ISBN:</span>{{dict["isbn"]}}</div>
       <div><span>Course:</span> {{dict["crscode"]}} -- {{dict["crstitle"]}}</div>
       <hr>
+      <div class="another-container">
+      <div class="book-info">
       <div><span>Seller:</span> {{dict["sellerId"]}}</div>
       <div><span>Condition:</span> {{dict["condition"]}}</div>
-      <div><span>Lowest Ask:</span> {{dict["minPrice"]}}</div>
-      <div><span>Highest Bid:</span> {{dict["highestBid"]}}</div>
-      <div>Buy Now Price: {{dict["buyNow"]}}
-           {% set message = "Are you sure you would like to buy this item at the Buy Now Price?" %}
+      <div><span>Lowest Ask:</span> ${{dict["minPrice"]}}</div>
+      <div><span>Highest Bid:</span> ${{dict["highestBid"]}}</div>
+    
+      <div><span>Buy Now Price:</span> ${{dict["buyNow"]}}</div>
+    </div>
+      <div class="purchase-info">  
+      {% set message = "Are you sure you would like to buy this item at the Buy Now Price?" %}
            <form action="/buyerPage?bookid={{uniqueId}}&buyNow={{dict['buyNow']}}" id="buyNowForm">
-              <button type="submit" form="buyNowForm" onclick="confirm({{message}})" value="Submit">
+              <button class="btn btn-primary width" type="submit" form="buyNowForm" onclick="confirm({{message}})" value="Submit">
               Buy Now
               </button>
            </form>
-      </div>
     {% endfor %}
     
     
     <div>
-
-      <div>Make a Bid:
+      <form action={{url}} method="POST" id="submitBidForm" enctype="multipart/form-data">
+      <div class="form-group col-md-6">
+        <label for="inputCourseTitle" class="form-label">Make a Bid</label>
         {% set url = "congratsPage?bookid=" + uniqueId %}
-        <form action={{url}} method="POST" id="submitBidForm">
-        <input type="text" name="bid" id="userBid" /> (example input: 19.99)
-        </form>
+        <input type="number" class="form-control" name="bid" id="userBid" placeholder="20">
       </div>
       <button
+      class="btn btn-primary width"
         form="submitBidForm"
         value="Submit"
-        onclick="return verifyBid();"> Submit
-
+        onclick="return verifyBid();"> SUBMIT
     </button>
+    </form>
      
     </div>
+  </div>
+  </div>
 </div>
 </div>
     <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
