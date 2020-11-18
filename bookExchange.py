@@ -190,7 +190,7 @@ def buyerPageTemplate():
     # if check for if uniqueID is none
     # if (uniqueId == None):
     #     return errorMsg('Invalid book ID')
-    results = []
+    
     try:
 
         results = database.getDescription(uniqueId)
@@ -214,21 +214,11 @@ def buyerPageTemplate():
     # Accessing images
     images = []
 
-    i = 0
-    for dict in results:
-        if dict["images"]:
-            image = dict["images"]
-            images.append(image[0].url)
-            print("image: ", image[0].url)
-            dict["images"] = i
-            print("image value: ", dict["images"])
-            i += 1
-        else:
-            images.append(
-                "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
-            dict["images"] = i
-            print("image value: ", dict["images"])
-            i += 1
+    if len(results[0]["images"]) == 0:
+        images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+    else:
+        for image in results[0]["images"]:
+            images.append(image.url)
 
     # whatever she called it and pass args
 
