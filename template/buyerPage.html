@@ -87,7 +87,7 @@
       <div>Make a Bid:
         {% set url = "congratsPage?bookid=" + uniqueId %}
         <form action={{url}} method="POST" id="submitBidForm">
-        <input type="text" name="bid" id="userBid" /> (example input: 19.99)
+        <input type="number" min="0" name="bid" id="userBid" /> (example input: 19.99)
         </form>
       </div>
       <button
