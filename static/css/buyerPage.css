@@ -3,7 +3,6 @@ h1 {
 }
 
 .buyer-container {
-  border: 2px solid green;
   width: 100%;
   padding: 1em;
   display: flex;
@@ -13,7 +12,6 @@ h1 {
   width: 100%;
   height: auto;
   display: inline-block;
-  border: 2px solid green;
 }
 
 .img-container {
@@ -26,7 +24,7 @@ h1 {
   display: inline-block;
   width: 60%;
   padding: 1em;
-  border: magenta solid 2px;
+  background-color: #f5f5f5;
 }
 
 .another-container {
@@ -45,10 +43,9 @@ span {
 .purchase-info {
   display: inline;
   width: 40%;
-  border: 1px solid black;
   padding: 0.5em;
   border-radius: 1em;
-  background-color: #f5f5f5;
+  background-color: #ffe4b5;
   box-shadow: 0.5em 0.5em 0.5em #f5f5f5;
 }
 
