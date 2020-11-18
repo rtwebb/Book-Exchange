@@ -113,7 +113,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
         elif status == 'received':
             receipients[seller]
             message = "Hello " + seller + ", " + "\n" + "\n" + \
-                "You have succesfully sold your book titled " + title + "for $" + highestBid "! " + \
+                "You have succesfully sold your book titled " + title + "for $" + highestBid + "! " + \
                 "We know that it is a long process, but congrats!  " +\
                 "You should be receiving the funds in your venmo shortly." + "\n" + "\n"
                 "Sincerely," + "\n" + \
