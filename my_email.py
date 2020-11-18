@@ -56,8 +56,6 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
                       "Sincerely," + "\n" + \
                       "The Book-Exchange team"
 
-
-
         elif status == 'deny':
             recipients = [seller]
             message = "Hello " + seller + "," + "\n" + "\n" + \
@@ -70,6 +68,17 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
                       "Status: confirmed" + \
                       "Sincerely," + "\n" + \
                       "The Book-Exchange team"
+
+        elif status == 'remove':
+            recipients = bidders
+            message = "Hello," + "\n" + "\n" + \
+                      seller + "has deleted a listing that you recently bid on. " + \
+                      "Below is the summary of the listing." + "\n" + "\n" + \
+                      "Book Title: " + title + "\n" + \
+                      "SellerID: " + seller + "\n" + "\n" + "Someone else may be selling the book are looking for--" \
+                                                            "log into book-exchange-cos333.herokuapp.com to find out!" + "\n" + "\n" + \
+                      "Best," + "\n" + \
+                      "The Book-Exchange Team"
 
         # need to send seperate one to seller
         # elif status == 'purchased':

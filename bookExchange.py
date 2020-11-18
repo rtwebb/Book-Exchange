@@ -359,10 +359,6 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-           
-
-
-
         # if it's the highest bid need to notify everyone
         # user wants to delete their bid
         deleteBidBuyerID = request.args.get('deleteBidBuyerID')
@@ -370,10 +366,11 @@ def profilePageTemplate():
         if deleteBidBuyerID is not None and deleteBidListingID is not None:
             database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
 
-        # Need to notify bidders
         # user wants to delete their listing
         deleteListingID = request.args.get('deleteListingID')
         if deleteListingID is not None:
+            allBidders = database.getAllBids(listingID)
+            sendEmail(mail, allBidders, 'removed', username, None, title)
             database.removeListing(deleteListingID)
 
         # Listings
