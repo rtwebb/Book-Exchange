@@ -250,10 +250,15 @@ def profilePageTemplate():
     username = CASClient().authenticate()
     username = username.strip()
     listingID = request.args.get('list')
-    sellerID = request.args.get('sellerID')
+    print('listingId: ', listingID)
+    sellerID = request.args.get('sellerId')
+    print('sellerID: ', sellerID)
     bidder = request.args.get('bidder')
+    print('bidder: ', bidder)
     title = request.args.get('title')
-    highestBid = request.args.get('highest')
+    print('title: ', title)
+    highestBid = request.args.get('cost')
+    print('highestBid: ', highestBid)
 
     try:
         # link to site to confirm
@@ -319,24 +324,28 @@ def profilePageTemplate():
         elif 'deny' in request.form:
             error1 = database.updateStatus(listingID, username, 'declined')
             if error1 == -1:
+                print("in error one")
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
             error2 = database.removeMyBid(username, listingID)
             if error2 == -1:
+                print("in error one")
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
             allBidders = database.getAllBids(listingID)
             if allBidders == -1:
+                print("all bidders")
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
-            error3 = sendEmail(mail, allBidders, 'deny', sellerID, highestBid, title)
+            error3 = sendEmail(mail, [username], 'deny', sellerID, highestBid, title)
             if error3 == -1:
+                print("in error three")
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
@@ -492,6 +501,11 @@ def checkout():
     print('title: ', title)
     cost = request.args.get('cost')
     print('cost: ', cost)
+    listing = request.args.get('list')
+    print('listing:', listing)
+    sellerId = request.args.get('sellerId')
+    print('sellerId:', sellerId)
+
     indicator = 0
 
     venmoUsername = request.form.get('username')
@@ -514,14 +528,31 @@ def checkout():
             print(username)
             if buyer.username == venmoUsername:
                 print('in if')
-                userID = get_user_id(buyer, None)
+                #userID = get_user_id(buyer, None)
 
         # Use the same device-id: 96321548-32Y8-2S28-00Z8-6YK71H070SM8 next time to avoid 2-factor-auth process.
 
         # Request money
-        venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(userID))
+        #venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(userID))
 
-    html = render_template('checkout.html', username=username, indicator=indicator, title=title, cost=cost)
+                # confirm button should stay up
+        # dont send to all bidders until it's purchased
+        # send email to all bidders and seller
+
+        error1 = database.updateStatus(listing, username, 'confirmed')
+        if error1 == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
+        # later need to distinguish between confirm and purchase so can delete bids
+        error2 = sendEmail(mail, [username], 'confirm', sellerId, cost, title)
+        if error2 == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
+    html = render_template('checkout.html', username=username, indicator=indicator, title=title, cost=cost, sellerId=sellerId, list=listing)
     response = make_response(html)
 
     return response
