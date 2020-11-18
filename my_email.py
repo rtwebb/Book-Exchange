@@ -16,7 +16,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
         if status == 'accept':
             recipients = bidders
             message = "Hello " + bidders[0] + "," + "\n" + "\n" + \
-                      "Congratulations! Your bid was accepted by" + seller + ".  " + \
+                      "Congratulations! Your bid was accepted by " + seller + ".  " + \
                       "Please log into book-exchange-cos333.herokuapp.com to confirm or deny your purchase of this book within the next 48hrs.  " + \
                       "If you do not make a decision within the next 48hrs the seller is authorized to delete your bid.  " + \
                       "Below is the summary of your bid." + "\n" + "\n" + \
@@ -111,7 +111,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
 
 
         elif status == 'received':
-            receipients[seller]
+            recipients[seller]
             message = "Hello " + seller + ", " + "\n" + "\n" + \
                 "You have succesfully sold your book titled " + title + "for $" + highestBid + "! " + \
                 "We know that it is a long process, but congrats!  " +\
@@ -120,15 +120,15 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
                 "The Book-Exchange team"
 
         elif status == 'sendBook':
-            receipients[seller]
+            recipients[seller]
             message = "Hello " + seller + ", " + "\n" + "\n" + \
                 "We have received the funds from the buyer, please send the book to the buyer.  " +\
                 "Once the buyer receives the book, funds will be released to your venmo account." + "\n" + "\n" +\
                 "Sincerely," + "\n" + \
                 "The Book-Exchange team"
 
-        for i in range(len(bidders)):
-            bidders[i] = bidders[i] + '@princeton.edu'
+        for i in range(len(recipients)):
+            recipients[i] = recipients[i] + '@princeton.edu'
 
         for bidder in bidders:
             print(bidder)
