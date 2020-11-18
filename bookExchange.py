@@ -498,6 +498,7 @@ def checkout():
     print('sellerId:', sellerId)
     indicator = 0
 
+
     venmoUsername = request.form.get('username')
     if venmoUsername != None:
         # venmoUsername = venmoUsername.strip()
@@ -506,18 +507,18 @@ def checkout():
        
 
         print('before client')
-        venmo = Client(access_token='d095f97905ba8bb6a2b84477e411d08cc000f6eadf261624b29e88ef15ab4ada')
+        #venmo = Client(access_token='d095f97905ba8bb6a2b84477e411d08cc000f6eadf261624b29e88ef15ab4ada')
         print('after client')
 
-        buyers = venmo.user.search_for_users(query=venmoUsername, page=1)
+        #buyers = venmo.user.search_for_users(query=venmoUsername, page=1)
         i = 0
 
-        userID = None
-        for buyer in buyers:
-            print(buyer.username)
-            print(username)
-            if buyer.username == venmoUsername:
-                print('in if')
+        #userID = None
+        #for buyer in buyers:
+            #print(buyer.username)
+            #print(username)
+            #if buyer.username == venmoUsername:
+                #print('in if')
                 #userID = get_user_id(buyer, None)
 
         # Use the same device-id: 96321548-32Y8-2S28-00Z8-6YK71H070SM8 next time to avoid 2-factor-auth process.
@@ -531,6 +532,7 @@ def checkout():
 
         error1 = database.updateStatus(listing, username, 'confirmed')
         if error1 == -1:
+            print("in error 1")
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
@@ -538,6 +540,7 @@ def checkout():
         # later need to distinguish between confirm and purchase so can delete bids
         error2 = sendEmail(mail, [username], 'confirm', sellerId, cost, title)
         if error2 == -1:
+            print("in error 1")
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
