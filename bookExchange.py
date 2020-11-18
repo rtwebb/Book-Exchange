@@ -250,10 +250,15 @@ def profilePageTemplate():
     username = CASClient().authenticate()
     username = username.strip()
     listingID = request.args.get('list')
-    sellerID = request.args.get('sellerID')
+    print('listingId: ', listingID)
+    sellerID = request.args.get('sellerId')
+    print('sellerID: ', sellerID)
     bidder = request.args.get('bidder')
+    print('bidder: ', bidder)
     title = request.args.get('title')
-    highestBid = request.args.get('highest')
+    print('title: ', title)
+    highestBid = request.args.get('cost')
+    print('highestBid: ', highestBid)
 
     try:
         # link to site to confirm
@@ -319,24 +324,28 @@ def profilePageTemplate():
         elif 'deny' in request.form:
             error1 = database.updateStatus(listingID, username, 'declined')
             if error1 == -1:
+                print("in error one")
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
             error2 = database.removeMyBid(username, listingID)
             if error2 == -1:
+                print("in error one")
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
             allBidders = database.getAllBids(listingID)
             if allBidders == -1:
+                print("all bidders")
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
-            error3 = sendEmail(mail, allBidders, 'deny', sellerID, highestBid, title)
+            error3 = sendEmail(mail, [username], 'deny', sellerID, highestBid, title)
             if error3 == -1:
+                print("in error three")
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
