@@ -1,103 +1,72 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     {% for dict in results %}
-    <meta id="highestBid" data-name="{{dict['highestBid']}}" >
-    <meta id="buyNow" data-name2="{{dict['buyNow']}}" >
-    <meta id="minPrice" data-name3="{{dict['minPrice']}}" >
-    
-
+    <meta id="highestBid" data-name="{{dict['highestBid']}}">
+    <meta id="buyNow" data-name2="{{dict['buyNow']}}">
+    <meta id="minPrice" data-name3="{{dict['minPrice']}}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/buyerPage.css') }}"
     />
 
-    {% endfor %}
-    <title>Buyers Page</title>
-  </head>
-  <body>
-    {% include 'head.html' %}
-
-    <!-- <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-      <ol class="carousel-indicators">
-        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-      </ol>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="https://images.ctfassets.net/j0hmm71qn9y2/3AzyT7Cv2cDZk67HHr8zCe/6bf8f160f7ddcd98d8bfdc547a82a839/Typeform-Blog-BlackFriday-Cover-AskAwesomely.jpg" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-          <img src="https://images.ctfassets.net/j0hmm71qn9y2/3AzyT7Cv2cDZk67HHr8zCe/6bf8f160f7ddcd98d8bfdc547a82a839/Typeform-Blog-BlackFriday-Cover-AskAwesomely.jpg" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-          <img src="https://images.ctfassets.net/j0hmm71qn9y2/3AzyT7Cv2cDZk67HHr8zCe/6bf8f160f7ddcd98d8bfdc547a82a839/Typeform-Blog-BlackFriday-Cover-AskAwesomely.jpg" class="d-block w-100" alt="...">
-        </div>
-      </div>
-      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div> -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
 
 
-
-    {% for dict in results %}
-
+      {% include 'head.html' %}
     <div class="buyer-container">
+      <div class="img-container">
       <img class="body-img" src="{{images[dict['images']]}}" width="225" height="160"></img>
+      </div>
       <div class="info-container">
       <h1>{{dict["title"]}}</h1>
       <div><span>Authors:</span> {{dict["authors"]}}</div>
-      <div><span>ISBN: </span>{{dict["isbn"]}}</div>
+      <div><span>ISBN:</span>{{dict["isbn"]}}</div>
       <div><span>Course:</span> {{dict["crscode"]}} -- {{dict["crstitle"]}}</div>
       <hr>
+      <div class="another-container">
+      <div class="book-info">
       <div><span>Seller:</span> {{dict["sellerId"]}}</div>
       <div><span>Condition:</span> {{dict["condition"]}}</div>
-      <div><span>Lowest Ask:</span> {{dict["minPrice"]}}</div>
-      <div><span>Highest Bid:</span> {{dict["highestBid"]}}</div>
-          <div><span>Buy Now Price: </span> {{dict["buyNow"]}}
-          {% set url = "congratsPage?bookid=" + uniqueId + "&buyNow=" + dict['buyNow']|string %}
-           <form action="{{url}}" method="POST" id="buyNowForm">
-              <button
-                  form="buyNowForm"
-                  value="Submit"
-                  onclick="return buyNow();">
-                  Buy Now
+      <div><span>Lowest Ask:</span> ${{dict["minPrice"]}}</div>
+      <div><span>Highest Bid:</span> ${{dict["highestBid"]}}</div>
+    
+      <div><span>Buy Now Price:</span> ${{dict["buyNow"]}}</div>
+    </div>
+      <div class="purchase-info">  
+      {% set message = "Are you sure you would like to buy this item at the Buy Now Price?" %}
+           <form action="/buyerPage?bookid={{uniqueId}}&buyNow={{dict['buyNow']}}" id="buyNowForm">
+              <button class="btn btn-primary width" type="submit" form="buyNowForm" onclick="confirm({{message}})" value="Submit">
+              Buy Now
               </button>
            </form>
-      </div>
     {% endfor %}
     
     
     <div>
-
-      <div>Make a Bid:
+      <form action={{url}} method="POST" id="submitBidForm" enctype="multipart/form-data">
+      <div class="form-group col-md-6">
+        <label for="inputCourseTitle" class="form-label">Make a Bid</label>
         {% set url = "congratsPage?bookid=" + uniqueId %}
-        <form action={{url}} method="POST" id="submitBidForm">
-        <input type="number" min="0" name="bid" id="userBid" /> (example input: 19.99)
-        </form>
+        <input type="number" class="form-control" name="bid" id="userBid" placeholder="20">
       </div>
       <button
+      class="btn btn-primary width"
         form="submitBidForm"
         value="Submit"
-        onclick="return verifyBid();">Submit
-
+        onclick="return verifyBid();"> SUBMIT
     </button>
+    </form>
      
     </div>
+  </div>
+  </div>
 </div>
 </div>
     <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
