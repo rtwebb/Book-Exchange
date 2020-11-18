@@ -352,7 +352,8 @@ def profilePageTemplate():
 
         # book received now must: send seller the money and change book status
         elif 'recieved' in request.form:
-            # send seller money 
+            # send seller money
+             
 
             # update status
             error1 = database.updateStatus(listingID, username, 'received')
@@ -505,7 +506,6 @@ def checkout():
     print('listing:', listing)
     sellerId = request.args.get('sellerId')
     print('sellerId:', sellerId)
-
     indicator = 0
 
     venmoUsername = request.form.get('username')
