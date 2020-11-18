@@ -10,7 +10,13 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
     <title> Book Exchange </title>
-
+    <style>
+    .thumbnail:hover {
+        border: 2px solid orange;
+        border-radius: 1em;
+        overflow: hidden;
+        }
+        </style>
 </head>
 
 <body>
@@ -26,7 +32,7 @@
                     {% for dict in results: %}
                     {% set url = "buyerPage?bookid=" + dict["uniqueId"] %}
                     <div class="col-md-3 col-md-offset-2">
-                        <div class="thumbnail">
+                        <div class="thumbnail thumbnails">
                             <a href="{{url}}">
                                 <img src="{{images[dict['images']]}}" alt="Lights" width="100%" height="200" class="d-block m-auto">
                                 <div class="caption" style="text-align:left">
