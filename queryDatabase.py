@@ -398,9 +398,7 @@ class QueryDatabase:
             results = []
             found = self._connection.query(Books, Courses, Listings, Bids). \
                 filter(Bids.buyerID.ilike(query)). \
-                filter(Bids.status == 'confirmed'). \
-                filter(Bids.status == 'purchased'). \
-                filter(Bids.status == 'received'). \
+                filter(Bids.status.in_(['confirmed', 'purchased', 'received'])). \
                 filter(Listings.uniqueID == Bids.listingID). \
                 filter(Books.isbn == Listings.isbn). \
                 filter(Listings.isbn == Courses.isbn).all()
@@ -460,8 +458,7 @@ class QueryDatabase:
             # find listing
             found = self._connection.query(Listings, Books, Courses). \
                 filter(Listings.sellerID.contains(query)). \
-                filter(Listings.status == 'purchased'). \
-                filter(Listings.status == 'received'). \
+                filter(Listings.status.in_(['purchased', 'received'])). \
                 filter(Books.isbn == Listings.isbn). \
                 filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course in found:
