@@ -29,14 +29,14 @@
             </ul>
             <table>
               <form name="searchType" action="searchResults">
-           <th> <select id="searchType1" class="selector" name='dropDown' class=dropdown>
-                <option value="" disabled="disabled"  style="display:none" selected="selected">Search by:</option>
-                  <option value='isbn'> ISBN </option> 
-                  <option value='title'> Book Title </option>
-                  <option value='crscode'> Course Code </option>
-                <option value='crstitle'> Course Title </option>
-              </select> </th>
-              
+                <div class="form-group col-md-1">
+                  <th> <select id="searchType1" name="dropDown" class="form-control">
+                    <option selected value='title'>Book Title</option>
+                    <option value='isbn'> ISBN </option> 
+                    <option value='crscode'> Course Code </option>
+                  <option value='crstitle'> Course Title </option>
+                  </select> </th>
+                </div>
                 <th><input class="form-control mr-sm-2" size="95" type="text" id="searchQuery" name="query" placeholder="Search"> </th>
                 <th><button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button> </th>
               </form>
@@ -62,7 +62,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="aboutUs2">About Us</a>
             </li>  <li class="nav-item">
-              <a class="nav-link" href="https://registrar.princeton.edu/course-offerings" target="_blank">Tiger Courses</a>
+              <a class="nav-link" href="https://registrar.princeton.edu/course-offerings" target="_blank">Princeton Regristrar</a>
           </li>
           </ul>
         </div>
@@ -71,5 +71,12 @@
       <br>
 
 
+      <th> <select id="searchType1" class="selector" name='dropDown' class=dropdown>
+        <option value="" disabled="disabled"  style="display:none" selected="selected">Search by:</option>
+          <option value='isbn'> ISBN </option> 
+          <option value='title'> Book Title </option>
+          <option value='crscode'> Course Code </option>
+        <option value='crstitle'> Course Title </option>
+      </select> </th>
 
       
