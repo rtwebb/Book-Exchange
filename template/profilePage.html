@@ -175,7 +175,7 @@
 						{% if book["status"] == "accepted" %}
 						<td>
 							<form method="post"
-								  action="profilePage?list={{book['uniqueId']}}&sellerId={{book['sellerId']}}&title={{book['title']}}&cost={{book['highestBid']}}">
+								  action="profilePage?list={{book['uniqueId']}}&sellerId={{book['sellerId']}}&title={{book['title']}}&cost={{book['bid']}}">
 								<input type="submit" name="deny" id="deny" value="Deny">
 							</form>
 
