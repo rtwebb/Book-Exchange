@@ -492,6 +492,11 @@ def checkout():
     print('title: ', title)
     cost = request.args.get('cost')
     print('cost: ', cost)
+    listing = request.args.get('list')
+    print('listing:', listing)
+    sellerId = request.args.get('sellerId')
+    print('sellerId:', sellerId)
+
     indicator = 0
 
     venmoUsername = request.form.get('username')
@@ -521,7 +526,24 @@ def checkout():
         # Request money
         #venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(userID))
 
-    html = render_template('checkout.html', username=username, indicator=indicator, title=title, cost=cost)
+                # confirm button should stay up
+        # dont send to all bidders until it's purchased
+        # send email to all bidders and seller
+
+        error1 = database.updateStatus(listing, username, 'confirmed')
+        if error1 == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
+        # later need to distinguish between confirm and purchase so can delete bids
+        error2 = sendEmail(mail, [username], 'confirm', sellerId, cost, title)
+        if error2 == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
+    html = render_template('checkout.html', username=username, indicator=indicator, title=title, cost=cost, sellerId=sellerId, list=listing)
     response = make_response(html)
 
     return response

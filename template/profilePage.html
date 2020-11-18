@@ -179,7 +179,7 @@
 								<input type="submit" name="deny" id="deny" value="Deny">
 							</form>
 
-							<form method="post" action="/checkout?cost={{book['bid']}}&title={{book['title']}}">
+							<form method="post" action="/checkout?cost={{book['bid']}}&title={{book['title']}}&sellerId={{book['sellerId']}}&list={{book['uniqueId']}}">
 								<input type="submit" name="confirm" id="confirm" value="Confirm">
 							</form>
 						</td>
