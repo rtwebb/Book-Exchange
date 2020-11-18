@@ -258,6 +258,7 @@
 							<td>${{book["bid"]}}</td>
 							<td></td>
 							<td>
+								<!-- {% if book["status"] == "purchased": %} -->
 								<form method="POST"
 								action="/profilePage?list={{book['uniqueId']}}&seller={{book['sellerId']}}">
 									  <input 
@@ -266,7 +267,10 @@
 									 	id="received"
 									 	value="Received"
 									 	onclick="return receivedBook();">    
-								</form>	
+								</form>
+								<!-- {% else: %}
+									Purhcase complete
+								{% endif %} -->
 							</td>
 						</tr>
 					{%    endfor %}
@@ -285,7 +289,7 @@
 							data-target="#collapseFour"
 							aria-expanded="false"
 							aria-controls="collapseFour">
-						{% if purchases|length == 0: %}
+						{% if soldBooks|length == 0: %}
 						<h3 style="text-align: left;">Sold Books:</h3>
 						<span>
 							You have not sold any books, <a href="sellerPage"> list books here </a>
