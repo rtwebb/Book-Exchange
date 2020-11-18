@@ -38,7 +38,7 @@ class Bids(Base):
     __tablename__ = 'bids'
     buyerID = Column(String, primary_key=True)
     listingID = Column(String, ForeignKey('listings.uniqueID'), primary_key=True)
-    bid = Column(Float)  # pending, accepted, declined, confirmed, denied
+    bid = Column(Float)  # pending, accepted, declined, confirmed, denied, received
     status = Column(String)
 
 
@@ -52,7 +52,7 @@ class Listings(Base):
     buyNow = Column(Float)
     listTime = Column(String)
     highestBid = Column(Float)
-    status = Column(String)  # open, closed, purchased
+    status = Column(String)  # open, closed, purchased, received
     images = relationship('Images', cascade='all, delete-orphan')
     bids = relationship('Bids', cascade='all, delete-orphan')
 

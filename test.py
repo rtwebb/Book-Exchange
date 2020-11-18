@@ -1,13 +1,14 @@
 from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
-test.add('353431', 'CCC', ['CCC'], 'CCC101', 'CCC', 'tianaf\n', 'good', 10, 50, '11:14:2020:22:05:42', [])
-# test.addBid('vdhopte\n', '02ac4736-8078-4ec7-a499-b320b7eaf416', 23)
-# test.addBid('emmandrar\n', '02ac4736-8078-4ec7-a499-b320b7eaf416', 33)
-# test.addBid('tianaf\n', '02ac4736-8078-4ec7-a499-b320b7eaf416', 40)
-# test.updateStatus('33bccd52-f075-4f7b-a3bc-e33141046ce6', 'vdhopte\n', 'confirmed')
-# test.removeAllBids('479a56f7-e7e8-4da8-a58c-da6fa363075e')
-# test.removeListing('33bccd52-f075-4f7b-a3bc-e33141046ce6')
+# test.add('353431', 'CCC', ['CCC'], 'CCC101', 'CCC', 'tianaf\n', 'good', 10, 50, '11:14:2020:22:05:42', [])
+# test.addBid('vdhopte\n', 'cd68ac82-2978-421f-ad21-6d57939193f6', 23)
+# test.addBid('emmandrar\n', 'cd68ac82-2978-421f-ad21-6d57939193f6', 33)
+# test.addBid('tianaf\n', 'cd68ac82-2978-421f-ad21-6d57939193f6', 40)
+# test.updateStatus('cd68ac82-2978-421f-ad21-6d57939193f6', 'vdhopte\n', 'confirmed')
+# test.removeAllBids('cd68ac82-2978-421f-ad21-6d57939193f6')
+# test.removeListing('cd68ac82-2978-421f-ad21-6d57939193f6')
+# test.removeMyBid('emmandrar\n', 'cd68ac82-2978-421f-ad21-6d57939193f6')
 
 
 

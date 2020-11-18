@@ -4,196 +4,169 @@
         <title> Checkout </title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" 
-          type="text/css"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    
     </head>
 
     <header>
-        {% include 'header.html' %}
-        <h1><center>Hi {{username}}, Let's complete your purchase</center></h1>
+        {% include 'head.html' %}
+
     </header>
 
-    <body>
-        
+    <body>        
 
-        <div class = container>
-            <p> Test </p>
-        </div>
-    </body>
-<!--
-    <div class="wrapper">
-        <div class="checkout container">
+            <div class ="container">
+              <div class="col-sm-12">
+                <div class="jumbotron">
+                  
+                  {% if indicator == 1: %}
+                  <h1><center>Congratulations!</center></h1>
+                  <br>
 
-         
+                  <p> Please check your venmo for a request for ${{cost}} from one of our team members. You will recieve 
+                    an email confirmation once your payment has been recieved along with next action steps.
+                    Once we recieve confirmation from you, that you have recieved the book, the money will
+                    be released to the seller. If for some reason you never recieve the book. The money will
+                    be released back to you.
+                    <br>
+                    <br>
+                    Thank you,
+                    <br>
+                    The Book-Exchange team
+                  </p>
 
-            <body>
 
-                <form id="payment-form" method="post" action="/checkout">
-                    <section>
-                        <label for="amount">
-                            <span class="input-label">Amount</span>
-                            <div class="input-wrapper amount-wrapper">
-                                <input id="amount" name="amount" type="tel" min="1" placeholder="Amount" value="10">
-                            </div>
-                        </label>
+                  {% else: %}
 
-                        <div class="bt-drop-in-wrapper">
-                            <div id="bt-dropin"></div>
+                  <h2><center>Hi {{username}}, Let's complete your purchase</center></h2>
+                  <br>
+               
+                    
+                 
+                  <form action="/checkout?cost={{cost}}&title={{title}}&list={{list}}&sellerId={{sellerId}}" method="post" id="submitBookForm" enctype="multipart/form-data">
+                  
+
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label for="inputUsername" class="form-label">Venmo Username</label>
+                        <input type="text" class="form-control" name="username" id="inputUsername" placeholder="Ex: Michael-Jordan" required>
+                        <div class="invalid-feedback">
+                          venmo username is required
                         </div>
-                    </section>
+                      </div>
 
-                    <input type="hidden" id="nonce" name="payment_method_nonce" />
-                    <button class="button" type="submit" id="submit-button">
-                        <span> Pay </span>
-                    </button>
-                </form>
-                
-            </body>
-        </div>
-    </div>
+                    </div>
 
-    <script src="https://js.braintreegateway.com/web/dropin/1.25.0/js/dropin.min.js"></script>
-    <script src="https://js.braintreegateway.com/web/3.68.0/js/client.min.js"></script>
-    <script src="https://js.braintreegateway.com/web/3.68.0/js/venmo.min.js"></script>
-    <script src="https://js.braintreegateway.com/web/3.68.0/js/data-collector.min.js"></script>
-        <script>
-            var form = document.querySelector('#payment-form')
-            var client_token = '{{client_token}}'
+                    <button
+                            class="btn orange" 
+                            form="submitBookForm"
+                            onclick="return verifyUsername();"
+                            value="Submit"> Submit
+                    </button> 
+                  </form>
+                </div>
+              </div>
+            </div>
 
-            braintree.dropin.create({
-                authorization: client_token,
-                container: '#bt-dropin',
-                venmo: {},
-                paypal: {
-                    flow: 'vault'
-                }
+         {% endif %}
 
-            }, function(createErr, instance){
-                form.addEventListener('submit', function (event) {
-                    event.preventDefault();
-
-                    instance.requestPaymentMethod(function (err, payload) {
-                        if (err){
-                            console.log('Error', err);
-                            return;
-                        }
-
-                        //Add the nonce to the form and submit
-                        document.querySelctor('#nonce').value = payload.nonce
-                        form.submit();
-
-                    });
-                });
-            });
+ 
 
 
+            {% include 'footer.html' %}
+    </body>
+
+    
+
+    <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script>
 
 
-            var venmoButton = document.getElementById('venmo-button');
+    'use strict';
 
-            // Create a client.
-            braintree.client.create({
-            authorization: client_token
-            }, function (clientErr, clientInstance) {
-            // Stop if there was a problem creating the client.
-            // This could happen if there is a network error or if the authorization
-            // is invalid.
-            if (clientErr) {
-                console.error('Error creating client:', clientErr);
-                return;
-            }
+    function verifyUsername(){
 
-            braintree.dataCollector.create({
-                client: clientInstance,
-                paypal: true
-            }, function (dataCollectorErr, dataCollectorInstance) {
-                if (dataCollectorErr) {
-                // Handle error in creation of data collector.
-                return;
-                }
+        let venmoUsername = $('#inputUsername').val()
+        console.log("venmoUsername: ", isbn);
+        if (venmoUsername == null)
+        alert('All required fields are not filled, please make sure you complete all required fields!');
+          return false;
 
-                // At this point, you should access the deviceData value and provide it
-                // to your server, e.g. by injecting it into your form as a hidden input.
-                console.log('Got device data:', dataCollectorInstance.deviceData);
-            });
 
-            braintree.venmo.create({
-                client: clientInstance,
-                // Add allowNewBrowserTab: false if your checkout page does not support
-                // relaunching in a new tab when returning from the Venmo app. This can
-                // be omitted otherwise.
-                // allowNewBrowserTab: false
-            }, function (venmoErr, venmoInstance) {
-                if (venmoErr) {
-                console.error('Error creating Venmo:', venmoErr);
-                return;
-                }
+    }
 
-                // Verify browser support before proceeding.
-                if (!venmoInstance.isBrowserSupported()) {
-                console.log('Browser does not support Venmo');
-                return;
-                }
+        $('#myModal').on('shown.bs.modal', function () {
+      $('#myInput').trigger('focus')
+    })
 
-                displayVenmoButton(venmoInstance);
+    function handleResponse(response){
+        // return array depending on search
 
-                // Check if tokenization results already exist. This occurs when your
-                // checkout page is relaunched in a new tab. This step can be omitted
-                // if allowNewBrowserTab is false.
-                if (venmoInstance.hasTokenizationResult()) {
-                venmoInstance.tokenize(function (tokenizeErr, payload) {
-                    if (err) {
-                    handleVenmoError(tokenizeErr);
-                    } else {
-                    handleVenmoSuccess(payload);
-                    }
-                });
-                return;
-                }
-            });
-            });
+        try
+        {
+          let results = response;
 
-            function displayVenmoButton(venmoInstance) {
-            // Assumes that venmoButton is initially display: none.
-            venmoButton.style.display = 'block';
+                  // call jQuery autocomplete on said list
+          $("#searchQuery").autocomplete({
+            source: results
+          });
 
-            venmoButton.addEventListener('click', function () {
-                venmoButton.disabled = true;
+        }
+        catch(e){
+          console.log("error: ", e);
+        }
 
-                venmoInstance.tokenize(function (tokenizeErr, payload) {
-                venmoButton.removeAttribute('disabled');
 
-                if (tokenizeErr) {
-                    handleVenmoError(tokenizeErr);
-                } else {
-                    handleVenmoSuccess(payload);
-                }
-                });
-            });
-            }
+      }
 
-            function handleVenmoError(err) {
-            if (err.code === 'VENMO_CANCELED') {
-                console.log('App is not available or user aborted payment flow');
-            } else if (err.code === 'VENMO_APP_CANCELED') {
-                console.log('User canceled payment flow');
-            } else {
-                console.error('An error occurred:', err.message);
-            }
-            }
 
-            function handleVenmoSuccess(payload) {
-            // Send the payment method nonce to your server, e.g. by injecting
-            // it into your form as a hidden input.
-            console.log('Got a payment method nonce:', payload.nonce);
-            // Display the Venmo username in your checkout UI.
-            console.log('Venmo user:', payload.details.username);
-            }
+      let request = null;
+
+      function getResults(){
+
+        let searchType = $('#searchType1').val();
+        searchType = encodeURIComponent(searchType);
+        console.log("searchType: ", searchType);
+
+        let query = $('#searchQuery').val();
+     
+        query = encodeURIComponent(query);
+        console.log("query: ", query);
+
+        if (searchType !== '' || searchType !== null){
+          if(query !== null || query.trim() !== ''){
+            let url = 'autoComplete?searchType=' + searchType + "&query=" + query
+          
+            if (request != null) {
+				      request.abort();
+			      }
+
+			      request = $.ajax(
+				      {
+					      type: 'GET',
+					      url: url, 
+					      success: handleResponse
+				      }
+
+			      );
+          }
+        }
+
+		}
+      function setup(){
+        $('#searchQuery').focus();
+        $('#searchQuery').on('input', getResults);
+      }
+      $('document').ready(setup);
 
 
 
 
-        </script> -->
+    </script>
+
 
 </html>

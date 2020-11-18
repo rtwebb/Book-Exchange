@@ -1,60 +1,68 @@
 <!DOCTYPE html>
 <html>
-	{% block content %}
-	<head>
-		<style>
-			div{
-				display: inline-block;
-			}
-			.info div {
-				width: 220px;
-				padding: 1px;
-				border: 2px solid gray;
-				margin: 10 px;
-				white-space: pre-wrap;
-				display: block;
-				text-align: left;
-				font-size: 10px;
-			}  
+<head>
+	<meta id="dropDown" searchType="{{searchType}}">
 
-			A{
-				text-decoration: none;
-				color: black;
-			 }
-			 </style>
-		<title> Book Exchange </title>
-	</head>
-	<body>
-		{% include 'header.html' %}
-		<h1> Search Results </h1>
-		<br>
-		{% if results is not none: %}
-				{%  for dict in results %}
-				<div class="info">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet"
+		  type="style/css"
+		  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+	<title> Book Exchange </title>
+</head>
+
+<body>
+
+	{% include 'head.html' %}
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				{% if results is not none: %}
+				{%   set number = results|length %}
+				{% else: %}
+				{%   set number = 0 %}
+				{% endif %}
+				<h1 style="text-align:center"> {{number}} Results </h1>
+				<br>
+				{% if results is not none: %}
+				<div class="row">
+					{% for dict in results: %}
 					{% set url = "buyerPage?bookid=" + dict["uniqueId"] %}
-					<a href={{url}}><img src="{{images[dict['images']]}}" width="225" height="160"></a> 
-					<div>
-						<a href={{url}}> 
-							Book title: {{dict["title"]}}
-							Highest bid: ${{dict["highestBid"]}}
-							Buy now: {{dict["buyNow"]}}
-						</a>
+					<div class="col-md-3 col-md-offset-2">
+						<div class="thumbnail">
+							<a href="{{url}}">
+								<img src="{{images[dict['images']]}}" alt="Lights" width="100%" height="200" class="d-block m-auto">
+								<div class="caption" style="text-align:left">
+									<hr style="margin-bottom:0;margin-top:5">
+									<small>
+										<p>
+											Book Title: {{dict["title"]}}
+											<br>
+											Highest bid: ${{dict["highestBid"]}}
+											<br>
+											Buy now: {{dict["buyNow"]}}
+										</p>
+									</small>
+								</div>
+							</a>
+						</div>
 					</div>
+					{% endfor %}
+					{% endif %}
 				</div>
-				{% endfor %}
-		{% else: %}
-			 <h4> No Books Found </h4>
-			
+			</div>
+		</div>
+	</div>
 
-		{% endif %}
+	{% include 'footer.html' %}
 
-		{% include 'footer.html' %}
-		<link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
-		<script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
-		<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+	<link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
+	<script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+	<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
 
-		
-		<script>
+	<script>
 			
 			function handleResponse(response){
 				// return array depending on search
@@ -140,7 +148,6 @@
 			$('document').ready(setup);
 		</script>
 	</body>
-	{% endblock content %}
 </html>
 
 
