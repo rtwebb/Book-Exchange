@@ -514,12 +514,12 @@ def checkout():
             print(username)
             if buyer.username == venmoUsername:
                 print('in if')
-                userID = get_user_id(buyer, None)
+                #userID = get_user_id(buyer, None)
 
         # Use the same device-id: 96321548-32Y8-2S28-00Z8-6YK71H070SM8 next time to avoid 2-factor-auth process.
 
         # Request money
-        venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(userID))
+        #venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(userID))
 
     html = render_template('checkout.html', username=username, indicator=indicator, title=title, cost=cost)
     response = make_response(html)
