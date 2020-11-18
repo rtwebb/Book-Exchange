@@ -353,7 +353,7 @@ def profilePageTemplate():
                 return response
 
             # send email to seller
-            error2 = sendEmail(mail, 'received')
+            error2 = sendEmail(mail, None,  'received', sellerID, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
