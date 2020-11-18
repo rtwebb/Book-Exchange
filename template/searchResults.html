@@ -19,7 +19,12 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<h1 style="text-align:center"> Recently Listed </h1>
+				{% if results is not none: %}
+				{%   set number = results|length %}
+				{% else: %}
+				{%   set number = 0 %}
+				{% endif %}
+				<h1 style="text-align:center"> {{number}} Results </h1>
 				<br>
 				{% if results is not none: %}
 				<div class="row">

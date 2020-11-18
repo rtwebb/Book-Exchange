@@ -91,7 +91,7 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="inputMin" class="form-label">Minimum Price</label>
-                  <input type="number" class="form-control" name="minPrice" id="inputMin" required>
+                  <input type="number" min="0" class="form-control" name="minPrice" id="inputMin" required>
                   <div class="invalid-feedback">
                     Min Price is required
                   </div>
@@ -99,7 +99,7 @@
               
                 <div class="form-group col-md-6">
                   <label for="inputBuy" class="form-label">Buy Now Price</label>
-                  <input type="number" class="form-control" name="buyNow" id="inputBuy" required>
+                  <input type="number" min="0" class="form-control" name="buyNow" id="inputBuy" required>
                   <div class="invalid-feedback">
                     Buy Now Price is required
                   </div>
