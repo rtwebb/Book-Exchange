@@ -31,7 +31,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
         elif status == 'decline':
             recipients = bidders
             message = "Hello " + bidders[0] + "," + "\n" + "\n" + \
-                      "Your bid was declined by" + seller + ".  " + \
+                      "Your bid was declined by " + seller + ".  " + \
                       "You may log into book-exchange-cos333.herokuapp.com and place a bid on the same book or a different one. " + \
                       "Below is the summary of your bid." + "\n" + "\n" + \
                       "Book Title: " + title + "\n" + \
@@ -44,7 +44,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
         elif status == 'confirm':
             recipients = [seller]
             message = "Hello " + seller + "," + "\n" + "\n" + \
-                      bidders[0] + "confirmed their bid.  " + \
+                      bidders[0] + " confirmed their bid.  " + \
                       "You should receive a confimration email from us within the next 48 hours, once the buyer has sent payment for the book.  " + \
                       "If you do not recieve a confirmation email from us within the next 48 hours saying the book was purchased,  " + \
                       "you are authorized to delete this bid.  " + \
@@ -59,7 +59,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
         elif status == 'deny':
             recipients = [seller]
             message = "Hello " + seller + "," + "\n" + "\n" + \
-                      bidders[0] + "denied their bid.  " + \
+                      bidders[0] + " denied their bid.  " + \
                       "You may log into book-exchange-cos333.heroku.com and accept another bid if your listing has any.  " + \
                       "Below is the summary of your listing." + "\n" + "\n" + \
                       "Book Title: " + title + "\n" + \
@@ -72,7 +72,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
         elif status == 'remove':
             recipients = bidders
             message = "Hello," + "\n" + "\n" + \
-                      seller + "has deleted a listing that you recently bid on. " + \
+                      seller + " has deleted a listing that you recently bid on. " + \
                       "Below is the summary of the listing." + "\n" + "\n" + \
                       "Book Title: " + title + "\n" + \
                       "SellerID: " + seller + "\n" + "\n" + "Someone else may be selling the book are looking for--" \
@@ -113,7 +113,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
         elif status == 'received':
             recipients[seller]
             message = "Hello " + seller + ", " + "\n" + "\n" + \
-                "You have succesfully sold your book titled " + title + "for $" + highestBid + "! " + \
+                "You have succesfully sold your book titled " + title + " for $" + highestBid + "! " + \
                 "We know that it is a long process, but congrats!  " +\
                 "You should be receiving the funds in your venmo shortly." + "\n" + "\n" + \
                 "Sincerely," + "\n" + \
