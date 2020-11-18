@@ -126,7 +126,9 @@ class QueryDatabase:
             bids = self._connection.query(Bids). \
                 filter(Bids.listingID == uniqueID). \
                 filter(Bids.status != 'accepted').\
-                filter(Bids.status != 'confirmed').all()
+                filter(Bids.status != 'confirmed').\
+                filter(Bids.status != 'purchased').\
+                filter(Bids.status != 'received').all()
             for bid in bids:
                 self._connection.delete(bid)
                 self._connection.commit()
@@ -219,6 +221,7 @@ class QueryDatabase:
                     filter(Listings.isbn.ilike(newQuery, escape='\\')). \
                     filter(Listings.status != 'closed'). \
                     filter(Listings.status != 'purchased'). \
+                    filter(Listings.status != 'received'). \
                     order_by(Listings.listTime.desc()).all()
             elif signal == 2:  # query is a book title
                 found = self._connection.query(Books, Courses, Listings). \
@@ -227,6 +230,7 @@ class QueryDatabase:
                     filter(Courses.isbn == Books.isbn). \
                     filter(Listings.status != 'closed'). \
                     filter(Listings.status != 'purchased'). \
+                    filter(Listings.status != 'received'). \
                     order_by(Listings.listTime.desc()).all()
             elif signal == 3:  # query is a courseCode
                 found = self._connection.query(Books, Courses, Listings). \
@@ -235,6 +239,7 @@ class QueryDatabase:
                     filter(Books.isbn == Courses.isbn). \
                     filter(Listings.status != 'closed'). \
                     filter(Listings.status != 'purchased'). \
+                    filter(Listings.status != 'received'). \
                     order_by(Listings.listTime.desc()).all()
             else:  # search by course title
                 found = self._connection.query(Books, Courses, Listings). \
@@ -243,6 +248,7 @@ class QueryDatabase:
                     filter(Courses.courseTitle.ilike(newQuery, escape='\\')). \
                     filter(Listings.status != 'closed'). \
                     filter(Listings.status != 'purchased'). \
+                    filter(Listings.status != 'received'). \
                     order_by(Listings.listTime.desc()).all()
             if requestType == "1":
                 for book, course, listing in found:
@@ -285,6 +291,7 @@ class QueryDatabase:
                 filter(Listings.isbn == Courses.isbn). \
                 filter(Listings.status != 'closed'). \
                 filter(Listings.status != 'purchased'). \
+                filter(Listings.status != 'received'). \
                 order_by(Listings.listTime.desc()).all()
             for book, course, listing in found:
                 result = {
@@ -314,10 +321,15 @@ class QueryDatabase:
                 filter(Bids.listingID == listingID).one()
             bid.status = newStatus
             self._connection.commit()
-            if newStatus == 'received':
+            if newStatus == 'confirmed':
                 listing = self._connection.query(Listings). \
                     filter(Listings.uniqueID == listingID).one()
                 listing.status = 'purchased'
+                self._connection.commit()
+            if newStatus == 'received':
+                listing = self._connection.query(Listings). \
+                    filter(Listings.uniqueID == listingID).one()
+                listing.status = 'received'
                 self._connection.commit()
             if newStatus == 'accepted':
                 listing = self._connection.query(Listings). \
@@ -345,6 +357,7 @@ class QueryDatabase:
             found = self._connection.query(Listings, Books, Courses). \
                 filter(Listings.sellerID.contains(query)). \
                 filter(Listings.status != 'purchased'). \
+                filter(Listings.status != 'received'). \
                 filter(Books.isbn == Listings.isbn). \
                 filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course in found:
@@ -386,6 +399,8 @@ class QueryDatabase:
             found = self._connection.query(Books, Courses, Listings, Bids). \
                 filter(Bids.buyerID.ilike(query)). \
                 filter(Bids.status == 'confirmed'). \
+                filter(Bids.status == 'purchased'). \
+                filter(Bids.status == 'received'). \
                 filter(Listings.uniqueID == Bids.listingID). \
                 filter(Books.isbn == Listings.isbn). \
                 filter(Listings.isbn == Courses.isbn).all()
@@ -396,6 +411,7 @@ class QueryDatabase:
                     "crstitle": course.courseTitle,
                     "minPrice": listing.minPrice,
                     "bid": bid.bid,
+                    "status": bid.status,
                     "sellerId": listing.sellerID
                 }
                 results.append(result)
@@ -416,7 +432,9 @@ class QueryDatabase:
                 filter(Listings.uniqueID == Bids.listingID). \
                 filter(Books.isbn == Listings.isbn). \
                 filter(Courses.isbn == Books.isbn). \
-                filter(Bids.status != 'confirmed').all()
+                filter(Bids.status != 'confirmed').\
+                filter(Bids.status != 'purchased'). \
+                filter(Bids.status != 'received').all()
             for bid, book, course, listing in found:
                 result = {
                     "title": book.title,
@@ -443,6 +461,7 @@ class QueryDatabase:
             found = self._connection.query(Listings, Books, Courses). \
                 filter(Listings.sellerID.contains(query)). \
                 filter(Listings.status == 'purchased'). \
+                filter(Listings.status == 'received'). \
                 filter(Books.isbn == Listings.isbn). \
                 filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course in found:
@@ -497,6 +516,7 @@ class QueryDatabase:
                 filter(Books.isbn == Listings.isbn). \
                 filter(Listings.status != 'closed'). \
                 filter(Listings.status != 'purchased'). \
+                filter(Listings.status != 'received'). \
                 filter(Courses.isbn == Listings.isbn).all()
             for listing, book, course in found:
                 result = {
