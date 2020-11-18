@@ -253,7 +253,7 @@ def profilePageTemplate():
     sellerID = request.args.get('sellerID')
     bidder = request.args.get('bidder')
     title = request.args.get('title')
-    highestBid = request.args.get('highest')
+    highestBid = request.args.get('bid')
 
     try:
         # link to site to confirm
@@ -264,12 +264,14 @@ def profilePageTemplate():
 
             error1 = database.updateStatus(listingID, bidder, 'accepted')
             if error1 == -1:
+                print("in error one")
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
             error2 = sendEmail(mail, [bidder], 'accept', username, highestBid, title)
             if error2 == -1:
+                print("in error 2")
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
