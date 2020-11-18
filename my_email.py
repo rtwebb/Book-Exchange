@@ -115,7 +115,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
             message = "Hello " + seller + ", " + "\n" + "\n" + \
                 "You have succesfully sold your book titled " + title + "for $" + highestBid + "! " + \
                 "We know that it is a long process, but congrats!  " +\
-                "You should be receiving the funds in your venmo shortly." + "\n" + "\n"
+                "You should be receiving the funds in your venmo shortly." + "\n" + "\n" + \
                 "Sincerely," + "\n" + \
                 "The Book-Exchange team"
 
@@ -123,7 +123,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
             receipients[seller]
             message = "Hello " + seller + ", " + "\n" + "\n" + \
                 "We have received the funds from the buyer, please send the book to the buyer.  " +\
-                "Once the buyer receives the book, funds will be released to your venmo account." + "\n" + "\n"
+                "Once the buyer receives the book, funds will be released to your venmo account." + "\n" + "\n" +\
                 "Sincerely," + "\n" + \
                 "The Book-Exchange team"
 
