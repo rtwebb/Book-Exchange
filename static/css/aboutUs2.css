@@ -6,6 +6,16 @@ body {
     text-align: center
 }
 
+.rounded-circle{
+    border: solid 10px  #ffa700
+}
+
+.row{
+    text-align: center
+}
+
+
+
 .teamMember {
 /*width: 100%;*/
 color: black;
