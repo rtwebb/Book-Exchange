@@ -90,6 +90,11 @@
 
 			}
 
+			function handleResponse1(response1) {
+				let i = 0;
+				i = i + 1;
+			}
+
 			let request = null;
 
 			function getResults(){
@@ -99,16 +104,12 @@
 
 				let query = $('#searchQuery').val();
 
-				let sortBy = $('#sortBy').val();
-				if (sortBy === null || sortBy === ''):
-					sortBy = "newest";
-
 				query = encodeURIComponent(query);
 				console.log("query: ", query);
 
 				if (searchType !== '' || searchType !== null){
 					if(query !== null || query.trim() !== ''){
-						let url = 'autoComplete?searchType=' + searchType + "&query=" + query + "&sortBy=" + sortBy
+						let url = 'autoComplete?searchType=' + searchType + "&query=" + query
 					
 						if (request != null) {
 							request.abort();
@@ -127,11 +128,48 @@
 
 			}
 
+			let request1 = null;
+
+			function sortBy() {
+				let searchType = $('#searchType1').val();
+				searchType = encodeURIComponent(searchType);
+				console.log("searchType: ", searchType);
+
+				let query = $('#searchQuery').val();
+
+				query = encodeURIComponent(query);
+				console.log("query: ", query);
+
+                let sortBy = $('#sortBy').val();
+
+				if (searchType !== '' || searchType !== null) {
+					if (query !== null || query.trim() !== '') {
+						let url = 'searchResults?searchType=' + searchType + "&query=" + query + "&sortBy=" + sortBy
+
+						if (request1 != null) {
+							request1.abort();
+						}
+
+						request1 = $.ajax(
+							{
+								type: 'GET',
+								url: url,
+								success: handleResponse1
+							}
+
+						);
+					}
+				}
+
+			}
+
 			function setQuery() {
 				query1 = "" + "{{query|safe}}";
 				let query = $('#searchQuery');
 
 				query.val(query1);
+				console.log(query1);
+				console.log(query);
 
 				var searchType = "{{searchType|safe}}";
 				console.log(searchType);
@@ -154,7 +192,7 @@
 				$('#searchQuery').focus()
 				setQuery();
 				$('#searchQuery').on('input', getResults);
-                $('#sortBy').change(getResults());
+                $('#searchQuery').change(sortBy());
 			}
 
 			$('document').ready(setup);

@@ -114,56 +114,50 @@ def searchResultsTemplate():
     if query == '' or query is None:
         query = ''
 
+    sortBy = request.args.get('sortBy')
+
+    if sortBy is None:
+        sortBy = "newest"
+
     results = []
 
-    # checking for null inputs and not interacting with drop-down
-    if searchType == 0 or query == '':
-        if not results:
-            results = None
-            images = None
-        html = render_template('searchResults.html', results=results, searchType=searchType,
-                               username=username, query=query, image=images)
-        response = make_response(html)
-        return response
-
     # proper input (drop-down filled in and query sent)
-    else:
-        uniqueIds = []
-        images = []
-        try:
-            results = database.search(searchType, query, "1", "newest")
-            if results == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
-
-            # Accessing images
-            i = 0
-            for dict in results:
-                if dict["images"]:
-                    image = dict["images"]
-                    images.append(image[0].url)
-                    dict["images"] = i
-                    i += 1
-
-                else:
-                    images.append(
-                        "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
-                    dict["images"] = i
-                    i += 1
-
-        except Exception as e:
-            print(argv[0] + ": " + str(e), file=stderr)
+    
+    uniqueIds = []
+    images = []
+    try:
+        results = database.search(searchType, query, "1", sortBy)
+        if results == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
 
-        html = render_template('searchResults.html', results=results,
-                               username=username, query=query, searchType=searchType,
-                               images=images)
+        # Accessing images
+        i = 0
+        for dict in results:
+            if dict["images"]:
+                image = dict["images"]
+                images.append(image[0].url)
+                dict["images"] = i
+                i += 1
+
+            else:
+                images.append(
+                    "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+                dict["images"] = i
+                i += 1
+
+    except Exception as e:
+        print(argv[0] + ": " + str(e), file=stderr)
+        html = render_template('errorPage.html')
         response = make_response(html)
         return response
 
+    html = render_template('searchResults.html', results=results,
+                           username=username, query=query, searchType=searchType,
+                           images=images)
+    response = make_response(html)
+    return response
 
 # -----------------------------------------------------------------------
 
@@ -437,11 +431,7 @@ def autoComplete():
 
     dropDown = request.args.get('searchType')
     query = request.args.get('query')
-    sortBy = request.args.get('sortBy')
-
-    if sortBy is None:
-        sortBy = "newest"
-
+    
     # ask Tiana to return ISBN
     if dropDown == "isbn":
         index = 'isbn'
@@ -458,7 +448,7 @@ def autoComplete():
 
     results = []
     try:
-        results = database.search(searchType, query, 0, sortBy)
+        results = database.search(searchType, query, 0, "newest")
         if results == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
