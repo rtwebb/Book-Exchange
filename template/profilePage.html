@@ -99,20 +99,36 @@
 							</td>
 							<td>
 								<form action="/sellerPage" method="POST">
+									{% if book["highestBid"] > 0: %}
+									<button class="btn btn-warning btn-xs"
+											type="submit"
+											onclick="return editListing();" disabled>
+										Edit
+									</button>
+									{% else: %}
 									<button class="btn btn-warning btn-xs"
 											type="submit"
 											onclick="return editListing();">
 										Edit
 									</button>
+									{% endif %}
 								</form>
 
 								{% set url = "/profilePage?deleteListingID=" + book["uniqueId"] %}
 								<form action={{url}} method="POST">
+									{% if book["highestBid"] > 0: %}
+									<button class="btn btn-warning btn-xs"
+											type="submit"
+											onclick="return deleteListing();" disabled>
+										Delete
+									</button>
+									{% else: %}
 									<button class="btn btn-warning btn-xs"
 											type="submit"
 											onclick="return deleteListing();">
 										Delete
 									</button>
+									{% endif %}
 								</form>
 							</td>
 						</tr>
@@ -198,15 +214,28 @@
 						<td>
 							{% set url = "/buyerPage?bookid=" + book["uniqueId"] %}
 							<form action={{url}} method="POST">
+								{% if book["status"] == "pending": %}
 								<button class="btn btn-warning btn-xs" type="submit" onclick="return editBid();">
 									Edit
 								</button>
+								{% else: %}
+								<button class="btn btn-warning btn-xs" type="submit" onclick="return editBid();" disabled data-toggle="tooltip" data-placement="top"
+										title="You can not edit an accepted bid. Please deny purchase and bid again">
+									Edit
+								</button>
+								{% endif %}
 							</form>
 
 							<form action="/profilePage?deleteBidBuyerID={{username}}&deleteBidListingID={{book['uniqueId']}}" method="POST">
+								{% if book["status"] == "pending": %}
 								<button class="btn btn-warning btn-xs" type="submit" onclick="return deleteBid();">
 									Delete
 								</button>
+								{% else: %}
+								<button class="btn btn-warning btn-xs" type="submit" onclick="return deleteBid();" disabled>
+									Delete
+								</button>
+								{% endif %}
 							</form>
 						</td>
 					</tr>
