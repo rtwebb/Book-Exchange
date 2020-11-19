@@ -125,12 +125,13 @@ def searchResultsTemplate():
                                username=username, query=query, image=images)
         response = make_response(html)
         return response
+
     # proper input (drop-down filled in and query sent)
     else:
         uniqueIds = []
         images = []
         try:
-            results = database.search(searchType, query, "1")
+            results = database.search(searchType, query, "1", "newest")
             if results == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
@@ -436,6 +437,10 @@ def autoComplete():
 
     dropDown = request.args.get('searchType')
     query = request.args.get('query')
+    sortBy = request.args.get('sortBy')
+
+    if sortBy is None:
+        sortBy = "newest"
 
     # ask Tiana to return ISBN
     if dropDown == "isbn":
@@ -453,7 +458,7 @@ def autoComplete():
 
     results = []
     try:
-        results = database.search(searchType, query, 0)
+        results = database.search(searchType, query, 0, sortBy)
         if results == -1:
             html = render_template('errorPage.html')
             response = make_response(html)

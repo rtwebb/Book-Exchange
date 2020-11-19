@@ -27,6 +27,14 @@
 				<h1 style="text-align:center"> {{number}} Results </h1>
 				<br>
 				{% if results is not none: %}
+
+				<select id="sortBy" class="selector" name='sortBy' class=dropdown style="margin-bottom:10px">
+					<option value="newest" selected="selected">Sort by: Newest</option>
+					<option value='alphabetical'> Sort by: Alphabetical </option>
+					<option value='hitolo'> Sort by: Price (High-Low)</option>
+					<option value='lotohi'> Sort by: Price (Low-High) </option>
+				</select>
+				
 				<div class="row">
 					{% for dict in results: %}
 					{% set url = "buyerPage?bookid=" + dict["uniqueId"] %}
@@ -91,12 +99,16 @@
 
 				let query = $('#searchQuery').val();
 
+				let sortBy = $('#sortBy').val();
+				if (sortBy === null || sortBy === ''):
+					sortBy = "newest";
+
 				query = encodeURIComponent(query);
 				console.log("query: ", query);
 
 				if (searchType !== '' || searchType !== null){
 					if(query !== null || query.trim() !== ''){
-						let url = 'autoComplete?searchType=' + searchType + "&query=" + query
+						let url = 'autoComplete?searchType=' + searchType + "&query=" + query + "&sortBy=" + sortBy
 					
 						if (request != null) {
 							request.abort();
@@ -137,12 +149,12 @@
 				else if(searchType == 4){
 					dropDown.val("crstitle");
 				}
-
 			}
 			function setup(){
 				$('#searchQuery').focus()
 				setQuery();
 				$('#searchQuery').on('input', getResults);
+                $('#sortBy').change(getResults());
 			}
 
 			$('document').ready(setup);

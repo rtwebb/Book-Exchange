@@ -203,7 +203,7 @@ class QueryDatabase:
     # ----------------------------------------------------------------------------------
 
     # searches the database and returns data to show on searchResults
-    def search(self, signal, query, requestType):
+    def search(self, signal, query, requestType, sortBy):
         try:
             # signal tells me what kind of query it is: book title, isbn, course, etc
             newQuery = query.replace("%", "\\%")
@@ -217,13 +217,13 @@ class QueryDatabase:
             if signal == 1:  # if query is by isbn
                 newQuery = newQuery.replace("-", "")
                 found = self._connection.query(Books, Courses, Listings). \
-                    filter(Courses.isbn == Listings.isbn). \
-                    filter(Books.isbn == Listings.isbn). \
-                    filter(Listings.isbn.ilike(newQuery, escape='\\')). \
-                    filter(Listings.status != 'closed'). \
-                    filter(Listings.status != 'purchased'). \
-                    filter(Listings.status != 'received'). \
-                    order_by(Listings.listTime.desc()).all()
+                        filter(Courses.isbn == Listings.isbn). \
+                        filter(Books.isbn == Listings.isbn). \
+                        filter(Listings.isbn.ilike(newQuery, escape='\\')). \
+                        filter(Listings.status != 'closed'). \
+                        filter(Listings.status != 'purchased'). \
+                        filter(Listings.status != 'received').order_by(Listings.listTime.desc()).all()
+               
             elif signal == 2:  # query is a book title
                 found = self._connection.query(Books, Courses, Listings). \
                     filter(Listings.isbn == Books.isbn). \
@@ -231,8 +231,8 @@ class QueryDatabase:
                     filter(Courses.isbn == Books.isbn). \
                     filter(Listings.status != 'closed'). \
                     filter(Listings.status != 'purchased'). \
-                    filter(Listings.status != 'received'). \
-                    order_by(Listings.listTime.desc()).all()
+                    filter(Listings.status != 'received').order_by(Listings.listTime.desc()).all()
+                
             elif signal == 3:  # query is a courseCode
                 found = self._connection.query(Books, Courses, Listings). \
                     filter(Listings.isbn == Courses.isbn). \
@@ -240,8 +240,8 @@ class QueryDatabase:
                     filter(Books.isbn == Courses.isbn). \
                     filter(Listings.status != 'closed'). \
                     filter(Listings.status != 'purchased'). \
-                    filter(Listings.status != 'received'). \
-                    order_by(Listings.listTime.desc()).all()
+                    filter(Listings.status != 'received').order_by(Listings.listTime.desc()).all()
+                
             else:  # search by course title
                 found = self._connection.query(Books, Courses, Listings). \
                     filter(Listings.isbn == Books.isbn). \
@@ -249,8 +249,8 @@ class QueryDatabase:
                     filter(Courses.courseTitle.ilike(newQuery, escape='\\')). \
                     filter(Listings.status != 'closed'). \
                     filter(Listings.status != 'purchased'). \
-                    filter(Listings.status != 'received'). \
-                    order_by(Listings.listTime.desc()).all()
+                    filter(Listings.status != 'received').order_by(Listings.listTime.desc()).all()
+                
             if requestType == "1":
                 for book, course, listing in found:
                     result = {
@@ -265,6 +265,14 @@ class QueryDatabase:
                     }
 
                     results.append(result)
+
+                if sortBy == "alphabetical":                
+                    results = sorted(results, key=lambda d: d["title"])
+                elif sortBy == "lotohi":
+                    results = sorted(results, key=lambda d: d["highestBid"])
+                elif sortBy == "hitolo":
+                    results = sorted(results, key=lambda d: d["highestBid"])
+                    results = results[::-1]
                 return results
             else:
                 for book, course, listing in found:
