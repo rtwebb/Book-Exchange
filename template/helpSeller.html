@@ -1,10 +1,10 @@
-﻿<!doctype html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html>
 <head>
-    <title>Title</title>
     <!-- Required meta tags -->
+    <title>How to Sell</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -13,58 +13,85 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-    <style>
-        .btn-outline-success {
-            color: orange;
-        }
-    </style>
 </head>
-<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #e3f2fd;">
-    <a class="navbar-brand mx-auto" href="homePage" style="font-size: xx-large; color: orange; font-weight: bold;">BOOK Exchange</a>
-    <form name="searchType" action="searchResults" class="form-inline" style="margin-left:115px">
-
-        <div class="form-group">
-
-            <select id="searchType1" name="dropDown" class="form-control">
-                <option selected value='title'>Book Title</option>
-                <option value='isbn'> ISBN </option>
-                <option value='crscode'> Course Code </option>
-                <option value='crstitle'> Course Title </option>
-            </select>
-
-            <input class="form-control mr-sm-2" size="75" type="text" id="searchQuery" name="query" placeholder="Search">
-            <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
-
+<body>
+    {% include 'head.html' %}
+    <h1 style="text-align: center; color: orange;">How to SELL a book</h1>
+    <div class="list-group container">
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Searching</h5>
+                <small>STEP 1</small>
+            </div>
+            <p class="mb-1">
+                The first step to buying a book, is using the search bar. First, pick a category to search from using the drop-down.
+                The options are: <b>Book Title, ISBN, Course Code, Course Title</b>. Based on the search category you chose, type in text representing the category, for the book you
+                are looking for. After that, hit the <b style="color: orange;">Search</b> button and the results should load!
+            </p>
+            </p>
+            <small>You don't need to type in the full information, our matching system can detect part of the information and get you the right book!</small>
         </div>
-
-    </form>
-</nav>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-
-            <li class="nav-item mx-auto">
-                <a class="nav-link" href="profilePage">My Profile</a>
-            </li>
-            <li class="nav-item mx-auto">
-                <a class="nav-link" href="sellerPage">Sell A Book</a>
-            </li>
-            <li class="nav-item mx-auto">
-                <a class="nav-link" href="aboutUs2">About Us</a>
-            </li>
-            <li class="nav-item mx-auto">
-                <a class="nav-link" href="https://registrar.princeton.edu/course-offerings" target="_blank">Princeton Registrar</a>
-            </li>
-
-
-        </ul>
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Picking a Book</h5>
+                <small>STEP 2</small>
+            </div>
+            <p class="mb-1">
+                Once you search, the book results should load. You should be able to identify your book based on the image of the book in the entries.
+                There is also supplementary information about the author, course title, and <b>price</b>. Once you've found a book you like, click on it to take you
+                to our buyer page.
+            </p>
+            <small>If you don't find the book in our Search Results, you may need to check your data entry! Otherwise, there are no sellers of your book.</small>
+        </div>
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Bidding on a Book</h5>
+                <small class="text-muted">STEP 3-A</small>
+            </div>
+            <p class="mb-1">
+                On the buyer's page, more information should be shown to you. You can confirm the quality of the book by
+                clicking through the image carousel displayed. If you are confident that you want the book, please <b>place a bid</b>.
+            </p>
+            <small style="color: red;">Do not place a bid lower than the Lowest Ask, or higher than the Buy Now price.</small>
+        </div>
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Buying a Book</h5>
+                <small class="text-muted">STEP 3-B</small>
+            </div>
+            <p class="mb-1">
+                Instead of competing in the bidding system for a book, we also provide the option to buy. The seller will have a
+                <b>Buy Now</b> price that you can meet. Hit the button if you'd like to get the book straight away. If you do, then all you
+                need to do is wait for the seller's confirmation.
+            </p>
+            <small class="text-muted">
+                If you navigate to the <b>My Profile</b> section, you should see a record of your bought
+                book under 'Purchased Books'.
+            </small>
+        </div>
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Bidding Confirmation</h5>
+                <small class="text-muted">STEP 4</small>
+            </div>
+            <p class="mb-1">
+                Once you have successfully placed a bid, you can navigate to the <b>My Profile</b> section and see your bid under
+                'Current Bids' Once the seller has seen your bid, they can accept or reject the bid. If they accept it, then you have the option to
+                confirm your bid. .
+            </p>
+            <small>Use the Confirm/Deny option to confirm whether you truly want the book at your bidded price.</small>
+        </div>
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Payment</h5>
+                <small class="text-muted">STEP 5</small>
+            </div>
+            <p class="mb-1">After confirming the book, you will be sent through to a page to enter your <b>Venmo</b> information.</p>
+            <small class="text-success">
+                You have successfully bought a book! You will be sent a Venmo request to pay the seller and then you
+                can co-ordinate the physical book handover! <b>Thank you for using Book Exchange.</b>
+            </small>
+        </div>
     </div>
-</nav>
-<br>
+    {% include 'footer.html' %}
+</body>
