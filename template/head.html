@@ -4,7 +4,7 @@
     <title>Title</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -22,7 +22,23 @@
     </head>
     <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #e3f2fd;">
         <a class="navbar-brand mx-auto" href="homePage" style="font-size: xx-large; color: orange; font-weight: bold;">BOOK Exchange</a>
+        <form name="searchType" action="searchResults" class="form-inline" style="margin-left:115px">
 
+            <div class="form-group">
+
+                <select id="searchType1" name="dropDown" class="form-control">
+                    <option selected value='title'>Book Title</option>
+                    <option value='isbn'> ISBN </option>
+                    <option value='crscode'> Course Code </option>
+                    <option value='crstitle'> Course Title </option>
+                </select>
+
+                <input class="form-control mr-sm-2" size="75" type="text" id="searchQuery" name="query" placeholder="Search">
+                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+
+            </div>
+            
+        </form>
     </nav>
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -47,23 +63,6 @@
                     <a class="nav-link" href="https://registrar.princeton.edu/course-offerings" target="_blank">Princeton Registrar</a>
                 </li>
 
-                <form name="searchType" action="searchResults" class="form-inline" style="margin-left:115px">
-
-                    <div class="form-group">
-
-                        <select id="searchType1" name="dropDown" class="form-control">
-                            <option selected value='title'>Book Title</option>
-                            <option value='isbn'> ISBN </option>
-                            <option value='crscode'> Course Code </option>
-                            <option value='crstitle'> Course Title </option>
-                        </select>
-
-                        <input class="form-control mr-sm-2" size="75" type="text" id="searchQuery" name="query" placeholder="Search">
-                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
-
-                    </div>
-                    
-                </form>
 
             </ul>
         </div>
