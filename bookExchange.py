@@ -128,7 +128,7 @@ def searchResultsTemplate():
     results = []
 
     # proper input (drop-down filled in and query sent)
-    
+
     uniqueIds = []
     images = []
     try:
@@ -163,7 +163,7 @@ def searchResultsTemplate():
     html = render_template('searchResults.html', results=results,
                            username=username, query=query, searchType=searchType,
                            images=images, sortBy=sortBy)
- 
+
     response = make_response(html)
     if dropDown is not None:
         response.set_cookie('dropDown', dropDown)
@@ -172,6 +172,7 @@ def searchResultsTemplate():
     return response
 
 # -----------------------------------------------------------------------
+
 
 @app.route('/sellerPage', methods=['GET', 'POST'])
 def sellerPageTemplate():
@@ -220,7 +221,7 @@ def buyerPageTemplate():
     # if check for if uniqueID is none
     # if (uniqueId == None):
     #     return errorMsg('Invalid book ID')
-    
+
     try:
 
         results = database.getDescription(uniqueId)
@@ -245,7 +246,8 @@ def buyerPageTemplate():
     images = []
 
     if len(results[0]["images"]) == 0:
-        images.append("http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+        images.append(
+            "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
     else:
         for image in results[0]["images"]:
             images.append(image.url)
@@ -258,7 +260,8 @@ def buyerPageTemplate():
     # if it is correct show success page and have a link to go back to homePage
     # if no stay on buyer page
 
-    html = render_template('buyerPage.html', results=results, images=images, uniqueId=uniqueId)
+    html = render_template('buyerPage.html', results=results,
+                           images=images, uniqueId=uniqueId)
     response = make_response(html)
     return response
 
@@ -293,7 +296,8 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            error2 = sendEmail(mail, [bidder], 'accept', username, highestBid, title)
+            error2 = sendEmail(mail, [bidder], 'accept',
+                               username, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
@@ -314,7 +318,8 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            error3 = sendEmail(mail, [bidder], 'decline', username, highestBid, title)
+            error3 = sendEmail(mail, [bidder], 'decline',
+                               username, highestBid, title)
             if error3 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
@@ -331,7 +336,8 @@ def profilePageTemplate():
                 return response
 
             # later need to distinguish between confirm and purchase so can delete bids
-            error2 = sendEmail(mail, [username], 'confirm', sellerID, highestBid, title)
+            error2 = sendEmail(
+                mail, [username], 'confirm', sellerID, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
@@ -363,7 +369,8 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            error3 = sendEmail(mail, [username], 'deny', sellerID, highestBid, title)
+            error3 = sendEmail(mail, [username], 'deny',
+                               sellerID, highestBid, title)
             if error3 == -1:
                 print("in error three")
                 html = render_template('errorPage.html')
@@ -373,7 +380,6 @@ def profilePageTemplate():
         # book received now must: send seller the money and change book status
         elif 'recieved' in request.form:
             # send seller money
-             
 
             # update status
             error1 = database.updateStatus(listingID, username, 'received')
@@ -383,7 +389,8 @@ def profilePageTemplate():
                 return response
 
             # send email to seller
-            error2 = sendEmail(mail, None,  'received', sellerID, highestBid, title)
+            error2 = sendEmail(mail, None,  'received',
+                               sellerID, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
@@ -409,7 +416,7 @@ def profilePageTemplate():
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
-        
+
         # bids
         bids = database.myBids(username)
         if listings == -1:
@@ -423,7 +430,7 @@ def profilePageTemplate():
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
-        
+
         # books sold
         soldBooks = database.mySoldBooks(username)
         if soldBooks == -1:
@@ -453,7 +460,7 @@ def aboutUsTemplate():
     #client_token = generate_client_token()
 
     html = render_template(
-        'aboutUs2.html', username=username)#client_token=client_token, 
+        'aboutUs2.html', username=username)  # client_token=client_token,
 
     response = make_response(html)
     return response
@@ -466,7 +473,7 @@ def autoComplete():
 
     dropDown = request.args.get('searchType')
     query = request.args.get('query')
-    
+
     # ask Tiana to return ISBN
     if dropDown == "isbn":
         index = 'isbn'
@@ -526,13 +533,10 @@ def checkout():
     print('sellerId:', sellerId)
     indicator = 0
 
-
     venmoUsername = request.form.get('username')
     if venmoUsername != None:
         # venmoUsername = venmoUsername.strip()
         indicator = 1
-
-       
 
         print('before client')
         #venmo = Client(access_token='d095f97905ba8bb6a2b84477e411d08cc000f6eadf261624b29e88ef15ab4ada')
@@ -542,19 +546,19 @@ def checkout():
         i = 0
 
         #userID = None
-        #for buyer in buyers:
-            #print(buyer.username)
-            #print(username)
-            #if buyer.username == venmoUsername:
-                #print('in if')
-                #userID = get_user_id(buyer, None)
+        # for buyer in buyers:
+        # print(buyer.username)
+        # print(username)
+        # if buyer.username == venmoUsername:
+        #print('in if')
+        #userID = get_user_id(buyer, None)
 
         # Use the same device-id: 96321548-32Y8-2S28-00Z8-6YK71H070SM8 next time to avoid 2-factor-auth process.
 
         # Request money
         #venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(userID))
 
-                # confirm button should stay up
+        # confirm button should stay up
         # dont send to all bidders until it's purchased
         # send email to all bidders and seller
 
@@ -573,7 +577,8 @@ def checkout():
             response = make_response(html)
             return response
 
-    html = render_template('checkout.html', username=username, indicator=indicator, title=title, cost=cost, sellerId=sellerId, list=listing)
+    html = render_template('checkout.html', username=username, indicator=indicator,
+                           title=title, cost=cost, sellerId=sellerId, list=listing)
     response = make_response(html)
 
     return response
@@ -590,7 +595,7 @@ def congratsPage():
     # Congrats you have accepted a bid, now we just need bidder to confirm
     # Congrats you and the seller have agreed on purchase, proceed to checkout
 
-    # bid update 
+    # bid update
     if request.args.get('bookid'):
         buyerID = username
         buyNow = request.args.get('buyNow')
@@ -652,9 +657,38 @@ def congratsPage():
 
     return response
 
+# ----------------------------------------------------------------------
 
+
+@app.route('/helpBuyer', methods=['GET'])
+def helpBuyerTemplate():
+    username = CASClient().authenticate()
+    username = username.strip()
+    #client_token = generate_client_token()
+
+    html = render_template(
+        'helpBuyer.html', username=username)  # client_token=client_token,
+
+    response = make_response(html)
+    return response
+# ----------------------------------------------------------------------
+
+
+@app.route('/helpSeller', methods=['GET'])
+def helpSellerTemplate():
+    username = CASClient().authenticate()
+    username = username.strip()
+    #client_token = generate_client_token()
+
+    html = render_template(
+        'helpSeller.html', username=username)  # client_token=client_token,
+
+    response = make_response(html)
+    return response
 # ----------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
+
+
 @app.route('/logout', methods=['GET'])
 def logout():
     casClient = CASClient()
