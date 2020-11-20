@@ -673,7 +673,6 @@ def helpBuyerTemplate():
     return response
 # ----------------------------------------------------------------------
 
-
 @app.route('/helpSeller', methods=['GET'])
 def helpSellerTemplate():
     username = CASClient().authenticate()
@@ -686,6 +685,18 @@ def helpSellerTemplate():
     response = make_response(html)
     return response
 # ----------------------------------------------------------------------
+
+@app.route('/contactUs', methods=['GET'])
+def contactUsTemplate():
+    username = CASClient().authenticate()
+    username = username.strip()
+
+    html = render_template('contactUs.html', username=username)  
+
+    response = make_response(html)
+    return response
+
+#-----------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
 
 
