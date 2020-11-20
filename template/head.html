@@ -20,56 +20,51 @@
       }
     </style>
     </head>
-
     <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #e3f2fd;">
+        <a class="navbar-brand mx-auto" href="homePage" style="font-size: xx-large; color: orange; font-weight: bold;">BOOK Exchange</a>
 
-        <a class="navbar-brand" href="homePage" style="font-size: xx-large; color: orange; font-weight: bold;">BOOK Exchange</a>
-
-        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-            aria-expanded="false" aria-label="Toggle navigation"></button>
-
-        <div class="collapse navbar-collapse" id="collapsibleNavId" style="margin-left:0px">
-            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            </ul>
-            <table>
-              <form name="searchType" action="searchResults">
-                <div class="form-group col-md-1">
-                  <th> <select id="searchType1" name="dropDown" class="form-control">
-                    <option selected value='title'>Book Title</option>
-                    <option value='isbn'> ISBN </option> 
-                    <option value='crscode'> Course Code </option>
-                  <option value='crstitle'> Course Title </option>
-                  </select> </th>
-                </div>
-                <th><input class="form-control mr-sm-2" size="95" type="text" id="searchQuery" name="query" placeholder="Search"> </th>
-                <th><button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button> </th>
-              </form>
-            </table>
-        </div>
     </nav>
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="homePage">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="profilePage">My Profile</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="sellerPage">Sell A Book</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="aboutUs2">About Us</a>
-            </li>  <li class="nav-item">
-              <a class="nav-link" href="https://registrar.princeton.edu/course-offerings" target="_blank">Princeton Registrar</a>
-          </li>
-          </ul>
+            <ul class="navbar-nav">
+
+                <li class="nav-item mx-auto">
+                    <a class="nav-link" href="profilePage">My Profile</a>
+                </li>
+                <li class="nav-item mx-auto">
+                    <a class="nav-link" href="sellerPage">Sell A Book</a>
+                </li>
+                <li class="nav-item mx-auto">
+                    <a class="nav-link" href="aboutUs2">About Us</a>
+                </li>
+                <li class="nav-item mx-auto">
+                    <a class="nav-link" href="https://registrar.princeton.edu/course-offerings" target="_blank">Princeton Registrar</a>
+                </li>
+
+                <form name="searchType" action="searchResults" class="form-inline" style="margin-left:115px">
+
+                    <div class="form-group">
+
+                        <select id="searchType1" name="dropDown" class="form-control">
+                            <option selected value='title'>Book Title</option>
+                            <option value='isbn'> ISBN </option>
+                            <option value='crscode'> Course Code </option>
+                            <option value='crstitle'> Course Title </option>
+                        </select>
+                        <input class="form-control mr-sm-2" size="75" type="search" placeholder="Search" aria-label="Search" style="margin-right:0px">
+                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+
+                    </div>
+                    
+                </form>
+
+            </ul>
         </div>
       </nav>
-
       <br>
