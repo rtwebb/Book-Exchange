@@ -36,13 +36,13 @@
 								<td>You have no books listed, <a href="sellerPage"> list one here </a> </td>
 							</span>
 							<td> <button class="btn btn-link" type="button" data-toggle="collapse"  data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-								<h6 style="display: inline">Hide/unhide</h6>
+								<h6 style="display: inline">hide/unhide</h6>
 							</button> </td>
 						</table>
 						{% else: %}
 							<h3 style="display: inline">Current Listings: </h3>
 							<button class="btn btn-link" type="button" style="text-align: left;" data-toggle="collapse"  data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-								<h6>Hide/unhide</h6>
+								<h6>hide/unhide</h6>
 							</button>
 						{% endif %}
 
@@ -81,7 +81,7 @@
 							<td>
 								{% if book["status"] == 'pending' %}
 								<form method="POST"
-									  action="/profilePage?list={{book['uniqueId']}}&bidder={{book['buyerId']}}&title={{book['title']}}&highest={{book['highestBid']}}">
+									  action="/profilePage?list={{book['uniqueId']}}&bidder={{book['buyerId']}}&title={{book['title']}}&cost={{book['highestBid']}}">
 									<input type="submit"
 										   name="accept"
 										   id="accept"
@@ -152,13 +152,13 @@
 								<td>You have no current bids, <a href="homePage"> search books here </a> </td>
 							</span>
 							<td> <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-								<h6 style="display: inline;">Hide/unhide</h6>
+								<h6 style="display: inline;">hide/unhide</h6>
 							</button> </td>
 						</table>
 						{% else: %}
 						<h3 style="display: inline;"> Current Bids: </h3>
 						<span> <button class="btn btn-link" type="button" style="text-align:left" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-							<h6>Hide/unhide</h6>
+							<h6>hide/unhide</h6>
 						</button> </span>
 						{% endif %}
 
@@ -256,13 +256,13 @@
 								<td>You have not claimed any books, <a href="homePage"> search books here </a></td>
 							</span>
 							<td> <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-								<h6 style="display:inline"> Hide/unhide</h6>
+								<h6 style="display:inline"> hide/unhide</h6>
 							</button> </td>
 						</table>
 						{% else: %}
 						<h3 style="display: inline;"> Purchased Books: </h3>
 						<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-							<h6> Hide/unhide</h6>
+							<h6> hide/unhide</h6>
 						</button>
 						{% endif %}
 				</h5>
@@ -330,13 +330,13 @@
 								<td>You have not sold any books, <a href="sellerPage"> list books here </a> </td>
 							</span>
 							<td> <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-								<h6 style="display:inline"> Hide/unhide</h6>
+								<h6 style="display:inline"> hide/unhide</h6>
 							</button> </td>
 						</table>
 						{% else: %}
-							<h3 style="text-align: left;"> Sold Books: </h3>
+							<h3 style="display: inline;"> Sold Books: </h3>
 							<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-								<h6 style="display:inline">Unhide/unhide</h6> 
+								<h6> hide/unhide</h6>
 							</button> 
 						{% endif %}
 
@@ -362,7 +362,7 @@
 							<td></td>
 							<td></td>
 							<td></td>
-							<td>{{book["highestBid"]}}0</td>
+							<td>${{book["highestBid"]}}0</td>
 						</tr>
 					{%    endfor %}
 					{% endif %}

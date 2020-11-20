@@ -342,6 +342,11 @@ class QueryDatabase:
                     filter(Listings.uniqueID == listingID).one()
                 listing.status = 'purchased'
                 self._connection.commit()
+                allBids = self.getAllBids(listingID)
+                check = self.removeAllBids(listingID)
+                if check == -1:
+                    return -1
+                return allBids
             if newStatus == 'received':
                 listing = self._connection.query(Listings). \
                     filter(Listings.uniqueID == listingID).one()
