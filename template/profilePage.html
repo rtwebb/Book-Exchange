@@ -98,7 +98,8 @@
 								{% endif %}
 							</td>
 							<td>
-								<form action="/sellerPage" method="POST">
+								{% set url = "sellerPage?bookid=" + book["uniqueId"] %}
+								<form action={{url}} method="POST">
 									{% if book["highestBid"] > 0: %}
 									<button class="btn btn-warning btn-xs"
 											type="submit"
@@ -400,6 +401,7 @@
 		function editListing() {
 
 			if (confirm('Are you sure you would like to edit this listing?')) {
+				console.log("before true");
 				return true;
 			}
 			else {

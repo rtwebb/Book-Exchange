@@ -31,7 +31,11 @@
               <div class="row">
                 <div class="col-lg-8">
                   <label for="inputTitle" class="form-label">Book Title</label>
-                  <input type="text" class="form-control" name="title" id="inputTitle" placeholder="Ex: The Practice of Programming" required>
+                  {% if book is not none: %}
+                    <input type="text" class="form-control" name="title" id="inputTitle" value="{{book['title']}}" required>
+                  {% else %}
+                    <input type="text" class="form-control" name="title" id="inputTitle" placeholder="Ex: The Practice of Programming" required>
+                  {% endif %}
                   <div class="invalid-feedback">
                     Book title is required
                   </div>
@@ -39,7 +43,11 @@
 
                 <div class="form-group col-lg-4">
                   <label for="inputISBN" class="form-label">ISBN</label>
-                  <input type="text" class="form-control" name="isbn" id="inputISBN" required>
+                  {% if book is not none: %}
+                    <input type="text" class="form-control" value="{{book['isbn']}}" name="isbn" id="inputISBN" required>
+                  {% else %}
+                    <input type="text" class="form-control" name="isbn" id="inputISBN" required> 
+                  {% endif %}
                   <small>Please omit hyphens</small>
                   <div class="invalid-feedback">
                     ISBN is required
@@ -50,7 +58,11 @@
               <div class="row">
                 <div class="form-group col-md-4">
                   <label for="inputAuthor" class="form-label">Author</label>
-                  <input type="text" class="form-control" name="author" id="inputAuthor" placeholder="Ex: Brian Kernighan">
+                  {% if book is not none: %}
+                    <input type="text" class="form-control" name="author" id="inputAuthor" value="{{book['authors']}}"> 
+                  {% else %}
+                    <input type="text" class="form-control" name="author" id="inputAuthor" placeholder="Ex: Brian Kernighan">
+                  {% endif %}
                   <div class="invalid-feedback">
                      Author field is required
                   </div>
@@ -60,14 +72,22 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label for="inputCourseTitle" class="form-label">Course Title</label>
-                  <input type="text" class="form-control" name="crstitle" id="inputCourseTitle" placeholder="Ex: Advanced Programming Techniques" required>
+                  {% if book is not none: %}
+                    <input type="text" class="form-control" name="crstitle" id="inputCourseTitle" value="{{book['crstitle']}}" required>
+                  {% else %}
+                    <input type="text" class="form-control" name="crstitle" id="inputCourseTitle" placeholder="Ex: Advanced Programming Techniques" required>
+                  {% endif %}
                 </div>
                 <div class="invalid-feedback">
                   Course title is required
                 </div>
                 <div class="form-group col-md-2">
                   <label for="inputCode" class="form-label">Course Code</label>
+                  {% if book is not none: %}
+                  <input type="text" class="form-control" name="crscode" id="inputCode" value="{{book['crscode']}}" required>
+                  {% else %}
                   <input type="text" class="form-control" name="crscode" id="inputCode" placeholder="Ex: COS 333" required>
+                  {% endif %}
                   <div class="invalid-feedback">
                     Course Code is required
                   </div>
@@ -90,23 +110,31 @@
 
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="inputMin" class="form-label">Minimum Price</label>
-                  <input type="number" min="0" class="form-control" name="minPrice" id="inputMin" required>
+                  <label for="inputMin" class="form-label">Minimum Price (*whole dollars only e.g. 20.00)</label>
+                  {% if book is not none: %}
+                    <input type="number" min="0" class="form-control" name="minPrice" id="inputMin" value="{{book['minPrice']}}" required>
+                  {% else %}
+                    <input type="number" min="0" class="form-control" name="minPrice" id="inputMin" placeholder="20.00" required>
+                  {% endif %}
                   <div class="invalid-feedback">
                     Min Price is required
                   </div>
                 </div>
               
                 <div class="form-group col-md-6">
-                  <label for="inputBuy" class="form-label">Buy Now Price</label>
-                  <input type="number" min="0" class="form-control" name="buyNow" id="inputBuy" required>
+                  <label for="inputBuy" class="form-label">Buy Now Price (*whole dollars only e.g. 20.00)</label>
+                  {% if book is not none: %}
+                    <input type="number" min="0" class="form-control" name="buyNow" id="inputBuy" value="{{book['buyNow']}}" required>
+                  {% else %}
+                    <input type="number" min="0" class="form-control" name="buyNow" id="inputBuy" placeholder="20.00" required>
+                  {% endif %}
                   <div class="invalid-feedback">
                     Buy Now Price is required
                   </div>
                 </div>
               </div> 
 
-              <h2 style="display:inline">Add Images</h2> ( * Add up to three images)
+              <h2 style="display:inline">Add Images</h2> (* Add up to three images)
               <br>
               <br>
               <div class="form-row">
@@ -114,8 +142,10 @@
                   <input type="file" accept="image/*" name="image2">
                   <input type="file" accept="image/*" name="image3">
               </div>
-  
-
+              {% if msg is not none %}
+              {{msg}}
+              {% endif %}
+              <br>
               <br>
               <button class="btn btn-warning"
                       form="submitBookForm"
