@@ -177,9 +177,32 @@ def searchResultsTemplate():
 @app.route('/sellerPage', methods=['GET', 'POST'])
 def sellerPageTemplate():
     username = CASClient().authenticate()
+    uniqueId = request.args.get('bookid')
+    print("uniqueId: ", uniqueId)
+
+    if uniqueId is not None:
+        results = []
+        book = None
+        try:
+            results = database.getDescription(uniqueId)  
+            print("results: ", results)
+            msg = "**Please resubmit book images, if you had any**"
+
+            for result in results:
+                book = result
+        except Exception as e:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
+    if uniqueId is None or uniqueId.strip == '':
+        uniqueId = ''
+        book = None
+        msg = None
 
     # when sending to profile page have a "successful" message display
-    html = render_template('sellerPage.html', method='GET', username=username)
+    html = render_template('sellerPage.html', username=username, 
+        msg=msg, book=book)
 
     response = make_response(html)
     return response
