@@ -284,9 +284,6 @@ def profilePageTemplate():
     print('highestBid: ', highestBid)
 
     try:
-        # link to site to confirm
-        # give time limit
-
         # send to bidder
         if 'accept' in request.form:
 
@@ -325,19 +322,16 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-        # confirm button should stay up
-        # dont send to all bidders until it's purchased
         # send email to all bidders and seller
         elif 'confirm' in request.form:
-            error1 = database.updateStatus(listingID, username, 'confirmed')
-            if error1 == -1:
+            bidders = database.updateStatus(listingID, username, 'confirmed')
+            if bidders == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
-            # later need to distinguish between confirm and purchase so can delete bids
-            error2 = sendEmail(
-                mail, [username], 'confirm', sellerID, highestBid, title)
+            bidders.insert(0, username)
+            error2 = sendEmail(mail, bidders, 'confirm', sellerID, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
@@ -345,8 +339,6 @@ def profilePageTemplate():
 
             return redirect(url_for('checkout'))
 
-        # tell what the next highest bid is
-        # send to seller and bidders
         elif 'deny' in request.form:
             error1 = database.updateStatus(listingID, username, 'declined')
             if error1 == -1:
@@ -357,7 +349,7 @@ def profilePageTemplate():
 
             error2 = database.removeMyBid(username, listingID)
             if error2 == -1:
-                print("in error one")
+                print("in error two")
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
@@ -369,8 +361,8 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            error3 = sendEmail(mail, [username], 'deny',
-                               sellerID, highestBid, title)
+            allBidders.insert(0, username)
+            error3 = sendEmail(mail, allBidders, 'deny', sellerID, highestBid, title)
             if error3 == -1:
                 print("in error three")
                 html = render_template('errorPage.html')
@@ -378,7 +370,7 @@ def profilePageTemplate():
                 return response
 
         # book received now must: send seller the money and change book status
-        elif 'recieved' in request.form:
+        elif 'received' in request.form:
             # send seller money
 
             # update status
@@ -389,8 +381,7 @@ def profilePageTemplate():
                 return response
 
             # send email to seller
-            error2 = sendEmail(mail, None,  'received',
-                               sellerID, highestBid, title)
+            error2 = sendEmail(mail, None, 'received', sellerID, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
