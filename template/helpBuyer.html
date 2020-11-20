@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Required meta tags -->
+    <title>How to Buy</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+    {% include 'head.html' %}
+    <h1 style="text-align: center;">How to BUY a book</h1>
+    <div class="list-group container">
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Searching</h5>
+            <small>STEP 1</small>
+          </div>
+          <p class="mb-1">The first step to buying a book, is using the search bar. First, pick a category to search from using the drop-down.
+              The options are: <b>Book Title, ISBN, Course Code, Course Title</b>. Based on the search category you chose, type in text representing the category, for the book you
+              are looking for. After that, hit the <b style="color: orange;">Search</b> button and the results should load!</p>
+          </p>
+          <small>You don't need to type in the full information, our matching system can detect part of the information and get you the right book!</small>
+        </div>
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Picking a Book</h5>
+            <small>STEP 2</small>
+          </div>
+          <p class="mb-1">Once you search, the book results should load. You should be able to identify your book based on the image of the book in the entries.
+              There is also supplementary information about the author, course title, and <b>price</b>. Once you've found a book you like, click on it to take you
+              to our buyer page.
+          </p>
+          <small>If you don't find the book in our Search Results, you may need to check your data entry! Otherwise, there are no sellers of your book.</small>
+          </div>
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Bidding on a Book</h5>
+            <small class="text-muted">STEP 3-A</small>
+          </div>
+          <p class="mb-1">On the buyer's page, more information should be shown to you. You can confirm the quality of the book by
+              clicking through the image carousel displayed. If you are confident that you want the book, please <b>place a bid</b>.
+            </p>
+          <small style="color: red;">Do not place a bid lower than the Lowest Ask, or higher than the Buy Now.</small>
+        </div>
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">Bidding on a Book</h5>
+              <small class="text-muted">STEP 3-A</small>
+            </div>
+            <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+            <small class="text-muted">Donec id elit non mi porta.</small>
+          </div>
+          <div class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">Bidding on a Book</h5>
+              <small class="text-muted">STEP 3-A</small>
+            </div>
+            <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+            <small class="text-muted">Donec id elit non mi porta.</small>
+          </div>
+      </div>
+    {% include 'footer.html' %}
+</body>
