@@ -323,19 +323,6 @@ def profilePageTemplate():
 
         # send email to all bidders and seller
         elif 'confirm' in request.form:
-            bidders = database.updateStatus(listingID, username, 'confirmed')
-            if bidders == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
-
-            bidders.insert(0, username)
-            error2 = sendEmail(mail, bidders, 'confirm', sellerID, highestBid, title)
-            if error2 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
-
             return redirect(url_for('checkout'))
 
         elif 'deny' in request.form:
@@ -552,15 +539,16 @@ def checkout():
         # dont send to all bidders until it's purchased
         # send email to all bidders and seller
 
-        error1 = database.updateStatus(listing, username, 'confirmed')
-        if error1 == -1:
+        bidders = database.updateStatus(listing, username, 'confirmed')
+        if bidders == -1:
             print("in error 1")
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
 
+        bidders.insert(0, username)
         # later need to distinguish between confirm and purchase so can delete bids
-        error2 = sendEmail(mail, [username], 'confirm', sellerId, cost, title)
+        error2 = sendEmail(mail, bidders, 'confirm', sellerId, cost, title)
         if error2 == -1:
             print("in error 1")
             html = render_template('errorPage.html')
