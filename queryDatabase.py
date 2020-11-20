@@ -273,7 +273,14 @@ class QueryDatabase:
                 elif sortBy == "hitolo":
                     results = sorted(results, key=lambda d: d["highestBid"])
                     results = results[::-1]
+                elif sortBy == "BNPhitolo":
+                    results = sorted(results, key=lambda d: d["buyNow"])
+                    results = results[::-1]
+                elif sortBy == "BNPlotohi":
+                    results = sorted(results, key=lambda d: d["buyNow"])
+    
                 return results
+
             else:
                 for book, course, listing in found:
                     result = {

@@ -26,7 +26,7 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-12" id="here">
 				{% if results is not none: %}
 				{%   set number = results|length %}
 				{% else: %}
@@ -35,13 +35,54 @@
 				<h1 style="text-align:center"> {{number}} Results </h1>
 				<br>
 				{% if results is not none: %}
-
-				<select id="sortBy" class="selector" name='sortBy' class=dropdown style="margin-bottom:10px">
-					<option value="newest" selected="selected">Sort by: Newest</option>
-					<option value='alphabetical'> Sort by: Alphabetical </option>
-					<option value='hitolo'> Sort by: Price (High-Low)</option>
-					<option value='lotohi'> Sort by: Price (Low-High) </option>
-				</select>
+				<form action="/searchResults" method="GET">
+					<select id="sortBy" class="selector" name='sortBy' selected="sortBy" style="margin-bottom:10px" onchange="this.form.submit()">
+						{% if sortBy == "newest" %}
+						<option value="newest" selected="selected">Sort by: Newest</option>
+						<option value='alphabetical'> Sort by: Alphabetical </option>
+						<option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
+						<option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
+						<option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
+						<option value='BNPlotohi'> Sort by: Buy Now (Low-High) </option>
+						{% elif sortBy == "alphabetical" %}
+						<option value="newest">Sort by: Newest</option>
+						<option value='alphabetical' selected="selected"> Sort by: Alphabetical </option>
+						<option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
+						<option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
+						<option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
+						<option value='BNPlotohi'> Sort by: Buy Now (Low-High) </option>
+						{% elif sortBy == "lotohi" %}
+						<option value="newest">Sort by: Newest</option>
+						<option value='alphabetical'> Sort by: Alphabetical </option>
+						<option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
+						<option value='lotohi' selected="selected"> Sort by: Highest Bid (Low-High) </option>
+						<option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
+						<option value='BNPlotohi'> Sort by: Buy Now (Low-High) </option>
+						{% elif sortBy == "hitolo" %}
+						<option value="newest">Sort by: Newest</option>
+						<option value='alphabetical'> Sort by: Alphabetical </option>
+						<option value='hitolo' selected="selected"> Sort by: Highest Bid (High-Low)</option>
+						<option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
+						<option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
+						<option value='BNPlotohi'> Sort by: Buy Now (Low-High) </option>
+						{% elif sortBy == "BNPhitolo" %}
+						<option value="newest">Sort by: Newest</option>
+						<option value='alphabetical'> Sort by: Alphabetical </option>
+						<option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
+						<option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
+						<option value='BNPhitolo' selected="selected"> Sort by: Buy Now (High-Low)</option>
+						<option value='BNPlotohi'> Sort by: Buy Now (Low-High) </option>
+						{% elif sortBy == "BNPlotohi" %}
+						<option value="newest">Sort by: Newest</option>
+						<option value='alphabetical'> Sort by: Alphabetical </option>
+						<option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
+						<option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
+						<option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
+						<option value='BNPlotohi' selected="selected"> Sort by: Buy Now (Low-High) </option>
+						{% endif %}
+					</select>
+				</form>
+				
 				
 				<div class="row">
 					{% for dict in results: %}
@@ -79,7 +120,6 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
 
 	<script>
-			
 			function handleResponse(response){
 				// return array depending on search
 				try
@@ -96,11 +136,6 @@
 					console.log("error: ", e);
 				}
 
-			}
-
-			function handleResponse1(response1) {
-				let i = 0;
-				i = i + 1;
 			}
 
 			let request = null;
@@ -129,42 +164,6 @@
 								url: url, 
 								success: handleResponse
 							}
-
-						);
-					}
-				}
-
-			}
-
-			let request1 = null;
-
-			function sortBy() {
-				let searchType = $('#searchType1').val();
-				searchType = encodeURIComponent(searchType);
-				console.log("searchType: ", searchType);
-
-				let query = $('#searchQuery').val();
-
-				query = encodeURIComponent(query);
-				console.log("query: ", query);
-
-                let sortBy = $('#sortBy').val();
-
-				if (searchType !== '' || searchType !== null) {
-					if (query !== null || query.trim() !== '') {
-						let url = 'searchResults?searchType=' + searchType + "&query=" + query + "&sortBy=" + sortBy
-
-						if (request1 != null) {
-							request1.abort();
-						}
-
-						request1 = $.ajax(
-							{
-								type: 'GET',
-								url: url,
-								success: handleResponse1
-							}
-
 						);
 					}
 				}
@@ -200,7 +199,6 @@
 				$('#searchQuery').focus()
 				setQuery();
 				$('#searchQuery').on('input', getResults);
-                $('#searchQuery').change(sortBy());
 			}
 
 			$('document').ready(setup);

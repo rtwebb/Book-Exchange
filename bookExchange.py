@@ -97,7 +97,13 @@ def searchResultsTemplate():
     # drop down
     # check if it is equal to value
     dropDown = request.args.get('dropDown')
-    print("Drop-down: ", dropDown)
+    query = request.args.get('query')
+    sortBy = request.args.get('sortBy')
+
+    if dropDown is None and query is None and sortBy is not None:
+        dropDown = request.cookies.get('dropDown')
+        query = request.cookies.get('query')
+
     if dropDown == "isbn":
         searchType = 1
     elif dropDown == "title":
@@ -107,17 +113,17 @@ def searchResultsTemplate():
     else:
         searchType = 4
 
-    query = request.args.get('query')
-
     if dropDown is None:
         searchType = 0
     if query == '' or query is None:
         query = ''
 
-    sortBy = request.args.get('sortBy')
-
     if sortBy is None:
         sortBy = "newest"
+
+    print(dropDown)
+    print(query)
+    print(sortBy)
 
     results = []
 
@@ -127,6 +133,7 @@ def searchResultsTemplate():
     images = []
     try:
         results = database.search(searchType, query, "1", sortBy)
+
         if results == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
@@ -155,8 +162,13 @@ def searchResultsTemplate():
 
     html = render_template('searchResults.html', results=results,
                            username=username, query=query, searchType=searchType,
-                           images=images)
+                           images=images, sortBy=sortBy)
+ 
     response = make_response(html)
+    if dropDown is not None:
+        response.set_cookie('dropDown', dropDown)
+    response.set_cookie('query', query)
+    response.set_cookie('sortBy', sortBy)
     return response
 
 # -----------------------------------------------------------------------
