@@ -81,7 +81,7 @@
 							<td>
 								{% if book["status"] == 'pending' %}
 								<form method="POST"
-									  action="/profilePage?list={{book['uniqueId']}}&bidder={{book['buyerId']}}&title={{book['title']}}&highest={{book['highestBid']}}">
+									  action="/profilePage?list={{book['uniqueId']}}&bidder={{book['buyerId']}}&title={{book['title']}}&cost={{book['highestBid']}}">
 									<input type="submit"
 										   name="accept"
 										   id="accept"

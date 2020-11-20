@@ -293,8 +293,7 @@ def profilePageTemplate():
                 response = make_response(html)
                 return response
 
-            error2 = sendEmail(mail, [bidder], 'accept',
-                               username, highestBid, title)
+            error2 = sendEmail(mail, [bidder], 'accept', username, highestBid, title)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
