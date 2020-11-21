@@ -12,7 +12,7 @@
 	<title> Book Exchange </title>
 
 	<style>
-		.thumbnail:hover {
+		.img-thumbnail:hover{
 			border: 2px solid orange;
 			border-radius: 1em;
 			overflow: hidden;
@@ -87,24 +87,22 @@
 				<div class="row">
 					{% for dict in results: %}
 					{% set url = "buyerPage?bookid=" + dict["uniqueId"] %}
-					<div class="col-md-3 col-md-offset-2">
-						<div class="thumbnail thumbnails">
-							<a href="{{url}}">
-								<img src="{{images[dict['images']]}}" alt="Lights" width="100%" height="200" class="d-block m-auto">
-								<div class="caption" style="text-align:left">
-									<hr style="margin-bottom:0;margin-top:5">
-									<small>
-										<p>
-											Book Title: {{dict["title"]}}
-											<br>
-											Highest bid: ${{dict["highestBid"]}}
-											<br>
-											Buy now: {{dict["buyNow"]}}
-										</p>
-									</small>
-								</div>
-							</a>
-						</div>
+					<div class="col-md-3">
+						<a href="{{url}}">
+							<img src="{{images[dict['images']]}}" alt="Lights" class="img-thumbnail">
+							<div class="caption" style="text-align:left">
+								<hr style="margin-bottom:0;margin-top:5">
+								<small>
+									<p style="text-align:center">
+										Book Title: {{dict["title"]}}
+										<br>
+										Highest bid: ${{dict["highestBid"]}}0
+										<br>
+										Buy now: ${{dict["buyNow"]}}0
+									</p>
+								</small>
+							</div>
+						</a>
 					</div>
 					{% endfor %}
 					{% endif %}

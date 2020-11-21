@@ -74,7 +74,7 @@ def homePageTemplate():
             i += 1
         else:
             images.append(
-                "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+                "http://res.cloudinary.com/dijpr9qcs/image/upload/yah8siamtbmtg5wtnsdv.png")
             dict["images"] = i
             i += 1
 
@@ -150,7 +150,7 @@ def searchResultsTemplate():
 
             else:
                 images.append(
-                    "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+                    "http://res.cloudinary.com/dijpr9qcs/image/upload/yah8siamtbmtg5wtnsdv.png")
                 dict["images"] = i
                 i += 1
 
@@ -247,7 +247,7 @@ def buyerPageTemplate():
 
     if len(results[0]["images"]) == 0:
         images.append(
-            "http://res.cloudinary.com/dijpr9qcs/image/upload/bxtyvg9pnuwl11ahkvhg.png")
+            "http://res.cloudinary.com/dijpr9qcs/image/upload/yah8siamtbmtg5wtnsdv.png")
     else:
         for image in results[0]["images"]:
             images.append(image.url)
@@ -616,6 +616,7 @@ def congratsPage():
             images = []
             if image1:
                 images.append(database.imageToURL(image1))
+                
             if image2:
                 images.append(database.imageToURL(image2))
             if image3:
