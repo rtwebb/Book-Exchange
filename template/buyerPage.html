@@ -93,7 +93,7 @@
                 <p><b>Make a Bid:</b></p>
                 {% set url = "congratsPage?bookid=" + uniqueId %}
                 <form action={{url}} method="POST" id="submitBidForm">
-                    <input type="number" min="0" name="bid" id="userBid" placeholder="20.00" />
+                    <input type="number" min="0" name="bid" id="userBid">
                     <br>
                     <label for="userBid" class="form-label">*Please only bid whole dollars e.g. $20.00</label>
                 </form>
