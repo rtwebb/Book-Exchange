@@ -68,7 +68,9 @@
                 <h1 style="color: orange;">{{results[0]["title"]}}</h1>
                 <h4>ISBN: {{results[0]["isbn"]}}</h4>
                 <h4>Authors: {{results[0]["authors"]}}</h4>
+                {% if results[0]["crstitle"] != "N/A" and results[0]["crscode"] != "N/A": %}
                 <h4>Course: {{results[0]["crstitle"]}} ({{results[0]["crscode"]}})</h4>
+                {% endif %}
                 <hr>
                 <p><b>Seller NetID: </b>{{results[0]["sellerId"]}}</p>
                 <p><b>Condition: </b>{{results[0]["condition"]}}</p>
@@ -91,7 +93,7 @@
                 <p><b>Make a Bid:</b></p>
                 {% set url = "congratsPage?bookid=" + uniqueId %}
                 <form action={{url}} method="POST" id="submitBidForm">
-                    <input type="number" min="0" name="bid" id="userBid" placeholder="20.00"/>
+                    <input type="number" min="0" name="bid" id="userBid" placeholder="20.00" />
                     <br>
                     <label for="userBid" class="form-label">*Please only bid whole dollars e.g. $20.00</label>
                 </form>

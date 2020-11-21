@@ -603,8 +603,12 @@ def congratsPage():
         author = request.form.get('author')
         print("author: ", author)
         crscode = request.form.get('crscode')
+        if crscode is None or crscode=='' or crscode.strip(' ') is None or crscode.strip(' ') == '':
+            crscode = "N/A"
         print('Coursecode:', crscode)
         crstitle = request.form.get('crstitle')
+        if crstitle is None or crstitle=='' or crstitle.strip(' ') is None or crstitle.strip(' ') == '':
+            crstitle = "N/A"
         print('Coursetitle:', crstitle)
         condition = request.form.get('bookCondition')
         print('condition: ', condition)
