@@ -10,20 +10,21 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
     <title> Book Exchange </title>
+
     <style>
-    .thumbnail:hover {
-        border: 2px solid orange;
-        border-radius: 1em;
-        overflow: hidden;
+        .thumbnail:hover {
+            border: 2px solid orange;
+            overflow: hidden;
         }
-        </style>
+    </style>
+
 </head>
 
 <body>
     {% include 'head.html' %}
 
     <div class="container">
-        <div class="row">
+        <div class="row" style="margin-bottom:10px">
             <div class="col-md-12">
                 <h1 style="text-align:center"> Recently Listed </h1>
                 <br>
@@ -38,7 +39,7 @@
                                 <div class="caption" style="text-align:left">
                                     <hr style="margin-bottom:0;margin-top:5">
                                     <small>
-                                        <p>
+                                        <p style="text-align:center">
                                             Book Title: {{dict["title"]}}
                                             <br>
                                             Highest bid: ${{dict["highestBid"]}}0
