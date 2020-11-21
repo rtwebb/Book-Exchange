@@ -34,7 +34,10 @@
                     {% set url = "buyerPage?bookid=" + dict["uniqueId"] %}
 
                     <div class="col-md-3">
+                        <div class="text-center" style="vertical-align:central">
+
                             <a href="{{url}}">
+
                                 <img src="{{images[dict['images']]}}" class="img-thumbnail">
 
                                 <div class="caption">
@@ -50,6 +53,10 @@
                                     </small>
                                 </div>
                             </a>
+
+
+                        </div>
+                            
                     </div>
 
                     {% endfor %}
