@@ -3,7 +3,7 @@
 
 <head>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link rel="stylesheet"
 		  type="style/css"
@@ -15,6 +15,11 @@
 
 <body>
 	{% include 'head.html' %}
+
+	<form method="get" action="logout">
+		<input type="submit" name="logout" value="Logout">
+	</form>
+
 
 	<br>
 	<h1 style="text-align: center;">Welcome {{username}}!</h1>
@@ -73,8 +78,8 @@
 							<td></td>
 							<td>${{book["buyNow"]}}0</td>
 							<td></td>
-							<td>
 								{% if book["status"] == 'pending' %}
+								<td>
 								<form method="POST"
 									  action="/profilePage?list={{book['uniqueId']}}&bidder={{book['buyerId']}}&title={{book['title']}}&cost={{book['highestBid']}}">
 									<input type="submit"
@@ -88,10 +93,14 @@
 										   value="Decline"
 										   onclick="return declineBid();">
 								</form>
+								</td>
 								{% else %}
-									{{book["status"]}}
+									{% if book["status"] == "accepted" %}
+										<td style="color: green;"> <strong>Accepted</strong></td>
+									{% else %}
+										<td>{{book["status"]}}</td>
+									{% endif %}
 								{% endif %}
-							</td>
 							<td>
 								{% set url = "sellerPage?bookid=" + book["uniqueId"] %}
 								<form action={{url}} method="POST">
@@ -191,7 +200,11 @@
 						<td></td>
 						<td>${{book["bid"]}}0</td>
 						<td></td>
+						{% if book["status"] == "accepted" %}
+						<td style="color: green;"> <strong>Accepted</strong></td>
+						{% else %}
 						<td> {{book["status"]}}</td>
+						{% endif %}
 						<td></td>
 						{% if book["status"] == "accepted" %}
 						<td>
