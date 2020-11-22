@@ -107,6 +107,29 @@ body {
 				{{msg}}
 				<br>
 				<br>
+				{{msg1}}
+				<br>
+				{% if book is not none: %}
+					<strong>Seller: </strong> {{book['sellerId']}}
+					<br>
+					<strong>Author: </strong> {{book['author']}}
+					<br>
+					<strong>Title: </strong> {{book['title']}}
+					<br>
+					<strong>Condition: </strong> {{book['condition']}}
+					<br>
+					{% if type1 == 0 %}
+						<strong>Purchase Price: </strong> {{book['buyNow']}}
+					{% elif type1 == 1 %}
+						<strong>Your Bid: </strong> {{book['highestBid']}}
+					{% else %}
+						<strong>Minimum Price: </strong> {{book['minPrice']}}
+						<br>
+						<strong>Buy Now Price: </strong> {{book['buyNow']}}
+					{% endif %}
+				{% endif %}
+				<br>
+				<br>
 				Click here to do <a href="homePage"> another search </a>.
 				Otherwise, you will be redirected to your profile page!
 			</div>
