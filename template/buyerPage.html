@@ -6,26 +6,21 @@
     <meta id="buyNow" data-name2="{{dict['buyNow']}}">
     <meta id="minPrice" data-name3="{{dict['minPrice']}}">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
-    <!--script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></!--script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script-->
-
-    
+    <link rel="stylesheet"
+          type="style/css"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
     {% endfor %}
 
     <title>Buyer's Page</title>
     <style>
-      .carousel-item:hover {
-        opacity: 80%;
-      }
+        .carousel-item:hover {
+            opacity: 80%;
+        }
     </style>
 </head>
 
@@ -108,159 +103,156 @@
         </div>
     </div>
 
-    <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
-    <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
-    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
-    <script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"></link>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-      'use strict';
+    <script>'use strict';
 
-      function verifyBid(){
-        let bid = $('#userBid').val();
-        let highestBid = $('#highestBid').data('name');
-        let buyNow = $('#buyNow').data('name2');
-        let minPrice = $('#minPrice').data('name3');
+        function verifyBid() {
+            let bid = $('#userBid').val();
+            let highestBid = $('#highestBid').data('name');
+            let buyNow = $('#buyNow').data('name2');
+            let minPrice = $('#minPrice').data('name3');
 
 
-        // checking isbn has no unique characters
-        let ascii = /[`!@#$%/^&*~()_/-/+/={}?<>,:;\[\]\-|\'\\\/""]/;
-        if (ascii.test(bid)){
-          alert('Bid should be a numerical value with no special characters, please make sure to omit hyphens');
-          return false;
-        }
+            // checking isbn has no unique characters
+            let ascii = /[`!@#$%/^&*~()_/-/+/={}?<>,:;\[\]\-|\'\\\/""]/;
+            if (ascii.test(bid)) {
+                alert('Bid should be a numerical value with no special characters, please make sure to omit hyphens');
+                return false;
+            }
 
-         // parse to float
-        bid = parseFloat(bid, 10.00);
-        console.log("bid: ", bid);
-        minPrice = parseFloat(minPrice, 10.00);
-        highestBid = parseFloat(highestBid, 10.00);
-        buyNow = parseFloat(buyNow, 10.00);
-        if (Number.isNaN(bid)){
-          alert("Please enter a numerical value, no letters or special characters");
-          return false;
-        }
+            // parse to float
+            bid = parseFloat(bid, 10.00);
+            console.log("bid: ", bid);
+            minPrice = parseFloat(minPrice, 10.00);
+            highestBid = parseFloat(highestBid, 10.00);
+            buyNow = parseFloat(buyNow, 10.00);
+            if (Number.isNaN(bid)) {
+                alert("Please enter a numerical value, no letters or special characters");
+                return false;
+            }
 
-        // check for letters
-        if ((/[a-zA-Z]/).test(bid)){
-          alert("Please enter a numerical value, no letters");
-          return false;
-        } 
+            // check for letters
+            if ((/[a-zA-Z]/).test(bid)) {
+                alert("Please enter a numerical value, no letters");
+                return false;
+            }
 
-        if (bid < 0){
-          alert("Bid cannot be a negative number");
-          return false;
-        }
+            if (bid < 0) {
+                alert("Bid cannot be a negative number");
+                return false;
+            }
 
-        if (bid < minPrice){
-          alert("Bid cannot be less than minimum price");
-          return false;
-        }
-        // higher than buy now price 
-        if (bid > buyNow) {
-          alert("You cannot bid higher than the buy now price");
-          return false;
+            if (bid < minPrice) {
+                alert("Bid cannot be less than minimum price");
+                return false;
+            }
+            // higher than buy now price
+            if (bid > buyNow) {
+                alert("You cannot bid higher than the buy now price");
+                return false;
 
-        } else if (bid < highestBid){ // less than highest bid
-          if (confirm('Are you sure you would like to bid this amount, it is lower than the highest current bid?')){
+            } else if (bid < highestBid) { // less than highest bid
+                if (confirm('Are you sure you would like to bid this amount, it is lower than the highest current bid?')) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            } else if (bid === highestBid) {
+                if (confirm('Are you sure you would like to bid this amount, it is the same as the current highest bid?')) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+
+            } else {
+                if (confirm('Are you sure you would like to bid this amount?')) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+
             return true;
-          }
-          else{
-            return false;
-          }
-        } else if (bid === highestBid){
-          if (confirm('Are you sure you would like to bid this amount, it is the same as the current highest bid?')){
-            return true;
-          }
-          else{
-            return false;
-          }
-
-        }  else {
-          if (confirm('Are you sure you would like to bid this amount?')){
-            return true;
-          }
-          else{
-            return false;
-          }
         }
 
-        return true;
-      }
-
-      function buyNow(){
-        if(confirm("Are you sure you would like to buy this item at the Buy Now Price?")){
-          return true;
-        }
-        else{
-          return false;
-        }
-
-      }
-
-      function handleResponse(response){
-        // return array depending on search
-
-        try
-        {
-          let results = response;
-
-                  // call jQuery autocomplete on said list
-          $("#searchQuery").autocomplete({
-            source: results
-          });
+        function buyNow() {
+            if (confirm("Are you sure you would like to buy this item at the Buy Now Price?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
 
         }
-        catch(e){
-          console.log("error: ", e);
+
+        function handleResponse(response) {
+            // return array depending on search
+
+            try {
+                let results = response;
+
+                // call jQuery autocomplete on said list
+                $("#searchQuery").autocomplete({
+                    source: results
+                });
+
+            }
+            catch (e) {
+                console.log("error: ", e);
+            }
+
+
         }
 
 
-      }
+        let request = null;
 
+        function getResults() {
 
-      let request = null;
+            let searchType = $('#searchType1').val();
+            searchType = encodeURIComponent(searchType);
+            console.log("searchType: ", searchType);
 
-      function getResults(){
+            let query = $('#searchQuery').val();
 
-        let searchType = $('#searchType1').val();
-        searchType = encodeURIComponent(searchType);
-        console.log("searchType: ", searchType);
+            query = encodeURIComponent(query);
+            console.log("query: ", query);
 
-        let query = $('#searchQuery').val();
-     
-        query = encodeURIComponent(query);
-        console.log("query: ", query);
+            if (searchType !== '' || searchType !== null) {
+                if (query !== null || query.trim() !== '') {
+                    let url = 'autoComplete?searchType=' + searchType + "&query=" + query
 
-        if (searchType !== '' || searchType !== null){
-          if(query !== null || query.trim() !== ''){
-            let url = 'autoComplete?searchType=' + searchType + "&query=" + query
-          
-            if (request != null) {
-				      request.abort();
-			      }
+                    if (request != null) {
+                        request.abort();
+                    }
 
-			      request = $.ajax(
-				      {
-					      type: 'GET',
-					      url: url, 
-					      success: handleResponse
-				      }
+                    request = $.ajax(
+                        {
+                            type: 'GET',
+                            url: url,
+                            success: handleResponse
+                        }
 
-			      );
-          }
+                    );
+                }
+            }
+
         }
-
-		}
-      function setup(){
-        $('#searchQuery').focus();
-        $('#searchQuery').on('input', getResults);
-      }
-      $('document').ready(setup);
-    </script>
+        function setup() {
+            $('#searchQuery').focus();
+            $('#searchQuery').on('input', getResults);
+        }
+        $('document').ready(setup);</script>
 
 
 
 
     {% include 'footer.html' %}
-  </body>
+</body>
 </html>
