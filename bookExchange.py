@@ -583,6 +583,14 @@ def congratsPage():
 		try:
 			
 			if buyNow is not None:
+				results = database.getDescription(uniqueId)
+				if results == -1:
+					html = render_template('errorPage.html')
+					response = make_response(html)
+					return response
+				for result in results:
+					book = result
+
 				type1 = 0
 				print('buyNow')
 				database.buyNow(buyerID, uniqueId, buyNow)
@@ -604,14 +612,14 @@ def congratsPage():
 				msg += "You have succesfully placed your bid, now we are just waiting on the sellers confirmation!  "
 				msg1 += "Here is information regarding your bid: "
 
-			results = database.getDescription(uniqueId)
-			if results == -1:
-				html = render_template('errorPage.html')
-				response = make_response(html)
-				return response
+				results = database.getDescription(uniqueId)
+				if results == -1:
+					html = render_template('errorPage.html')
+					response = make_response(html)
+					return response
 			
-			for result in results:
-				book = result
+				for result in results:
+					book = result
 
 		except Exception as e:
 			print("Error: " + str(e), file=stderr)
@@ -674,7 +682,7 @@ def congratsPage():
 				"buyNow": buynow,
 				"condition": condition
 			}
-	
+
 			msg += "You have sucessfully created a listing! It won't be long until the bids start rolling in!  "
 			msg1 += "Here is the information regarding your listing:"
 		except Exception as e:
