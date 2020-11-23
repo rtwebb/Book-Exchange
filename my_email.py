@@ -102,20 +102,21 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
             mail.send(msg)
 
             recipients = bidders[1:]
-            message1 = "Hello," + "\n" + "\n" + \
-                       "The highest bidder on a book you have interacted with has withdrawn their bid. " + \
-                       "You now have another chance to win the auction! " + \
-                       "You may log into book-exchange-cos333.heroku.com and edit your bid. " + \
-                       "Below is the summary of this listing." + "\n" + "\n" + \
-                       "Book Title: " + title + "\n" + \
-                       "SellerID: " + seller + "\n" + "\n" + \
-                       "Best," + "\n" + \
-                       "The Book-Exchange Team"
-            for i in range(len(recipients)):
-                recipients[i] = recipients[i] + '@princeton.edu'
-            msg = Message('TigerBookExchange Bid', sender='tigerbookexchange@gmail.com',
-                          recipients=recipients, body=message1)
-            mail.send(msg)
+            if len(recipients) >= 1:
+                message1 = "Hello," + "\n" + "\n" + \
+                           "The highest bidder on a book you have interacted with has withdrawn their bid. " + \
+                           "You now have another chance to win the auction! " + \
+                           "You may log into book-exchange-cos333.heroku.com and edit your bid. " + \
+                           "Below is the summary of this listing." + "\n" + "\n" + \
+                           "Book Title: " + title + "\n" + \
+                           "SellerID: " + seller + "\n" + "\n" + \
+                           "Best," + "\n" + \
+                           "The Book-Exchange Team"
+                for i in range(len(recipients)):
+                    recipients[i] = recipients[i] + '@princeton.edu'
+                msg = Message('TigerBookExchange Bid', sender='tigerbookexchange@gmail.com',
+                              recipients=recipients, body=message1)
+                mail.send(msg)
             return
 
         elif status == 'remove':

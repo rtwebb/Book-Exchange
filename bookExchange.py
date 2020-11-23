@@ -342,6 +342,7 @@ def profilePageTemplate():
                 return response
 
             allBidders = database.getAllBids(listingID)
+            print(allBidders)
             if allBidders == -1:
                 print("all bidders")
                 html = render_template('errorPage.html')
