@@ -178,7 +178,7 @@
 						<th> My Offer: </th>
 						<th> </th>
 						<th> Offer Status: </th>
-						<th></th>
+						<th> </th>
 						<th> Action: </th>
 
 					{% if bids|length == 0: %}
@@ -355,6 +355,10 @@
 						<th> </th>
 						<th> </th>
 						<th> </th>
+						<th>Buyer Id: </th>
+						<th> </th>
+						<th> </th>
+						<th> </th>
 						<th> Sell Price: </th>
 						<th> </th>
 					{% if soldBooks|length == 0: %}
@@ -363,10 +367,15 @@
 					{%    for book in soldBooks: %}
 						<tr>
 							<td>{{book["title"]}}</td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td>{{book['buyerId']}}</td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
 							<td>${{book["highestBid"]}}0</td>
+							<td> </td>
 						</tr>
 					{%    endfor %}
 					{% endif %}
@@ -375,6 +384,7 @@
 			</div>
 		</div>
 	</div>
+
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 	<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"></link>
