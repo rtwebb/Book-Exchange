@@ -1,114 +1,108 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <!-- Image -->
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
-        <!-- Bootstrap CSS -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/header.css') }}"
+    />
+    <style>
+        .btn-outline-success {
+            color: orange;
+        }
 
-        <style>
-            .btn-outline-success {
-                color: orange;
-            }
+        .nav-link:hover {
+            border: 2px solid orange;
+        }
 
-            .nav-link:hover {
-                border: 2px solid orange;
-            }
+        .nav-link {
+            border: 2px solid transparent;
 
-            .nav-link {
-                border: 2px solid transparent;
+        }
+        .nav-item { 
+            padding-left: .5em;
+        }
 
-            }
-            .nav-item { 
-                padding-left: .5em;
-            }
+        .header-text:hover {
+            text-decoration: underline;
 
-            .header-text:hover {
-                text-decoration: underline;
+        }
 
-            }
+        .navbar {
+            margin-top: 0px;
+        }
+    </style>
+</head>
 
-            .navbar {
-                margin-top: 0px;
-            }
-        </style>
-    </head>
+<nav class="navbar justify-content-between" style="background-color: black;">
+    <a class="navbar-brand header-text" href="homePage" style="font-size: xx-large; color: orange; font-weight: bold;">BOOK Exchange</a>
+    <form class="form-inline" name="searchType" action="searchResults">
+        <select class="form-control" id="searchType1" name="dropDown" style="margin-right: 7px;">
+            <option selected value='title'>Book Title</option>
+            <option value='isbn'> ISBN </option>
+            <option value='crscode'> Course Code </option>
+            <option value='crstitle'> Course Title </option>
+        </select>
+      <input class="form-control mr-sm-2" type="text" id="searchQuery" size="30"  name="query" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </nav>
+    
 
-    <nav class="navbar fixed-top justify-content-between" style="background-color: black;">
-        <a class="navbar-brand header-text" href="homePage" style="font-size: xx-large; color: orange; font-weight: bold;">BOOK Exchange</a>
-        <form class="form-inline" name="searchType" action="searchResults">
-            <select class="form-control" id="searchType1" name="dropDown" style="margin-right: 7px;">
-                <option selected value='title'>Book Title</option>
-                <option value='isbn'> ISBN </option>
-                <option value='crscode'> Course Code </option>
-                <option value='crstitle'> Course Title </option>
-            </select>
-          <input class="form-control mr-sm-2" type="text" id="searchQuery" size="30"  name="query" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
-        </form>
-      </nav>
-        
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
 
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="homePage">Home <span class="sr-only">(current)</span></a>
+            </li>
 
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="homePage">Home <span class="sr-only">(current)</span></a>
-                </li>
+            <!--li class="nav-item">
+                <a class="nav-link" href="profilePage">My Profile</a>
+            </!--li-->
 
-                <!--li class="nav-item">
-                    <a class="nav-link" href="profilePage">My Profile</a>
-                </!--li-->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    My Profile
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="profilePage">View My Profile</a>
+                    <a class="dropdown-item" href="logout">Logout</a>
+                </div>
+            </li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        My Profile
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="profilePage">View My Profile</a>
-                        <a class="dropdown-item" href="logout">Logout</a>
-                    </div>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="sellerPage">Sell A Book</a>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="sellerPage">Sell A Book</a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="aboutUs">About Us</a>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="aboutUs">About Us</a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://registrar.princeton.edu/course-offerings" target="_blank">Princeton Registrar</a>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="https://registrar.princeton.edu/course-offerings" target="_blank">Princeton Registrar</a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Help
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="helpBuyer">Buyer's Guide</a>
-                        <a class="dropdown-item" href="helpSeller">Seller's Guide</a>
-                        <a class="dropdown-item" href="contactUs">Contact Us</a>
-                    </div>
-                </li>
-            </ul>
-    </div>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Help
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="helpBuyer">Buyer's Guide</a>
+                    <a class="dropdown-item" href="helpSeller">Seller's Guide</a>
+                    <a class="dropdown-item" href="contactUs">Contact Us</a>
+                </div>
+            </li>
+        </ul>
+</div>
 </nav>
 <br>
 </html>
-
 
