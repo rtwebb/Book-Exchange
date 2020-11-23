@@ -524,13 +524,30 @@ def checkout():
 
 		#userID = None
 		# for buyer in buyers:
-		# print(buyer.username)
-		# print(username)
-		# if buyer.username == venmoUsername:
-		#print('in if')
-		#userID = get_user_id(buyer, None)
+		    #print('buyer: ', buyer)
+            #print('buyer id: ', buyer.id)
+			# print(buyer.username)
+			# print(username)
+			# if buyer.username == venmoUsername:
+			#print('in if')
+			#userID = get_user_id(buyer, None)
+
+		#myProfile = venmo.user.get_my_profile()
+        #print('my profile', myProfile)
 
 		# Use the same device-id: 96321548-32Y8-2S28-00Z8-6YK71H070SM8 next time to avoid 2-factor-auth process.
+
+		#transaction = venmo.user.get_transaction_between_two_users(myProfile.id, userID)
+        #print("transaction: ", transaction)
+        #if target.id = buyer.id, if amount = cost, if status == 'settled', if seller = seller and listing 
+        #note = BookExchange: buying book title form sellerID (listing ID)
+        #for trans in transaction:
+            #print('actor: ', trans.actor)
+            #print('target: ', trans.target)
+            #print('note: ', trans.note)
+            #print('amount: ', trans.amount)
+            #print('status: ', trans.status)
+            #print('ausience: ', trans.audience)
 
 		# Request money
 		#venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(userID))
