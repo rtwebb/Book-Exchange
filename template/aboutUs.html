@@ -1,119 +1,223 @@
 <!DOCTYPE html>
+
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/aboutUs.css') }}"
-    />
+    <head>
+        <Title> About Us </Title>
+
+         <link
+              rel="stylesheet"
+              href="{{ url_for('static', filename='css/aboutUs.css') }}"
+            />
+          </head> 
+
+          {% include 'head.html' %}
+
+          <h1 style="color: orange;">Meet the Team</h1>
+<style>
+  .row {
+    text-align: center;
+  }
+
+  .img {
+    border-color: red;
+  }
+</style>
+    </head>
+    <div class="container marketing">
+
+        <body>
+    <!-- Three columns of text below the carousel -->
+    <div class="row">
+      <div class="col-lg-4">
+        <img src="https://media-exp1.licdn.com/dms/image/C4E03AQH4Fmb_21PcNA/profile-displayphoto-shrink_400_400/0?e=1611187200&amp;v=beta&amp;t=_47MzL665xaXqHFBC9sAjvzZvncXxbV-CJcy9yM0p0U"
+                 class="rounded-circle" width="140" height="140">
+        <h2>Toussaint Webb</h2>
+        <p>B.S.E COS CO '22</p>
+        <p><a class="btn btn-secondary" href="https://www.linkedin.com/in/toussaint-webb-b8b425173" target="_blank" role="button">Connect »</a></p>
+      </div><!-- /.col-lg-4 -->
+      <div class="col-lg-4">
+        <img src="https://media-exp1.licdn.com/dms/image/C4E03AQFOANdCQev_yg/profile-displayphoto-shrink_400_400/0?e=1611187200&amp;v=beta&amp;t=rUlIqOgCsXuo1tDYAnAQg1yaHgf-ySfVNf8cXm49Q6Y"
+        class="rounded-circle" width="140" height="140">
+        <h2>Emmandra Wright</h2>
+        <p>B.S.E COS CO '22</p>
+        <p><a class="btn btn-secondary" href="https://www.linkedin.com/in/emmandra-wright" target="_blank" role="button">Connect »</a></p>
+      </div><!-- /.col-lg-4 -->
+      <div class="col-lg-4">
+          <img src="https://media-exp1.licdn.com/dms/image/C4E03AQHQMoS-1pQPmw/profile-displayphoto-shrink_400_400/0?e=1611187200&amp;v=beta&amp;t=_YNm00AeLVCauZwb8ymnll5HBwG5UNreTc5IOaRfYGM"
+        class="rounded-circle" width="140" height="140">
+        <h2>Tiana Fitzgerald</h2>
+        <p>B.S.E COS CO '22</p>
+        <p><a class="btn btn-secondary" href="https://www.linkedin.com/in/tiana-fitzgerald-409913106" target="_blank" role="button">Connect »</a></p>
+      </div><!-- /.col-lg-4 -->
+    </div><!-- /.row -->
+        <!-- Three columns of text below the carousel -->
+    <div class="row">
+      <div class="col-lg-4">
+          <img src="https://media-exp1.licdn.com/dms/image/C4E03AQEuWUwlTZqSLw/profile-displayphoto-shrink_400_400/0?e=1611187200&amp;v=beta&amp;t=gtZxJjrs8fMbB3RbGFOzE9smsmtNJxPY_MXcauQCKSw"
+        class="rounded-circle" width="140" height="140">
+        <h2>Vedant Dhopte</h2>
+        <p>B.S.E COS CO '22</p>
+        <p><a class="btn btn-secondary" href="https://www.linkedin.com/in/vedant-d-6b2880121" target="_blank" role="button">Connect »</a></p>
+      </div><!-- /.col-lg-4 -->
+      <div class="col-lg-4">
+          <img src="https://media-exp1.licdn.com/dms/image/C5603AQF5LM5U4N2WBA/profile-displayphoto-shrink_400_400/0?e=1611187200&amp;v=beta&amp;t=3lTfdXwW9xPqAwOY0-6o3KWsqrYic9ijwIqiGNSSQO4"
+        class="rounded-circle" width="140" height="140">
+        <h2>Raphael Njoku</h2>
+        <p>B.S.E ELE CO '22</p>
+        <p><a class="btn btn-secondary" href="https://www.linkedin.com/in/raphael-njoku" target="_blank" role="button">Connect »</a></p>
+      </div><!-- /.col-lg-4 -->
+    </div><!-- /.row -->
+
+</body>
+<!--    <body>-->
+
+<!--          <div class="teamMember">-->
+<!--            <h2> <strong>Robert Webb</strong></h2>-->
+<!--            <p> Description </p>-->
+
+<!--            &lt;!&ndash;<img src=  &ndash;&gt;-->
+
+<!--          </div>-->
+
+
+<!--          <div class="teamMember"> -->
+<!--            <h2> <strong>Emmandra Wright</strong></h2>-->
+<!--            <p> Description </p>-->
+<!--  -->
+<!--            &lt;!&ndash;<img src=  &ndash;&gt;-->
+<!--  -->
+<!--          </div>-->
+
+
+<!--          <div class="teamMember"> -->
+<!--            <h2> <strong>Vedant Dhopte</strong></h2>-->
+<!--            <p> Description </p>-->
+<!--  -->
+<!--            &lt;!&ndash;<img src=  &ndash;&gt;-->
+
+<!--          </div>-->
+
+<!--          <br>-->
+
+<!--        <div class="teamMember2"> -->
+<!--          <h2> <strong>Tiana Fitzgerald</strong></h2>-->
+<!--          <p> Description </p>-->
+<!--  -->
+<!--          &lt;!&ndash;<img src=  &ndash;&gt;-->
+<!--  -->
+<!--        </div>-->
+
+
+<!--        <div class="teamMember2"> -->
+<!--          <h2> <strong>Raphael Njoku </strong></h2>-->
+<!--          <p> Description </p>-->
+<!--  -->
+<!--          &lt;!&ndash;<img src=  &ndash;&gt;-->
+<!--  -->
+<!--        </div>-->
+
+        <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet"></link>
+        <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+        <script>
     
-    <!-- <link rel="stylesheet" href="aboutUSscss"> -->
-
-<!--   <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/aboutUs.css') }}"
-    />
-  </head> -->
-  <body>
-    {% include 'head.html' %}
-  <!-- <div class="wrapper">
-    <h1>Meet The Team</h1>
-    <div class="team">
-      <div class="team_member">
-        <div class="team_img">
-          
-        </div>
-        <h3>Robert Webb</h3>
-        <p class="role">Role</p>
-        <p>
-  
-        </p>
-      </div>
-
-      <div class="team_member">
-        <div class="team_img"></div>
-        <h3>Emmandra Wright</h3>
-        <p class="role">Role</p>
-        <p>
-  
-        </p>
-      </div>
-
-      <div class="team_member">
-        <div class="team_img"></div>
-        <h3>Raphael Njoku</h3>
-        <p class="role">Role</p>
-        <p>
- 
-        </p>
-      </div>
-
-      <div class="team_member">
-        <div class="team_img"></div>
-        <h3>Tiana Fitzgerald</h3>
-        <p class="role">Role</p>
-        <p>
+          'use strict';
     
-        </p>
-      </div>
+    
+          function handleResponse(response){
+            // return array depending on search
+    
+            try
+            {
+              let results = response;
+    
+                      // call jQuery autocomplete on said list
+              $("#searchQuery").autocomplete({
+                source: results
+              });
+    
+            }
+            catch(e){
+              console.log("error: ", e);
+            }
+    
+    
+          }
+    
+    
+          let request = null;
+    
+          function getResults(){
+    
+            let searchType = $('#searchType1').val();
+            searchType = encodeURIComponent(searchType);
+            console.log("searchType: ", searchType);
+    
+            let query = $('#searchQuery').val();
+         
+            query = encodeURIComponent(query);
+            console.log("query: ", query);
+    
+            if (searchType !== '' || searchType !== null){
+              if(query !== null || query.trim() !== ''){
+                let url = 'autoComplete?searchType=' + searchType + "&query=" + query
+              
+                if (request != null) {
+                  request.abort();
+                }
+    
+                request = $.ajax(
+                  {
+                    type: 'GET',
+                    url: url, 
+                    success: handleResponse
+                  }
+    
+                );
+              }
+            }
+    
+        }
+          function setup(){
+            $('#searchQuery').focus();
+            $('#searchQuery').on('input', getResults);
+          }
+          $('document').ready(setup);
+        </script>
 
-      <div class="team_member">
-        <div class="team_img"></div>
-        <h3>Vedant Dhopte</h3>
-        <p class="role">Role</p>
-        <p>
- 
-        </p>
-      </div>
-    </div> -->
-    <h1>Meet the Team</h1>
-    <div class="overall-wrapper">
-    <div class="card-wrapper">
-        <img class="card-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/440px-SNice.svg.png" alt="Card image cap">
-      <div class="card-text">
-        <h5>Name</h5>
-        <p>Filler text to test how long the textbox extends: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec volutpat dapibus ante. Donec a feugiat tellus, vel iaculis nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae fringilla erat, at ullamcorper tellus. Duis laoreet sapien eu posuere ullamcorper. Aliquam erat volutpat. Mauris hendrerit consequat dui, ac cursus arcu blandit vel. Nunc eu iaculis felis. Nulla vel ante hendrerit, vulputate dui eu, venenatis tellus. </p>
-        <a class="btn btn-info" href="https://www.linkedin.com/" role="button">LinkedIn</a>
-      </div>
-    </div>
-    <div class="card-wrapper">
-      <img class="card-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/440px-SNice.svg.png" alt="Card image cap">
-    <div class="card-text">
-      <h5>Name</h5>
-      <p>What I do at Princeton and on this project</p>
-      <a class="btn btn-info" href="https://www.linkedin.com/" role="button">LinkedIn</a>
-    </div>
-  </div>
-  <div class="card-wrapper">
-    <img class="card-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/440px-SNice.svg.png" alt="Card image cap">
-  <div class="card-text">
-    <h5>Name</h5>
-    <p>What I do at Princeton and on this project</p>
-    <a class="btn btn-info" href="https://www.linkedin.com/" role="button">LinkedIn</a>
-  </div>
-</div>
-<div class="card-wrapper">
-  <img class="card-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/440px-SNice.svg.png" alt="Card image cap">
-<div class="card-text">
-  <h5>Name</h5>
-  <p>What I do at Princeton and on this project</p>
-  <a class="btn btn-info" href="https://www.linkedin.com/" role="button">LinkedIn</a>
-</div>
-</div>
-<div class="card-wrapper">
-  <img class="card-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/440px-SNice.svg.png" alt="Card image cap">
-<div class="card-text">
-  <h5>Name</h5>
-  <p>What I do at Princeton and on this project</p>
-  <a class="btn btn-info" href="https://www.linkedin.com/" role="button">LinkedIn</a>
-</div>
-</div>
-</div>
-    {% include 'footer.html' %}
-  </body>
+        {% include 'footer.html' %}
+
+    </body>
+
 </html>
+
+       
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
+
+
