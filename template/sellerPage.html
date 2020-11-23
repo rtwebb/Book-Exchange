@@ -12,6 +12,10 @@
           background-color:#F0AD4E;
           color:black;
       }
+
+      span {
+        color: red;
+      }
     </style>
     
     <title>Seller's Page</title>
@@ -30,7 +34,7 @@
             <form action="/congratsPage" method="POST" id="submitBookForm" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-lg-8">
-                        <label for="inputTitle" class="form-label">Book Title*</label>
+                        <label for="inputTitle" class="form-label">Book Title <span>*</span></label>
                         {% if book is not none: %}
                         <input type="text" class="form-control" name="title" id="inputTitle" value="{{book['title']}}" required>
                         {% else %}
@@ -39,7 +43,7 @@
                     </div>
 
                     <div class="form-group col-lg-4">
-                        <label for="inputISBN" class="form-label">ISBN*</label>
+                        <label for="inputISBN" class="form-label">ISBN <span>*</span></label>
                         {% if book is not none: %}
                         <input type="text" class="form-control" value="{{book['isbn']}}" name="isbn" id="inputISBN" required>
                         {% else %}
@@ -51,7 +55,7 @@
 
                 <div class="row">
                     <div class="form-group col-md-4">
-                        <label for="inputAuthor" class="form-label">Author(s)*</label>
+                        <label for="inputAuthor" class="form-label">Author(s) <span>*</span></label>
                         {% if book is not none: %}
                         <input type="text" class="form-control" name="author" id="inputAuthor" value="{{book['authors']}}">
                         {% else %}
@@ -80,7 +84,7 @@
                     </div>
 
                     <div class="form-group col-md-4">
-                        <label for="inputCondition" class="form-label">Condition*</label>
+                        <label for="inputCondition" class="form-label">Condition <span>*</span></label>
                         <select id="inputCondition" name="bookCondition" class="form-control">
                             <option selected>Choose...</option>
                             <option>Poor</option>
@@ -96,7 +100,7 @@
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="inputMin" class="form-label">Minimum Price* (whole dollars only e.g. 20.00)</label>
+                        <label for="inputMin" class="form-label">Minimum Price <span>*</span> (whole dollars only e.g. 20.00)</label>
                         {% if book is not none: %}
                         <input type="number" min="0" class="form-control" name="minPrice" id="inputMin" value="{{book['minPrice']}}" required>
                         {% else %}
@@ -105,7 +109,7 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="inputBuy" class="form-label">Buy Now Price* (whole dollars only e.g. 20.00)</label>
+                        <label for="inputBuy" class="form-label">Buy Now Price <span>*</span> (whole dollars only e.g. 20.00)</label>
                         {% if book is not none: %}
                         <input type="number" min="0" class="form-control" name="buyNow" id="inputBuy" value="{{book['buyNow']}}" required>
                         {% else %}
@@ -126,7 +130,7 @@
                 {{msg}}
                 {% endif %}
                 <br />
-                <small>Fields marked with * are required</small>
+                <small>Fields marked with <span>*</span> are required</small>
                 <br>
                 <button class="btn btn-warning"
                         form="submitBookForm"
