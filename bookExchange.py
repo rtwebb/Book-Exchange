@@ -762,6 +762,19 @@ def contactUsTemplate():
     response = make_response(html)
     return response
 
+# ----------------------------------------------------------------------
+
+
+@app.route('/privacyPolicy', methods=['GET'])
+def privacyPolicyTemplate():
+    username = CASClient().authenticate()
+    username = username.strip()
+
+    html = render_template('privacyPolicy.html', username=username)
+
+    response = make_response(html)
+    return response
+
 # -----------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
 
