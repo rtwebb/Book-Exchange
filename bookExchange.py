@@ -510,6 +510,10 @@ def checkout():
 	print('sellerId:', sellerId)
 	indicator = 0
 
+	#Make sure buyers only returns 1, if it doensnt send pop up with an error 
+	#connect recieved to send money to seller or throw popup 
+	#connect recieved button to trigger checking if buyer sent money, if didnt sent money, email buyer and seller?
+
 	venmoUsername = request.form.get('username')
 	if venmoUsername != None:
 		# venmoUsername = venmoUsername.strip()
