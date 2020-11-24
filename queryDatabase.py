@@ -13,12 +13,16 @@ import cloudinary
 from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
 
+# test stuff
+# DATABASE_NAME =
+# 'postgres://wjtbbfidjdxfep:2bc4bbc50b88443cb242e1959973f11c65996319de0fabad2d480b7f51dc09af@ec2-54-84-98-18.compute
+# -1.amazonaws.com:5432/db01ol8nkv7pc6'
+# engine = create_engine(DATABASE_NAME)
+
 DATABASE_URI = 'postgres://vjlbayumjwpewg:19bf7b1ddf47645b85ddd2a53327548' \
                'f856e138ec4104be1b99df2f432df9f85@ec2-23-23-36-227.compute-' \
                '1.amazonaws.com:5432/d1ud4l1r0mt58n'
 engine = create_engine(DATABASE_URI)
-# DATABASE_NAME = 'postgres://wjtbbfidjdxfep:2bc4bbc50b88443cb242e1959973f11c65996319de0fabad2d480b7f51dc09af@ec2-54-84-98-18.compute-1.amazonaws.com:5432/db01ol8nkv7pc6'
-# engine = create_engine(DATABASE_NAME)
 Session = sessionmaker(bind=engine)
 session = Session()
 

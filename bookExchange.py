@@ -464,6 +464,7 @@ def checkout():
     cost = request.args.get('cost')
     listing = request.args.get('list')
     sellerId = request.args.get('sellerId')
+    buyNow = request.args.get('buyNow')
     indicator = 0
 
     # Make sure buyers only returns 1, if it doensnt send pop up with an error
@@ -515,12 +516,18 @@ def checkout():
         # confirm button should stay up
         # dont send to all bidders until it's purchased
         # send email to all bidders and seller
-
-        bidders = database.updateStatus(listing, username, 'confirmed')
-        if bidders == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+        if buyNow == 'yes':
+            bidders = database.buyNow(username, listing, cost)
+            if bidders == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+        else:
+            bidders = database.updateStatus(listing, username, 'confirmed')
+            if bidders == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
         bidders.insert(0, username)
         # later need to distinguish between confirm and purchase so can delete bids

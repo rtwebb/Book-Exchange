@@ -72,7 +72,7 @@
                 <p>
                     <b>Buy Now Price: </b>${{results[0]["buyNow"]}}0
 
-                    {% set url = "/checkout?list=" + uniqueId  + "&title=" + results[0]['crstitle'] + "&sellerId=" + results[0]['sellerId'] + "&cost=" + results[0]['buyNow']|string %}
+                    {% set url = "/checkout?buyNow=yes&list=" + uniqueId  + "&title=" + results[0]['crstitle'] + "&sellerId=" + results[0]['sellerId'] + "&cost=" + results[0]['buyNow']|string %}
                     
                     <form action="{{url}}" method="POST" id="buyNowForm">
                         <button form="buyNowForm"
