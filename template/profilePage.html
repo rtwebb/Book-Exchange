@@ -13,56 +13,58 @@
 
 </head>
 
-<body style="overflow-x: scroll;">
+<body>
 	{% include 'head.html' %}
 
-
-	<br>
 	<h1 style="text-align: center;">Welcome {{username}}!</h1>
 
-	<div class="accordion col-md-12" id="accordionExample">
+	<div class="col-md-12" style="overflow-x:scroll;">
 
-		<div class="card">
-			<div class="card-header" id="headingOne">
-				<h5 class="mb-0">
+		<div class="accordion" id="accordionExample">
+
+			<div class="card">
+				<div class="card-header" id="headingOne">
+					<h5 class="mb-0">
 						{% if listings|length == 0: %}
-							<h3 style="text-align: left;">Current Listings:</h3>
-						<table>
+						<h3 style="text-align: left;">Current Listings:</h3>
+						<table style="overflow-x:scroll;">
 							<span>
 								<td>You have no books listed, <a href="sellerPage"> list one here </a> </td>
 							</span>
-							<td> <button class="btn btn-link" type="button" data-toggle="collapse"  data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-								<h6 style="display: inline">hide/unhide</h6>
-							</button> </td>
+							<td>
+								<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									<h6 style="display: inline">hide/unhide</h6>
+								</button>
+							</td>
 						</table>
 						{% else: %}
-							<h3 style="display: inline">Current Listings: </h3>
-							<button class="btn btn-link" type="button" style="text-align: left;" data-toggle="collapse"  data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-								<h6>hide/unhide</h6>
-							</button>
+						<h3 style="display: inline">Current Listings: </h3>
+						<button class="btn btn-link" type="button" style="text-align: left;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+							<h6>hide/unhide</h6>
+						</button>
 						{% endif %}
 
-				</h5>
-			</div>
-			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-				<div class="card-body">
-					<table class="table">
-						<th>Book Title:</th>
-						<th> </th>
-						<th> Course Code: </th>
-						<th> </th>
-						<th> Highest Bidder ID: </th>
-						<th> </th>
-						<th> Highest Bid Price: </th>
-						<th> </th>
-						<th> Buy Now Price:</th>
-						<th> </th>
-						<th> Action: </th>
-						<th></th>
-					{% if listings|length == 0: %}
-					</table>
-					{% else: %}
-					{%    for book in listings: %}
+					</h5>
+				</div>
+				<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+					<div class="card-body">
+						<table class="table" style="overflow-x:scroll;">
+							<th>Book Title:</th>
+							<th> </th>
+							<th> Course Code: </th>
+							<th> </th>
+							<th> Highest Bidder ID: </th>
+							<th> </th>
+							<th> Highest Bid Price: </th>
+							<th> </th>
+							<th> Buy Now Price:</th>
+							<th> </th>
+							<th> Action: </th>
+							<th></th>
+							{% if listings|length == 0: %}
+						</table>
+						{% else: %}
+						{%    for book in listings: %}
 						<tr>
 							<td>{{book["title"]}}</td>
 							<td></td>
@@ -74,8 +76,8 @@
 							<td></td>
 							<td>${{book["buyNow"]}}0</td>
 							<td></td>
-								{% if book["status"] == 'pending' %}
-								<td>
+							{% if book["status"] == 'pending' %}
+							<td>
 								<form method="POST"
 									  action="/profilePage?list={{book['uniqueId']}}&bidder={{book['buyerId']}}&title={{book['title']}}&cost={{book['highestBid']}}">
 									<input type="submit"
@@ -89,14 +91,14 @@
 										   value="Decline"
 										   onclick="return declineBid();">
 								</form>
-								</td>
-								{% else %}
-									{% if book["status"] == "accepted" %}
-										<td style="color: green;"> <strong>Accepted</strong></td>
-									{% else %}
-										<td>{{book["status"]}}</td>
-									{% endif %}
-								{% endif %}
+							</td>
+							{% else %}
+							{% if book["status"] == "accepted" %}
+							<td style="color: green;"> <strong>Accepted</strong></td>
+							{% else %}
+							<td>{{book["status"]}}</td>
+							{% endif %}
+							{% endif %}
 							<td>
 								{% set url = "sellerPage?bookid=" + book["uniqueId"] %}
 								<form action={{url}} method="POST">
@@ -133,135 +135,141 @@
 								</form>
 							</td>
 						</tr>
-					{%    endfor %}
-					{% endif %}
-					</table>
+						{%    endfor %}
+						{% endif %}
+						</table>
+					</div>
 				</div>
 			</div>
-		</div>
 
 
 
-		<div class="card">
-			<div class="card-header" id="headingTwo">
-				<h5 class="mb-0">
+			<div class="card">
+				<div class="card-header" id="headingTwo">
+					<h5 class="mb-0">
 						{% if bids|length == 0: %}
 						<h3 style="text-align: left;">Current Bids: </h3>
-						<table>
+						<table style="overflow-x:scroll;">
 							<span>
 								<td>You have no current bids, <a href="homePage"> search books here </a> </td>
 							</span>
-							<td> <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-								<h6 style="display: inline;">hide/unhide</h6>
-							</button> </td>
+							<td>
+								<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+									<h6 style="display: inline;">hide/unhide</h6>
+								</button>
+							</td>
 						</table>
 						{% else: %}
 						<h3 style="display: inline;"> Current Bids: </h3>
-						<span> <button class="btn btn-link" type="button" style="text-align:left" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-							<h6>hide/unhide</h6>
-						</button> </span>
+						<span>
+							<button class="btn btn-link" type="button" style="text-align:left" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+								<h6>hide/unhide</h6>
+							</button>
+						</span>
 						{% endif %}
 
-				</h5>
-			</div>
-			<div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
-				<div class="card-body">
-					<table class="table">
-						<th>Book Title:</th>
-						<th> </th>
-						<th> Course Code: </th>
-						<th> </th>
-						<th> Course Title: </th>
-						<th> </th>
-						<th>Seller:</th>
-						<th> </th>
-						<th> My Offer: </th>
-						<th> </th>
-						<th> Offer Status: </th>
-						<th> </th>
-						<th> Action: </th>
+					</h5>
+				</div>
+				<div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+					<div class="card-body">
+						<table class="table" style="overflow-x:scroll;">
+							<th>Book Title:</th>
+							<th> </th>
+							<th> Course Code: </th>
+							<th> </th>
+							<th> Course Title: </th>
+							<th> </th>
+							<th>Seller:</th>
+							<th> </th>
+							<th> My Offer: </th>
+							<th> </th>
+							<th> Offer Status: </th>
+							<th> </th>
+							<th> Action: </th>
 
-					{% if bids|length == 0: %}
-					</table>
-					{% else: %}
+							{% if bids|length == 0: %}
+						</table>
+						{% else: %}
 						{%    for book in bids %}
-					<tr>
-						<td>{{book["title"]}}</td>
-						<td></td>
-						<td>{{book["crscode"]}}</td>
-						<td></td>
-						<td>{{book["crstitle"]}}</td>
-						<td></td>
-						<td>{{book["sellerId"]}}</td>
-						<td></td>
-						<td>${{book["bid"]}}0</td>
-						<td></td>
-						{% if book["status"] == "accepted" %}
-						<td style="color: green;"> <strong>Accepted</strong></td>
-						{% else %}
-						<td> {{book["status"]}}</td>
-						{% endif %}
-						<td></td>
-						{% if book["status"] == "accepted" %}
-						<td>
-							<form method="post"
-								  action="profilePage?list={{book['uniqueId']}}&sellerId={{book['sellerId']}}&title={{book['title']}}&cost={{book['bid']}}">
-								<input type="submit" name="deny" id="deny" value="Deny">
-							</form>
+						<tr>
+							<td>{{book["title"]}}</td>
+							<td></td>
+							<td>{{book["crscode"]}}</td>
+							<td></td>
+							<td>{{book["crstitle"]}}</td>
+							<td></td>
+							<td>{{book["sellerId"]}}</td>
+							<td></td>
+							<td>${{book["bid"]}}0</td>
+							<td></td>
+							{% if book["status"] == "accepted" %}
+							<td style="color: green;"> <strong>Accepted</strong></td>
+							{% else %}
+							<td> {{book["status"]}}</td>
+							{% endif %}
+							<td></td>
+							{% if book["status"] == "accepted" %}
+							<td>
+								<form method="post"
+									  action="profilePage?list={{book['uniqueId']}}&sellerId={{book['sellerId']}}&title={{book['title']}}&cost={{book['bid']}}">
+									<input type="submit" name="deny" id="deny" value="Deny">
+								</form>
 
-							<form method="post" action="/checkout?cost={{book['bid']}}&title={{book['title']}}&sellerId={{book['sellerId']}}&list={{book['uniqueId']}}">
-								<input type="submit" name="confirm" id="confirm" value="Confirm">
-							</form>
-						</td>
-						{% else %}
-						<td>N/A</td>
-						{% endif %}
-						<td>
-							{% set url = "/buyerPage?bookid=" + book["uniqueId"] %}
-							<form action={{url}} method="POST">
-								{% if book["status"] == "pending": %}
-								<button class="btn btn-warning btn-xs" type="submit" onclick="return editBid();">
-									Edit
-								</button>
-								{% else: %}
-								<button class="btn btn-warning btn-xs" type="submit" onclick="return editBid();" disabled data-toggle="tooltip" data-placement="top"
-										title="You can not edit an accepted bid. Please deny purchase and bid again">
-									Edit
-								</button>
-								{% endif %}
-							</form>
+								<form method="post" action="/checkout?cost={{book['bid']}}&title={{book['title']}}&sellerId={{book['sellerId']}}&list={{book['uniqueId']}}">
+									<input type="submit" name="confirm" id="confirm" value="Confirm">
+								</form>
+							</td>
+							{% else %}
+							<td>N/A</td>
+							{% endif %}
+							<td>
+								{% set url = "/buyerPage?bookid=" + book["uniqueId"] %}
+								<form action={{url}} method="POST">
+									{% if book["status"] == "pending": %}
+									<button class="btn btn-warning btn-xs" type="submit" onclick="return editBid();">
+										Edit
+									</button>
+									{% else: %}
+									<button class="btn btn-warning btn-xs" type="submit" onclick="return editBid();" disabled data-toggle="tooltip" data-placement="top"
+											title="You can not edit an accepted bid. Please deny purchase and bid again">
+										Edit
+									</button>
+									{% endif %}
+								</form>
 
-							<form action="/profilePage?deleteBidBuyerID={{username}}&deleteBidListingID={{book['uniqueId']}}" method="POST">
-								{% if book["status"] == "pending": %}
-								<button class="btn btn-warning btn-xs" type="submit" onclick="return deleteBid();">
-									Delete
-								</button>
-								{% else: %}
-								<button class="btn btn-warning btn-xs" type="submit" onclick="return deleteBid();" disabled>
-									Delete
-								</button>
-								{% endif %}
-							</form>
-						</td>
-					</tr>
+								<form action="/profilePage?deleteBidBuyerID={{username}}&deleteBidListingID={{book['uniqueId']}}" method="POST">
+									{% if book["status"] == "pending": %}
+									<button class="btn btn-warning btn-xs" type="submit" onclick="return deleteBid();">
+										Delete
+									</button>
+									{% else: %}
+									<button class="btn btn-warning btn-xs" type="submit" onclick="return deleteBid();" disabled>
+										Delete
+									</button>
+									{% endif %}
+								</form>
+							</td>
+						</tr>
 						{%   endfor %}
-					{% endif %}
-					</table>
+						{% endif %}
+						</table>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="card">
-			<div class="card-header" id="headingThree">
-				<h5 class="mb-0">
+			<div class="card">
+				<div class="card-header" id="headingThree">
+					<h5 class="mb-0">
 						{% if purchases|length == 0: %}
 						<h3 style="text-align: left;">Purchased Books:</h3>
-						<table>
+						<table style="overflow-x:scroll;">
 							<span>
 								<td>You have not claimed any books, <a href="homePage"> search books here </a></td>
 							</span>
-							<td> <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-								<h6 style="display:inline"> hide/unhide</h6>
-							</button> </td>
+							<td>
+								<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+									<h6 style="display:inline"> hide/unhide</h6>
+								</button>
+							</td>
 						</table>
 						{% else: %}
 						<h3 style="display: inline;"> Purchased Books: </h3>
@@ -269,27 +277,27 @@
 							<h6> hide/unhide</h6>
 						</button>
 						{% endif %}
-				</h5>
-			</div>
+					</h5>
+				</div>
 
-			<div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordionExample">
-				<div class="card-body">
-					<table class="table">
-						<th>Book Title:</th>
-						<th> </th>
-						<th> Course Code: </th>
-						<th> </th>
-						<th> Course Title: </th>
-						<th> </th>
-						<th> List Price: </th>
-						<th> </th>
-						<th> Accepted Price: </th>
-						<th> </th>
-						<th> Shipping Status: </th>
-					{% if purchases|length == 0: %}
-					</table>
-					{% else: %}
-					{%    for book in purchases: %}
+				<div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordionExample">
+					<div class="card-body">
+						<table class="table" style="overflow-x:scroll;">
+							<th>Book Title:</th>
+							<th> </th>
+							<th> Course Code: </th>
+							<th> </th>
+							<th> Course Title: </th>
+							<th> </th>
+							<th> List Price: </th>
+							<th> </th>
+							<th> Accepted Price: </th>
+							<th> </th>
+							<th> Shipping Status: </th>
+							{% if purchases|length == 0: %}
+						</table>
+						{% else: %}
+						{%    for book in purchases: %}
 						<tr>
 							<td>{{book["title"]}}</td>
 							<td></td>
@@ -304,67 +312,68 @@
 							<td>
 								<!-- {% if book["status"] == "purchased": %} -->
 								<form method="POST"
-								action="/profilePage?list={{book['uniqueId']}}&seller={{book['sellerId']}}">
-									  <input 
-									  	type="submit"
-									 	name="received"
-									 	id="received"
-									 	value="Received"
-									 	onclick="return receivedBook();">    
+									  action="/profilePage?list={{book['uniqueId']}}&seller={{book['sellerId']}}">
+									<input type="submit"
+										   name="received"
+										   id="received"
+										   value="Received"
+										   onclick="return receivedBook();">
 								</form>
 								<!-- {% else: %}
-									Purhcase complete
-								{% endif %} -->
+								Purhcase complete
+							{% endif %} -->
 							</td>
 						</tr>
-					{%    endfor %}
-					{% endif %}
-					</table>
+						{%    endfor %}
+						{% endif %}
+						</table>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="card">
-			<div class="card-header" id="headingFour">
-				<h5 class="mb-0">
+			<div class="card">
+				<div class="card-header" id="headingFour">
+					<h5 class="mb-0">
 						{% if soldBooks|length == 0: %}
 						<h3 style="text-align: left;">Sold Books:</h3>
-						<table>
+						<table style="overflow-x:scroll;">
 							<span>
 								<td>You have not sold any books, <a href="sellerPage"> list books here </a> </td>
 							</span>
-							<td> <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-								<h6 style="display:inline"> hide/unhide</h6>
-							</button> </td>
+							<td>
+								<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+									<h6 style="display:inline"> hide/unhide</h6>
+								</button>
+							</td>
 						</table>
 						{% else: %}
-							<h3 style="display: inline;"> Sold Books: </h3>
-							<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-								<h6> hide/unhide</h6>
-							</button> 
+						<h3 style="display: inline;"> Sold Books: </h3>
+						<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+							<h6> hide/unhide</h6>
+						</button>
 						{% endif %}
 
 
-				</h5>
-			</div>
+					</h5>
+				</div>
 
-			<div id="collapseFour" class="collapse show" aria-labelledby="headingFour" data-parent="#accordionExample">
-				<div class="card-body">
-					<table class="table">
-						<th>Book Title:</th>
-						<th> </th>
-						<th> </th>
-						<th> </th>
-						<th>Buyer Id: </th>
-						<th> </th>
-						<th> </th>
-						<th> </th>
-						<th> Sell Price: </th>
-						<th> </th>
-					{% if soldBooks|length == 0: %}
-					</table>
-					{% else: %}
-					{%    for book in soldBooks: %}
+				<div id="collapseFour" class="collapse show" aria-labelledby="headingFour" data-parent="#accordionExample">
+					<div class="card-body">
+						<table class="table" style="overflow-x:scroll;">
+							<th>Book Title:</th>
+							<th> </th>
+							<th> </th>
+							<th> </th>
+							<th>Buyer Id: </th>
+							<th> </th>
+							<th> </th>
+							<th> </th>
+							<th> Sell Price: </th>
+							<th> </th>
+							{% if soldBooks|length == 0: %}
+						</table>
+						{% else: %}
+						{%    for book in soldBooks: %}
 						<tr>
 							<td>{{book["title"]}}</td>
 							<td> </td>
@@ -377,13 +386,19 @@
 							<td>${{book["highestBid"]}}0</td>
 							<td> </td>
 						</tr>
-					{%    endfor %}
-					{% endif %}
-					</table>
+						{%    endfor %}
+						{% endif %}
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
+
+
+
 	</div>
+
+	
 
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
