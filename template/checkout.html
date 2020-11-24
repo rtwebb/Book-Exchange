@@ -1,81 +1,85 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title> Checkout </title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta id="dropDown" searchType="{{searchType}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          type="style/css"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <title> Checkout </title>
+    <style>
+        .img-thumbnail:hover {
+            border: 2px solid orange;
+            border-radius: 1em;
+            overflow: hidden;
+        }
+    </style>
+</head>
 
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    
-    </head>
+<body>
+    {% include 'head.html' %}
 
-    <header>
-        {% include 'head.html' %}
+        <div class ="container">
+          <div class="col-sm-12">
+            <div class="jumbotron">
 
-    </header>
+              {% if indicator == 1: %}
+              <h1><center>Congratulations!</center></h1>
+              <br>
 
-    <body>        
-
-            <div class ="container">
-              <div class="col-sm-12">
-                <div class="jumbotron">
-                  
-                  {% if indicator == 1: %}
-                  <h1><center>Congratulations!</center></h1>
-                  <br>
-
-                  <p> Please check your venmo for a request for ${{cost}} from one of our team members. You will recieve 
-                    an email confirmation once your payment has been recieved along with next action steps.
-                    Once we recieve confirmation from you, that you have recieved the book, the money will
-                    be released to the seller. If for some reason you never recieve the book. The money will
-                    be released back to you.
-                    <br>
-                    <br>
-                    Thank you,
-                    <br>
-                    The Book-Exchange team
-                  </p>
-
-
-                  {% else: %}
-
-                  <h2><center>Hi {{username}}, Let's complete your purchase</center></h2>
-                  <br>
-               
-                    
-                 
-                  <form action="/checkout?cost={{cost}}&title={{title}}&list={{list}}&sellerId={{sellerId}}" method="post" id="submitBookForm" enctype="multipart/form-data">
-                  
+              <p> Please check your venmo for a request for ${{cost}}0 from one of our team members. You will receive
+                an email confirmation once your payment has been received along with next action steps.
+                Once we receive confirmation from you that you have received the book, the money will
+                be released to the seller. If for some reason you never receive the book, the money will
+                be released back to you.
+                <br>
+                <br>
+                Thank you,
+                <br>
+                The Book-Exchange Team
+              </p>
 
 
-                    <div class="row">
-                      <div class="col-md-6">
-                        <label for="inputUsername" class="form-label">Venmo Username</label>
-                        <input type="text" class="form-control" name="username" id="inputUsername" placeholder="Ex: Michael-Jordan" required>
-                        <div class="invalid-feedback">
-                          venmo username is required
-                        </div>
-                      </div>
+              {% else: %}
 
+              <h2><center>Hi {{username}}, let's complete your purchase</center></h2>
+              <br>
+
+
+
+              <form action="/checkout?cost={{cost}}&title={{title}}&list={{list}}&sellerId={{sellerId}}" method="post" id="submitBookForm" enctype="multipart/form-data">
+
+
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <label for="inputUsername" class="form-label">Venmo Username</label>
+                    <input type="text" class="form-control" name="username" id="inputUsername" placeholder="Ex: Michael-Jordan" required>
+                    <div class="invalid-feedback">
+                      venmo username is required
                     </div>
+                  </div>
 
-                    <button
-                            class="btn orange" 
-                            form="submitBookForm"
-                            onclick="return verifyUsername();"
-                            value="Submit"> Submit
-                    </button> 
-                  </form>
                 </div>
-              </div>
+
+                <button
+                        class="btn orange"
+                        form="submitBookForm"
+                        onclick="return verifyUsername();"
+                        value="Submit"> Submit
+                </button>
+              </form>
             </div>
+          </div>
+        </div>
 
-         {% endif %}
-
- 
+     {% endif %}
 
 
-            {% include 'footer.html' %}
-    </body>
+
+
+        {% include 'footer.html' %}
+</body>
 
     
 
