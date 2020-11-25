@@ -315,7 +315,7 @@
 								<strong>Purchase Complete</strong>
 							{% else %}
 								<form method="POST"
-									  action="/profilePage?list={{book['uniqueId']}}&seller={{book['sellerId']}}">
+									  action="/profilePage?list={{book['uniqueId']}}&sellerId={{book['sellerId']}}&title={{book['title']}}&cost={{book['bid']}}">
 									<input type="submit"
 										   name="received"
 										   id="received"

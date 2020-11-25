@@ -435,6 +435,7 @@ class QueryDatabase:
                     "minPrice": listing.minPrice,
                     "bid": bid.bid,
                     "status": bid.status,
+                    "uniqueId": listing.uniqueID,
                     "sellerId": listing.sellerID
                 }
                 results.append(result)

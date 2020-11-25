@@ -243,8 +243,11 @@ def buyerPageTemplate():
 def profilePageTemplate():
     username = CASClient().authenticate()
     username = username.strip()
+    print("username: ", username)
     listingID = request.args.get('list')
+    print("ListingID: ", listingID)
     sellerID = request.args.get('sellerId')
+    print("sellerID: ", sellerID)
     bidder = request.args.get('bidder')
     title = request.args.get('title')
     highestBid = request.args.get('cost')
