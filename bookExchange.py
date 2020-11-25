@@ -537,7 +537,7 @@ def checkout():
             return response
 
     html = render_template('checkout.html', username=username, indicator=indicator,
-                           title=title, cost=cost, sellerId=sellerId, list=listing)
+                           title=title, cost=cost, sellerId=sellerId, list=listing, buyNow=buyNow)
     response = make_response(html)
 
     return response
