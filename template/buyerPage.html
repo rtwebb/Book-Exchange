@@ -67,7 +67,7 @@
                 <h4>Course: {{results[0]["crstitle"]}} ({{results[0]["crscode"]}})</h4>
                 {% endif %}
                 <hr>
-                <p><b>Seller NetID: </b>{{results[0]["sellerId"]}}</p>
+                <p><b>Seller NetID: </b>{{results[0]["sellerId"]}} <small>(<a href="sellerListings?sellerID={{results[0]["sellerId"]}}">See more by this seller</a>)</small></p>
                 <p><b>Condition: </b>{{results[0]["condition"]}}</p>
                 <p>
                     <b>Buy Now Price: </b>${{results[0]["buyNow"]}}0
