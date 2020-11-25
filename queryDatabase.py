@@ -603,9 +603,7 @@ class QueryDatabase:
             print(argv[0] + ':', e, file=stderr)
             return -1
 
-<<<<<<< HEAD
     
-=======
     #------------------------------------------------------------------------------------
 
     def sellerListings(self, sellerID, sortBy):
@@ -650,4 +648,3 @@ class QueryDatabase:
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
->>>>>>> a132e0d8a594f0cf6b72279799e365a85d558b43
