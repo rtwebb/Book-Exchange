@@ -209,7 +209,7 @@ def buyerPageTemplate():
     try:
         results = database.getDescription(uniqueId)
 
-        if results == -1:
+        if results == -1 or not results:
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
