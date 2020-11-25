@@ -311,7 +311,9 @@
 							<td>${{book["bid"]}}0</td>
 							<td></td>
 							<td>
-								
+							{% if book['status'] == 'received' %}	
+								<strong>Purchase Complete</strong>
+							{% else %}
 								<form method="POST"
 									  action="/profilePage?list={{book['uniqueId']}}&seller={{book['sellerId']}}">
 									<input type="submit"
@@ -320,8 +322,7 @@
 										   value="Received"
 										   onclick="return receivedBook();">
 								</form>
-							
-							
+							{% endif %}
 							</td>
 						</tr>
 						{%    endfor %}

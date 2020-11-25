@@ -129,7 +129,10 @@ class QueryDatabase:
                 filter(Transactions.casUsername == username).one_or_none()
 
             # this is wrong
-            return transaction.venmoUsername
+            if not transaction:
+                return None
+            else:
+                return transaction.venmoUsername
 
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)

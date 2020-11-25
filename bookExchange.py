@@ -325,6 +325,7 @@ def profilePageTemplate():
             print("inside received")
             # update status
             error1 = database.updateStatus(listingID, username, 'received')
+            print('Error1: ', error1)
             if error1 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
@@ -333,23 +334,25 @@ def profilePageTemplate():
             # send email to seller
             error2 = sendEmail(mail, None, 'received',
                                sellerID, highestBid, title)
+            print('Error2: ', error2)
             if error2 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
 
-             # rneed automatic efresh
-            error = checkTransactions(database, username, highestBid)
-            if error1 == -1:
+             # need automatic refresh
+            error3 = checkTransactions(database, username, highestBid)
+            print('Error3: ', error3)
+            if error3 == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
-            elif error == False:
+            elif error3 == False:
                 print('buyer has not sent money')
                 #want to add popup
-            elif error == True:
-                error = sendMoney(database, sellerID, bidder, title, highestBid)
-                if error1 == -1:
+            elif error3 == True:
+                error4 = sendMoney(database, sellerID, bidder, title, highestBid)
+                if error4 == -1:
                     html = render_template('errorPage.html')
                     response = make_response(html)
                     return response
