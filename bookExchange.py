@@ -352,18 +352,23 @@ def profilePageTemplate():
                 return response
             elif error3 == False:
                 print('buyer has not sent money')
-                #want to add popup
+                # want to add popup
             elif error3 == True:
+<<<<<<< HEAD
+                error4 = sendMoney(database, sellerID,
+                                   bidder, title, highestBid)
+=======
                 print('before send Money')
                 error4 = sendMoney(database, sellerID, username, title, highestBid)
                 print('after send Money')
+>>>>>>> def39d8c036bd271329b4bf38fc4f6593620d3bb
                 if error4 == -1:
                     print('in send money error')
                     html = render_template('errorPage.html')
                     response = make_response(html)
                     return response
-                #else: 
-                    #pop up with congratulations money has been sent
+                # else:
+                    # pop up with congratulations money has been sent
 
         # if it's the highest bid need to notify everyone
         # user wants to delete their bid
@@ -495,9 +500,9 @@ def checkout():
     buyNow = request.args.get('buyNow')
     print('buyNow: ', buyNow)
     indicator = 0
-    #buyer submits venmo -> make request
-    #buyer presses recieved -> check of they sent money(venmouserName, amount, Book title,)
-    #might be a problem if buy the same book title from same seller -> need listing ID
+    # buyer submits venmo -> make request
+    # buyer presses recieved -> check of they sent money(venmouserName, amount, Book title,)
+    # might be a problem if buy the same book title from same seller -> need listing ID
     # sens money
 
     # Make sure buyers only returns 1, if it doensnt send pop up with an error
@@ -509,7 +514,8 @@ def checkout():
         # venmoUsername = venmoUsername.strip()
         indicator = 1
         print('about to send request')
-        error = sendRequest(database, venmoUsername, username, cost, title, sellerId, listing)
+        error = sendRequest(database, venmoUsername, username,
+                            cost, title, sellerId, listing)
         print('sent request')
         if error == -1:
             print('in send request error')
@@ -517,7 +523,6 @@ def checkout():
             response = make_response(html)
             return response
 
-       
         if buyNow == 'yes':
             print('about to buyNow')
             bidders = database.buyNow(username, listing, cost)
@@ -622,7 +627,7 @@ def congratsPage():
         title = request.form.get('title')
         minprice = request.form.get('minPrice')
         buynow = request.form.get('buyNow')
-        #need case were username is wrong
+        # need case were username is wrong
         venmoUsername = request.form.get('venmoUsername')
         print("venmoUsername: ", venmoUsername)
         transaction = database.getTransaction(username)
