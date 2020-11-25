@@ -118,6 +118,19 @@
                     </div>
                 </div>
 
+                <div class="row">
+                  <div class="col-lg-4">
+                    <label for="inputVenmoUsername" class="form-label"> Venmo Username <span>*</span></label>
+                    {% if book is not none: %}
+                    <input type="text" class="form-control" value="venmoUsername" name="venmoUsername" id="inputVenmoUsername" required>
+                    {% else %}
+                    <input type="text" class="form-control" name="venmoUsername" id="inputVenmoUsername" placeholder="Michael-Jordan" required>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <br>
+
                 <h2 style="display:inline">Add Images</h2> (Add up to three images)
                 <br>
                 <br>
@@ -178,9 +191,11 @@
         console.log('Buy Now Price: ', buyNow);
         let condition = $('#inputCondition').val();
         console.log("inputCondition: ", condition);
+        let venmoUsernmae = $('#inputVenmoUsername').val();
+        console.log('inputVenmoUsername: ', venmoUsername)
 
         // missing value checks
-        if (title == null || author == null || Number.isNaN(minPrice) || Number.isNaN(buyNow) || condition == null || isbn === null){
+        if (title == null || author == null || Number.isNaN(minPrice) || Number.isNaN(buyNow) || condition == null || isbn === null || venmoUsername == null){
           alert('All required fields are not filled, please make sure you complete all required fields!');
           return false;
         }

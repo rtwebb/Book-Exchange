@@ -7,7 +7,7 @@
 from sys import stderr, argv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database import Books, Authors, Bids, Courses, Listings, Images
+from database import Books, Authors, Bids, Courses, Listings, Images, Transactions
 from uuid import uuid4
 import cloudinary
 from cloudinary.uploader import upload
@@ -110,6 +110,34 @@ class QueryDatabase:
             return -1
 
     # ----------------------------------------------------------------------------------
+    def addTransaction(self, venmoUsername, username):
+        try:
+            newTrans = Transactions(venmoUsername=venmoUsername, casUsername=username)
+            self._connection.add(newTrans)
+            self._connection.commit()
+
+            return 0
+
+        except Exception as e:
+            print(argv[0] + ':', e, file=stderr)
+            return -1
+
+    # ----------------------------------------------------------------------------------
+    def getTransaction(self, username):
+        try:
+            transaction =  self._connection.query(Transactions). \
+                filter(Transactions.casUsername == username).one_or_none()
+
+            return transaction.venmoUsername
+
+        except Exception as e:
+            print(argv[0] + ':', e, file=stderr)
+            return -1
+
+
+    # ----------------------------------------------------------------------------------
+
+
 
     # when a listing is bought, remove all bids other than the accepted/confirmed one
     def removeAllBids(self, uniqueID):
@@ -574,3 +602,5 @@ class QueryDatabase:
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
+
+    

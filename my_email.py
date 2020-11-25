@@ -46,11 +46,10 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
             recipients = [seller]
             message = "Hello " + seller + "," + "\n" + "\n" + \
                       bidders[0] + " confirmed their bid!  " + \
-                      "You should receive a confirmation email from us within the next 48 hours once the buyer has " \
-                      "sent payment for the book. " + \
-                      "If you do not receive a confirmation email from us within the next 48 hours saying the book " \
-                      "was purchased, " + \
-                      "you are authorized to delete this bid. " + \
+                      "Once the buyer confirms that they have recieved the book, the money they sent us will be " \
+                      "released to you ONLY if the buyer has sent the money requested through venmo to a Book-Exchange team member. " \
+                      "We recommend that you gain proof of a money transaction (e.g. screenshot) before you give/send the book to the buyer. " \
+                      "The Book-Exchange team is NOT responsible for releasing money to you if the seller has not yet sent it. " \
                       "Below is the summary of your Listing." + "\n" + "\n" + \
                       "Book Title: " + title + "\n" + \
                       "Accepted Price: " + str(highestBid) + "0\n" + \

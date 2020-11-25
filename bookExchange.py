@@ -14,6 +14,7 @@ from CASClient import CASClient
 from json import dumps
 from venmo_api import Client, get_user_id
 from my_email import sendEmail
+from venmo import sendRequest, checkTransactions, sendMoney
 
 # from wtforms import TextField, Form
 
@@ -320,8 +321,7 @@ def profilePageTemplate():
 
         # book received now must: send seller the money and change book status
         elif 'received' in request.form:
-            # send seller money
-
+        
             # update status
             error1 = database.updateStatus(listingID, username, 'received')
             if error1 == -1:
@@ -336,6 +336,24 @@ def profilePageTemplate():
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
+
+            # rneed automatic efresh
+            error = checkTransactions(database, username, highestBid)
+            if error1 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+            elif error == False:
+                print('buyer has not sent money')
+                #want to add popup
+            elif error == True:
+                error = sendMoney(database, sellerID, bidder, title, highestBid)
+                if error1 == -1:
+                    html = render_template('errorPage.html')
+                    response = make_response(html)
+                    return response
+                #else: 
+                    #pop up with congratulations money has been sent
 
         # if it's the highest bid need to notify everyone
         # user wants to delete their bid
@@ -465,66 +483,48 @@ def checkout():
     listing = request.args.get('list')
     sellerId = request.args.get('sellerId')
     buyNow = request.args.get('buyNow')
+    print('buyNow: ', buyNow)
     indicator = 0
+    #buyer submits venmo -> make request
+    #buyer presses recieved -> check of they sent money(venmouserName, amount, Book title,)
+    #might be a problem if buy the same book title from same seller -> need listing ID
+    # sens money
+
+
 
     # Make sure buyers only returns 1, if it doensnt send pop up with an error
     # connect recieved to send money to seller or throw popup
     # connect recieved button to trigger checking if buyer sent money, if didnt sent money, email buyer and seller?
+    #says choose if you dont pick a condition
 
     venmoUsername = request.form.get('username')
     if venmoUsername != None:
-        # venmoUsername = venmoUsername.strip()
         indicator = 1
+        print('about to send request')
+        error = sendRequest(database, venmoUsername, username, cost, title, sellerId, listing)
+        print('sent request')
+        if error == -1:
+            print('in send request error')
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
 
-        print('before client')
-        #venmo = Client(access_token='d095f97905ba8bb6a2b84477e411d08cc000f6eadf261624b29e88ef15ab4ada')
-        print('after client')
-
-        #buyers = venmo.user.search_for_users(query=venmoUsername, page=1)
-        i = 0
-
-        #userID = None
-        # for buyer in buyers:
-        #print('buyer: ', buyer)
-    #print('buyer id: ', buyer.id)
-        # print(buyer.username)
-        # print(username)
-        # if buyer.username == venmoUsername:
-        #print('in if')
-        #userID = get_user_id(buyer, None)
-
-        #myProfile = venmo.user.get_my_profile()
-    #print('my profile', myProfile)
-
-        # Use the same device-id: 96321548-32Y8-2S28-00Z8-6YK71H070SM8 next time to avoid 2-factor-auth process.
-
-        #transaction = venmo.user.get_transaction_between_two_users(myProfile.id, userID)
-    #print("transaction: ", transaction)
-    # if target.id = buyer.id, if amount = cost, if status == 'settled', if seller = seller and listing
-    # note = BookExchange: buying book title form sellerID (listing ID)
-    # for trans in transaction:
-    #print('actor: ', trans.actor)
-    #print('target: ', trans.target)
-    #print('note: ', trans.note)
-    #print('amount: ', trans.amount)
-    #print('status: ', trans.status)
-    #print('ausience: ', trans.audience)
-
-        # Request money
-        #venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(userID))
-
-        # confirm button should stay up
-        # dont send to all bidders until it's purchased
-        # send email to all bidders and seller
+       
         if buyNow == 'yes':
+            print('about to buyNow')
             bidders = database.buyNow(username, listing, cost)
+            print('after buyNow')
             if bidders == -1:
+                print('in buyNow error')
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
         else:
+            print('before updateStatus')
             bidders = database.updateStatus(listing, username, 'confirmed')
+            print('after updateStatus')
             if bidders == -1:
+                print('in updateStatus error')
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
@@ -538,7 +538,7 @@ def checkout():
             return response
 
     html = render_template('checkout.html', username=username, indicator=indicator,
-                           title=title, cost=cost, sellerId=sellerId, list=listing)
+                           title=title, cost=cost, sellerId=sellerId, list=listing, buyNow=buyNow)
     response = make_response(html)
 
     return response
@@ -613,6 +613,20 @@ def congratsPage():
         title = request.form.get('title')
         minprice = request.form.get('minPrice')
         buynow = request.form.get('buyNow')
+        #need case were username is wrong
+        venmoUsername = request.form.get('venmoUsername')
+        transaction = database.getTransaction(username)
+        if transaction == None:
+            error = database.addTransaction(venmoUsername, username)
+            if error == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+        elif transaction == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
         image1 = request.files.get('image1')
         image2 = request.files.get('image2')
         image3 = request.files.get('image3')
@@ -657,6 +671,8 @@ def congratsPage():
 
             msg += "You have successfully created a listing! It won't be long until the bids start rolling in!  "
             msg1 += "Here is the information regarding your listing:"
+
+
         except Exception as e:
             print("Error: " + str(e), file=stderr)
             html = render_template('errorPage.html')
