@@ -723,9 +723,54 @@ def privacyPolicyTemplate():
     response = make_response(html)
     return response
 
+#------------------------------------------------------------------------
+
+@app.route('/sellerListings', methods=['GET'])
+def sellerListingsTemplate():
+    username = CASClient().authenticate()
+    username = username.strip()
+
+    sellerID = request.args.get('sellerID')
+    sortBy = request.args.get('sortBy')
+
+    if sellerID is None and sortBy is not None:
+        sellerID = request.cookies.get('sellerID')
+
+    if sortBy is None:
+        sortBy = "newest"
+
+    results = database.sellerListings(sellerID, sortBy)
+
+    if results == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
+    images = []
+    # Accessing images
+    i = 0
+    for dict in results:
+        if dict["images"]:
+            image = dict["images"]
+            images.append(image[0].url)
+            dict["images"] = i
+            i += 1
+
+        else:
+            images.append(
+                "http://res.cloudinary.com/dijpr9qcs/image/upload/yah8siamtbmtg5wtnsdv.png")
+            dict["images"] = i
+            i += 1
+
+    html = render_template('sellerListings.html', username=username, sellerID=sellerID, results=results, sortBy=sortBy, images=images)
+
+    response = make_response(html)
+    if sellerID is not None:
+        response.set_cookie('sellerID', sellerID)
+    return response
+
 # -----------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
-
 
 @app.route('/logout', methods=['GET'])
 def logout():

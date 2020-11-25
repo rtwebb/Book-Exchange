@@ -574,3 +574,48 @@ class QueryDatabase:
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
+
+    #------------------------------------------------------------------------------------
+
+    def sellerListings(self, sellerID, sortBy):
+        results = []
+
+        try:
+            found = self._connection.query(Listings). \
+                    filter(Listings.sellerID == sellerID). \
+                    filter(Listings.status != 'closed'). \
+                    filter(Listings.status != 'purchased'). \
+                    filter(Listings.status != 'received').order_by(Listings.listTime.desc()).all()
+
+            for listing in found:
+                result = {
+                    "isbn": listing.book[0].isbn,
+                    "title": listing.book[0].title,
+                    "crscode": listing.course[0].courseCode,
+                    "crstitle": listing.course[0].courseTitle,
+                    "images": listing.images,
+                    "uniqueId": listing.uniqueID,
+                    "highestBid": listing.highestBid,
+                    "buyNow": listing.buyNow
+                }
+
+                results.append(result)
+
+            if sortBy == "alphabetical":
+                results = sorted(results, key=lambda d: d["title"])
+            elif sortBy == "lotohi":
+                results = sorted(results, key=lambda d: d["highestBid"])
+            elif sortBy == "hitolo":
+                results = sorted(results, key=lambda d: d["highestBid"])
+                results = results[::-1]
+            elif sortBy == "BNPhitolo":
+                results = sorted(results, key=lambda d: d["buyNow"])
+                results = results[::-1]
+            elif sortBy == "BNPlotohi":
+                results = sorted(results, key=lambda d: d["buyNow"])
+
+            return results
+
+        except Exception as e:
+            print(argv[0] + ':', e, file=stderr)
+            return -1
