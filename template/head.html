@@ -159,16 +159,16 @@
         console.log("Drop down: ", dropDown);
 
         if (dropDown == "isbn"){
-            $('#query').attr('placeholder','ISBN 10 or ISBN 13');
+            $("input[name='query']").attr('placeholder', 'ISBN 10 or ISBN 13');
         }
         else if (dropDown == "crscode"){
-            $('input:text').attr('placeholder','COS 333');
+            $("input[name='query']").attr('placeholder', 'COS 333');
         }
         else if (dropDown == "crstitle"){
-            $('input:text').attr('placeholder','Computer Science: An Interdisciplinary Approach');
+            $("input[name='query']").attr('placeholder', 'Computer Science: An Interdisciplinary Approach');
         }
         else {
-            $('input:text').attr('placeholder','Search');
+            $("input[name='query']").attr('placeholder', 'Search');
         }
 
     }
