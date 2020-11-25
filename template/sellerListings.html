@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta id="dropDown" searchType="{{searchType}}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet"
+          type="style/css"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <title> Book Exchange </title>
+
+    <style>
+        .img-thumbnail:hover{
+        border: 2px solid orange;
+        border-radius: 1em;
+        overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'head.html' %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" id="here">
+                {% if results is not none: %}
+                {%   set number = results|length %}
+                {% else: %}
+                {%   set number = 0 %}
+                {% endif %}
+                <h1 style="text-align:center"> {{number}} Available Listing(s) from {{sellerID}} </h1>
+
+                <br>
+                {% if results is not none: %}
+                <form action="/sellerListings" method="GET">
+                    <select id="sortBy" class="selector" name='sortBy' selected="sortBy" style="margin-bottom:10px" onchange="this.form.submit()">
+                        {% if sortBy == "newest" %}
+                        <option value="newest" selected="selected">Sort by: Newest</option>
+                        <option value='alphabetical'> Sort by: Alphabetical </option>
+                        <option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
+                        <option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
+                        <option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
+                        <option value='BNPlotohi'> Sort by: Buy Now (Low-High) </option>
+                        {% elif sortBy == "alphabetical" %}
+                        <option value="newest">Sort by: Newest</option>
+                        <option value='alphabetical' selected="selected"> Sort by: Alphabetical </option>
+                        <option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
+                        <option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
+                        <option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
+                        <option value='BNPlotohi'> Sort by: Buy Now (Low-High) </option>
+                        {% elif sortBy == "lotohi" %}
+                        <option value="newest">Sort by: Newest</option>
+                        <option value='alphabetical'> Sort by: Alphabetical </option>
+                        <option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
+                        <option value='lotohi' selected="selected"> Sort by: Highest Bid (Low-High) </option>
+                        <option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
+                        <option value='BNPlotohi'> Sort by: Buy Now (Low-High) </option>
+                        {% elif sortBy == "hitolo" %}
+                        <option value="newest">Sort by: Newest</option>
+                        <option value='alphabetical'> Sort by: Alphabetical </option>
+                        <option value='hitolo' selected="selected"> Sort by: Highest Bid (High-Low)</option>
+                        <option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
+                        <option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
+                        <option value='BNPlotohi'> Sort by: Buy Now (Low-High) </option>
+                        {% elif sortBy == "BNPhitolo" %}
+                        <option value="newest">Sort by: Newest</option>
+                        <option value='alphabetical'> Sort by: Alphabetical </option>
+                        <option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
+                        <option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
+                        <option value='BNPhitolo' selected="selected"> Sort by: Buy Now (High-Low)</option>
+                        <option value='BNPlotohi'> Sort by: Buy Now (Low-High) </option>
+                        {% elif sortBy == "BNPlotohi" %}
+                        <option value="newest">Sort by: Newest</option>
+                        <option value='alphabetical'> Sort by: Alphabetical </option>
+                        <option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
+                        <option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
+                        <option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
+                        <option value='BNPlotohi' selected="selected"> Sort by: Buy Now (Low-High) </option>
+                        {% endif %}
+                    </select>
+                </form>
+
+
+                <div class="row">
+                    {% for dict in results: %}
+                    {% set url = "buyerPage?bookid=" + dict["uniqueId"] %}
+                    <div class="col-md-3">
+                        <a href="{{url}}">
+                            <img src="{{images[dict['images']]}}" alt="Lights" class="img-thumbnail">
+                            <div class="caption" style="text-align:left">
+                                <hr style="margin-bottom:0;margin-top:5">
+                                <small>
+                                    <p style="text-align:center">
+                                        Book Title: {{dict["title"]}}
+                                        <br />
+                                        Highest bid: ${{dict["highestBid"]}}0
+                                        <br />
+                                        Buy now: ${{dict["buyNow"]}}0
+                                    </p>
+                                </small>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div-->
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="Stylesheet" /></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
+    </script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
+    </script>
+
+    <script>
+        function handleResponse(response){
+        // return array depending on search
+        try
+        {
+        let results = response;
+
+        // call jQuery autocomplete on said list
+        $("#searchQuery").autocomplete({
+        source: results
+        });
+
+        }
+        catch(e){
+        console.log("error: ", e);
+        }
+
+        }
+
+        let request = null;
+
+        function getResults(){
+        let searchType = $('#searchType1').val();
+        searchType = encodeURIComponent(searchType);
+        console.log("searchType: ", searchType);
+
+        let query = $('#searchQuery').val();
+
+        query = encodeURIComponent(query);
+        console.log("query: ", query);
+
+        if (searchType !== '' || searchType !== null){
+        if(query !== null || query.trim() !== ''){
+        let url = 'autoComplete?searchType=' + searchType + "&query=" + query
+
+        if (request != null) {
+        request.abort();
+        }
+
+        request = $.ajax(
+        {
+        type: 'GET',
+        url: url,
+        success: handleResponse
+        }
+        );
+        }
+        }
+
+        }
+
+        function setQuery() {
+        query1 = "" + "{{query|safe}}";
+        let query = $('#searchQuery');
+
+        query.val(query1);
+        console.log(query1);
+        console.log(query);
+
+        var searchType = "{{searchType|safe}}";
+        console.log(searchType);
+        let dropDown = $('#searchType1');
+        if (searchType == 1){
+        dropDown.val("isbn");
+        }
+        else if (searchType == 2){
+        console.log("inside #2")
+        dropDown.val("title");
+        }
+        else if(searchType == 3){
+        dropDown.val("crscode");
+        }
+        else if(searchType == 4){
+        dropDown.val("crstitle");
+        }
+        }
+        function setup(){
+        $('#searchQuery').focus()
+        setQuery();
+        $('#searchQuery').on('input', getResults);
+        }
+
+        $('document').ready(setup);
+    </script>
+</body>
+</html>
+
+
+
+
+
