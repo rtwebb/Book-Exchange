@@ -354,14 +354,9 @@ def profilePageTemplate():
                 print('buyer has not sent money')
                 # want to add popup
             elif error3 == True:
-<<<<<<< HEAD
-                error4 = sendMoney(database, sellerID,
-                                   bidder, title, highestBid)
-=======
                 print('before send Money')
                 error4 = sendMoney(database, sellerID, username, title, highestBid)
                 print('after send Money')
->>>>>>> def39d8c036bd271329b4bf38fc4f6593620d3bb
                 if error4 == -1:
                     print('in send money error')
                     html = render_template('errorPage.html')
