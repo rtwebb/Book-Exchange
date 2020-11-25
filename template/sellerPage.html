@@ -57,9 +57,9 @@
                     <div class="form-group col-md-4">
                         <label for="inputAuthor" class="form-label">Author(s) <span>*</span></label>
                         {% if book is not none: %}
-                        <input type="text" class="form-control" name="author" id="inputAuthor" value="{{book['authors']}}">
+                        <input type="text" class="form-control" name="author" id="inputAuthor" value="{{book['authors']}}" required>
                         {% else %}
-                        <input type="text" class="form-control" name="author" id="inputAuthor" placeholder="Ex: Brian Kernighan">
+                        <input type="text" class="form-control" name="author" id="inputAuthor" placeholder="Ex: Brian Kernighan" required>
                         {% endif %}
                     </div>
                 </div>
@@ -85,8 +85,8 @@
 
                     <div class="form-group col-md-4">
                         <label for="inputCondition" class="form-label">Condition <span>*</span></label>
-                        <select id="inputCondition" name="bookCondition" class="form-control">
-                            <option selected>Choose...</option>
+                        <select id="inputCondition" name="bookCondition" class="form-control" required>
+                            <option selected disabled>Choose...</option>
                             <option>Poor</option>
                             <option>Slightly Worn</option>
                             <option>Good</option>
@@ -124,7 +124,7 @@
                     {% if book is not none: %}
                     <input type="text" class="form-control" value="venmoUsername" name="venmoUsername" id="inputVenmoUsername" required>
                     {% else %}
-                    <input type="text" class="form-control" name="venmoUsername" id="inputVenmoUsername" placeholder="Michael-Jordan" required>
+                    <input type="text" class="form-control" name="venmoUsername" id="inputVenmoUsername" placeholder="Ex: Michael-Jordan" required>
                     {% endif %}
                   </div>
                 </div>
@@ -191,11 +191,11 @@
         console.log('Buy Now Price: ', buyNow);
         let condition = $('#inputCondition').val();
         console.log("inputCondition: ", condition);
-        let venmoUsernmae = $('#inputVenmoUsername').val();
-        console.log('inputVenmoUsername: ', venmoUsername)
+        let venmoUsername = $('#inputVenmoUsername').val();
+        console.log('inputVenmoUsername: ', venmoUsername);
 
         // missing value checks
-        if (title == null || author == null || Number.isNaN(minPrice) || Number.isNaN(buyNow) || condition == null || isbn === null || venmoUsername == null){
+        if (title == null || author == null || Number.isNaN(minPrice) || Number.isNaN(buyNow) || condition === null || isbn === null || venmoUsername === null){
           alert('All required fields are not filled, please make sure you complete all required fields!');
           return false;
         }
@@ -213,7 +213,7 @@
           return false;
         }
 
-        if (title.trim() === '' || author.trim() === '' || isbn.trim() === ''){
+        if (title.trim() === '' || author.trim() === '' || isbn.trim() === '' || venmoUsername.trim() === ''){
           alert('All required fields are not filled, please make sure you complete all required fields!');
           return false;
         }
