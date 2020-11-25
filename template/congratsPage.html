@@ -125,20 +125,20 @@
 				{% if book is not none: %}
 				<strong>Seller: </strong> {{book['sellerId']}}
 				<br>
-				<strong>Author: </strong> {{book['author']}}
+				<strong>Author(s): </strong> {{book['authors']}}
 				<br>
 				<strong>Title: </strong> {{book['title']}}
 				<br>
 				<strong>Condition: </strong> {{book['condition']}}
 				<br>
 				{% if type1 == 0 %}
-				<strong>Purchase Price: </strong> {{book['buyNow']}}
+				<strong>Purchase Price: </strong> ${{book['buyNow']}}0
 				{% elif type1 == 1 %}
-				<strong>Your Bid: </strong> {{book['highestBid']}}
+				<strong>Your Bid: </strong> ${{book['highestBid']}}0
 				{% else %}
-				<strong>Minimum Price: </strong> {{book['minPrice']}}
+				<strong>Minimum Price: </strong> ${{book['minPrice']}}0
 				<br>
-				<strong>Buy Now Price: </strong> {{book['buyNow']}}
+				<strong>Buy Now Price: </strong> ${{book['buyNow']}}0
 				{% endif %}
 				{% endif %}
 				<br>

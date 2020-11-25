@@ -563,7 +563,7 @@ def congratsPage():
         buyNow = request.args.get('buyNow')
         uniqueId = request.args.get('bookid')
         try:
-
+            # users are routed straight to checkout now, so this case does not happen
             if buyNow is not None:
                 results = database.getDescription(uniqueId)
                 if results == -1:
@@ -648,14 +648,14 @@ def congratsPage():
 
             book = {
                 "title": title,
-                "author": author,
+                "authors": author,
                 "minPrice": minprice,
                 "sellerId": username,
                 "buyNow": buynow,
                 "condition": condition
             }
 
-            msg += "You have sucessfully created a listing! It won't be long until the bids start rolling in!  "
+            msg += "You have successfully created a listing! It won't be long until the bids start rolling in!  "
             msg1 += "Here is the information regarding your listing:"
         except Exception as e:
             print("Error: " + str(e), file=stderr)
