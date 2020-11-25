@@ -105,7 +105,7 @@ def sendMoney(database, sellerId, buyerId, title, cost):
 
         print('before getTrans')
         print('buyerId: ', buyerId)
-        venmoUsername = database.getTransaction(buyerId)
+        venmoUsername = database.getTransaction(sellerId)
         print('first venmoUsername: ', venmoUsername)
         print('after getTrans')
         if venmoUsername == -1:
