@@ -11,6 +11,8 @@ from sys import stderr, argv
 
 #make venmo username pop up in congrats page 
 #create update venmo Username
+#fix automatic popup in seller page
+#I edited my bid and two popped up
 
 def validateUsername(venmoUsername):
 
@@ -43,7 +45,7 @@ def sendRequest(database, venmoUsername, buyerId, cost, title, sellerId, listing
 
         # Request money
         #add error check for this too
-        #venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(buyer[0].id))
+        venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(buyer[0].id))
 
         transaction = database.getTransaction(buyerId)
         if transaction == None:
@@ -73,18 +75,20 @@ def checkTransactions(database, buyerId, cost ):
         userID = buyer[0].id
         
         transaction = venmo.user.get_transaction_between_two_users(myProfile.id, userID)
-        print("transaction: ", transaction)
+        #print("transaction: ", transaction)
         # if target.id = buyer.id, if amount = cost, if status == 'settled', if seller = seller and listing
         # note = BookExchange: buying book title form sellerID (listing ID)
         for trans in transaction:
-            print('target: ', trans.target)
+            print('target.id: ', trans.target.id)
+            print('userid: ', userID)
             print('note: ', trans.note)
             print('amount: ', trans.amount)
+            print('cost: ', cost)
             print('status: ', trans.status)
-            if trans.target.id == venmoUsername and trans.amount == cost and trans.status == 'settled':
+            if str(trans.target.id) == str(userID) and str(trans.amount) == str(cost) and str(trans.status) == str('settled'):
                 return True
-            else:
-                return False
+           #will this be a problem 
+        return False
 
     except Exception as e:
         print(argv[0] + ':', e, file=stderr)
@@ -99,14 +103,23 @@ def sendMoney(database, sellerId, buyerId, title, cost):
         venmo = Client(access_token='d095f97905ba8bb6a2b84477e411d08cc000f6eadf261624b29e88ef15ab4ada')
         print('after client')
 
+        print('before getTrans')
+        print('buyerId: ', buyerId)
         venmoUsername = database.getTransaction(buyerId)
+        print('first venmoUsername: ', venmoUsername)
+        print('after getTrans')
         if venmoUsername == -1:
             return -1
-        
+
+        print('before get UserId')
+        print('venmoUsername: ', venmoUsername)
         buyer = venmo.user.search_for_users(query=venmoUsername, page=1)
+        print('after get UserId')
         userID = buyer[0].id
 
-        venmo.payment.send_money(.01, title, userID)
+        print('before real send money')
+        venmo.payment.send_money(float(cost), title, str(userID))
+        print('after real send money')
 
     except Exception as e:
         print(argv[0] + ':', e, file=stderr)

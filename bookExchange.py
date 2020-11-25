@@ -335,7 +335,7 @@ def profilePageTemplate():
                 return response
 
             # send email to seller
-            error2 = sendEmail(mail, None, 'received',
+            error2 = sendEmail(mail, [], 'received',
                                sellerID, highestBid, title)
             print('Error2: ', error2)
             if error2 == -1:
@@ -354,8 +354,11 @@ def profilePageTemplate():
                 print('buyer has not sent money')
                 #want to add popup
             elif error3 == True:
-                error4 = sendMoney(database, sellerID, bidder, title, highestBid)
+                print('before send Money')
+                error4 = sendMoney(database, sellerID, username, title, highestBid)
+                print('after send Money')
                 if error4 == -1:
+                    print('in send money error')
                     html = render_template('errorPage.html')
                     response = make_response(html)
                     return response
