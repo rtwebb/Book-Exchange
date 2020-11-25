@@ -477,6 +477,10 @@ def autoComplete():
 
     autoComplete.sort(key=lambda v: v.upper())
 
+    #if query.strip() == '' or query is None:
+        #result = []
+        #autocomplete = result
+
     jsonStr = dumps(autoComplete)
     response = make_response(jsonStr)
     response.headers['Content-Type'] = 'application/json'
