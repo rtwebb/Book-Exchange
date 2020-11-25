@@ -322,7 +322,7 @@ def profilePageTemplate():
         # book received now must: send seller the money and change book status
         elif 'received' in request.form:
             # send seller money
-
+            print("inside received")
             # update status
             error1 = database.updateStatus(listingID, username, 'received')
             if error1 == -1:
@@ -583,6 +583,7 @@ def congratsPage():
             else:
                 type1 = 1
                 bid = request.form.get('bid')
+                venmoUsername = request.form.get('venmoUsername')
                 database.addBid(buyerID, uniqueId, bid)
                 if results == -1:
                     html = render_template('errorPage.html')
@@ -614,7 +615,9 @@ def congratsPage():
         buynow = request.form.get('buyNow')
         #need case were username is wrong
         venmoUsername = request.form.get('venmoUsername')
+        print("venmoUsername: ", venmoUsername)
         transaction = database.getTransaction(username)
+        print("Transaction: ", transaction)
         if transaction == None:
             error = database.addTransaction(venmoUsername, username)
             if error == -1:

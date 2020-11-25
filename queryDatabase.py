@@ -128,6 +128,7 @@ class QueryDatabase:
             transaction =  self._connection.query(Transactions). \
                 filter(Transactions.casUsername == username).one_or_none()
 
+            # this is wrong
             return transaction.venmoUsername
 
         except Exception as e:
