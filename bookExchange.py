@@ -564,6 +564,7 @@ def congratsPage():
     msg = ""
     msg1 = ""
     results = []
+    bid = 0
 
     # profile page: accepting a bid on your listing; confirming your bid to purchase book
     # Congrats you have accepted a bid, now we just need bidder to confirm
@@ -595,7 +596,16 @@ def congratsPage():
                 msg1 += "Here is information regarding your purchase "
             else:
                 type1 = 1
-                bid = request.form.get('bid')
+                bid1 = request.form.get('bid')
+                bid = ''
+                if "." not in bid1:
+                    bid += bid1 + ".00"
+                elif ".0" in bid1:
+                    if ".00" not in bid1:
+                        bid = bid1 + "0"
+                    else:
+                        bid = bid1
+                
                 venmoUsername = request.form.get('venmoUsername')
                 database.addBid(buyerID, uniqueId, bid)
                 if results == -1:
@@ -693,7 +703,7 @@ def congratsPage():
             return response
 
     html = render_template('congratsPage.html', username=username, msg=msg, msg1=msg1,
-                           book=book, type1=type1)
+                           book=book, type1=type1, bid=bid)
     response = make_response(html)
 
     return response
