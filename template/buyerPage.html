@@ -170,6 +170,9 @@
                     return false;
                 }
 
+            } else if (bid == buyNow){
+                alert("You are bidding the same as the buy now price, please just click the 'buy now' button");
+                return false;
             } else {
                 if (confirm('Are you sure you would like to bid this amount?')) {
                     return true;
