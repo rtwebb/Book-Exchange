@@ -118,88 +118,37 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
 
 	<script>
-			function handleResponse(response){
-				// return array depending on search
-				try
-				{
-					let results = response;
 
-									// call jQuery autocomplete on said list
-					$("#searchQuery").autocomplete({
-						source: results
-					});
+		function setQuery() {
+			query1 = "" + "{{query|safe}}";
+			let query = $('#searchQuery');
 
-				}
-				catch(e){
-					console.log("error: ", e);
-				}
+			query.val(query1);
+			console.log(query1);
+			console.log(query);
 
+			var searchType = "{{searchType|safe}}";
+			console.log(searchType);
+			let dropDown = $('#searchType1');
+			if (searchType == 1){
+				dropDown.val("isbn");
 			}
-
-			let request = null;
-
-			function getResults(){
-				let searchType = $('#searchType1').val();
-				searchType = encodeURIComponent(searchType);
-				console.log("searchType: ", searchType);
-
-				let query = $('#searchQuery').val();
-
-				query = encodeURIComponent(query);
-				console.log("query: ", query);
-
-				if (searchType !== '' || searchType !== null){
-					if(query !== null || query.trim() !== ''){
-						let url = 'autoComplete?searchType=' + searchType + "&query=" + query
-					
-						if (request != null) {
-							request.abort();
-						}
-
-						request = $.ajax(
-							{
-								type: 'GET',
-								url: url, 
-								success: handleResponse
-							}
-						);
-					}
-				}
-
+			else if (searchType == 2){
+				console.log("inside #2")
+				dropDown.val("title");
 			}
-
-			function setQuery() {
-				query1 = "" + "{{query|safe}}";
-				let query = $('#searchQuery');
-
-				query.val(query1);
-				console.log(query1);
-				console.log(query);
-
-				var searchType = "{{searchType|safe}}";
-				console.log(searchType);
-				let dropDown = $('#searchType1');
-				if (searchType == 1){
-					dropDown.val("isbn");
-				}
-				else if (searchType == 2){
-					console.log("inside #2")
-					dropDown.val("title");
-				}
-				else if(searchType == 3){
-					dropDown.val("crscode");
-				}
-				else if(searchType == 4){
-					dropDown.val("crstitle");
-				}
+			else if(searchType == 3){
+				dropDown.val("crscode");
 			}
-			function setup(){
-				$('#searchQuery').focus()
-				setQuery();
-				$('#searchQuery').on('input', getResults);
+			else if(searchType == 4){
+				dropDown.val("crstitle");
 			}
+		}
+		function setup(){
+			setQuery();
+		}
 
-			$('document').ready(setup);
+		$('document').ready(setup);
 		</script>
 	</body>
 </html>
