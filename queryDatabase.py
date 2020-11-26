@@ -610,6 +610,9 @@ class QueryDatabase:
             found = self._connection.query(Bids).filter(Bids.listingID == listingID).all()
             for bid in found:
                 results.append(bid.buyerID.rstrip())
+            if not results:
+                return None
+                
             return results
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
