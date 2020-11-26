@@ -48,10 +48,7 @@ def homePageTemplate():
     # need to get recently listed books to show
     try:
         results = database.homeRecents()
-        if results == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+        errorCheck(results)
 
     except Exception as e:
         print("Error: " + str(e), file=stderr)
