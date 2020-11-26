@@ -302,10 +302,14 @@ def profilePageTemplate():
 
             allBidders = database.getAllBids(listingID)
             errorCheck(allBidders)
-
-            allBidders.insert(0, username)
-            error3 = sendEmail(mail, allBidders, 'deny',
+            if allBidders is None:
+                error3 = sendEmail(mail, [username], 'deny',
                                sellerID, highestBid, title)
+            else:
+                allBidders.insert(0, username)
+                error3 = sendEmail(mail, allBidders, 'deny',
+                               sellerID, highestBid, title)
+            
             errorCheck(error3)
 
         # book received now must: send seller the money and change book status
@@ -493,7 +497,10 @@ def checkout():
         error = sendRequest(database, venmoUsername, username,
                             cost, title, sellerId, listing)
         print('sent request')
-        errorCheck(error)
+        if error == -1:        
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
 
         if buyNow == 'yes':
             print('about to buyNow')
@@ -504,8 +511,11 @@ def checkout():
             print('before updateStatus')
             bidders = database.updateStatus(listing, username, 'confirmed')
             print('after updateStatus')
-            errorCheck(bidders)
-
+            if error == -1:        
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+                
         bidders.insert(0, username)
         # later need to distinguish between confirm and purchase so can delete bids
         error2 = sendEmail(mail, bidders, 'confirm', sellerId, cost, title)
