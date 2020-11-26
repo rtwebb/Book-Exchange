@@ -634,8 +634,28 @@ def congratsPage():
         type1 = 3
         isbn = request.form.get('isbn')
         title = request.form.get('title')
-        minprice = request.form.get('minPrice')
-        buynow = request.form.get('buyNow')
+        minprice1 = request.form.get('minPrice')
+        buynow1 = request.form.get('buyNow')
+        minprice = ''
+        buynow = ''
+        if "." not in minprice1:
+            minprice += minprice1 + ".00"
+        elif ".0" in minprice1:
+            if ".00" not in minprice1:
+                minprice = minprice1 + "0"
+            else:
+                minprice = minprice1
+
+        if "." not in buynow1:
+            buynow += buynow1 + ".00"
+        elif ".0" in buynow1:
+            if ".00" not in buynow1:
+                buynow = buynow1 + "0"
+            else:
+                buynow = buynow1
+
+
+
         # need case were username is wrong
         venmoUsername = request.form.get('venmoUsername')
         print("venmoUsername: ", venmoUsername)

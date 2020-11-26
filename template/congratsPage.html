@@ -136,9 +136,9 @@
 				{% elif type1 == 1 %}
 				<strong>Your Bid: </strong> ${{bid}}
 				{% else %}
-				<strong>Minimum Price: </strong> ${{book['minPrice']}}0
+				<strong>Minimum Price: </strong> ${{book['minPrice']}}
 				<br>
-				<strong>Buy Now Price: </strong> ${{book['buyNow']}}0
+				<strong>Buy Now Price: </strong> ${{book['buyNow']}}
 				{% endif %}
 				{% endif %}
 				<br>
@@ -154,7 +154,9 @@
 	<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"></link>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-	<script>function redirect() {
+	<script>
+	
+		function redirect() {
 			console.log("in redirect");
 			location.replace('profilePage');
 		}
@@ -162,10 +164,13 @@
 		function setup() {
 			console.log("in setup");
 			window.setInterval(redirect, 20000);
-
 		}
 
-		$('#document').ready(setup);</script>
+		$('#document').ready(setup);
+
+
+		
+	</script>
 
 	</body>
 </html>
