@@ -7,7 +7,7 @@
 from sys import stderr, argv
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
-from flask_mail import Mail, Message
+from flask_mail import Mail
 from queryDatabase import QueryDatabase
 from datetime import datetime
 from CASClient import CASClient
@@ -374,14 +374,30 @@ def profilePageTemplate():
         deleteBidBuyerID = request.args.get('deleteBidBuyerID')
         deleteBidListingID = request.args.get('deleteBidListingID')
         if deleteBidBuyerID is not None and deleteBidListingID is not None:
-            database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
+            result = database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
+            if result == -1 or result is None:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
         # user wants to delete their listing
         deleteListingID = request.args.get('deleteListingID')
         if deleteListingID is not None:
             allBidders = database.getAllBids(listingID)
-            sendEmail(mail, allBidders, 'removed', username, None, title)
-            database.removeListing(deleteListingID)
+            if allBidders == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+            result = sendEmail(mail, allBidders, 'removed', username, None, title)
+            if result == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
+            result = database.removeListing(deleteListingID)
+            if result == -1 or result is None:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
         # Listings
         listings = database.myListings(username)

@@ -191,7 +191,11 @@ class QueryDatabase:
                 else:
                     self._connection.delete(bid)
                     self._connection.commit()
-            return 0
+            
+            if not results:
+                return None
+            else:
+                return 0
 
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
@@ -208,7 +212,10 @@ class QueryDatabase:
                 self._connection.delete(listing)
                 self._connection.commit()
 
-            return 0
+            if not results:
+                return None
+            else:
+                return 0
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1

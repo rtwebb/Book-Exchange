@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------
 # my_email.py 
 # 
-# Author: Emmandra, Tiana
+# Author: Emmandra, Tiana, Toussaint
 # ----------------------------------------------------------------------
 #
 
@@ -12,10 +12,11 @@ from sys import stderr
 def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: None):
     try:
         recipients = []
+        message = ""
 
         if status == 'accept':
             recipients = bidders
-            message = "Hello " + bidders[0] + "," + "\n" + "\n" + \
+            message += "Hello " + bidders[0] + "," + "\n" + "\n" + \
                       "Congratulations! Your bid was accepted by " + seller + ". " + \
                       "Please log into book-exchange-cos333.herokuapp.com to confirm or deny your purchase of this " \
                       "book within the next 48 hours. " + \
@@ -30,7 +31,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
 
         elif status == 'decline':
             recipients = bidders
-            message = "Hello " + bidders[0] + "," + "\n" + "\n" + \
+            message += "Hello " + bidders[0] + "," + "\n" + "\n" + \
                       "Your bid was declined by " + seller + ". " + \
                       "You may log into book-exchange-cos333.herokuapp.com and place a bid on the same book, or you can" \
                       " explore different ones. " + \
@@ -44,7 +45,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
         # maybe change this to highest bid not cost
         elif status == 'confirm':
             recipients = [seller]
-            message = "Hello " + seller + "," + "\n" + "\n" + \
+            message += "Hello " + seller + "," + "\n" + "\n" + \
                       bidders[0] + " confirmed their bid!  " + \
                       "Once the buyer confirms that they have recieved the book, the money they sent us will be " \
                       "released to you ONLY if the buyer has sent the money requested through venmo to a Book-Exchange team member. " \
@@ -86,7 +87,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
         # update seller and other bidders about withdrawn highest bid
         elif status == 'deny':
             recipients = [seller]
-            message = "Hello " + seller + "," + "\n" + "\n" + \
+            message += "Hello " + seller + "," + "\n" + "\n" + \
                       bidders[0] + " denied their bid. " + \
                       "You may log into book-exchange-cos333.herokuapp.com and accept another bid if your listing has " \
                       "any.  " + \
@@ -123,7 +124,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
 
         elif status == 'remove':
             recipients = bidders
-            message = "Hello," + "\n" + "\n" + \
+            message += "Hello," + "\n" + "\n" + \
                       seller + " has deleted a listing that you recently bid on. " + \
                       "Below is the summary of the listing." + "\n" + "\n" + \
                       "Book Title: " + title + "\n" + \
@@ -134,7 +135,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
 
         elif status == 'received':
             recipients = [seller]
-            message = "Hello " + seller + ", " + "\n" + "\n" + \
+            message += "Hello " + seller + ", " + "\n" + "\n" + \
                       "You have successfully sold your book titled " + title + " for $" + highestBid + "0! " + \
                       "We know that it is a long process, but congratulations! " + \
                       "You should be receiving the funds in your venmo shortly." + "\n" + "\n" + \
@@ -143,7 +144,7 @@ def sendEmail(mail, bidders: [], status, seller: None, highestBid: None, title: 
 
         elif status == 'sendBook':
             recipients = [seller]
-            message = "Hello " + seller + ", " + "\n" + "\n" + \
+            message += "Hello " + seller + ", " + "\n" + "\n" + \
                       "We have received the funds from the buyer. Please send the book to the buyer. " + \
                       "Once the buyer receives the book, funds will be released to your venmo account." + "\n" + "\n" + \
                       "Best," + "\n" + \
