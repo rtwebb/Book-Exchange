@@ -124,7 +124,7 @@ def searchResultsTemplate():
     try:
         results = database.search(searchType, query, "1", sortBy)
 
-        if results == -1:
+        if results == -1 or not results:
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
@@ -173,6 +173,10 @@ def sellerPageTemplate():
         book = None
         try:
             results = database.getDescription(uniqueId)
+            if results == -1 or not results:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
             msg = "**Please resubmit book images, if you had any**"
 
             for result in results:
