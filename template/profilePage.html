@@ -193,7 +193,8 @@
 						{% else: %}
 						{%    for book in bids %}
 						<tr>
-							<td>{{book["title"]}}</td>
+							{% set url = "buyerPage?bookid=" + book["uniqueId"] %}
+							 <td><a href="{{url}}">{{book["title"]}}</a></td>
 							<td></td>
 							<td>{{book["crscode"]}}</td>
 							<td></td>
