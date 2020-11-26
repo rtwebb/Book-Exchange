@@ -121,7 +121,7 @@ def searchResultsTemplate():
     try:
         results = database.search(searchType, query, "1", sortBy)
 
-        if results == -1 or not results:
+        if results == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
