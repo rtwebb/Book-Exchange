@@ -120,16 +120,16 @@
 
 								{% set url = "/profilePage?deleteListingID=" + book["uniqueId"] %}
 								<form action={{url}} method="POST">
-									{% if book["highestBid"] > 0: %}
+									{% if book["status"] == 'pending' or book["status"] == 'N/A': %}
 									<button class="btn btn-warning btn-xs"
 											type="submit"
-											onclick="return deleteListing();" disabled>
+											onclick="return deleteListing();">
 										Delete
 									</button>
 									{% else: %}
 									<button class="btn btn-warning btn-xs"
 											type="submit"
-											onclick="return deleteListing();">
+											onclick="return deleteListing();" disabled>
 										Delete
 									</button>
 									{% endif %}
@@ -239,7 +239,7 @@
 									{% endif %}
 								</form>
 
-								<form action="/profilePage?deleteBidBuyerID={{username}}&deleteBidListingID={{book['uniqueId']}}" method="POST">
+								<form action="/profilePage?deleteBidBuyerID={{username}}&deleteBidListingID={{book['uniqueId']}}&title={{book['title']}}&cost={{book['bid']}}&sellerId={{book['sellerId']}}" method="POST">
 									{% if book["status"] == "pending": %}
 									<button class="btn btn-warning btn-xs" type="submit" onclick="return deleteBid();">
 										Delete

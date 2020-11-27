@@ -184,6 +184,8 @@ class QueryDatabase:
                 else:  # if there no other bids, set highest equal to 0
                     listing.highestBid = 0
                     self._connection.commit()
+
+                return 1  # indicate that highest bid was removed so email is sent
             else:
                 self._connection.delete(bid)
                 self._connection.commit()

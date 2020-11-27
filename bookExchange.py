@@ -256,6 +256,11 @@ def profilePageTemplate():
             # need to update highest bid
             error2 = database.removeMyBid(bidder, listingID)
             errorCheck(error2)
+            if error2 == 1:
+                allBidders = database.getAllBids(listingID)
+                errorCheck(allBidders)
+                allBidders.insert(0, bidder)
+                errorCheck(sendEmail(mail, allBidders, 'removeHighest', username, highestBid, title))
 
             error3 = sendEmail(mail, [bidder], 'decline',
                                username, highestBid, title)
@@ -314,14 +319,19 @@ def profilePageTemplate():
         if deleteBidBuyerID is not None and deleteBidListingID is not None:
             result = database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
             errorCheck(result)
+            if result == 1:
+                allBidders = database.getAllBids(listingID)
+                errorCheck(allBidders)
+                allBidders.insert(0, deleteBidBuyerID)
+                errorCheck(sendEmail(mail, allBidders, 'removeHighest', sellerID, highestBid, title))
 
         # user wants to delete their listing
         deleteListingID = request.args.get('deleteListingID')
         if deleteListingID is not None:
-            allBidders = database.getAllBids(listingID)
+            allBidders = database.getAllBids(deleteListingID)
             errorCheck(allBidders)
             if len(allBidders) >= 1:
-                result = sendEmail(mail, allBidders, 'removed', username, None, title)
+                result = sendEmail(mail, allBidders, 'removeListing', username, None, title)
                 errorCheck(result)
 
             result = database.removeListing(deleteListingID)
