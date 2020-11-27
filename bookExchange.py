@@ -120,11 +120,7 @@ def searchResultsTemplate():
     images = []
     try:
         results = database.search(searchType, query, "1", sortBy)
-
-        if results == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+        errorCheck(results)
 
         # Accessing images
         i = 0
@@ -158,6 +154,7 @@ def searchResultsTemplate():
     response.set_cookie('sortBy', sortBy)
     return response
 
+
 # -----------------------------------------------------------------------
 
 
@@ -170,10 +167,7 @@ def sellerPageTemplate():
         book = None
         try:
             results = database.getDescription(uniqueId)
-            if results == -1 or not results:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+            errorCheck(results)
             msg = "**Please resubmit book images, if you had any**"
 
             for result in results:
@@ -200,9 +194,7 @@ def sellerPageTemplate():
 
 @app.route('/buyerPage', methods=['GET', 'POST'])
 def buyerPageTemplate():
-
     uniqueId = request.args.get('bookid')
-    print('uniqueID', uniqueId)
 
     # if check for if uniqueID is none
     # if (uniqueId == None):
@@ -210,11 +202,7 @@ def buyerPageTemplate():
 
     try:
         results = database.getDescription(uniqueId)
-
-        if results == -1 or not results:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+        errorCheck(results)
 
     except Exception as e:
         print("Error: " + str(e), file=stderr)
@@ -244,11 +232,8 @@ def buyerPageTemplate():
 def profilePageTemplate():
     username = CASClient().authenticate()
     username = username.strip()
-    print("username: ", username)
     listingID = request.args.get('list')
-    print("ListingID: ", listingID)
     sellerID = request.args.get('sellerId')
-    print("sellerID: ", sellerID)
     bidder = request.args.get('bidder')
     title = request.args.get('title')
     highestBid = request.args.get('cost')
@@ -256,7 +241,6 @@ def profilePageTemplate():
     try:
         # send to bidder
         if 'accept' in request.form:
-
             error1 = database.updateStatus(listingID, bidder, 'accepted')
             errorCheck(error1)
 
@@ -267,20 +251,14 @@ def profilePageTemplate():
         # send to bidder -> if it was the highest bidder send to everyone
         elif 'decline' in request.form:
             error1 = database.updateStatus(listingID, bidder, 'declined')
-            if error1 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+            errorCheck(error1)
 
             # need to update highest bid
             error2 = database.removeMyBid(bidder, listingID)
-            if results is None or error2 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+            errorCheck(error2)
 
             error3 = sendEmail(mail, [bidder], 'decline',
-                                               username, highestBid, title)
+                               username, highestBid, title)
             errorCheck(error3)
 
         # send email to all bidders and seller
@@ -289,61 +267,45 @@ def profilePageTemplate():
 
         elif 'deny' in request.form:
             error1 = database.updateStatus(listingID, username, 'declined')
-            if error1 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+            errorCheck(error1)
 
             error2 = database.removeMyBid(username, listingID)
-            if error2 == -1 or error2 is None:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+            errorCheck(error2)
 
             allBidders = database.getAllBids(listingID)
             errorCheck(allBidders)
-            if allBidders is None:
+            if len(allBidders) < 1:
                 error3 = sendEmail(mail, [username], 'deny',
-                               sellerID, highestBid, title)
+                                   sellerID, highestBid, title)
             else:
                 allBidders.insert(0, username)
                 error3 = sendEmail(mail, allBidders, 'deny',
-                               sellerID, highestBid, title)
-            
+                                   sellerID, highestBid, title)
+
             errorCheck(error3)
 
         # book received now must: send seller the money and change book status
-        elif 'received' in request.form:
-            # send seller money
-            print("inside received")
+        elif 'received' in request.form:  # send seller money
             # update status
             error1 = database.updateStatus(listingID, username, 'received')
-            print('Error1: ', error1)
-            if error1 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+            errorCheck(error1)
 
             # send email to seller
             error2 = sendEmail(mail, [], 'received',
                                sellerID, highestBid, title)
-            print('Error2: ', error2)
             errorCheck(error2)
 
-             # need automatic refresh
+            # need automatic refresh
             error3 = checkTransactions(database, username, highestBid)
-            print('Error3: ', error3)
             errorCheck(error3)
-            if error3 == False:
+            if not error3:
                 print('buyer has not sent money')
                 # want to add popup
-            elif error3 == True:
-                print('before send Money')
+            elif error3:
                 error4 = sendMoney(database, sellerID, username, title, highestBid)
-                print('after send Money')
                 errorCheck(error4)
                 # else:
-                    # pop up with congratulations money has been sent
+                # pop up with congratulations money has been sent
 
         # if it's the highest bid need to notify everyone
         # user wants to delete their bid
@@ -351,29 +313,19 @@ def profilePageTemplate():
         deleteBidListingID = request.args.get('deleteBidListingID')
         if deleteBidBuyerID is not None and deleteBidListingID is not None:
             result = database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
-            if result == -1 or result is None:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+            errorCheck(result)
 
         # user wants to delete their listing
         deleteListingID = request.args.get('deleteListingID')
         if deleteListingID is not None:
             allBidders = database.getAllBids(listingID)
-            print("Allbidders")
-            if allBidders == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
-            if allBidders != None:
+            errorCheck(allBidders)
+            if len(allBidders) >= 1:
                 result = sendEmail(mail, allBidders, 'removed', username, None, title)
                 errorCheck(result)
-            
+
             result = database.removeListing(deleteListingID)
-            if result == -1 or result is None:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+            errorCheck(result)
 
         # Listings
         listings = database.myListings(username)
@@ -410,7 +362,7 @@ def profilePageTemplate():
 def aboutUsTemplate():
     username = CASClient().authenticate()
     username = username.strip()
-    #client_token = generate_client_token()
+    # client_token = generate_client_token()
 
     html = render_template(
         'aboutUs.html', username=username)  # client_token=client_token,
@@ -458,9 +410,9 @@ def autoComplete():
 
     autoComplete.sort(key=lambda v: v.upper())
 
-    #if query.strip() == '' or query is None:
-        #result = []
-        #autocomplete = result
+    # if query.strip() == '' or query is None:
+    # result = []
+    # autocomplete = result
 
     jsonStr = dumps(autoComplete)
     response = make_response(jsonStr)
@@ -478,7 +430,6 @@ def checkout():
     listing = request.args.get('list')
     sellerId = request.args.get('sellerId')
     buyNow = request.args.get('buyNow')
-    print('buyNow: ', buyNow)
     indicator = 0
     # buyer submits venmo -> make request
     # buyer presses recieved -> check of they sent money(venmouserName, amount, Book title,)
@@ -497,10 +448,7 @@ def checkout():
         error = sendRequest(database, venmoUsername, username,
                             cost, title, sellerId, listing)
         print('sent request')
-        if error == -1:        
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+        errorCheck(error)
 
         if buyNow == 'yes':
             print('about to buyNow')
@@ -511,11 +459,8 @@ def checkout():
             print('before updateStatus')
             bidders = database.updateStatus(listing, username, 'confirmed')
             print('after updateStatus')
-            if error == -1:        
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
-                
+            errorCheck(bidders)
+
         bidders.insert(0, username)
         # later need to distinguish between confirm and purchase so can delete bids
         error2 = sendEmail(mail, bidders, 'confirm', sellerId, cost, title)
@@ -552,7 +497,7 @@ def congratsPage():
             if buyNow is not None:
                 results = database.getDescription(uniqueId)
                 errorCheck(results)
-                
+
                 for result in results:
                     book = result
 
@@ -573,7 +518,7 @@ def congratsPage():
                         bid = bid1 + "0"
                     else:
                         bid = bid1
-                
+
                 venmoUsername = request.form.get('venmoUsername')
                 results = database.addBid(buyerID, uniqueId, bid)
                 errorCheck(results)
@@ -617,8 +562,6 @@ def congratsPage():
             else:
                 buynow = buynow1
 
-
-
         # need case were username is wrong
         venmoUsername = request.form.get('venmoUsername')
         print("venmoUsername: ", venmoUsername)
@@ -627,7 +570,7 @@ def congratsPage():
         if transaction == None:
             error = database.addTransaction(venmoUsername, username)
             errorCheck(error)
-        
+
         errorCheck(transaction)
 
         image1 = request.files.get('image1')
@@ -658,7 +601,7 @@ def congratsPage():
 
             database.add(isbn, title, [author], crscode, crstitle, username, condition,
                          minprice, buynow, listTime, images)
-            
+
             errorCheck(results)
 
             book = {
@@ -684,6 +627,7 @@ def congratsPage():
 
     return response
 
+
 # ----------------------------------------------------------------------
 
 
@@ -691,13 +635,15 @@ def congratsPage():
 def helpBuyerTemplate():
     username = CASClient().authenticate()
     username = username.strip()
-    #client_token = generate_client_token()
+    # client_token = generate_client_token()
 
     html = render_template(
         'helpBuyer.html', username=username)  # client_token=client_token,
 
     response = make_response(html)
     return response
+
+
 # ----------------------------------------------------------------------
 
 
@@ -705,13 +651,15 @@ def helpBuyerTemplate():
 def helpSellerTemplate():
     username = CASClient().authenticate()
     username = username.strip()
-    #client_token = generate_client_token()
+    # client_token = generate_client_token()
 
     html = render_template(
         'helpSeller.html', username=username)  # client_token=client_token,
 
     response = make_response(html)
     return response
+
+
 # ----------------------------------------------------------------------
 
 
@@ -725,6 +673,7 @@ def contactUsTemplate():
     response = make_response(html)
     return response
 
+
 # ----------------------------------------------------------------------
 
 
@@ -737,6 +686,7 @@ def privacyPolicyTemplate():
 
     response = make_response(html)
     return response
+
 
 # -----------------------------------------------------------------------
 
@@ -773,22 +723,26 @@ def sellerListingsTemplate():
             dict["images"] = i
             i += 1
 
-    html = render_template('sellerListings.html', username=username, sellerID=sellerID, results=results, sortBy=sortBy, images=images)
+    html = render_template('sellerListings.html', username=username, sellerID=sellerID, results=results, sortBy=sortBy,
+                           images=images)
 
     response = make_response(html)
     if sellerID is not None:
         response.set_cookie('sellerID', sellerID)
     return response
 
-#------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------
 def errorCheck(error):
-    if error == -1:        
+    if error == -1:
         html = render_template('errorPage.html')
         response = make_response(html)
         return response
     else:
         return
-#------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
 
 

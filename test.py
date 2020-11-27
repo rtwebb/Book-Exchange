@@ -1,6 +1,7 @@
 from queryDatabase import QueryDatabase
 
 test = QueryDatabase()
+test.removeListing('d768a0dd-d708-413c-ba65-bc0ada4e7b3b')
 # test.add('353431', 'CCC', ['CCC'], 'CCC101', 'CCC', 'tianaf\n', 'good', 10, 50, '11:14:2020:22:05:42', [])
 # test.addBid('vdhopte\n', 'cd68ac82-2978-421f-ad21-6d57939193f6', 23)
 # test.addBid('emmandrar\n', 'cd68ac82-2978-421f-ad21-6d57939193f6', 33)

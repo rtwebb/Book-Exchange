@@ -14,9 +14,7 @@ from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
 
 # test stuff
-# DATABASE_NAME =
-# 'postgres://wjtbbfidjdxfep:2bc4bbc50b88443cb242e1959973f11c65996319de0fabad2d480b7f51dc09af@ec2-54-84-98-18.compute
-# -1.amazonaws.com:5432/db01ol8nkv7pc6'
+# DATABASE_NAME = "postgres://wjtbbfidjdxfep:2bc4bbc50b88443cb242e1959973f11c65996319de0fabad2d480b7f51dc09af@ec2-54-84-98-18.compute-1.amazonaws.com:5432/db01ol8nkv7pc6"
 # engine = create_engine(DATABASE_NAME)
 
 DATABASE_URI = 'postgres://vjlbayumjwpewg:19bf7b1ddf47645b85ddd2a53327548' \
@@ -74,7 +72,8 @@ class QueryDatabase:
         try:
             # update highestBid for this listing
             listing = self._connection.query(Listings). \
-                filter(Listings.uniqueID == listingID).one_or_none()
+                filter(Listings.uniqueID == listingID).one()
+
             # if buyer already has a bid on that book, update the bid
             foundBid = self._connection.query(Bids). \
                 filter(Bids.buyerID.contains(buyerID)). \
@@ -125,7 +124,7 @@ class QueryDatabase:
     # ----------------------------------------------------------------------------------
     def getTransaction(self, username):
         try:
-            transaction =  self._connection.query(Transactions). \
+            transaction = self._connection.query(Transactions). \
                 filter(Transactions.casUsername == username).one_or_none()
 
             # this is wrong
@@ -138,10 +137,7 @@ class QueryDatabase:
             print(argv[0] + ':', e, file=stderr)
             return -1
 
-
     # ----------------------------------------------------------------------------------
-
-
 
     # when a listing is bought, remove all bids other than the accepted/confirmed one
     def removeAllBids(self, uniqueID):
@@ -167,35 +163,32 @@ class QueryDatabase:
     # if a user wants to remove a bid, use this method
     def removeMyBid(self, buyerID, uniqueID):
         try:
-            results = self._connection.query(Bids, Listings). \
+            bid, listing = self._connection.query(Bids, Listings). \
                 filter(Bids.listingID == uniqueID). \
                 filter(Bids.buyerID.contains(buyerID)). \
-                filter(Listings.uniqueID == Bids.listingID).all()
-            for bid, listing in results:
-                # handle case where you are deleting highest bid
-                if bid.bid == listing.highestBid:
-                    self._connection.delete(bid)
-                    self._connection.commit()
+                filter(Listings.uniqueID == Bids.listingID).one()
 
-                    # check to see if there are other bids on the listing
-                    found = self._connection.query(Bids). \
-                        filter(Bids.listingID == uniqueID). \
-                        order_by(Bids.bid.desc()).first()
-                    if found:
-                        # set highest bid equal to new highest bid
-                        listing.highestBid = found.bid
-                        self._connection.commit()
-                    else:  # if there no other bids, set highest equal to 0
-                        listing.highestBid = 0
-                        self._connection.commit()
-                else:
-                    self._connection.delete(bid)
+            # handle case where you are deleting highest bid
+            if bid.bid == listing.highestBid:
+                self._connection.delete(bid)
+                self._connection.commit()
+
+                # check to see if there are other bids on the listing
+                found = self._connection.query(Bids). \
+                    filter(Bids.listingID == uniqueID). \
+                    order_by(Bids.bid.desc()).first()
+                if found:
+                    # set highest bid equal to new highest bid
+                    listing.highestBid = found.bid
                     self._connection.commit()
-            
-            if not results:
-                return None
+                else:  # if there no other bids, set highest equal to 0
+                    listing.highestBid = 0
+                    self._connection.commit()
             else:
-                return 0
+                self._connection.delete(bid)
+                self._connection.commit()
+
+            return 0
 
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
@@ -206,16 +199,14 @@ class QueryDatabase:
     # if a seller wants to remove a listing, use this method
     def removeListing(self, uniqueID):
         try:
-            results = self._connection.query(Listings). \
-                filter(Listings.uniqueID == uniqueID).all()
-            for listing in results:
-                self._connection.delete(listing)
-                self._connection.commit()
+            listing = self._connection.query(Listings). \
+                filter(Listings.uniqueID == uniqueID).one()
 
-            if not results:
-                return None
-            else:
-                return 0
+            self._connection.delete(listing)
+            self._connection.commit()
+
+            return 0
+
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
@@ -279,7 +270,6 @@ class QueryDatabase:
                         "highestBid": listing.highestBid,
                         "buyNow": listing.buyNow
                     }
-
                     results.append(result)
 
                 if sortBy == "alphabetical":
@@ -489,7 +479,8 @@ class QueryDatabase:
             # find listing
             found = self._connection.query(Listings). \
                 filter(Listings.sellerID.contains(query)). \
-                filter(Listings.status.in_(['purchased', 'received'])).order_by(Listings.listTime.desc()).all()
+                filter(Listings.status.in_(['purchased', 'received'])).\
+                order_by(Listings.listTime.desc()).all()
             for listing in found:
                 for bid in listing.bids:
                     result = {
@@ -537,28 +528,28 @@ class QueryDatabase:
     def getDescription(self, uniqueID):
         try:
             results = []
-            found = self._connection.query(Listings). \
+            listing = self._connection.query(Listings). \
                 filter(Listings.uniqueID == uniqueID). \
                 filter(Listings.status != 'closed'). \
                 filter(Listings.status != 'purchased'). \
-                filter(Listings.status != 'received').all()
-            for listing in found:
-                result = {
-                    "title": listing.book[0].title,
-                    "crscode": listing.course[0].courseCode,
-                    "crstitle": listing.course[0].courseTitle,
-                    "sellerId": listing.sellerID,
-                    "uniqueId": listing.uniqueID,
-                    "isbn": listing.book[0].isbn,
-                    "condition": listing.condition,
-                    "minPrice": listing.minPrice,
-                    "highestBid": listing.highestBid,
-                    "buyNow": listing.buyNow,
-                    "listTime": listing.listTime,
-                    "images": listing.images,
-                    "authors": listing.book[0].authors[0].name
-                }
-                results.append(result)
+                filter(Listings.status != 'received').one()
+
+            result = {
+                "title": listing.book[0].title,
+                "crscode": listing.course[0].courseCode,
+                "crstitle": listing.course[0].courseTitle,
+                "sellerId": listing.sellerID,
+                "uniqueId": listing.uniqueID,
+                "isbn": listing.book[0].isbn,
+                "condition": listing.condition,
+                "minPrice": listing.minPrice,
+                "highestBid": listing.highestBid,
+                "buyNow": listing.buyNow,
+                "listTime": listing.listTime,
+                "images": listing.images,
+                "authors": listing.book[0].authors[0].name
+            }
+            results.append(result)
 
             return results
         except Exception as e:
@@ -610,26 +601,23 @@ class QueryDatabase:
             found = self._connection.query(Bids).filter(Bids.listingID == listingID).all()
             for bid in found:
                 results.append(bid.buyerID.rstrip())
-            if not results:
-                return None
-                
             return results
+
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
             return -1
 
-    
-    #------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------
 
     def sellerListings(self, sellerID, sortBy):
         results = []
 
         try:
             found = self._connection.query(Listings). \
-                    filter(Listings.sellerID == sellerID). \
-                    filter(Listings.status != 'closed'). \
-                    filter(Listings.status != 'purchased'). \
-                    filter(Listings.status != 'received').order_by(Listings.listTime.desc()).all()
+                filter(Listings.sellerID == sellerID). \
+                filter(Listings.status != 'closed'). \
+                filter(Listings.status != 'purchased'). \
+                filter(Listings.status != 'received').order_by(Listings.listTime.desc()).all()
 
             for listing in found:
                 result = {
