@@ -704,9 +704,15 @@ def congratsPage():
         print("Transaction: ", transaction)
         if transaction == None:
             error = database.addTransaction(venmoUsername, username)
-            errorCheck(error)
+            if error == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
-        errorCheck(transaction)
+        if transaction == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
 
         image1 = request.files.get('image1')
         image2 = request.files.get('image2')
@@ -736,7 +742,10 @@ def congratsPage():
 
             results = database.add(isbn, title, [author], crscode, crstitle, username, condition,
                          minprice, buynow, listTime, images)
-            errorCheck(results)
+            if results == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
             book = {
                 "title": title,
@@ -839,7 +848,10 @@ def sellerListingsTemplate():
         sortBy = "newest"
 
     results = database.sellerListings(sellerID, sortBy)
-    errorCheck(results)
+    if results == -1:
+        html = render_template('errorPage.html')
+        response = make_response(html)
+        return response
 
     images = []
     # Accessing images
@@ -864,17 +876,6 @@ def sellerListingsTemplate():
     if sellerID is not None:
         response.set_cookie('sellerID', sellerID)
     return response
-
-
-# ------------------------------------------------------------------------
-def errorCheck(error):
-    if error == -1:
-        html = render_template('errorPage.html')
-        response = make_response(html)
-        return response
-    else:
-        return None
-
 
 # ------------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
