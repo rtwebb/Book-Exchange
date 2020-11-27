@@ -48,7 +48,10 @@ def homePageTemplate():
     # need to get recently listed books to show
     try:
         results = database.homeRecents()
-        errorCheck(results)
+        if results == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
 
     except Exception as e:
         print("Error: " + str(e), file=stderr)
@@ -120,7 +123,10 @@ def searchResultsTemplate():
     images = []
     try:
         results = database.search(searchType, query, "1", sortBy)
-        errorCheck(results)
+        if results == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
 
         # Accessing images
         i = 0
@@ -167,7 +173,10 @@ def sellerPageTemplate():
         book = None
         try:
             results = database.getDescription(uniqueId)
-            errorCheck(results)
+            if results == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
             msg = "**Please resubmit book images, if you had any**"
 
             for result in results:
@@ -202,7 +211,10 @@ def buyerPageTemplate():
 
     try:
         results = database.getDescription(uniqueId)
-        errorCheck(results)
+        if results == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
 
     except Exception as e:
         print("Error: " + str(e), file=stderr)
@@ -242,29 +254,51 @@ def profilePageTemplate():
         # send to bidder
         if 'accept' in request.form:
             error1 = database.updateStatus(listingID, bidder, 'accepted')
-            errorCheck(error1)
+            if error1 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
             error2 = sendEmail(mail, [bidder], 'accept',
                                username, highestBid, title)
-            errorCheck(error2)
+            if error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
         # send to bidder -> if it was the highest bidder send to everyone
         elif 'decline' in request.form:
             error1 = database.updateStatus(listingID, bidder, 'declined')
-            errorCheck(error1)
+            if error1 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
             # need to update highest bid
             error2 = database.removeMyBid(bidder, listingID)
-            errorCheck(error2)
+            if error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
             if error2 == 1:
                 allBidders = database.getAllBids(listingID)
-                errorCheck(allBidders)
+                if allBidders == -1:
+                    html = render_template('errorPage.html')
+                    response = make_response(html)
+                    return response
                 allBidders.insert(0, bidder)
-                errorCheck(sendEmail(mail, allBidders, 'removeHighest', username, highestBid, title))
+                erro3 = sendEmail(mail, allBidders, 'removeHighest', username, highestBid, title)
+                if error3 == -1:
+                    html = render_template('errorPage.html')
+                    response = make_response(html)
+                    return response
 
-            error3 = sendEmail(mail, [bidder], 'decline',
+            error4 = sendEmail(mail, [bidder], 'decline',
                                username, highestBid, title)
-            errorCheck(error3)
+            if error4 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
         # send email to all bidders and seller
         elif 'confirm' in request.form:
@@ -272,13 +306,22 @@ def profilePageTemplate():
 
         elif 'deny' in request.form:
             error1 = database.updateStatus(listingID, username, 'declined')
-            errorCheck(error1)
+            if error1 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
             error2 = database.removeMyBid(username, listingID)
-            errorCheck(error2)
+            if error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
             allBidders = database.getAllBids(listingID)
-            errorCheck(allBidders)
+            if allBidders == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
             if len(allBidders) < 1:
                 error3 = sendEmail(mail, [username], 'deny',
                                    sellerID, highestBid, title)
@@ -287,18 +330,27 @@ def profilePageTemplate():
                 error3 = sendEmail(mail, allBidders, 'deny',
                                    sellerID, highestBid, title)
 
-            errorCheck(error3)
+            if error3 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
         # book received now must: send seller the money and change book status
         elif 'received' in request.form:  # send seller money
             # update status
             error1 = database.updateStatus(listingID, username, 'received')
-            errorCheck(error1)
+            if error1 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
             # send email to seller
             error2 = sendEmail(mail, [], 'received',
                                sellerID, highestBid, title)
-            errorCheck(error2)
+            if error2 == -1:
+                html = render_template('errorPage.html')
+                response = make_response(html)
+                return response
 
             # need automatic refresh
             error3 = checkTransactions(database, username, highestBid)
@@ -753,7 +805,7 @@ def errorCheck(error):
         response = make_response(html)
         return response
     else:
-        return
+        return None
 
 
 # ------------------------------------------------------------------------
