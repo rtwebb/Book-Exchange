@@ -151,11 +151,17 @@
                 return false;
             }
             // higher than buy now price
-            if (bid >= buyNow) {
+            if (bid > buyNow) {
                 alert("You cannot bid higher than the buy now price");
                 return false;
 
-            } else if (bid < highestBid) { // less than highest bid
+            }
+            else if (bid == buyNow) {
+                alert("You cannot bid equal to the buy now price. If you would like to purchase the book for this amount,
+                    please press the "Buy Now" button.");
+                return false;
+            }
+            else if (bid < highestBid) { // less than highest bid
                 if (confirm('Are you sure you would like to bid this amount, it is lower than the highest current bid?')) {
                     return true;
                 }
