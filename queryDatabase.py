@@ -92,8 +92,15 @@ class QueryDatabase:
                 self._connection.commit()
 
             if float(bid) > listing.highestBid:
+                # send email to prev highest bidder(s)
+                prevHighest = self._connection.query(Bids).filter(Bids.listingID == listingID).\
+                    filter(Bids.bid == listing.highestBid).all()
+                results = []
+                for bid in prevHighest:
+                    results.append(bid.buyerID)
                 listing.highestBid = bid
                 self._connection.commit()
+                return 1, results
             elif float(bid) < listing.highestBid:
                 # check to see if there are other bids on the listing
                 found = self._connection.query(Bids). \
@@ -103,10 +110,10 @@ class QueryDatabase:
                     # set highest bid equal to new highest bid
                     listing.highestBid = found.bid
                     self._connection.commit()
-            return 0
+            return 0, None
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
-            return -1
+            return -1, None
 
     # ----------------------------------------------------------------------------------
     def addTransaction(self, venmoUsername, username):

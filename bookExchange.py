@@ -530,20 +530,25 @@ def congratsPage():
                         bid = bid1
 
                 venmoUsername = request.form.get('venmoUsername')
-                results = database.addBid(buyerID, uniqueId, bid)
-                errorCheck(results)
+                indicator, results = database.addBid(buyerID, uniqueId, bid)
+                errorCheck(indicator)
 
                 msg += "You have successfully placed your bid, now we are just waiting on the sellers confirmation!  "
                 msg1 += "Here is information regarding your bid: "
 
-                results = database.getDescription(uniqueId)
-                errorCheck(results)
+                results1 = database.getDescription(uniqueId)
+                errorCheck(results1)
 
-                for result in results:
+                for result in results1:
                     book = result
 
+                if indicator == 1:  # case where new bid is greater than previous...send email
+                    results.insert(0, username)
+                    errorCheck(sendEmail(mail, results, 'beatBid', book['sellerId'], book['highestBid'],
+                                         book['title']))
+
         except Exception as e:
-            print("Error: " + str(e), file=stderr)
+            print(argv[0] + str(e), file=stderr)
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
@@ -609,9 +614,8 @@ def congratsPage():
             if image3:
                 images.append(database.imageToURL(image3))
 
-            database.add(isbn, title, [author], crscode, crstitle, username, condition,
+            results = database.add(isbn, title, [author], crscode, crstitle, username, condition,
                          minprice, buynow, listTime, images)
-
             errorCheck(results)
 
             book = {

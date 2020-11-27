@@ -164,6 +164,19 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
                        "Best," + "\n" + \
                        "The Book-Exchange Team"
 
+        elif status == 'beatBid':
+            currentHighest = bidders[0]
+            recipients = [person for person in bidders if person != currentHighest]
+            message += "Hello, " + "\n" + "\n" + \
+                       "One of your recent bids has been beat. You still have a chance to win the auction, though --" + \
+                       "simply update your bid at book-exchange-cos333.herokuapp.com! Below is a summary of the " \
+                       "listing." + "\n" + "\n" + \
+                       "Book Title: " + title + "\n" + \
+                       "Highest Bid: " + str(highestBid) + '\n' + \
+                       "SellerID: " + seller + "\n" + "\n" + \
+                       "Best," + "\n" + \
+                       "The Book-Exchange Team"
+
         for i in range(len(recipients)):
             recipients[i] = recipients[i] + '@princeton.edu'
 
@@ -173,8 +186,7 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
         if len(recipients) >= 1:
             msg = Message('TigerBookExchange Bid', sender='tigerbookexchange@gmail.com',
                           recipients=recipients, body=message)
-
-        mail.send(msg)
+            mail.send(msg)
 
     except Exception as e:
         print("my_email.py Error: " + str(e), file=stderr)
