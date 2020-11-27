@@ -97,7 +97,7 @@ class QueryDatabase:
                     filter(Bids.bid == listing.highestBid).all()
                 results = []
                 for bid in prevHighest:
-                    results.append(bid.buyerID)
+                    results.append(bid.buyerID.rstrip())
                 listing.highestBid = bid
                 self._connection.commit()
                 return 1, results
