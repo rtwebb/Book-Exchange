@@ -366,7 +366,7 @@ def profilePageTemplate():
                 if error4 == -1:
                     html = render_template('errorPage.html')
                     response = make_response(html)
-                    return responseor4)
+                    return response
                 # else:
                 # pop up with congratulations money has been sent
 
