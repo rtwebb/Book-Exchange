@@ -287,7 +287,7 @@ def profilePageTemplate():
                     response = make_response(html)
                     return response
                 allBidders.insert(0, bidder)
-                erro3 = sendEmail(mail, allBidders, 'removeHighest', username, highestBid, title)
+                error3 = sendEmail(mail, allBidders, 'removeHighest', username, highestBid, title)
                 if error3 == -1:
                     html = render_template('errorPage.html')
                     response = make_response(html)
@@ -430,7 +430,7 @@ def profilePageTemplate():
 
         # purchases
         purchases = database.myPurchases(username)
-        if purhcases == -1:
+        if purchases == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
@@ -661,7 +661,7 @@ def congratsPage():
                 if indicator == 1:  # case where new bid is greater than previous...send email
                     results.insert(0, username)
                     error1 = sendEmail(mail, results, 'beatBid', book['sellerId'], book['highestBid'],
-                                         book['title']))
+                                         book['title'])
                     if error1 == -1:
                         html = render_template('errorPage.html')
                         response = make_response(html)
