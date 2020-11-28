@@ -661,7 +661,7 @@ def congratsPage():
                 if indicator == 1:  # case where new bid is greater than previous...send email
                     results.insert(0, username)
                     error1 = sendEmail(mail, results, 'beatBid', book['sellerId'], book['highestBid'],
-                                         book['title']))
+                                         book['title'])
                     if error1 == -1:
                         html = render_template('errorPage.html')
                         response = make_response(html)
