@@ -1,29 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta id="dropDown" searchType="{{searchType}}">
+   
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet"
           type="style/css"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <title> Checkout </title>
     <style>
-        .img-thumbnail:hover {
-            border: 2px solid orange;
-            border-radius: 1em;
-            overflow: hidden;
-        }
+          .jumbotron{
+          background-color:#F0AD4E;
+          color:black;
+      }
+
+      span {
+        color: red;
+      }
     </style>
 </head>
 
 <body>
     {% include 'head.html' %}
 
-        <div class ="container">
+        <div class ="container" style="margin-top:45px">
           <div class="col-sm-12">
-            <div class="jumbotron">
+            <div class="jumbotron" >
 
-              {% if indicator == 1: %}
+              {% if indicator != 1 or validate == 1: %}
+
+              <h2><center>Hi {{username}}, let's complete your purchase</center></h2>
+              <br>
+
+              <form action="/checkout?cost={{cost}}&title={{title}}&list={{list}}&sellerId={{sellerId}}&buyNow={{buyNow}}" method="post" id="submitBookForm" enctype="multipart/form-data">
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <label for="inputUsername" class="form-label">Venmo Username<span>*</span></label>
+                    <input type="text" class="form-control" name="username" id="inputUsername" placeholder="Ex: Michael-Jordan" required>
+                  </div>
+                </div>
+                <br>
+
+                <button
+                        class="btn btn-warning"
+                        form="submitBookForm"
+                        onclick="return verifyUsername();"
+                        value="Submit"> Submit
+                </button>
+              </form>
+  
+
+
+              {% else: %}
+
               <h1><center>Congratulations!</center></h1>
               <br>
 
@@ -40,41 +69,18 @@
               </p>
 
 
-              {% else: %}
 
-              <h2><center>Hi {{username}}, let's complete your purchase</center></h2>
-              <br>
+              {% endif %}
+         
 
-
-
-              <form action="/checkout?cost={{cost}}&title={{title}}&list={{list}}&sellerId={{sellerId}}&buyNow={{buyNow}}" method="post" id="submitBookForm" enctype="multipart/form-data">
-
-
-
-                <div class="row">
-                  <div class="col-md-6">
-                    <label for="inputUsername" class="form-label">Venmo Username</label>
-                    <input type="text" class="form-control" name="username" id="inputUsername" placeholder="Ex: Michael-Jordan" required>
-                    <div class="invalid-feedback">
-                      venmo username is required
-                    </div>
-                  </div>
-
-                </div>
-                <br>
-
-                <button
-                        class="btn btn-warning"
-                        form="submitBookForm"
-                        onclick="return verifyUsername();"
-                        value="Submit"> Submit
-                </button>
-              </form>
             </div>
           </div>
         </div>
 
-     {% endif %}
+ 
+
+  <!--   http://localhost:10101/checkout?cost=2.0&title=Testbook2&sellerId=rtwebb&list=0747f445-9a9f-4f93-a7db-3c8c695b4c46 -->
+ <!--    http://localhost:10101/checkout?cost=2.0&title=Testbook2&list=0747f445-9a9f-4f93-a7db-3c8c695b4c46&sellerId=rtwebb&buyNow=None-->
 
 
 
@@ -83,31 +89,53 @@
 </body>
 
     
-
-    <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"></link>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+    <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"></link>  
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     
   <script>
 
 
     'use strict';
 
+    $(document).ready(function() {
+    validateUsername();
+    });
+
+    function validateUsername(){
+
+      var validate = '{{validate}}'
+        console.log("validate: ", validate);
+        if (validate == 1){
+          alert('The Venmo Username you entered returned too many results. Please enter your unique Venmo Username');
+          window.location.href = '/checkout?cost={{cost}}&title={{title}}&sellerId={{sellerId}}';
+        }
+
+    }
+
+
+
     function verifyUsername(){
 
-        let venmoUsername = $('#inputUsername').val()
-        console.log("venmoUsername: ", isbn);
-        if (venmoUsername == null)
-        alert('All required fields are not filled, please make sure you complete all required fields!');
-          return false;
+      let venmoUsername = $('#inputUsername').val()
+      var validate = '{{validate}}'
+      console.log("venmoUsername: ", validate);
+      console.log("venmoUsername: ", venmoUsername);
+
+      var validate = '{{validate}}'
+      console.log("validate: ", validate);
+      if (validate == 1){
+        alert('The Venmo Username you entered returned too many results. Please enter your unique Venmo Username');
+        return false;
+      }
+
+
+ 
+
 
 
     }
 
-        $('#myModal').on('shown.bs.modal', function () {
-      $('#myInput').trigger('focus')
-    })
 
   </script>
 

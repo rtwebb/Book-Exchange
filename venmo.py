@@ -15,15 +15,21 @@ from sys import stderr, argv
 #I edited my bid and two popped up
 
 def validateUsername(venmoUsername):
+    try:
+        print('before client')
+        venmo = Client(access_token='d095f97905ba8bb6a2b84477e411d08cc000f6eadf261624b29e88ef15ab4ada')
+        print('after client')
 
-    print('before client')
-    venmo = Client(access_token='d095f97905ba8bb6a2b84477e411d08cc000f6eadf261624b29e88ef15ab4ada')
-    print('after client')
 
+        buyer = venmo.user.search_for_users(query=venmoUsername, page=1)
 
-    buyer = venmo.user.search_for_users(query=venmoUsername, page=1)
+        if len(buyer) > 1:
+            return 1
+        else:
+            return 0
 
-    if len(buyer) > 1:
+    except Exception as e:
+        print(argv[0] + ':', e, file=stderr)
         return -1
     
 
@@ -45,7 +51,7 @@ def sendRequest(database, venmoUsername, buyerId, cost, title, sellerId, listing
 
         # Request money
         #add error check for this too
-        venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(buyer[0].id))
+        #venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(buyer[0].id))
 
         transaction = database.getTransaction(buyerId)
         if transaction == None:

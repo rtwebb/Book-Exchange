@@ -14,7 +14,7 @@ from CASClient import CASClient
 from json import dumps
 from venmo_api import Client, get_user_id
 from my_email import sendEmail
-from venmo import sendRequest, checkTransactions, sendMoney
+from venmo import sendRequest, checkTransactions, sendMoney, validateUsername
 
 # from wtforms import TextField, Form
 
@@ -533,6 +533,7 @@ def checkout():
     sellerId = request.args.get('sellerId')
     buyNow = request.args.get('buyNow')
     indicator = 0
+    validate = 0
     # buyer submits venmo -> make request
     # buyer presses recieved -> check of they sent money(venmouserName, amount, Book title,)
     # might be a problem if buy the same book title from same seller -> need listing ID
@@ -547,6 +548,14 @@ def checkout():
         # venmoUsername = venmoUsername.strip()
         indicator = 1
         print('about to send request')
+
+        validate = validateUsername(venmoUsername)
+        print("validate: ", validate)
+        if validate == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+        
         error = sendRequest(database, venmoUsername, username,
                             cost, title, sellerId, listing)
         print('sent request')
@@ -573,15 +582,17 @@ def checkout():
                 return response
 
         bidders.insert(0, username)
-        # later need to distinguish between confirm and purchase so can delete bids
+       
         error2 = sendEmail(mail, bidders, 'confirm', sellerId, cost, title)
         if error2 == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
-
+            
+    print('last validate: ', validate)
     html = render_template('checkout.html', username=username, indicator=indicator,
-                           title=title, cost=cost, sellerId=sellerId, list=listing, buyNow=buyNow)
+                           title=title, cost=cost, sellerId=sellerId, list=listing, buyNow=buyNow,
+                           validate=validate)
     response = make_response(html)
 
     return response
