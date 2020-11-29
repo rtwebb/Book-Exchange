@@ -14,7 +14,7 @@ from CASClient import CASClient
 from json import dumps
 from venmo_api import Client, get_user_id
 from my_email import sendEmail
-from venmo import sendRequest, checkTransactions, sendMoney, validateUsername
+from venmo import sendRequest, checkTransactions, sendMoney
 
 # from wtforms import TextField, Form
 
@@ -533,36 +533,10 @@ def checkout():
     sellerId = request.args.get('sellerId')
     buyNow = request.args.get('buyNow')
     indicator = 0
-    validate = 0
-    # buyer submits venmo -> make request
-    # buyer presses recieved -> check of they sent money(venmouserName, amount, Book title,)
-    # might be a problem if buy the same book title from same seller -> need listing ID
-    # sens money
-
-    # Make sure buyers only returns 1, if it doensnt send pop up with an error
-    # connect recieved to send money to seller or throw popup
-    # connect recieved button to trigger checking if buyer sent money, if didnt sent money, email buyer and seller?
-
+   
     venmoUsername = request.form.get('username')
     if venmoUsername != None:
-        # venmoUsername = venmoUsername.strip()
         indicator = 1
-        print('about to send request')
-
-        validate = validateUsername(venmoUsername)
-        print("validate: ", validate)
-        if validate == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
-        
-        error = sendRequest(database, venmoUsername, username,
-                            cost, title, sellerId, listing)
-        print('sent request')
-        if error == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
 
         if buyNow == 'yes':
             print('about to buyNow')
@@ -581,6 +555,15 @@ def checkout():
                 response = make_response(html)
                 return response
 
+        print('about to send request')
+        error = sendRequest(database, venmoUsername, username,
+                            cost, title, sellerId, listing)
+        print('sent request')
+        if error == -1:
+            html = render_template('errorPage.html')
+            response = make_response(html)
+            return response
+
         bidders.insert(0, username)
        
         error2 = sendEmail(mail, bidders, 'confirm', sellerId, cost, title)
@@ -589,10 +572,8 @@ def checkout():
             response = make_response(html)
             return response
             
-    print('last validate: ', validate)
     html = render_template('checkout.html', username=username, indicator=indicator,
-                           title=title, cost=cost, sellerId=sellerId, list=listing, buyNow=buyNow,
-                           validate=validate)
+                           title=title, cost=cost, sellerId=sellerId, list=listing, buyNow=buyNow)
     response = make_response(html)
 
     return response
