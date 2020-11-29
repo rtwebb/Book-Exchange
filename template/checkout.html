@@ -60,11 +60,21 @@
                   <br>
 
                   <button
-                          class="btn btn-warning"
-                          form="submitBookForm"
-                          onclick="return verifyUsername();"
-                          value="Submit"> Submit
+                  class="btn btn-warning"
+                  form="submitBookForm"
+                  onclick="return verifyUsername();"
+                  value="Submit"> Submit
+              </button>
+
+
+                  <button
+                      class="btn btn-secondary"
+                      onclick="return hitCancel();"
+                      value="Submit"> Cancel 
                   </button>
+
+      
+
                 </form>
 
 
@@ -98,6 +108,19 @@
 
     'use strict';
 
+    function hitCancel(){
+
+      if (confirm('Are you sure you want to cancel? You will be redirected to the Profile Page.')) {
+        window.location.href = '/profilePage';
+
+      }
+        else {
+          return true;
+ 
+        }
+
+
+    }
 
 
     function verifyUsername(){
@@ -105,8 +128,8 @@
       let venmoUsername = $('#inputUsername').val()
       console.log("venmoUsername: ", venmoUsername);
 
-      if (venmoUsername != null){
-        if (confirm('Are you sure this is your UNIQUE Venmo Username?')) {
+      if (venmoUsername != ''){
+        if (confirm('Are you sure this is your unique Venmo Username?')) {
           return true;
         }
         else {
