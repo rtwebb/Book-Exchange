@@ -675,9 +675,6 @@ def congratsPage():
         buynow1 = request.form.get('buyNow')
         uniqueID = request.args.get('uniqueID')
 
-        print("YAYAYAYAYYAAYAHAHJGSJGJGGJHGJGJHGJH")
-        print(uniqueID)
-
         minprice = ''
         buynow = ''
         if "." not in minprice1:
@@ -724,6 +721,23 @@ def congratsPage():
         crstitle = request.form.get('crstitle')
         if crstitle is None or crstitle == '' or crstitle.strip(' ') is None or crstitle.strip(' ') == '':
             crstitle = "N/A"
+
+        if crscode != "N/A":
+            code = ""
+            for char in crscode:
+                if char.isdigit() == False:
+                    code += char
+                else:
+                    break
+            code += " "
+
+            for char in crscode:
+                if char.isdigit():
+                    code += char
+                
+            crscode = code
+            
+
         condition = request.form.get('bookCondition')
         time = datetime.now()
         listTime = time.strftime("%m:%d:%Y:%H:%M:%S")
