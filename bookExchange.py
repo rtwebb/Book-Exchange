@@ -212,7 +212,8 @@ def buyerPageTemplate():
     try:
         results = database.getDescription(uniqueId)
         if results == -1:
-            html = render_template('errorPage.html')
+            msg = "You may have entered an invalid bookId."
+            html = render_template('errorPage.html', msg=msg)
             response = make_response(html)
             return response
 
