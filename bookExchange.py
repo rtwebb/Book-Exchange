@@ -731,9 +731,14 @@ def congratsPage():
                     break
             code += " "
 
+            prev = False
             for char in crscode:
                 if char.isdigit():
                     code += char
+                    prev = True
+                elif prev == True:
+                    code += char
+                    break
                 
             crscode = code
             
