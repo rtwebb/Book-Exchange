@@ -187,12 +187,21 @@ class QueryDatabase:
 
     # ----------------------------------------------------------------------------------
     def addTransaction(self, venmoUsername, username):
+        
         try:
-            newTrans = Transactions(venmoUsername=venmoUsername, casUsername=username)
-            self._connection.add(newTrans)
-            self._connection.commit()
+            transaction = self._connection.query(Transactions). \
+                filter(Transactions.casUsername == username).one()
 
-            return 0
+            if transaction is not None:
+                transaction.venmoUsername = venmoUsername
+                self._connection.commit()
+                return 0
+            else:
+                newTrans = Transactions(venmoUsername=venmoUsername, casUsername=username)
+                self._connection.add(newTrans)
+                self._connection.commit()
+
+                return 0
 
         except Exception as e:
             print(argv[0] + ':', e, file=stderr)
@@ -202,10 +211,10 @@ class QueryDatabase:
     def getTransaction(self, username):
         try:
             transaction = self._connection.query(Transactions). \
-                filter(Transactions.casUsername == username).one_or_none()
+                filter(Transactions.casUsername == username).one()
 
             # this is wrong
-            if not transaction:
+            if transaction is None:
                 return None
             else:
                 return transaction.venmoUsername
@@ -613,6 +622,11 @@ class QueryDatabase:
                 filter(Listings.status != 'purchased'). \
                 filter(Listings.status != 'received').one()
 
+            transaction = self._connection.query(Transactions). \
+                filter(Transactions.casUsername == listing.sellerID).one()
+
+            venmoUsername = transaction.venmoUsername
+
             result = {
                 "uniqueID": uniqueID,
                 "title": listing.book[0].title,
@@ -627,7 +641,8 @@ class QueryDatabase:
                 "buyNow": listing.buyNow,
                 "listTime": listing.listTime,
                 "images": listing.images,
-                "authors": listing.book[0].authors[0].name
+                "authors": listing.book[0].authors[0].name,
+                "venmoUsername": venmoUsername
             }
             results.append(result)
 

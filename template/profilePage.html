@@ -67,7 +67,7 @@
 						{% else: %}
 						{%    for book in listings: %}
 						<tr>
-							<td>{{book["title"]}}</td>
+							<td><a href="/buyerPage?bookid={{book['uniqueId']}}">{{book["title"]}}</a></td>
 							<td></td>
 							<td>{{book["crscode"]}}</td>
 							<td></td>

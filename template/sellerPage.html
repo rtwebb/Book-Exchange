@@ -152,7 +152,7 @@
                   <div class="col-lg-4">
                     <label for="inputVenmoUsername" class="form-label"> Venmo Username <span>*</span></label>
                     {% if book is not none: %}
-                    <input type="text" class="form-control" value="venmoUsername" name="venmoUsername" id="inputVenmoUsername" required>
+                    <input type="text" class="form-control" value="{{book['venmoUsername']}}" name="venmoUsername" id="inputVenmoUsername" required>
                     {% else %}
                     <input type="text" class="form-control" name="venmoUsername" id="inputVenmoUsername" placeholder="Ex: Michael-Jordan" required>
                     {% endif %}

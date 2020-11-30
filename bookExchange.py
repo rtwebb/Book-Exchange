@@ -182,7 +182,7 @@ def sellerPageTemplate():
             for result in results:
                 book = result
                 print("WAWAWAWAWAWAWAWAWAWAWA")
-                print(book['condition'])
+                print(book['venmoUsername'])
         except Exception as e:
             html = render_template('errorPage.html')
             response = make_response(html)
@@ -590,6 +590,7 @@ def checkout():
 def congratsPage():
     username = CASClient().authenticate()
     username = username.strip()
+    username = username.strip("\n")
     msg = ""
     msg1 = ""
     results = []
@@ -638,6 +639,7 @@ def congratsPage():
                         bid = bid1
 
                 venmoUsername = request.form.get('venmoUsername')
+
                 indicator, results = database.addBid(buyerID, uniqueId, bid)
                 if indicator == -1:
                     html = render_template('errorPage.html')
@@ -699,20 +701,24 @@ def congratsPage():
 
         # need case were username is wrong
         venmoUsername = request.form.get('venmoUsername')
-        print("venmoUsername: ", venmoUsername)
-        transaction = database.getTransaction(username)
-        print("Transaction: ", transaction)
-        if transaction == None:
-            error = database.addTransaction(venmoUsername, username)
-            if error == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
 
-        if transaction == -1:
+        error = database.addTransaction(venmoUsername, username)
+        if error == -1:
             html = render_template('errorPage.html')
             response = make_response(html)
             return response
+        
+        #if transaction == None:
+            #error = database.addTransaction(venmoUsername, username)
+           # if error == -1:
+            #    html = render_template('errorPage.html')
+            #    response = make_response(html)
+            #    return response
+
+       # if transaction == -1:
+         #   html = render_template('errorPage.html')
+         #   response = make_response(html)
+         #   return response
 
         image1 = request.files.get('image1')
         image2 = request.files.get('image2')
