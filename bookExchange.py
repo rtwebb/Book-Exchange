@@ -181,6 +181,8 @@ def sellerPageTemplate():
 
             for result in results:
                 book = result
+                print("WAWAWAWAWAWAWAWAWAWAWA")
+                print(book['condition'])
         except Exception as e:
             html = render_template('errorPage.html')
             response = make_response(html)
@@ -191,8 +193,7 @@ def sellerPageTemplate():
         msg = None
 
     # when sending to profile page have a "successful" message display
-    html = render_template('sellerPage.html', username=username,
-                           msg=msg, book=book)
+    html = render_template('sellerPage.html', username=username, msg=msg, book=book)
 
     response = make_response(html)
     return response
@@ -671,6 +672,11 @@ def congratsPage():
         title = request.form.get('title')
         minprice1 = request.form.get('minPrice')
         buynow1 = request.form.get('buyNow')
+        uniqueID = request.args.get('uniqueID')
+
+        print("YAYAYAYAYYAAYAHAHJGSJGJGGJHGJGJHGJH")
+        print(uniqueID)
+
         minprice = ''
         buynow = ''
         if "." not in minprice1:
@@ -733,7 +739,7 @@ def congratsPage():
                 images.append(database.imageToURL(image3))
 
             results = database.add(isbn, title, [author], crscode, crstitle, username, condition,
-                         minprice, buynow, listTime, images)
+                         minprice, buynow, listTime, images, uniqueID)
             if results == -1:
                 html = render_template('errorPage.html')
                 response = make_response(html)

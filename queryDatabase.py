@@ -35,35 +35,105 @@ class QueryDatabase:
 
     # add a listing to the database (pending)
     def add(self, isbn, title, authors, courseCode, courseTitle,
-            sellerID, condition, minPrice, buyNow, listTime, urls):
+            sellerID, condition, minPrice, buyNow, listTime, urls, uniqueID):
 
-        try:
-            listing = Listings(uniqueID=uuid4(), sellerID=sellerID,
-                               condition=condition.title(), minPrice=minPrice,
-                               buyNow=buyNow, listTime=listTime, highestBid=0, status='open')
-            imagelist = []
-            for url in urls:
-                imagelist.append(Images(listingID=listing.uniqueID, url=url))
-            listing.images = imagelist
+        if uniqueID is not None:
 
-            book = Books(listingID=listing.uniqueID, isbn=isbn, title=title.title())
-            authorlist = []
-            for author in authors:
-                authorlist.append(Authors(listingID=listing.uniqueID, isbn=isbn, name=author.title()))
-            book.authors = authorlist
-            listing.book = [book]
+            try:
 
-            course = Courses(listingID=listing.uniqueID, courseCode=courseCode.upper(),
-                             courseTitle=courseTitle.title())
-            listing.course = [course]
-            self._connection.add(listing)
-            self._connection.commit()
+                listing = self._connection.query(Listings). \
+                          filter(Listings.uniqueID == uniqueID).one()
 
-            return 0
+                listing.sellerID = sellerID
+                self._connection.commit()
+                listing.condition = condition.title()
+                self._connection.commit()
+                listing.minPrice = minPrice
+                self._connection.commit()
+                listing.buyNow = buyNow
+                self._connection.commit()
 
-        except Exception as e:
-            print(argv[0] + ':', e, file=stderr)
-            return -1
+                images = self._connection.query(Images). \
+                        filter(Images.listingID == uniqueID).all()
+
+                for image in images:
+                    self._connection.delete(image)
+                self._connection.commit()
+                
+                imagelist = []
+                for url in urls:
+                    imagelist.append(Images(listingID=listing.uniqueID, url=url))
+                listing.images = imagelist
+                self._connection.commit()
+
+                book = self._connection.query(Books). \
+                    filter(Books.listingID == uniqueID).one()
+
+                book.isbn = isbn
+                self._connection.commit()
+                book.title = title.title()
+                self._connection.commit()
+
+                existingAuthors = self._connection.query(Authors). \
+                                 filter(Authors.listingID == uniqueID).all()
+
+                for author in existingAuthors:
+                    self._connection.delete(author)
+                self._connection.commit()
+
+                authorlist = []
+                for author in authors:
+                    authorlist.append(Authors(listingID=listing.uniqueID, isbn=isbn, name=author.title()))
+                book.authors = authorlist
+                self._connection.commit()
+                listing.book = [book]
+                self._connection.commit()
+
+                course = self._connection.query(Courses). \
+                        filter(Courses.listingID == uniqueID).one()
+
+                course.courseCode=courseCode.upper()
+                self._connection.commit()
+                course.courseTitle = courseTitle.title()
+                self._connection.commit()
+
+                listing.course = [course]
+                self._connection.commit()
+
+                return 0
+
+            except Exception as e:
+                print(argv[0] + ':', e, file=stderr)
+                return -1
+      
+        else:
+            try:
+                listing = Listings(uniqueID=uuid4(), sellerID=sellerID,
+                                   condition=condition.title(), minPrice=minPrice,
+                                   buyNow=buyNow, listTime=listTime, highestBid=0, status='open')
+                imagelist = []
+                for url in urls:
+                    imagelist.append(Images(listingID=listing.uniqueID, url=url))
+                listing.images = imagelist
+
+                book = Books(listingID=listing.uniqueID, isbn=isbn, title=title.title())
+                authorlist = []
+                for author in authors:
+                    authorlist.append(Authors(listingID=listing.uniqueID, isbn=isbn, name=author.title()))
+                book.authors = authorlist
+                listing.book = [book]
+    
+                course = Courses(listingID=listing.uniqueID, courseCode=courseCode.upper(),
+                                 courseTitle=courseTitle.title())
+                listing.course = [course]
+                self._connection.add(listing)
+                self._connection.commit()
+
+                return 0
+
+            except Exception as e:
+                print(argv[0] + ':', e, file=stderr)
+                return -1
 
     # -----------------------------------------------------------------------------
 
@@ -544,6 +614,7 @@ class QueryDatabase:
                 filter(Listings.status != 'received').one()
 
             result = {
+                "uniqueID": uniqueID,
                 "title": listing.book[0].title,
                 "crscode": listing.course[0].courseCode,
                 "crstitle": listing.course[0].courseTitle,

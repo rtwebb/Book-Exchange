@@ -31,7 +31,11 @@
 
             <h1 style="color: orange;" class="sellerHeading">Add a New Listing</h1>
 
+            {% if book is not none: %}
+            <form action="/congratsPage?uniqueID={{book['uniqueID']}}" method="POST" id="submitBookForm" enctype="multipart/form-data">
+            {% else: %}
             <form action="/congratsPage" method="POST" id="submitBookForm" enctype="multipart/form-data">
+            {% endif %}
                 <div class="row">
                     <div class="col-lg-8">
                         <label for="inputTitle" class="form-label">Book Title <span>*</span></label>
@@ -86,11 +90,37 @@
                     <div class="form-group col-md-4">
                         <label for="inputCondition" class="form-label">Condition <span>*</span></label>
                         <select id="inputCondition" name="bookCondition" class="form-control" required>
+                            {% if book is not none and book['condition'] == 'Poor' %}
+                            <option disabled>Choose...</option>
+                            <option selected>Poor</option>
+                            <option>Slightly Worn</option>
+                            <option>Good</option>
+                            <option>Brand New</option>
+                            {% elif book is not none and book['condition'] == 'Slightly Worn' %}
+                            <option disabled>Choose...</option>
+                            <option>Poor</option>
+                            <option selected>Slightly Worn</option>
+                            <option>Good</option>
+                            <option>Brand New</option>
+                            {% elif book is not none and book['condition'] == 'Good' %}
+                            <option disabled>Choose...</option>
+                            <option>Poor</option>
+                            <option>Slightly Worn</option>
+                            <option selected>Good</option>
+                            <option>Brand New</option>
+                            {% elif book is not none and book['condition'] == 'Brand New' %}
+                            <option disabled>Choose...</option>
+                            <option>Poor</option>
+                            <option>Slightly Worn</option>
+                            <option>Good</option>
+                            <option selected>Brand New</option>
+                            {% else: %}
                             <option selected disabled>Choose...</option>
                             <option>Poor</option>
                             <option>Slightly Worn</option>
                             <option>Good</option>
                             <option>Brand New</option>
+                            {% endif %}
                         </select>
                         <div class="invalid-feedback">
                             Condition is required
