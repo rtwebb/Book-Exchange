@@ -205,6 +205,9 @@ def sellerPageTemplate():
 @app.route('/buyerPage', methods=['GET', 'POST'])
 def buyerPageTemplate():
     uniqueId = request.args.get('bookid')
+    username = CASClient().authenticate()
+    username = username.strip(" ")
+    username = username.strip("\n")
 
     # if check for if uniqueID is none
     # if (uniqueId == None):
@@ -235,8 +238,9 @@ def buyerPageTemplate():
             images.append(image.url)
 
     html = render_template('buyerPage.html', results=results,
-                           images=images, uniqueId=uniqueId)
+                           images=images, uniqueId=uniqueId, username=username)
     response = make_response(html)
+
     return response
 
 

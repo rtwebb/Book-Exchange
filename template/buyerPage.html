@@ -67,7 +67,16 @@
                 <h4>Course: {{results[0]["crstitle"]}} ({{results[0]["crscode"]}})</h4>
                 {% endif %}
                 <hr>
-                <p><b>Seller NetID: </b>{{results[0]["sellerId"]}} <small>(<a href="sellerListings?sellerID={{results[0]["sellerId"]}}">See more by this seller</a>)</small></p>
+                <p>
+                    <b>Seller NetID: </b>
+                    {{results[0]["sellerId"]}}
+
+                    {% if username != results[0]["sellerId"]: %}
+                    <small>(<a href="sellerListings?sellerID={{results[0]["sellerId"]}}">See more by this seller</a>)</small>
+                    {% else: %}
+                    <small>(<a href="sellerPage?bookid={{uniqueId}}">Edit this listing</a>)</small>
+                    {% endif %}
+                </p>
                 <p><b>Condition: </b>{{results[0]["condition"]}}</p>
                 <p>
                     <b>Buy Now Price: </b>${{results[0]["buyNow"]}}0
