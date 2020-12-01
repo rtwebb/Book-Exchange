@@ -45,7 +45,7 @@
 
               {% else: %}
 
-                <h2><center>Hi {{username}}, let's complete your purchase</center></h2>
+                <h2><center>Hi {{username}}, let's complete your purchase for {{title}}</center></h2>
                 <br>
 
                 <form action="/checkout?cost={{cost}}&title={{title}}&list={{list}}&sellerId={{sellerId}}&buyNow={{buyNow}}" method="post" id="submitBookForm" enctype="multipart/form-data">
@@ -109,8 +109,8 @@
 
     function hitCancel(){
 
-      if (confirm('Are you sure you want to cancel? You will be redirected to the Profile Page.')) {
-        window.location.href = '/profilePage';
+      if (confirm('Are you sure you want to cancel?')) {
+        window.location.href = '/buyerPage?bookid={{list}}';
 
       }
         else {
