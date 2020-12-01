@@ -468,7 +468,6 @@ def profilePageTemplate():
 	response = make_response(html)
 	return response
 
-
 # ----------------------------------------------------------------------
 
 
