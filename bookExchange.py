@@ -43,122 +43,122 @@ database = QueryDatabase()
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/homePage', methods=['GET', 'POST'])
 def homePageTemplate():
-    username = CASClient().authenticate()
-    username = username.strip()
-    # need to get recently listed books to show
-    try:
-        results = database.homeRecents()
-        if results == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+	username = CASClient().authenticate()
+	username = username.strip()
+	# need to get recently listed books to show
+	try:
+		results = database.homeRecents()
+		if results == -1:
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
 
-    except Exception as e:
-        print("Error: " + str(e), file=stderr)
-        html = render_template('errorPage.html')
-        response = make_response(html)
-        return response
+	except Exception as e:
+		print("Error: " + str(e), file=stderr)
+		html = render_template('errorPage.html')
+		response = make_response(html)
+		return response
 
-    # getting images corresponding to each book
-    # if no image was uploaded - using a stock photo
-    images = []
+	# getting images corresponding to each book
+	# if no image was uploaded - using a stock photo
+	images = []
 
-    # Accessing images
-    i = 0
-    for dict in results:
-        if dict["images"]:
-            image = dict["images"]
-            images.append(image[0].url)
-            dict["images"] = i
-            i += 1
-        else:
-            images.append(
-                "http://res.cloudinary.com/dijpr9qcs/image/upload/yah8siamtbmtg5wtnsdv.png")
-            dict["images"] = i
-            i += 1
+	# Accessing images
+	i = 0
+	for dict in results:
+		if dict["images"]:
+			image = dict["images"]
+			images.append(image[0].url)
+			dict["images"] = i
+			i += 1
+		else:
+			images.append(
+				"http://res.cloudinary.com/dijpr9qcs/image/upload/yah8siamtbmtg5wtnsdv.png")
+			dict["images"] = i
+			i += 1
 
-    html = render_template('homePage.html', results=results, images=images,
-                           username=username)
-    response = make_response(html)
-    return response
+	html = render_template('homePage.html', results=results, images=images,
+						   username=username)
+	response = make_response(html)
+	return response
 
 
 # -----------------------------------------------------------------------
 @app.route('/searchResults', methods=['GET'])
 def searchResultsTemplate():
-    username = CASClient().authenticate()
-    username = username.strip()
-    # need to get results based on search query
-    # once get object send to searchResults
-    # each book needs to link to buyerPage with more information
-    # set cookies on search query to follow through searchResults and buyerPage
+	username = CASClient().authenticate()
+	username = username.strip()
+	# need to get results based on search query
+	# once get object send to searchResults
+	# each book needs to link to buyerPage with more information
+	# set cookies on search query to follow through searchResults and buyerPage
 
-    # drop down
-    # check if it is equal to value
-    dropDown = request.args.get('dropDown')
-    query = request.args.get('query')
-    sortBy = request.args.get('sortBy')
+	# drop down
+	# check if it is equal to value
+	dropDown = request.args.get('dropDown')
+	query = request.args.get('query')
+	sortBy = request.args.get('sortBy')
 
-    if dropDown is None and query is None and sortBy is not None:
-        dropDown = request.cookies.get('dropDown')
-        query = request.cookies.get('query')
+	if dropDown is None and query is None and sortBy is not None:
+		dropDown = request.cookies.get('dropDown')
+		query = request.cookies.get('query')
 
-    if dropDown == "isbn":
-        searchType = 1
-    elif dropDown == "title":
-        searchType = 2
-    elif dropDown == "crscode":
-        searchType = 3
-    else:
-        searchType = 4
+	if dropDown == "isbn":
+		searchType = 1
+	elif dropDown == "title":
+		searchType = 2
+	elif dropDown == "crscode":
+		searchType = 3
+	else:
+		searchType = 4
 
-    if dropDown is None:
-        searchType = 0
-    if query == '' or query is None:
-        query = ''
+	if dropDown is None:
+		searchType = 0
+	if query == '' or query is None:
+		query = ''
 
-    if sortBy is None:
-        sortBy = "newest"
+	if sortBy is None:
+		sortBy = "newest"
 
-    images = []
-    try:
-        results = database.search(searchType, query, "1", sortBy)
-        if results == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+	images = []
+	try:
+		results = database.search(searchType, query, "1", sortBy)
+		if results == -1:
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
 
-        # Accessing images
-        i = 0
-        for dict in results:
-            if dict["images"]:
-                image = dict["images"]
-                images.append(image[0].url)
-                dict["images"] = i
-                i += 1
+		# Accessing images
+		i = 0
+		for dict in results:
+			if dict["images"]:
+				image = dict["images"]
+				images.append(image[0].url)
+				dict["images"] = i
+				i += 1
 
-            else:
-                images.append(
-                    "http://res.cloudinary.com/dijpr9qcs/image/upload/yah8siamtbmtg5wtnsdv.png")
-                dict["images"] = i
-                i += 1
+			else:
+				images.append(
+					"http://res.cloudinary.com/dijpr9qcs/image/upload/yah8siamtbmtg5wtnsdv.png")
+				dict["images"] = i
+				i += 1
 
-    except Exception as e:
-        print(argv[0] + ": " + str(e), file=stderr)
-        html = render_template('errorPage.html')
-        response = make_response(html)
-        return response
+	except Exception as e:
+		print(argv[0] + ": " + str(e), file=stderr)
+		html = render_template('errorPage.html')
+		response = make_response(html)
+		return response
 
-    html = render_template('searchResults.html', results=results,
-                           username=username, query=query, searchType=searchType,
-                           images=images, sortBy=sortBy)
+	html = render_template('searchResults.html', results=results,
+						   username=username, query=query, searchType=searchType,
+						   images=images, sortBy=sortBy)
 
-    response = make_response(html)
-    if dropDown is not None:
-        response.set_cookie('dropDown', dropDown)
-    response.set_cookie('query', query)
-    response.set_cookie('sortBy', sortBy)
-    return response
+	response = make_response(html)
+	if dropDown is not None:
+		response.set_cookie('dropDown', dropDown)
+	response.set_cookie('query', query)
+	response.set_cookie('sortBy', sortBy)
+	return response
 
 
 # -----------------------------------------------------------------------
@@ -166,37 +166,37 @@ def searchResultsTemplate():
 
 @app.route('/sellerPage', methods=['GET', 'POST'])
 def sellerPageTemplate():
-    username = CASClient().authenticate()
-    uniqueId = request.args.get('bookid')
+	username = CASClient().authenticate()
+	uniqueId = request.args.get('bookid')
 
-    if uniqueId is not None:
-        book = None
-        try:
-            results = database.getDescription(uniqueId)
-            if results == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
-            msg = "**Please resubmit book images, if you had any**"
+	if uniqueId is not None:
+		book = None
+		try:
+			results = database.getDescription(uniqueId)
+			if results == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
+			msg = "**Please resubmit book images, if you had any**"
 
-            for result in results:
-                book = result
-                print("WAWAWAWAWAWAWAWAWAWAWA")
-                print(book['venmoUsername'])
-        except Exception as e:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+			for result in results:
+				book = result
+				print("WAWAWAWAWAWAWAWAWAWAWA")
+				print(book['venmoUsername'])
+		except Exception as e:
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
 
-    if uniqueId is None or uniqueId.strip == '':
-        book = None
-        msg = None
+	if uniqueId is None or uniqueId.strip == '':
+		book = None
+		msg = None
 
-    # when sending to profile page have a "successful" message display
-    html = render_template('sellerPage.html', username=username, msg=msg, book=book)
+	# when sending to profile page have a "successful" message display
+	html = render_template('sellerPage.html', username=username, msg=msg, book=book)
 
-    response = make_response(html)
-    return response
+	response = make_response(html)
+	return response
 
 
 # -----------------------------------------------------------------------
@@ -204,264 +204,269 @@ def sellerPageTemplate():
 
 @app.route('/buyerPage', methods=['GET', 'POST'])
 def buyerPageTemplate():
-    uniqueId = request.args.get('bookid')
-    username = CASClient().authenticate()
-    username = username.strip(" ")
-    username = username.strip("\n")
+	uniqueId = request.args.get('bookid')
+	username = CASClient().authenticate()
+	username = username.strip(" ")
+	username = username.strip("\n")
 
-    # if check for if uniqueID is none
-    # if (uniqueId == None):
-    #     return errorMsg('Invalid book ID')
+	# if check for if uniqueID is none
+	# if (uniqueId == None):
+	#     return errorMsg('Invalid book ID')
 
-    try:
-        results = database.getDescription(uniqueId)
-        if results == -1:
-            msg = "You may have entered an invalid bookId."
-            html = render_template('errorPage.html', msg=msg)
-            response = make_response(html)
-            return response
+	try:
+		results = database.getDescription(uniqueId)
+		if results == -1:
+			msg = "You may have entered an invalid bookId."
+			html = render_template('errorPage.html', msg=msg)
+			response = make_response(html)
+			return response
 
-    except Exception as e:
-        print("Error: " + str(e), file=stderr)
-        html = render_template('errorPage.html')
-        response = make_response(html)
-        return response
+	except Exception as e:
+		print("Error: " + str(e), file=stderr)
+		html = render_template('errorPage.html')
+		response = make_response(html)
+		return response
 
-    # Accessing images
-    images = []
+	# Accessing images
+	images = []
 
-    if len(results[0]["images"]) == 0:
-        images.append(
-            "http://res.cloudinary.com/dijpr9qcs/image/upload/yah8siamtbmtg5wtnsdv.png")
-    else:
-        for image in results[0]["images"]:
-            images.append(image.url)
+	if len(results[0]["images"]) == 0:
+		images.append(
+			"http://res.cloudinary.com/dijpr9qcs/image/upload/yah8siamtbmtg5wtnsdv.png")
+	else:
+		for image in results[0]["images"]:
+			images.append(image.url)
 
-    html = render_template('buyerPage.html', results=results,
-                           images=images, uniqueId=uniqueId, username=username)
-    response = make_response(html)
+	html = render_template('buyerPage.html', results=results,
+						   images=images, uniqueId=uniqueId, username=username)
+	response = make_response(html)
 
-    return response
+	return response
 
 
 # ----------------------------------------------------------------------
 
 @app.route('/profilePage', methods=['GET', 'POST'])
 def profilePageTemplate():
-    username = CASClient().authenticate()
-    username = username.strip()
-    listingID = request.args.get('list')
-    sellerID = request.args.get('sellerId')
-    bidder = request.args.get('bidder')
-    title = request.args.get('title')
-    highestBid = request.args.get('cost')
-    print('highest bid:', highestBid)
+	username = CASClient().authenticate()
+	username = username.strip()
+	listingID = request.args.get('list')
+	sellerID = request.args.get('sellerId')
+	bidder = request.args.get('bidder')
+	title = request.args.get('title')
+	highestBid = request.args.get('cost')
 
-    try:
-        # send to bidder
-        if 'accept' in request.form:
-            error1 = database.updateStatus(listingID, bidder, 'accepted')
-            if error1 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+	try:
+		# send to bidder
+		if 'accept' in request.form:
+			results = database.getDescription(listingID)
+			if results == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
+			else:
+				for result in results:
+					if result['listingStatus'] != 'accepted':
+						error1 = database.updateStatus(listingID, bidder, 'accepted')
+						if error1 == -1:
+							html = render_template('errorPage.html')
+							response = make_response(html)
+							return response
 
-            error2 = sendEmail(mail, [bidder], 'accept',
-                               username, highestBid, title)
-            if error2 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+						error2 = sendEmail(mail, [bidder], 'accept',
+										username, highestBid, title)
+						if error2 == -1:
+							print("error two")
+							html = render_template('errorPage.html')
+							response = make_response(html)
+							return response
 
-        # send to bidder -> if it was the highest bidder send to everyone
-        elif 'decline' in request.form:
-            error1 = database.updateStatus(listingID, bidder, 'declined')
-            if error1 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+		# send to bidder -> if it was the highest bidder send to everyone
+		elif 'decline' in request.form:
+			error1 = database.updateStatus(listingID, bidder, 'declined')
+			if error1 == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
 
-            # need to update highest bid
-            error2 = database.removeMyBid(bidder, listingID)
-            if error2 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
-            if error2 == 1:
-                allBidders = database.getAllBids(listingID)
-                if allBidders == -1:
-                    html = render_template('errorPage.html')
-                    response = make_response(html)
-                    return response
-                allBidders.insert(0, bidder)
-                error3 = sendEmail(mail, allBidders, 'removeHighest', username, highestBid, title)
-                if error3 == -1:
-                    html = render_template('errorPage.html')
-                    response = make_response(html)
-                    return response
+			# need to update highest bid
+			error2 = database.removeMyBid(bidder, listingID)
+			if error2 == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
+			if error2 == 1:
+				allBidders = database.getAllBids(listingID)
+				if allBidders == -1:
+					html = render_template('errorPage.html')
+					response = make_response(html)
+					return response
+				allBidders.insert(0, bidder)
+				error3 = sendEmail(mail, allBidders, 'removeHighest', username, highestBid, title)
+				if error3 == -1:
+					html = render_template('errorPage.html')
+					response = make_response(html)
+					return response
 
-            error4 = sendEmail(mail, [bidder], 'decline',
-                               username, highestBid, title)
-            if error4 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+			error4 = sendEmail(mail, [bidder], 'decline',
+							   username, highestBid, title)
+			if error4 == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
 
-        # send email to all bidders and seller
-        elif 'confirm' in request.form:
-            return redirect(url_for('checkout'))
+		# send email to all bidders and seller
+		elif 'confirm' in request.form:
+			return redirect(url_for('checkout'))
 
-        elif 'deny' in request.form:
-            error1 = database.updateStatus(listingID, username, 'declined')
-            if error1 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+		elif 'deny' in request.form:
+			error1 = database.updateStatus(listingID, username, 'declined')
+			if error1 == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
 
-            error2 = database.removeMyBid(username, listingID)
-            if error2 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+			error2 = database.removeMyBid(username, listingID)
+			if error2 == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
 
-            allBidders = database.getAllBids(listingID)
-            if allBidders == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
-            if len(allBidders) < 1:
-                error3 = sendEmail(mail, [username], 'deny',
-                                   sellerID, highestBid, title)
-            else:
-                allBidders.insert(0, username)
-                error3 = sendEmail(mail, allBidders, 'deny',
-                                   sellerID, highestBid, title)
+			allBidders = database.getAllBids(listingID)
+			if allBidders == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
+			if len(allBidders) < 1:
+				error3 = sendEmail(mail, [username], 'deny',
+								   sellerID, highestBid, title)
+			else:
+				allBidders.insert(0, username)
+				error3 = sendEmail(mail, allBidders, 'deny',
+								   sellerID, highestBid, title)
 
-            if error3 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+			if error3 == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
 
-        # book received now must: send seller the money and change book status
-        elif 'received' in request.form:  # send seller money
-            # update status
-            error1 = database.updateStatus(listingID, username, 'received')
-            if error1 == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+		# book received now must: send seller the money and change book status
+		elif 'received' in request.form:  # send seller money
+			# update status
+			error1 = database.updateStatus(listingID, username, 'received')
+			if error1 == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
 
-            # send email to seller
-            error2 = sendEmail(mail, [], 'received',
-                               sellerID, highestBid, title)
-            if error2 == -1:
-                print('send email error')
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+			# send email to seller
+			error2 = sendEmail(mail, [], 'received',
+							   sellerID, highestBid, title)
+			if error2 == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
 
-            # need automatic refresh
-            error3 = checkTransactions(database, username, highestBid)
-            if error3 == -1:
-                print('check transaction error')
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
-            elif error3 == False:
-                print('buyer has not sent money')
-                # want to add popup
-            elif error3 == True:
-                error4 = sendMoney(database, sellerID, username, title, highestBid)
-                if error4 == -1:
-                    print('send money error')
-                    html = render_template('errorPage.html')
-                    response = make_response(html)
-                    return response
-                # else:
-                # pop up with congratulations money has been sent
+			# need automatic refresh
+			error3 = checkTransactions(database, username, highestBid)
+			if error3 == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
+			elif error3 == False:
+				print('buyer has not sent money')
+				# want to add popup
+			elif error3 == True:
+				error4 = sendMoney(database, sellerID, username, title, highestBid)
+				if error4 == -1:
+					html = render_template('errorPage.html')
+					response = make_response(html)
+					return response
+				# else:
+				# pop up with congratulations money has been sent
 
-        # if it's the highest bid need to notify everyone
-        # user wants to delete their bid
-        deleteBidBuyerID = request.args.get('deleteBidBuyerID')
-        deleteBidListingID = request.args.get('deleteBidListingID')
-        if deleteBidBuyerID is not None and deleteBidListingID is not None:
-            result = database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
-            if result == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
-            if result == 1:
-                allBidders = database.getAllBids(listingID)
-                if allBidders == -1:
-                    html = render_template('errorPage.html')
-                    response = make_response(html)
-                    return response
-                allBidders.insert(0, deleteBidBuyerID)
-                error1 = sendEmail(mail, allBidders, 'removeHighest', sellerID, highestBid, title)
-                if error1 == -1:
-                    html = render_template('errorPage.html')
-                    response = make_response(html)
-                    return response
+		# if it's the highest bid need to notify everyone
+		# user wants to delete their bid
+		deleteBidBuyerID = request.args.get('deleteBidBuyerID')
+		deleteBidListingID = request.args.get('deleteBidListingID')
+		if deleteBidBuyerID is not None and deleteBidListingID is not None:
+			result = database.removeMyBid(deleteBidBuyerID, deleteBidListingID)
+			if result == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
+			if result == 1:
+				allBidders = database.getAllBids(listingID)
+				if allBidders == -1:
+					html = render_template('errorPage.html')
+					response = make_response(html)
+					return response
+				allBidders.insert(0, deleteBidBuyerID)
+				error1 = sendEmail(mail, allBidders, 'removeHighest', sellerID, highestBid, title)
+				if error1 == -1:
+					html = render_template('errorPage.html')
+					response = make_response(html)
+					return response
 
-        # user wants to delete their listing
-        deleteListingID = request.args.get('deleteListingID')
-        if deleteListingID is not None:
-            allBidders = database.getAllBids(deleteListingID)
-            if allBidders == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
-            if len(allBidders) >= 1:
-                result = sendEmail(mail, allBidders, 'removeListing', username, None, title)
-                if result == -1:
-                    html = render_template('errorPage.html')
-                    response = make_response(html)
-                    return response
+		# user wants to delete their listing
+		deleteListingID = request.args.get('deleteListingID')
+		if deleteListingID is not None:
+			allBidders = database.getAllBids(deleteListingID)
+			if allBidders == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
+			if len(allBidders) >= 1:
+				result = sendEmail(mail, allBidders, 'removeListing', username, None, title)
+				if result == -1:
+					html = render_template('errorPage.html')
+					response = make_response(html)
+					return response
 
-            result = database.removeListing(deleteListingID)
-            if result == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+			result = database.removeListing(deleteListingID)
+			if result == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
 
-        # Listings
-        listings = database.myListings(username)
-        if listings == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+		# Listings
+		listings = database.myListings(username)
+		if listings == -1:
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
 
-        # bids
-        bids = database.myBids(username)
-        if bids == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+		# bids
+		bids = database.myBids(username)
+		if bids == -1:
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
 
-        # purchases
-        purchases = database.myPurchases(username)
-        if purchases == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+		# purchases
+		purchases = database.myPurchases(username)
+		if purchases == -1:
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
 
-        # books sold
-        soldBooks = database.mySoldBooks(username)
-        if soldBooks == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+		# books sold
+		soldBooks = database.mySoldBooks(username)
+		if soldBooks == -1:
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
 
-    except Exception as e:
-        print("Error: " + str(e), file=stderr)
-        html = render_template('errorPage.html')
-        response = make_response(html)
-        return response
+	except Exception as e:
+		print("Error: " + str(e), file=stderr)
+		html = render_template('errorPage.html')
+		response = make_response(html)
+		return response
 
-    html = render_template('profilePage.html', username=username, listings=listings,
-                           purchases=purchases, bids=bids, soldBooks=soldBooks)
-    response = make_response(html)
-    return response
+	html = render_template('profilePage.html', username=username, listings=listings,
+						   purchases=purchases, bids=bids, soldBooks=soldBooks)
+	response = make_response(html)
+	return response
 
 
 # ----------------------------------------------------------------------
@@ -469,338 +474,338 @@ def profilePageTemplate():
 
 @app.route('/aboutUs', methods=['GET'])
 def aboutUsTemplate():
-    username = CASClient().authenticate()
-    username = username.strip()
-    # client_token = generate_client_token()
+	username = CASClient().authenticate()
+	username = username.strip()
+	# client_token = generate_client_token()
 
-    html = render_template(
-        'aboutUs.html', username=username)  # client_token=client_token,
+	html = render_template(
+		'aboutUs.html', username=username)  # client_token=client_token,
 
-    response = make_response(html)
-    return response
+	response = make_response(html)
+	return response
 
 
 # ----------------------------------------------------------------------
 @app.route('/autoComplete', methods=['GET'])
 def autoComplete():
-    dropDown = request.args.get('searchType')
-    query = request.args.get('query')
+	dropDown = request.args.get('searchType')
+	query = request.args.get('query')
 
-    if dropDown == "isbn":
-        index = 'isbn'
-        searchType = 1
-    elif dropDown == "title":
-        index = 'title'
-        searchType = 2
-    elif dropDown == "crscode":
-        index = 'crscode'
-        searchType = 3
-    else:
-        index = 'crstitle'
-        searchType = 4
+	if dropDown == "isbn":
+		index = 'isbn'
+		searchType = 1
+	elif dropDown == "title":
+		index = 'title'
+		searchType = 2
+	elif dropDown == "crscode":
+		index = 'crscode'
+		searchType = 3
+	else:
+		index = 'crstitle'
+		searchType = 4
 
-    try:
-        results = database.search(searchType, query, 0, "newest")
-        if results == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
-    except Exception as e:
-        print("Error: " + str(e), file=stderr)
-        html = render_template('errorPage.html')
-        response = make_response(html)
-        return response
+	try:
+		results = database.search(searchType, query, 0, "newest")
+		if results == -1:
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
+	except Exception as e:
+		print("Error: " + str(e), file=stderr)
+		html = render_template('errorPage.html')
+		response = make_response(html)
+		return response
 
-    # make the list of possible autocomplete
-    values = []  # past values
-    if results is not None:
-        autoComplete = []
-        for dict in results:
-            if dict[index] not in values:
-                values.append(dict[index])
-                autoComplete.append(dict[index])
+	# make the list of possible autocomplete
+	values = []  # past values
+	if results is not None:
+		autoComplete = []
+		for dict in results:
+			if dict[index] not in values:
+				values.append(dict[index])
+				autoComplete.append(dict[index])
 
-    autoComplete.sort(key=lambda v: v.upper())
+	autoComplete.sort(key=lambda v: v.upper())
 
-    # if query.strip() == '' or query is None:
-    # result = []
-    # autocomplete = result
+	# if query.strip() == '' or query is None:
+	# result = []
+	# autocomplete = result
 
-    jsonStr = dumps(autoComplete)
-    response = make_response(jsonStr)
-    response.headers['Content-Type'] = 'application/json'
-    return response
+	jsonStr = dumps(autoComplete)
+	response = make_response(jsonStr)
+	response.headers['Content-Type'] = 'application/json'
+	return response
 
 
 # ----------------------------------------------------------------------
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
-    username = CASClient().authenticate()
-    username = username.strip()
-    title = request.args.get('title')
-    cost = request.args.get('cost')
-    listing = request.args.get('list')
-    sellerId = request.args.get('sellerId')
-    buyNow = request.args.get('buyNow')
-    indicator = 0
+	username = CASClient().authenticate()
+	username = username.strip()
+	title = request.args.get('title')
+	cost = request.args.get('cost')
+	listing = request.args.get('list')
+	sellerId = request.args.get('sellerId')
+	buyNow = request.args.get('buyNow')
+	indicator = 0
    
-    venmoUsername = request.form.get('username')
-    if venmoUsername != None:
-        indicator = 1
+	venmoUsername = request.form.get('username')
+	if venmoUsername != None:
+		indicator = 1
 
-        if buyNow == 'yes':
-            print('about to buyNow')
-            bidders = database.buyNow(username, listing, cost)
-            print('after buyNow')
-            if bidders == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
-        else:
-            print('before updateStatus')
-            bidders = database.updateStatus(listing, username, 'confirmed')
-            print('after updateStatus')
-            if bidders == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+		if buyNow == 'yes':
+			print('about to buyNow')
+			bidders = database.buyNow(username, listing, cost)
+			print('after buyNow')
+			if bidders == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
+		else:
+			print('before updateStatus')
+			bidders = database.updateStatus(listing, username, 'confirmed')
+			print('after updateStatus')
+			if bidders == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
 
-        print('about to send request')
-        error = sendRequest(database, venmoUsername, username,
-                            cost, title, sellerId, listing)
-        print('sent request')
-        if error == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+		print('about to send request')
+		error = sendRequest(database, venmoUsername, username,
+							cost, title, sellerId, listing)
+		print('sent request')
+		if error == -1:
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
 
-        bidders.insert(0, username)
-       
-        error2 = sendEmail(mail, bidders, 'confirm', sellerId, cost, title)
-        if error2 == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
-            
-    html = render_template('checkout.html', username=username, indicator=indicator,
-                           title=title, cost=cost, sellerId=sellerId, list=listing, buyNow=buyNow)
-    response = make_response(html)
+		bidders.insert(0, username)
+	   
+		error2 = sendEmail(mail, bidders, 'confirm', sellerId, cost, title)
+		if error2 == -1:
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
+			
+	html = render_template('checkout.html', username=username, indicator=indicator,
+						   title=title, cost=cost, sellerId=sellerId, list=listing, buyNow=buyNow)
+	response = make_response(html)
 
-    return response
+	return response
 
 
 # ----------------------------------------------------------------------
 @app.route('/congratsPage', methods=['GET', 'POST'])
 def congratsPage():
-    username = CASClient().authenticate()
-    username = username.strip()
-    username = username.strip("\n")
-    msg = ""
-    msg1 = ""
-    results = []
-    bid = 0
+	username = CASClient().authenticate()
+	username = username.strip()
+	username = username.strip("\n")
+	msg = ""
+	msg1 = ""
+	results = []
+	bid = 0
 
-    # profile page: accepting a bid on your listing; confirming your bid to purchase book
-    # Congrats you have accepted a bid, now we just need bidder to confirm
-    # Congrats you and the seller have agreed on purchase, proceed to checkout
+	# profile page: accepting a bid on your listing; confirming your bid to purchase book
+	# Congrats you have accepted a bid, now we just need bidder to confirm
+	# Congrats you and the seller have agreed on purchase, proceed to checkout
 
-    # bid update
-    if request.args.get('bookid'):
-        buyerID = username
-        buyNow = request.args.get('buyNow')
-        uniqueId = request.args.get('bookid')
-        try:
-            # users are routed straight to checkout now, so this case does not happen
-            if buyNow is not None:
-                results = database.getDescription(uniqueId)
-                if results == -1:
-                    html = render_template('errorPage.html')
-                    response = make_response(html)
-                    return response
+	# bid update
+	if request.args.get('bookid'):
+		buyerID = username
+		buyNow = request.args.get('buyNow')
+		uniqueId = request.args.get('bookid')
+		try:
+			# users are routed straight to checkout now, so this case does not happen
+			if buyNow is not None:
+				results = database.getDescription(uniqueId)
+				if results == -1:
+					html = render_template('errorPage.html')
+					response = make_response(html)
+					return response
 
-                for result in results:
-                    book = result
+				for result in results:
+					book = result
 
-                type1 = 0
-                error = database.buyNow(buyerID, uniqueId, buyNow)
-                if error == -1:
-                    html = render_template('errorPage.html')
-                    response = make_response(html)
-                    return response
+				type1 = 0
+				error = database.buyNow(buyerID, uniqueId, buyNow)
+				if error == -1:
+					html = render_template('errorPage.html')
+					response = make_response(html)
+					return response
 
-                msg += "You have successfully placed your bid, now we are just waiting on the sellers confirmation!  "
-                msg1 += "Here is information regarding your purchase "
-            else:
-                type1 = 1
-                bid1 = request.form.get('bid')
-                bid = ''
-                if "." not in bid1:
-                    bid += bid1 + ".00"
-                elif ".0" in bid1:
-                    if ".00" not in bid1:
-                        bid = bid1 + "0"
-                    else:
-                        bid = bid1
+				msg += "You have successfully placed your bid, now we are just waiting on the sellers confirmation!  "
+				msg1 += "Here is information regarding your purchase "
+			else:
+				type1 = 1
+				bid1 = request.form.get('bid')
+				bid = ''
+				if "." not in bid1:
+					bid += bid1 + ".00"
+				elif ".0" in bid1:
+					if ".00" not in bid1:
+						bid = bid1 + "0"
+					else:
+						bid = bid1
 
-                venmoUsername = request.form.get('venmoUsername')
+				venmoUsername = request.form.get('venmoUsername')
 
-                indicator, results = database.addBid(buyerID, uniqueId, bid)
-                if indicator == -1:
-                    html = render_template('errorPage.html')
-                    response = make_response(html)
-                    return response
+				indicator, results = database.addBid(buyerID, uniqueId, bid)
+				if indicator == -1:
+					html = render_template('errorPage.html')
+					response = make_response(html)
+					return response
 
-                msg += "You have successfully placed your bid, now we are just waiting on the sellers confirmation!  "
-                msg1 += "Here is information regarding your bid: "
+				msg += "You have successfully placed your bid, now we are just waiting on the sellers confirmation!  "
+				msg1 += "Here is information regarding your bid: "
 
-                results1 = database.getDescription(uniqueId)
-                if results1 == -1:
-                    html = render_template('errorPage.html')
-                    response = make_response(html)
-                    return response
+				results1 = database.getDescription(uniqueId)
+				if results1 == -1:
+					html = render_template('errorPage.html')
+					response = make_response(html)
+					return response
 
-                for result in results1:
-                    book = result
+				for result in results1:
+					book = result
 
-                if indicator == 1:  # case where new bid is greater than previous...send email
-                    results.insert(0, username)
-                    error1 = sendEmail(mail, results, 'beatBid', book['sellerId'], book['highestBid'],
-                                         book['title'])
-                    if error1 == -1:
-                        html = render_template('errorPage.html')
-                        response = make_response(html)
-                        return response
+				if indicator == 1:  # case where new bid is greater than previous...send email
+					results.insert(0, username)
+					error1 = sendEmail(mail, results, 'beatBid', book['sellerId'], book['highestBid'],
+										 book['title'])
+					if error1 == -1:
+						html = render_template('errorPage.html')
+						response = make_response(html)
+						return response
 
-        except Exception as e:
-            print(argv[0] + str(e), file=stderr)
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+		except Exception as e:
+			print(argv[0] + str(e), file=stderr)
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
 
-    elif request.method == 'POST':
-        type1 = 3
-        isbn = request.form.get('isbn')
-        title = request.form.get('title')
-        minprice1 = request.form.get('minPrice')
-        buynow1 = request.form.get('buyNow')
-        uniqueID = request.args.get('uniqueID')
+	elif request.method == 'POST':
+		type1 = 3
+		isbn = request.form.get('isbn')
+		title = request.form.get('title')
+		minprice1 = request.form.get('minPrice')
+		buynow1 = request.form.get('buyNow')
+		uniqueID = request.args.get('uniqueID')
 
-        minprice = ''
-        buynow = ''
-        if "." not in minprice1:
-            minprice += minprice1 + ".00"
-        elif ".0" in minprice1:
-            if ".00" not in minprice1:
-                minprice = minprice1 + "0"
-            else:
-                minprice = minprice1
+		minprice = ''
+		buynow = ''
+		if "." not in minprice1:
+			minprice += minprice1 + ".00"
+		elif ".0" in minprice1:
+			if ".00" not in minprice1:
+				minprice = minprice1 + "0"
+			else:
+				minprice = minprice1
 
-        if "." not in buynow1:
-            buynow += buynow1 + ".00"
-        elif ".0" in buynow1:
-            if ".00" not in buynow1:
-                buynow = buynow1 + "0"
-            else:
-                buynow = buynow1
+		if "." not in buynow1:
+			buynow += buynow1 + ".00"
+		elif ".0" in buynow1:
+			if ".00" not in buynow1:
+				buynow = buynow1 + "0"
+			else:
+				buynow = buynow1
 
-        # need case were username is wrong
-        venmoUsername = request.form.get('venmoUsername')
+		# need case were username is wrong
+		venmoUsername = request.form.get('venmoUsername')
 
-        error = database.addTransaction(venmoUsername, username)
-        if error == -1:
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
-        
-        #if transaction == None:
-            #error = database.addTransaction(venmoUsername, username)
-           # if error == -1:
-            #    html = render_template('errorPage.html')
-            #    response = make_response(html)
-            #    return response
+		error = database.addTransaction(venmoUsername, username)
+		if error == -1:
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
+		
+		#if transaction == None:
+			#error = database.addTransaction(venmoUsername, username)
+		   # if error == -1:
+			#    html = render_template('errorPage.html')
+			#    response = make_response(html)
+			#    return response
 
-       # if transaction == -1:
-         #   html = render_template('errorPage.html')
-         #   response = make_response(html)
-         #   return response
+	   # if transaction == -1:
+		 #   html = render_template('errorPage.html')
+		 #   response = make_response(html)
+		 #   return response
 
-        image1 = request.files.get('image1')
-        image2 = request.files.get('image2')
-        image3 = request.files.get('image3')
-        # authors as a list; coursename vs coursenumber
-        author = request.form.get('author')
-        crscode = request.form.get('crscode')
-        if crscode is None or crscode == '' or crscode.strip(' ') is None or crscode.strip(' ') == '':
-            crscode = "N/A"
-        crstitle = request.form.get('crstitle')
-        if crstitle is None or crstitle == '' or crstitle.strip(' ') is None or crstitle.strip(' ') == '':
-            crstitle = "N/A"
+		image1 = request.files.get('image1')
+		image2 = request.files.get('image2')
+		image3 = request.files.get('image3')
+		# authors as a list; coursename vs coursenumber
+		author = request.form.get('author')
+		crscode = request.form.get('crscode')
+		if crscode is None or crscode == '' or crscode.strip(' ') is None or crscode.strip(' ') == '':
+			crscode = "N/A"
+		crstitle = request.form.get('crstitle')
+		if crstitle is None or crstitle == '' or crstitle.strip(' ') is None or crstitle.strip(' ') == '':
+			crstitle = "N/A"
 
-        if crscode != "N/A":
-            code = ""
-            for char in crscode:
-                if char.isdigit() == False:
-                    code += char
-                else:
-                    break
-            code += " "
+		if crscode != "N/A":
+			code = ""
+			for char in crscode:
+				if char.isdigit() == False:
+					code += char
+				else:
+					break
+			code += " "
 
-            prev = False
-            for char in crscode:
-                if char.isdigit():
-                    code += char
-                    prev = True
-                elif prev == True:
-                    code += char
-                    break
-                
-            crscode = code
-            
+			prev = False
+			for char in crscode:
+				if char.isdigit():
+					code += char
+					prev = True
+				elif prev == True:
+					code += char
+					break
+				
+			crscode = code
+			
 
-        condition = request.form.get('bookCondition')
-        time = datetime.now()
-        listTime = time.strftime("%m:%d:%Y:%H:%M:%S")
+		condition = request.form.get('bookCondition')
+		time = datetime.now()
+		listTime = time.strftime("%m:%d:%Y:%H:%M:%S")
 
-        # passing to database
-        try:
-            images = []
-            if image1:
-                images.append(database.imageToURL(image1))
+		# passing to database
+		try:
+			images = []
+			if image1:
+				images.append(database.imageToURL(image1))
 
-            if image2:
-                images.append(database.imageToURL(image2))
-            if image3:
-                images.append(database.imageToURL(image3))
+			if image2:
+				images.append(database.imageToURL(image2))
+			if image3:
+				images.append(database.imageToURL(image3))
 
-            results = database.add(isbn, title, [author], crscode, crstitle, username, condition,
-                         minprice, buynow, listTime, images, uniqueID)
-            if results == -1:
-                html = render_template('errorPage.html')
-                response = make_response(html)
-                return response
+			results = database.add(isbn, title, [author], crscode, crstitle, username, condition,
+						 minprice, buynow, listTime, images, uniqueID)
+			if results == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
 
-            book = {
-                "title": title,
-                "authors": author,
-                "minPrice": minprice,
-                "sellerId": username,
-                "buyNow": buynow,
-                "condition": condition
-            }
+			book = {
+				"title": title,
+				"authors": author,
+				"minPrice": minprice,
+				"sellerId": username,
+				"buyNow": buynow,
+				"condition": condition
+			}
 
-            msg += "You have successfully created a listing! It won't be long until the bids start rolling in!  "
-            msg1 += "Here is the information regarding your listing:"
-        except Exception as e:
-            print("Error: " + str(e), file=stderr)
-            html = render_template('errorPage.html')
-            response = make_response(html)
-            return response
+			msg += "You have successfully created a listing! It won't be long until the bids start rolling in!  "
+			msg1 += "Here is the information regarding your listing:"
+		except Exception as e:
+			print("Error: " + str(e), file=stderr)
+			html = render_template('errorPage.html')
+			response = make_response(html)
+			return response
 
-    html = render_template('congratsPage.html', username=username, msg=msg, msg1=msg1,
-                           book=book, type1=type1, bid=bid)
-    response = make_response(html)
+	html = render_template('congratsPage.html', username=username, msg=msg, msg1=msg1,
+						   book=book, type1=type1, bid=bid)
+	response = make_response(html)
 
-    return response
+	return response
 
 
 # ----------------------------------------------------------------------
@@ -808,15 +813,15 @@ def congratsPage():
 
 @app.route('/helpBuyer', methods=['GET'])
 def helpBuyerTemplate():
-    username = CASClient().authenticate()
-    username = username.strip()
-    # client_token = generate_client_token()
+	username = CASClient().authenticate()
+	username = username.strip()
+	# client_token = generate_client_token()
 
-    html = render_template(
-        'helpBuyer.html', username=username)  # client_token=client_token,
+	html = render_template(
+		'helpBuyer.html', username=username)  # client_token=client_token,
 
-    response = make_response(html)
-    return response
+	response = make_response(html)
+	return response
 
 
 # ----------------------------------------------------------------------
@@ -824,15 +829,15 @@ def helpBuyerTemplate():
 
 @app.route('/helpSeller', methods=['GET'])
 def helpSellerTemplate():
-    username = CASClient().authenticate()
-    username = username.strip()
-    # client_token = generate_client_token()
+	username = CASClient().authenticate()
+	username = username.strip()
+	# client_token = generate_client_token()
 
-    html = render_template(
-        'helpSeller.html', username=username)  # client_token=client_token,
+	html = render_template(
+		'helpSeller.html', username=username)  # client_token=client_token,
 
-    response = make_response(html)
-    return response
+	response = make_response(html)
+	return response
 
 
 # ----------------------------------------------------------------------
@@ -840,13 +845,13 @@ def helpSellerTemplate():
 
 @app.route('/contactUs', methods=['GET'])
 def contactUsTemplate():
-    username = CASClient().authenticate()
-    username = username.strip()
+	username = CASClient().authenticate()
+	username = username.strip()
 
-    html = render_template('contactUs.html', username=username)
+	html = render_template('contactUs.html', username=username)
 
-    response = make_response(html)
-    return response
+	response = make_response(html)
+	return response
 
 
 # ----------------------------------------------------------------------
@@ -854,60 +859,60 @@ def contactUsTemplate():
 
 @app.route('/privacyPolicy', methods=['GET'])
 def privacyPolicyTemplate():
-    username = CASClient().authenticate()
-    username = username.strip()
+	username = CASClient().authenticate()
+	username = username.strip()
 
-    html = render_template('privacyPolicy.html', username=username)
+	html = render_template('privacyPolicy.html', username=username)
 
-    response = make_response(html)
-    return response
+	response = make_response(html)
+	return response
 
 
 # -----------------------------------------------------------------------
 
 @app.route('/sellerListings', methods=['GET'])
 def sellerListingsTemplate():
-    username = CASClient().authenticate()
-    username = username.strip()
+	username = CASClient().authenticate()
+	username = username.strip()
 
-    sellerID = request.args.get('sellerID')
-    sortBy = request.args.get('sortBy')
+	sellerID = request.args.get('sellerID')
+	sortBy = request.args.get('sortBy')
 
-    if sellerID is None and sortBy is not None:
-        sellerID = request.cookies.get('sellerID')
+	if sellerID is None and sortBy is not None:
+		sellerID = request.cookies.get('sellerID')
 
-    if sortBy is None:
-        sortBy = "newest"
+	if sortBy is None:
+		sortBy = "newest"
 
-    results = database.sellerListings(sellerID, sortBy)
-    if results == -1:
-        html = render_template('errorPage.html')
-        response = make_response(html)
-        return response
+	results = database.sellerListings(sellerID, sortBy)
+	if results == -1:
+		html = render_template('errorPage.html')
+		response = make_response(html)
+		return response
 
-    images = []
-    # Accessing images
-    i = 0
-    for dict in results:
-        if dict["images"]:
-            image = dict["images"]
-            images.append(image[0].url)
-            dict["images"] = i
-            i += 1
+	images = []
+	# Accessing images
+	i = 0
+	for dict in results:
+		if dict["images"]:
+			image = dict["images"]
+			images.append(image[0].url)
+			dict["images"] = i
+			i += 1
 
-        else:
-            images.append(
-                "http://res.cloudinary.com/dijpr9qcs/image/upload/yah8siamtbmtg5wtnsdv.png")
-            dict["images"] = i
-            i += 1
+		else:
+			images.append(
+				"http://res.cloudinary.com/dijpr9qcs/image/upload/yah8siamtbmtg5wtnsdv.png")
+			dict["images"] = i
+			i += 1
 
-    html = render_template('sellerListings.html', username=username, sellerID=sellerID, results=results, sortBy=sortBy,
-                           images=images)
+	html = render_template('sellerListings.html', username=username, sellerID=sellerID, results=results, sortBy=sortBy,
+						   images=images)
 
-    response = make_response(html)
-    if sellerID is not None:
-        response.set_cookie('sellerID', sellerID)
-    return response
+	response = make_response(html)
+	if sellerID is not None:
+		response.set_cookie('sellerID', sellerID)
+	return response
 
 # ------------------------------------------------------------------------
 # MAKE LOGOUT A DROP DOWN FROM THE TIGER ICON
@@ -915,6 +920,6 @@ def sellerListingsTemplate():
 
 @app.route('/logout', methods=['GET'])
 def logout():
-    casClient = CASClient()
-    casClient.authenticate()
-    casClient.logout()
+	casClient = CASClient()
+	casClient.authenticate()
+	casClient.logout()
