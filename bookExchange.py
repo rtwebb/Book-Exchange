@@ -260,7 +260,11 @@ def profilePageTemplate():
 		# send to bidder
 		if 'accept' in request.form:
 			results = database.getDescription(listingID)
-			if results != -1:
+			if results == -1:
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
+			else:
 				for result in results:
 					if result['listingStatus'] != 'accepted':
 						error1 = database.updateStatus(listingID, bidder, 'accepted')
