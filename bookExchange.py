@@ -208,6 +208,7 @@ def buyerPageTemplate():
 	username = CASClient().authenticate()
 	username = username.strip(" ")
 	username = username.strip("\n")
+	bid = request.args.get('bid')
 
 	# if check for if uniqueID is none
 	# if (uniqueId == None):
@@ -238,7 +239,7 @@ def buyerPageTemplate():
 			images.append(image.url)
 
 	html = render_template('buyerPage.html', results=results,
-						   images=images, uniqueId=uniqueId, username=username)
+						   images=images, uniqueId=uniqueId, username=username, bid=bid)
 	response = make_response(html)
 
 	return response

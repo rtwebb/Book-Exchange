@@ -11,17 +11,6 @@
 
 	<title>{{username}}'s Profile Page</title>
 
-	<style>
-        .hide{
-            display: none;
-        }
-
-        .show {
-            display: block;
-        }
-
-	</style>
-
 </head>
 
 <body>
@@ -236,24 +225,20 @@
 							<td>N/A</td>
 							{% endif %}
 							<td>
-								{% set url = "/profilePage?bookid=" + book["uniqueId"] %}
 								
-								{% if book["status"] == "pending": %}
-								<button class="btn btn-warning btn-xs" onclick="return onButtonClick();" id="editBid">
-									Edit
-								</button>
-								<form  action="{{url}}" id="editBidForm">
-									<input type="text" class="hide" value="Enter new Bid" name="newBid" id="editBidField">
+								<form action="/buyerPage?bookid={{book['uniqueId']}}&bid={{book['bid']}}" method="POST">
+									{% if book["status"] == "pending": %}
+									<button class="btn btn-warning btn-xs" type="submit" onclick="return editBid();">
+										Edit
+									</button>
+									{% else: %}
+									<button class="btn btn-warning btn-xs" type="submit" onclick="return editBid();" disabled data-toggle="tooltip" data-placement="top"
+											title="You can not edit an accepted bid. Please deny purchase and bid again">
+										Edit
+									</button>
+									{% endif %}
 								</form>
 								
-								{% else: %}
-								<button class="btn btn-warning btn-xs" type="submit" onclick="return editBid();" disabled data-toggle="tooltip" data-placement="top"
-										title="You can not edit an accepted bid. Please deny purchase and bid again">
-									Edit
-								</button>
-								{% endif %}
-								
-
 								<form action="/profilePage?deleteBidBuyerID={{username}}&deleteBidListingID={{book['uniqueId']}}&title={{book['title']}}&cost={{book['bid']}}&sellerId={{book['sellerId']}}" method="POST">
 									{% if book["status"] == "pending": %}
 									<button class="btn btn-warning btn-xs" type="submit" onclick="return deleteBid();">
@@ -475,11 +460,6 @@
 				return false;
 			}
 		}
-
-        function onButtonClick(){
-            $('#editBidField').className = "show";
-        }
-
 
 		function deleteBid() {
 			if (confirm('Are you sure you would like to delete this bid?')) {
