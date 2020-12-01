@@ -260,27 +260,19 @@ def profilePageTemplate():
 	try:
 		# send to bidder
 		if 'accept' in request.form:
-			results = database.getDescription(listingID)
-			if results == -1:
+			error1 = database.updateStatus(listingID, bidder, 'accepted')
+			if error1 == -1:
 				html = render_template('errorPage.html')
 				response = make_response(html)
 				return response
-			else:
-				for result in results:
-					if result['listingStatus'] != 'accepted':
-						error1 = database.updateStatus(listingID, bidder, 'accepted')
-						if error1 == -1:
-							html = render_template('errorPage.html')
-							response = make_response(html)
-							return response
 
-						error2 = sendEmail(mail, [bidder], 'accept',
-										username, highestBid, title)
-						if error2 == -1:
-							print("error two")
-							html = render_template('errorPage.html')
-							response = make_response(html)
-							return response
+			error2 = sendEmail(mail, [bidder], 'accept',
+				username, highestBid, title)
+			if error2 == -1:
+				print("error two")
+				html = render_template('errorPage.html')
+				response = make_response(html)
+				return response
 
 		# send to bidder -> if it was the highest bidder send to everyone
 		elif 'decline' in request.form:
