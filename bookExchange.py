@@ -256,6 +256,7 @@ def profilePageTemplate():
     title = request.args.get('title')
     highestBid = request.args.get('cost')
 
+  
     try:
         # send to bidder
         if 'accept' in request.form:
