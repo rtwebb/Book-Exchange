@@ -642,6 +642,7 @@ class QueryDatabase:
                 "listTime": listing.listTime,
                 "images": listing.images,
                 "authors": listing.book[0].authors[0].name,
+                "listingStatus": listing.status,
                 "venmoUsername": venmoUsername
             }
             results.append(result)

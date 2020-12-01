@@ -51,18 +51,18 @@ def sendRequest(database, venmoUsername, buyerId, cost, title, sellerId, listing
 
         # Request money
         #add error check for this too
-        #venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(buyer[0].id))
+        venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(buyer[0].id))
 
-        transaction = database.getTransaction(buyerId)
-        if transaction == None:
-            return database.addTransaction(venmoUsername, buyerId)
+        transaction = database.addTransaction(venmoUsername, buyerId)
+        if transaction == -1:
+            return -1
 
     except Exception as e:
         print(argv[0] + ':', e, file=stderr)
         return -1
 
 
-def checkTransactions(database, buyerId, cost ):
+def checkTransactions(database, buyerId, cost):
 
     try:
 
