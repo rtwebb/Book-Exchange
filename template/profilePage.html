@@ -480,6 +480,17 @@
 			}
 		}
 
+		function setup(){
+			let url = $(location).attr("href");
+			console.log("url: ", url);
+			if (url.includes('?')){
+				console.log("in redirect");
+				location.replace('profilePage');	
+			}
+		}
+
+		$('#document').ready(setup);
+
 	</script>
 
 	<br>
