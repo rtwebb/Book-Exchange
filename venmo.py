@@ -51,7 +51,7 @@ def sendRequest(database, venmoUsername, buyerId, cost, title, sellerId, listing
 
         # Request money
         #add error check for this too
-        venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(buyer[0].id))
+        #venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(buyer[0].id))
 
         transaction = database.addTransaction(venmoUsername, buyerId)
         if transaction == -1:
