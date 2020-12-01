@@ -255,6 +255,7 @@ def profilePageTemplate():
     bidder = request.args.get('bidder')
     title = request.args.get('title')
     highestBid = request.args.get('cost')
+    print('highest bid:', highestBid)
 
     try:
         # send to bidder
@@ -354,6 +355,7 @@ def profilePageTemplate():
             error2 = sendEmail(mail, [], 'received',
                                sellerID, highestBid, title)
             if error2 == -1:
+                print('send email error')
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
@@ -361,15 +363,17 @@ def profilePageTemplate():
             # need automatic refresh
             error3 = checkTransactions(database, username, highestBid)
             if error3 == -1:
+                print('check transaction error')
                 html = render_template('errorPage.html')
                 response = make_response(html)
                 return response
-            if not error3:
+            elif error3 == False:
                 print('buyer has not sent money')
                 # want to add popup
-            elif error3:
+            elif error3 == True:
                 error4 = sendMoney(database, sellerID, username, title, highestBid)
                 if error4 == -1:
+                    print('send money error')
                     html = render_template('errorPage.html')
                     response = make_response(html)
                     return response

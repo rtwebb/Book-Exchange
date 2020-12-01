@@ -62,7 +62,7 @@ def sendRequest(database, venmoUsername, buyerId, cost, title, sellerId, listing
         return -1
 
 
-def checkTransactions(database, buyerId, cost ):
+def checkTransactions(database, buyerId, cost):
 
     try:
 
