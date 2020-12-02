@@ -25,7 +25,7 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
                        "bid. " + \
                        "Below is a summary of your bid." + "\n" + "\n" + \
                        "Book Title: " + title + "\n" + \
-                       "Accepted Price: " + str(highestBid) + "0\n" + \
+                       "Accepted Price: $" + str(highestBid) + "0\n" + \
                        "Seller ID: " + seller + "\n" + "\n" + \
                        "Best," + "\n" + \
                        "The Book-Exchange Team"
@@ -38,7 +38,7 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
                        " explore different ones. " + \
                        "Below is the summary of your bid." + "\n" + "\n" + \
                        "Book Title: " + title + "\n" + \
-                       "Your Bid: " + str(highestBid) + "0\n" + \
+                       "Your Bid: $" + str(highestBid) + "0\n" + \
                        "Seller ID: " + seller + "\n" + "\n" + \
                        "Best," + "\n" + \
                        "The Book-Exchange Team"
@@ -54,7 +54,7 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
                        "The Book-Exchange team is NOT responsible for releasing money to you if the seller has not yet sent it. " \
                        "Below is the summary of your Listing." + "\n" + "\n" + \
                        "Book Title: " + title + "\n" + \
-                       "Accepted Price: " + str(highestBid) + "0\n" + \
+                       "Accepted Price: $" + str(highestBid) + "0\n" + \
                        "Buyer ID: " + bidders[0] + "\n" + "\n" + \
                        "Best," + "\n" + \
                        "The Book-Exchange Team"
@@ -74,7 +74,7 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
                            "You may log into book-exchange-cos333.herokuapp.com and place more bids at any time. " + \
                            "Below is the summary of this listing." + "\n" + "\n" + \
                            "Book Title: " + title + "\n" + \
-                           "Highest Bid: " + str(highestBid) + "0\n" + \
+                           "Highest Bid: $" + str(highestBid) + "0\n" + \
                            "Seller ID: " + seller + "\n" + "\n" + \
                            "Best," + "\n" + \
                            "The Book-Exchange Team"
@@ -94,7 +94,7 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
                        "any.  " + \
                        "Below is the summary of your listing." + "\n" + "\n" + \
                        "Book Title: " + title + "\n" + \
-                       "Cost: " + str(highestBid) + "0\n" + \
+                       "Cost: $" + str(highestBid) + "0\n" + \
                        "SellerID: " + seller + "\n" + "\n" + \
                        "Best," + "\n" + \
                        "The Book-Exchange Team"
@@ -141,7 +141,7 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
                        "The highest bid on a listing you have recently bid on has been deleted. " + \
                        "Below is the summary of the listing." + "\n" + "\n" + \
                        "Book Title: " + title + "\n" + \
-                       "Deleted Bid: " + str(highestBid) + '\n' + \
+                       "Deleted Bid: $" + str(highestBid) + '\n' + \
                        "SellerID: " + seller + "\n" + "\n" + "You can update your bid for a chance to win the " \
                                                              "auction! Good luck!" + "\n" + "\n" + \
                        "Best," + "\n" + \
@@ -175,7 +175,7 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
                        "simply update your bid at book-exchange-cos333.herokuapp.com! Below is a summary of the " \
                        "listing." + "\n" + "\n" + \
                        "Book Title: " + title + "\n" + \
-                       "Highest Bid: " + str(highestBid) + '\n' + \
+                       "Highest Bid: $" + str(highestBid) + '\n' + \
                        "SellerID: " + seller + "\n" + "\n" + \
                        "Best," + "\n" + \
                        "The Book-Exchange Team"
