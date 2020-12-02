@@ -152,7 +152,10 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
             message += "Hello " + seller + ", " + "\n" + "\n" + \
                        "You have successfully sold your book titled " + title + " for $" + highestBid + "0! " + \
                        "We know that it is a long process, but congratulations! " + \
-                       "You should be receiving the funds in your venmo shortly." + "\n" + "\n" + \
+                       "You should be receiving the funds in your venmo shortly. " + \
+                       "If something went wrong with the venmo transaction (e.g. wrong amount) please " + \
+                       "respond to this email explaining the problem, or head to the contact us page on " + \
+                       "book-exchange-cos333.herokuapp.com"    "\n" + "\n" + \
                        "Best," + "\n" + \
                        "The Book-Exchange Team"
 

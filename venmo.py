@@ -103,7 +103,7 @@ def checkTransactions(database, buyerId, cost):
             #will this be a problem 
         else:
             print('venmoUsername does not exist')
-            
+
         return False
 
     except Exception as e:
@@ -136,7 +136,7 @@ def sendMoney(database, sellerId, buyerId, title, cost):
             userID = buyer[0].id
 
             print('before real send money')
-            venmo.payment.send_money(float(cost), title, str(userID))
+            #venmo.payment.send_money(float(cost), title, str(userID))
             print('after real send money')
         
         else:
