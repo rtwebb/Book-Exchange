@@ -571,7 +571,7 @@ def checkout():
 			response = make_response(html)
 			return response
 
-		#bidders.insert(0, username)
+		bidders.insert(0, username)
 	   
 		error2 = sendEmail(mail, bidders, 'confirm', sellerId, cost, title)
 		if error2 == -1:
