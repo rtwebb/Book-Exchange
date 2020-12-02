@@ -82,19 +82,25 @@
                     <b>Buy Now Price: </b>${{results[0]["buyNow"]}}0
 
                     {% set url = "/checkout?buyNow=yes&list=" + uniqueId  + "&title=" + results[0]['crstitle'] + "&sellerId=" + results[0]['sellerId'] + "&cost=" + results[0]['buyNow']|string %}
-                    
+
                     <form action="{{url}}" method="POST" id="buyNowForm">
+                        {# if username != results[0]["sellerId"]: #}
+                        <!--^^^COMMENTED OUT CODE THAT PREVENTS USERS FROM BUYING AND BIDDING ON THEIR OWN LISTINGS (HIDES BUYNOW AND BIDDING FEATURES)-->
                         <button form="buyNowForm"
                                 value="Submit"
                                 class="btn btn-warning"
                                 onclick="return buyNow();">
                             Buy Now
                         </button>
+                        {# endif #}
+                        <!--^^^COMMENTED OUT CODE THAT PREVENTS USERS FROM BUYING AND BIDDING ON THEIR OWN LISTINGS (HIDES BUYNOW AND BIDDING FEATURES)-->
                     </form>
                 </p>
                 <p><b>Lowest Ask: </b>${{results[0]["minPrice"]}}0</p>
                 <p><b>Current Highest Bid: </b>${{results[0]["highestBid"]}}0</p>
 
+                {# if username != results[0]["sellerId"]: #}
+                <!--^^^COMMENTED OUT CODE THAT PREVENTS USERS FROM BUYING AND BIDDING ON THEIR OWN LISTINGS (HIDES BUYNOW AND BIDDING FEATURES)-->
                 <p><b>Make a Bid:</b></p>
                 {% set url = "congratsPage?bookid=" + uniqueId %}
                 <form action={{url}} method="POST" id="submitBidForm">
@@ -113,6 +119,8 @@
                         onclick="return verifyBid();">
                     Submit Bid
                 </button>
+                {# endif #}
+                <!--^^^COMMENTED OUT CODE THAT PREVENTS USERS FROM BUYING AND BIDDING ON THEIR OWN LISTINGS (HIDES BUYNOW AND BIDDING FEATURES)-->
             </div>
         </div>
     </div>
