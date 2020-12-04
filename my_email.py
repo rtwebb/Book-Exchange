@@ -50,7 +50,7 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
                        "released to you ONLY if the buyer has sent the money requested through venmo to a Book-Exchange team member. " \
                        "We recommend that you gain proof of a money transaction (e.g. screenshot) before you give/send the book to the buyer. " \
                        "The Book-Exchange team is NOT responsible for releasing money to you if the seller has not yet sent it. " \
-                       "Below is the summary of your Listing." + "\n" + "\n" + \
+                       "Below is the summary of your listing." + "\n" + "\n" + \
                        "Book Title: " + title + "\n" + \
                        "Accepted Price: $" + str(highestBid) + "0\n" + \
                        "Buyer ID: " + bidders[0] + "\n" + "\n" + \
