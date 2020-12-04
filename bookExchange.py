@@ -361,7 +361,7 @@ def profilePageTemplate():
 				return response
 
 			# need automatic refresh
-			error3 = checkTransactions(database, username, highestBid)
+			error3 = checkTransactions(database, username, highestBid, title)
 			if error3 == -1:
 				html = render_template('errorPage.html')
 				response = make_response(html)
@@ -570,6 +570,8 @@ def checkout():
 			html = render_template('errorPage.html')
 			response = make_response(html)
 			return response
+		elif error == -2:
+			print("venmo might be locked")
 
 		bidders.insert(0, username)
 	   

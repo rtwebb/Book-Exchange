@@ -190,7 +190,7 @@ class QueryDatabase:
         
         try:
             transaction = self._connection.query(Transactions). \
-                filter(Transactions.casUsername == username).one()
+                filter(Transactions.casUsername == username).one_or_none()
 
             if transaction is not None:
                 transaction.venmoUsername = venmoUsername
@@ -211,7 +211,7 @@ class QueryDatabase:
     def getTransaction(self, username):
         try:
             transaction = self._connection.query(Transactions). \
-                filter(Transactions.casUsername == username).one()
+                filter(Transactions.casUsername == username).one_or_none()
 
             # this is wrong
             if transaction is None:

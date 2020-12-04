@@ -20,9 +20,7 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
             message += "Hello " + bidders[0] + "," + "\n" + "\n" + \
                        "Congratulations! Your bid was accepted by " + seller + ". " + \
                        "Please log into book-exchange-cos333.herokuapp.com to confirm or deny your purchase of this " \
-                       "book ASAP. " + \
-                       "If you do not make a decision within a timely manner, the seller is authorized to delete your " \
-                       "bid. " + \
+                       "book. " + \
                        "Below is a summary of your bid." + "\n" + "\n" + \
                        "Book Title: " + title + "\n" + \
                        "Accepted Price: $" + str(highestBid) + "0\n" + \

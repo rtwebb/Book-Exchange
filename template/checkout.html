@@ -127,6 +127,12 @@
       let venmoUsername = $('#inputUsername').val()
       console.log("venmoUsername: ", venmoUsername);
 
+      if (venmoUsername.trim() === ''){
+        alert('All required fields are not filled, please make sure you complete all required fields!');
+          return false;
+
+      }
+
       if (venmoUsername != ''){
         if (confirm('Are you sure this is your unique Venmo Username?')) {
           return true;
