@@ -544,6 +544,7 @@ def checkout():
 	venmoUsername = request.form.get('username')
 	if venmoUsername != None:
 		indicator = 1
+		print('indicator: ', indicator)
 
 		if buyNow == 'yes':
 			print('about to buyNow')
@@ -553,33 +554,33 @@ def checkout():
 				html = render_template('errorPage.html')
 				response = make_response(html)
 				return response
-		else:
-			print('before updateStatus')
-			bidders = database.updateStatus(listing, username, 'confirmed')
-			print('after updateStatus')
-			if bidders == -1:
-				html = render_template('errorPage.html')
-				response = make_response(html)
-				return response
+		#else:
+			#print('before updateStatus')
+			#bidders = database.updateStatus(listing, username, 'confirmed')
+			#print('after updateStatus')
+			#if bidders == -1:
+				#html = render_template('errorPage.html')
+				#response = make_response(html)
+				#return response
 
-		print('about to send request')
-		error = sendRequest(database, venmoUsername, username,
-							cost, title, sellerId, listing)
-		print('sent request')
-		if error == -1:
-			html = render_template('errorPage.html')
-			response = make_response(html)
-			return response
-		elif error == -2:
-			print("venmo might be locked")
+		#print('about to send request')
+		#error = sendRequest(database, venmoUsername, username,
+							#cost, title, sellerId, listing)
+		#print('sent request')
+		#if error == -1:
+			#html = render_template('errorPage.html')
+			#response = make_response(html)
+			#return response
+		#elif error == -2:
+			#print("venmo might be locked")
 
-		bidders.insert(0, username)
+		#bidders.insert(0, username)
 	   
-		error2 = sendEmail(mail, bidders, 'confirm', sellerId, cost, title)
-		if error2 == -1:
-			html = render_template('errorPage.html')
-			response = make_response(html)
-			return response
+		#error2 = sendEmail(mail, bidders, 'confirm', sellerId, cost, title)
+		#if error2 == -1:
+			#html = render_template('errorPage.html')
+			#response = make_response(html)
+			#return response
 			
 	html = render_template('checkout.html', username=username, indicator=indicator,
 						   title=title, cost=cost, sellerId=sellerId, list=listing, buyNow=buyNow)
