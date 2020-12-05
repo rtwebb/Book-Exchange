@@ -40,7 +40,7 @@ def sendRequest(database, venmoUsername, buyerId, cost, title, sellerId, listing
 
             # Request money
             #add error check for this too
-            #venmo.payment.request_money(float(cost), title , str(buyer[0].id))
+            venmo.payment.request_money(float(cost), title , str(buyer[0].id))
             return
         else:
             print('venmoUsername does not exist')
