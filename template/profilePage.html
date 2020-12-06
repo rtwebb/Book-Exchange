@@ -118,8 +118,8 @@
 									{% endif %}
 								</form>
 
-								{% set url = "/profilePage?deleteListingID=" + book["uniqueId"] %}
-								<form action={{url}} method="POST">
+<!--								{% set url = "/profilePage?deleteListingID=" + book["uniqueId"] + "&title=" + book["title"] %}-->
+								<form action="/profilePage?deleteListingID={{book['uniqueId']}}&title={{book['title']}}" method="POST">
 									{% if book["status"] == 'pending' or book["status"] == 'N/A': %}
 									<button class="btn btn-warning btn-xs"
 											type="submit"

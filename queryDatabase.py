@@ -138,7 +138,7 @@ class QueryDatabase:
     # -----------------------------------------------------------------------------
 
     # add a bid to the database or update an existing one
-    def addBid(self, buyerID, listingID, bid):
+    def addBid(self, buyerID, listingID, inputBid):
         try:
             # update highestBid for this listing
             listing = self._connection.query(Listings). \
@@ -150,28 +150,28 @@ class QueryDatabase:
                 filter(Bids.listingID == listingID).one_or_none()
 
             if foundBid:
-                foundBid.bid = bid
+                foundBid.bid = inputBid
                 self._connection.commit()
                 foundBid.status = 'pending'
                 self._connection.commit()
 
             # otherwise, create a new bid
             else:
-                newBid = Bids(buyerID=buyerID, listingID=listingID, bid=bid, status='pending')
+                newBid = Bids(buyerID=buyerID, listingID=listingID, bid=inputBid, status='pending')
                 self._connection.add(newBid)
                 self._connection.commit()
 
-            if float(bid) > listing.highestBid:
+            if float(inputBid) > listing.highestBid:
                 # send email to prev highest bidder(s)
                 prevHighest = self._connection.query(Bids).filter(Bids.listingID == listingID).\
                     filter(Bids.bid == listing.highestBid).all()
                 results = []
+                listing.highestBid = inputBid
+                self._connection.commit()
                 for bid in prevHighest:
                     results.append(bid.buyerID.rstrip())
-                listing.highestBid = bid
-                self._connection.commit()
                 return 1, results
-            elif float(bid) < listing.highestBid:
+            elif float(inputBid) < listing.highestBid:
                 # check to see if there are other bids on the listing
                 found = self._connection.query(Bids). \
                     filter(Bids.listingID == listingID). \
@@ -190,7 +190,7 @@ class QueryDatabase:
         
         try:
             transaction = self._connection.query(Transactions). \
-                filter(Transactions.casUsername == username).one()
+                filter(Transactions.casUsername == username).one_or_none()
 
             if transaction is not None:
                 transaction.venmoUsername = venmoUsername
@@ -211,7 +211,7 @@ class QueryDatabase:
     def getTransaction(self, username):
         try:
             transaction = self._connection.query(Transactions). \
-                filter(Transactions.casUsername == username).one()
+                filter(Transactions.casUsername == username).one_or_none()
 
             # this is wrong
             if transaction is None:

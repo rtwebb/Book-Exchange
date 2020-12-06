@@ -12,32 +12,19 @@ from sys import stderr, argv
 #make venmo username pop up in congrats page 
 #create update venmo Username
 #fix automatic popup in seller page
-#I edited my bid and two popped up
+#I edited my bid and two popped up 
 
-def validateUsername(venmoUsername):
+def sendRequest(database, venmoUsername, buyerId, cost, title, sellerId, listingID ):
     try:
-        print('before client')
-        venmo = Client(access_token='d095f97905ba8bb6a2b84477e411d08cc000f6eadf261624b29e88ef15ab4ada')
-        print('after client')
 
-
-        buyer = venmo.user.search_for_users(query=venmoUsername, page=1)
-
-        if len(buyer) > 1:
-            return 1
-        else:
-            return 0
-
+        transaction = database.addTransaction(venmoUsername, buyerId)
+        if transaction == -1:
+            return -1
     except Exception as e:
         print(argv[0] + ':', e, file=stderr)
         return -1
     
-
-def sendRequest(database, venmoUsername, buyerId, cost, title, sellerId, listingID ):
     try:
-        error = validateUsername(venmoUsername)
-        if error == -1:
-            return -1
 
         print('before client')
         venmo = Client(access_token='d095f97905ba8bb6a2b84477e411d08cc000f6eadf261624b29e88ef15ab4ada')
@@ -53,22 +40,26 @@ def sendRequest(database, venmoUsername, buyerId, cost, title, sellerId, listing
 
             # Request money
             #add error check for this too
-            #venmo.payment.request_money(float(cost), "Book-Exchange bid for " + title , str(buyer[0].id))
+            venmo.payment.request_money(float(cost), title , str(buyer[0].id))
+            return
         else:
             print('venmoUsername does not exist')
+    
 
-        transaction = database.addTransaction(venmoUsername, buyerId)
-        if transaction == -1:
-            return -1
-
- 
 
     except Exception as e:
         print(argv[0] + ':', e, file=stderr)
-        return -1
+        return -2
 
 
-def checkTransactions(database, buyerId, cost):
+
+
+
+ 
+
+
+
+def checkTransactions(database, buyerId, cost, title):
 
     try:
 
@@ -95,10 +86,11 @@ def checkTransactions(database, buyerId, cost):
                 print('target.id: ', trans.target.id)
                 print('userid: ', userID)
                 print('note: ', trans.note)
+                print('title: ', title)
                 print('amount: ', trans.amount)
                 print('cost: ', cost)
                 print('status: ', trans.status)
-                if str(trans.target.id) == str(userID) and str(trans.amount) == str(cost) and str(trans.status) == str('settled'):
+                if str(trans.target.id) == str(userID) and str(trans.amount) == str(cost) and str(trans.status) == str('settled') and str(trans.note) == str(title):
                     return True
             #will this be a problem 
         else:
@@ -136,7 +128,7 @@ def sendMoney(database, sellerId, buyerId, title, cost):
             userID = buyer[0].id
 
             print('before real send money')
-            #venmo.payment.send_money(float(cost), title, str(userID))
+            venmo.payment.send_money(float(cost), title, str(userID))
             print('after real send money')
         
         else:

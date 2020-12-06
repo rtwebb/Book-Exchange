@@ -20,9 +20,7 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
             message += "Hello " + bidders[0] + "," + "\n" + "\n" + \
                        "Congratulations! Your bid was accepted by " + seller + ". " + \
                        "Please log into book-exchange-cos333.herokuapp.com to confirm or deny your purchase of this " \
-                       "book ASAP. " + \
-                       "If you do not make a decision within a timely manner, the seller is authorized to delete your " \
-                       "bid. " + \
+                       "book. " + \
                        "Below is a summary of your bid." + "\n" + "\n" + \
                        "Book Title: " + title + "\n" + \
                        "Accepted Price: $" + str(highestBid) + "0\n" + \
@@ -52,7 +50,7 @@ def sendEmail(mail, bidders: [], status, seller=None, highestBid=None, title=Non
                        "released to you ONLY if the buyer has sent the money requested through venmo to a Book-Exchange team member. " \
                        "We recommend that you gain proof of a money transaction (e.g. screenshot) before you give/send the book to the buyer. " \
                        "The Book-Exchange team is NOT responsible for releasing money to you if the seller has not yet sent it. " \
-                       "Below is the summary of your Listing." + "\n" + "\n" + \
+                       "Below is the summary of your listing." + "\n" + "\n" + \
                        "Book Title: " + title + "\n" + \
                        "Accepted Price: $" + str(highestBid) + "0\n" + \
                        "Buyer ID: " + bidders[0] + "\n" + "\n" + \
