@@ -38,14 +38,7 @@
                 {% if results is not none: %}
                 <form action="/sellerListings" method="GET">
                     <select id="sortBy" class="selector" name='sortBy' selected="sortBy" style="margin-bottom:10px" onchange="this.form.submit()">
-                        {% if sortBy == "newest" %}
-                        <option value="newest" selected="selected">Sort by: Newest</option>
-                        <option value='alphabetical'> Sort by: Alphabetical </option>
-                        <option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
-                        <option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
-                        <option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
-                        <option value='BNPlotohi'> Sort by: Buy Now (Low-High) </option>
-                        {% elif sortBy == "alphabetical" %}
+                        {% if sortBy == "alphabetical" %}
                         <option value="newest">Sort by: Newest</option>
                         <option value='alphabetical' selected="selected"> Sort by: Alphabetical </option>
                         <option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
@@ -80,6 +73,13 @@
                         <option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
                         <option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
                         <option value='BNPlotohi' selected="selected"> Sort by: Buy Now (Low-High) </option>
+                        {% else: %}
+                        <option value="newest" selected="selected">Sort by: Newest</option>
+                        <option value='alphabetical'> Sort by: Alphabetical </option>
+                        <option value='hitolo'> Sort by: Highest Bid (High-Low)</option>
+                        <option value='lotohi'> Sort by: Highest Bid (Low-High) </option>
+                        <option value='BNPhitolo'> Sort by: Buy Now (High-Low)</option>
+                        <option value='BNPlotohi'> Sort by: Buy Now (Low-High) </option>
                         {% endif %}
                     </select>
                 </form>
