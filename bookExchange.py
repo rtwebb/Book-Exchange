@@ -27,8 +27,8 @@ app.secret_key = 'V7nlCN90LPHOTA9PGGyf'
 
 cas_client = CASClient(
     version=3,
-    service_url='http://localhost:10003',
-    server_url='book-exchange-cos333.herokuapp.com'
+    service_url='http://localhost:5000/login?next=%2Fprofile',
+    server_url='https://django-cas-ng-demo-server.herokuapp.com/cas/'
 )
 
 # email
